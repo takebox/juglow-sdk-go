@@ -1,8 +1,8 @@
 ﻿package sentinel_test
 
 import (
-	"github.com/Juglows/Juglow-sdk-go/internal/encoding/json/sentinel"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/internal/encoding/json/sentinel"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 	"reflect"
 	"slices"
 	"testing"

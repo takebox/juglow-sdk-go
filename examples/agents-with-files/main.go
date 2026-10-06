@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 )
 
 func main() {

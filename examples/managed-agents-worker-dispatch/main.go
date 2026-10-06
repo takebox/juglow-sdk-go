@@ -32,9 +32,9 @@ import (
 	"os"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/lib/environments"
-	"github.com/Juglows/Juglow-sdk-go/tools/agenttoolset"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/lib/environments"
+	"github.com/takebox/juglow-sdk-go/tools/agenttoolset"
 )
 
 // currentTimeTool is a custom Juglow.BetaTool that returns the local time.

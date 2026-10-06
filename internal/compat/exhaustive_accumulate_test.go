@@ -5,7 +5,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go"
 )
 
 // TestAccumulateExhaustive fails when the generated code gains a stream-event or

@@ -11,14 +11,14 @@ import (
 	"slices"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
-	"github.com/Juglows/Juglow-sdk-go/internal/paramutil"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
-	"github.com/Juglows/Juglow-sdk-go/packages/ssestream"
-	"github.com/Juglows/Juglow-sdk-go/shared/constant"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/internal/paramutil"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/packages/ssestream"
+	"github.com/takebox/juglow-sdk-go/shared/constant"
 	"github.com/tidwall/gjson"
 )
 
@@ -86,8 +86,7 @@ func (r *MessageService) New(ctx context.Context, params MessageNewParams, opts 
 func (r *MessageService) NewStreaming(ctx context.Context, params MessageNewParams, opts ...option.RequestOption) (stream *ssestream.Stream[MessageStreamEventUnion]) {
 	var (
 		raw *http.Response
-		err error
-	)
+		err error )
 	if !param.IsOmitted(params.UserProfileID) {
 		opts = append(opts, option.WithHeader("Juglow-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
 	}

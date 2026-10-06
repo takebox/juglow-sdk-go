@@ -18,10 +18,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/internal"
-	"github.com/Juglows/Juglow-sdk-go/internal/apierror"
-	"github.com/Juglows/Juglow-sdk-go/internal/apiform"
-	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/takebox/juglow-sdk-go/internal"
+	"github.com/takebox/juglow-sdk-go/internal/apierror"
+	"github.com/takebox/juglow-sdk-go/internal/apiform"
+	"github.com/takebox/juglow-sdk-go/internal/apiquery"
 )
 
 func getDefaultHeaders() map[string]string {
@@ -104,8 +104,7 @@ func NewRequestConfig(ctx context.Context, method string, u string, body any, ds
 	if body, ok := body.(apiform.Marshaler); ok {
 		var (
 			content []byte
-			err     error
-		)
+			err     error )
 		content, contentType, err = body.MarshalMultipart()
 		if err != nil {
 			return nil, err

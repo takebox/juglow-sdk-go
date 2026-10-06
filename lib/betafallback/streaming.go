@@ -37,8 +37,8 @@ import (
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/packages/ssestream"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/packages/ssestream"
 )
 
 // handleStreaming runs the streaming fallback path for an eligible request.

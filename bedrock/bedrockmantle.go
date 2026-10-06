@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/internal/awsauth"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/internal/awsauth"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 const mantleServiceName = "bedrock-mantle"

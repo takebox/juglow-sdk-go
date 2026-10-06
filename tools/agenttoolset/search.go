@@ -14,7 +14,7 @@ import (
 	"sort"
 	"strings"
 
-	Juglow "github.com/Juglows/Juglow-sdk-go"
+	Juglow "github.com/takebox/juglow-sdk-go"
 )
 
 const (

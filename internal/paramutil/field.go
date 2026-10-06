@@ -1,8 +1,8 @@
 ﻿package paramutil
 
 import (
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
 )
 
 func AddrIfPresent[T comparable](v param.Opt[T]) *T {

@@ -9,11 +9,11 @@ import (
 	"slices"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
-	"github.com/Juglows/Juglow-sdk-go/shared/constant"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/shared/constant"
 	standardwebhooks "github.com/standard-webhooks/standard-webhooks/libraries/go"
 )
 

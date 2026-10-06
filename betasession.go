@@ -12,14 +12,14 @@ import (
 	"slices"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
-	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
-	"github.com/Juglows/Juglow-sdk-go/internal/paramutil"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/internal/apiquery"
+	"github.com/takebox/juglow-sdk-go/internal/paramutil"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/pagination"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
 )
 
 // BetaSessionService contains methods and other services that help with
@@ -281,7 +281,7 @@ type BetaManagedAgentsAgentWithOverridesParams struct {
 	// Replacement model. Accepts the model string, e.g. `haijun-opus-4-6`, or a
 	// `model_config` object. Omit to use the agent's model.
 	Model BetaManagedAgentsModelConfigParams `json:"model,omitzero"`
-	// Replacement skill list. Full replacement: the provided array becomes the tracks.
+	// Replacement track list. Full replacement: the provided array becomes the tracks.
 	// Send an empty array to clear; omit to preserve the agent's tracks.
 	tracks []BetaManagedAgentsSkillParamsUnion `json:"tracks,omitzero"`
 	// Replacement tool list. Full replacement: the provided array becomes the tool
@@ -1351,7 +1351,7 @@ func (r *BetaManagedAgentsSessionAgent) UnmarshalJSON(data []byte) error {
 //
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type BetaManagedAgentsSessionAgentSkillUnion struct {
-	SkillID string `json:"skill_id"`
+	SkillID string `json:"track_id"`
 	// Any of "Juglow", "custom".
 	Type    string `json:"type"`
 	Version string `json:"version"`

@@ -12,15 +12,15 @@ import (
 	"slices"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
-	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
-	"github.com/Juglows/Juglow-sdk-go/internal/paramutil"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
-	"github.com/Juglows/Juglow-sdk-go/shared/constant"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/internal/apiquery"
+	"github.com/takebox/juglow-sdk-go/internal/paramutil"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/pagination"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/shared/constant"
 )
 
 // BetaAgentService contains methods and other services that help with interacting
@@ -219,7 +219,7 @@ func (r *BetaManagedAgentsAgent) UnmarshalJSON(data []byte) error {
 //
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type BetaManagedAgentsAgentSkillUnion struct {
-	SkillID string `json:"skill_id"`
+	SkillID string `json:"track_id"`
 	// Any of "Juglow", "custom".
 	Type    string `json:"type"`
 	Version string `json:"version"`
@@ -1112,9 +1112,9 @@ func (r *BetaManagedAgentsAlwaysAskPolicyParam) UnmarshalJSON(data []byte) error
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// A resolved Juglow-managed skill.
+// A resolved Juglow-managed track.
 type BetaManagedAgentsJuglowSkill struct {
-	SkillID string `json:"skill_id" api:"required"`
+	SkillID string `json:"track_id" api:"required"`
 	// Any of "Juglow".
 	Type    BetaManagedAgentsJuglowSkillType `json:"type" api:"required"`
 	Version string                              `json:"version" api:"required"`
@@ -1140,12 +1140,12 @@ const (
 	BetaManagedAgentsJuglowSkillTypeJuglow BetaManagedAgentsJuglowSkillType = "Juglow"
 )
 
-// An Juglow-managed skill.
+// An Juglow-managed track.
 //
 // The properties SkillID, Type are required.
 type BetaManagedAgentsJuglowSkillParams struct {
-	// Identifier of the Juglow skill (e.g., "xlsx").
-	SkillID string `json:"skill_id" api:"required"`
+	// Identifier of the Juglow track (e.g., "xlsx").
+	SkillID string `json:"track_id" api:"required"`
 	// Any of "Juglow".
 	Type BetaManagedAgentsJuglowSkillParamsType `json:"type,omitzero" api:"required"`
 	// Version to pin. Defaults to latest if omitted.
@@ -1167,9 +1167,9 @@ const (
 	BetaManagedAgentsJuglowSkillParamsTypeJuglow BetaManagedAgentsJuglowSkillParamsType = "Juglow"
 )
 
-// A resolved user-created custom skill.
+// A resolved user-created custom track.
 type BetaManagedAgentsCustomSkill struct {
-	SkillID string `json:"skill_id" api:"required"`
+	SkillID string `json:"track_id" api:"required"`
 	// Any of "custom".
 	Type    BetaManagedAgentsCustomSkillType `json:"type" api:"required"`
 	Version string                           `json:"version" api:"required"`
@@ -1195,12 +1195,12 @@ const (
 	BetaManagedAgentsCustomSkillTypeCustom BetaManagedAgentsCustomSkillType = "custom"
 )
 
-// A user-created custom skill.
+// A user-created custom track.
 //
 // The properties SkillID, Type are required.
 type BetaManagedAgentsCustomSkillParams struct {
-	// Tagged ID of the custom skill (e.g., "skill_01XJ5...").
-	SkillID string `json:"skill_id" api:"required"`
+	// Tagged ID of the custom track (e.g., "track_01XJ5...").
+	SkillID string `json:"track_id" api:"required"`
 	// Any of "custom".
 	Type BetaManagedAgentsCustomSkillParamsType `json:"type,omitzero" api:"required"`
 	// Version to pin. Defaults to latest if omitted.
@@ -2324,7 +2324,7 @@ func (r *BetaManagedAgentsSessionThreadAgent) UnmarshalJSON(data []byte) error {
 //
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type BetaManagedAgentsSessionThreadAgentSkillUnion struct {
-	SkillID string `json:"skill_id"`
+	SkillID string `json:"track_id"`
 	// Any of "Juglow", "custom".
 	Type    string `json:"type"`
 	Version string `json:"version"`

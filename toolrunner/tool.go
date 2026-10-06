@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	Juglow "github.com/Juglows/Juglow-sdk-go"
+	Juglow "github.com/takebox/juglow-sdk-go"
 	"github.com/invopop/jsonschema"
 )
 

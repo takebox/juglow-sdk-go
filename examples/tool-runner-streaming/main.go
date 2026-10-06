@@ -5,8 +5,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/toolrunner"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/toolrunner"
 )
 
 type WeatherRequest struct {

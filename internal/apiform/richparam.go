@@ -1,7 +1,7 @@
 ﻿package apiform
 
 import (
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 	"mime/multipart"
 	"reflect"
 )

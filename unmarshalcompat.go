@@ -7,7 +7,7 @@
 import (
 	"reflect"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
 
 	"github.com/tidwall/gjson"
 )

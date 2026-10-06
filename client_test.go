@@ -11,9 +11,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/internal"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/internal"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 type closureTransport struct {

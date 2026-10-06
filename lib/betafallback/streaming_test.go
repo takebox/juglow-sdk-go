@@ -10,9 +10,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/lib/betafallback"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/lib/betafallback"
+	"github.com/takebox/juglow-sdk-go/option"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

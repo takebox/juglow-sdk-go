@@ -3,7 +3,7 @@
 import (
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/config"
+	"github.com/takebox/juglow-sdk-go/config"
 )
 
 // OAuth wire-contract constants live in the public config package so the

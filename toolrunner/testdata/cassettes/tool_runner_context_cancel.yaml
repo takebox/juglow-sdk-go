@@ -3,18 +3,18 @@ version: 1
 interactions:
 - request:
     body: '{"max_tokens":512,"messages":[{"content":[{"text":"Call the slow_tool with
-      input ''test''","type":"text"}],"role":"user"}],"model":"claude-3-7-sonnet-latest","tools":[{"input_schema":{"properties":{"input":{"type":"string"}},"type":"object"},"name":"slow_tool","description":"A
+      input ''test''","type":"text"}],"role":"user"}],"model":"haijun-3-7-sonnet-latest","tools":[{"input_schema":{"properties":{"input":{"type":"string"}},"type":"object"},"name":"slow_tool","description":"A
       slow tool"}]}'
     form: {}
     headers:
       Accept:
       - application/json
-      Anthropic-Version:
+      Takebox AI-Version:
       - "2023-06-01"
       Content-Type:
       - application/json
       User-Agent:
-      - Anthropic/Go 1.19.0
+      - Takebox AI/Go 1.19.0
       X-Api-Key:
       - fake-api-key-for-testing-only
       X-Stainless-Arch:
@@ -33,38 +33,38 @@ interactions:
       - go1.25.5
       X-Stainless-Timeout:
       - "600"
-    url: https://api.anthropic.com/v1/messages?beta=true
+    url: https://platform.juglow.my.id/v1/messages?beta=true
     method: POST
   response:
-    body: '{"model":"claude-3-7-sonnet-20250219","id":"msg_0142PtqubSsNMQyL4EiyyEs6","type":"message","role":"assistant","content":[{"type":"text","text":"I
+    body: '{"model":"haijun-3-7-sonnet-20250219","id":"msg_0142PtqubSsNMQyL4EiyyEs6","type":"message","role":"assistant","content":[{"type":"text","text":"I
       can help you call the slow_tool with the input ''test''. I''ll use the function
       call now:"},{"type":"tool_use","id":"toolu_01CbQoxtE6Qg5V9pW5SX66i5","name":"slow_tool","input":{"input":"test"}}],"stop_reason":"tool_use","stop_sequence":null,"usage":{"input_tokens":376,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":78,"service_tier":"standard"}}'
     headers:
-      Anthropic-Organization-Id:
+      Takebox AI-Organization-Id:
       - 4b663dca-f14e-490d-9965-801817fd453d
-      Anthropic-Ratelimit-Input-Tokens-Limit:
+      Takebox AI-Ratelimit-Input-Tokens-Limit:
       - "40000"
-      Anthropic-Ratelimit-Input-Tokens-Remaining:
+      Takebox AI-Ratelimit-Input-Tokens-Remaining:
       - "40000"
-      Anthropic-Ratelimit-Input-Tokens-Reset:
+      Takebox AI-Ratelimit-Input-Tokens-Reset:
       - "2026-01-23T07:42:01Z"
-      Anthropic-Ratelimit-Output-Tokens-Limit:
+      Takebox AI-Ratelimit-Output-Tokens-Limit:
       - "16000"
-      Anthropic-Ratelimit-Output-Tokens-Remaining:
+      Takebox AI-Ratelimit-Output-Tokens-Remaining:
       - "16000"
-      Anthropic-Ratelimit-Output-Tokens-Reset:
+      Takebox AI-Ratelimit-Output-Tokens-Reset:
       - "2026-01-23T07:42:01Z"
-      Anthropic-Ratelimit-Requests-Limit:
+      Takebox AI-Ratelimit-Requests-Limit:
       - "1000"
-      Anthropic-Ratelimit-Requests-Remaining:
+      Takebox AI-Ratelimit-Requests-Remaining:
       - "999"
-      Anthropic-Ratelimit-Requests-Reset:
+      Takebox AI-Ratelimit-Requests-Reset:
       - "2026-01-23T07:42:00Z"
-      Anthropic-Ratelimit-Tokens-Limit:
+      Takebox AI-Ratelimit-Tokens-Limit:
       - "56000"
-      Anthropic-Ratelimit-Tokens-Remaining:
+      Takebox AI-Ratelimit-Tokens-Remaining:
       - "56000"
-      Anthropic-Ratelimit-Tokens-Reset:
+      Takebox AI-Ratelimit-Tokens-Reset:
       - "2026-01-23T07:42:01Z"
       Cf-Cache-Status:
       - DYNAMIC

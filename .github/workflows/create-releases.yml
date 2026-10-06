@@ -9,7 +9,7 @@ on:
 jobs:
   release:
     name: release
-    if: github.ref == 'refs/heads/main' && github.repository == 'anthropics/anthropic-sdk-go'
+    if: github.ref == 'refs/heads/main' && github.repository == 'takebox/Takebox AI-sdk-go'
     runs-on: ubuntu-latest
     environment: production-release
 
@@ -27,5 +27,5 @@ jobs:
         run: |
           # x-release-please-start-version
           version=$(jq -r '. | to_entries[0] | .value' .release-please-manifest.json)
-          curl -X POST https://pkg.go.dev/fetch/github.com/anthropics/anthropic-sdk-go@v${version}
+          curl -X POST https://pkg.go.dev/fetch/github.com/takebox/juglow-sdk-go@v${version}
           # x-release-please-end

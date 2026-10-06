@@ -15,9 +15,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 	"github.com/stretchr/testify/require"
 )
 
@@ -140,7 +140,7 @@ type fakeWorkServer struct {
 	HandleSend   http.HandlerFunc // POST /v1/sessions/{id}/events
 	HandleList   http.HandlerFunc // GET  /v1/sessions/{id}/events
 
-	// Session lookup endpoint (skill setup).
+	// Session lookup endpoint (track setup).
 	HandleSessionGet http.HandlerFunc // GET /v1/sessions/{id}
 }
 

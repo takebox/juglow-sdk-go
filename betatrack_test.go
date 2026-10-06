@@ -10,9 +10,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/internal/testutil"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 func TestBetaSkillNewWithOptionalParams(t *testing.T) {
@@ -55,7 +55,7 @@ func TestBetaSkillGetWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Beta.tracks.Get(
 		context.TODO(),
-		"skill_id",
+		"track_id",
 		Juglow.BetaSkillGetParams{
 			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
@@ -110,7 +110,7 @@ func TestBetaSkillDeleteWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Beta.tracks.Delete(
 		context.TODO(),
-		"skill_id",
+		"track_id",
 		Juglow.BetaSkillDeleteParams{
 			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},

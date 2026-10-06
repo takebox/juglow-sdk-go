@@ -6,7 +6,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
 )
 
 // applyBearerAuth sets the Authorization and Juglow-beta headers for

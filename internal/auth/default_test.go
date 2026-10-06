@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go/config"
+	"github.com/takebox/juglow-sdk-go/config"
 )
 
 // unsetEnv removes an environment variable for the duration of a test.

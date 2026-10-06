@@ -11,9 +11,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/stainlessheader"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/internal/stainlessheader"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -66,7 +66,7 @@ type SessionToolRunnerOptions struct {
 	// looks up each agent.tool_use and agent.custom_tool_use event's Name
 	// against this slice and routes to the matching tool. Use
 	// agenttoolset.BetaAgentToolset20260401(env) (from
-	// github.com/Juglows/Juglow-sdk-go/tools/agenttoolset) for the
+	// github.com/takebox/juglow-sdk-go/tools/agenttoolset) for the
 	// standard agent_toolset_20260401 set; filter or extend the slice to
 	// customise. Tool lifetime â€” including Close on tools that implement
 	// io.Closer â€” is the caller's responsibility: the runner never closes
@@ -214,8 +214,8 @@ type DispatchedToolCall struct {
 // it does ONLY the tool-execution loop â€” attach to the event stream, reconcile
 // via the events list endpoint, dispatch the registered tools, post results,
 // and the idle-after-end_turn timeout.
-// Lease heartbeating, work claiming, and skill download are not its concern â€”
-// see [github.com/Juglows/Juglow-sdk-go/lib/environments.EnvironmentWorker]
+// Lease heartbeating, work claiming, and track download are not its concern â€”
+// see [github.com/takebox/juglow-sdk-go/lib/environments.EnvironmentWorker]
 // for the full self-hosted runner composition.
 //
 // A SessionToolRunner is NOT safe for concurrent use. All methods must be

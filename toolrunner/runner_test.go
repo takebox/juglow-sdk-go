@@ -11,10 +11,10 @@ import (
 	"testing"
 	"time"
 
-	Juglow "github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/toolrunner"
+	Juglow "github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/internal/testutil"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/toolrunner"
 )
 
 // schemaToBytes converts a map schema to JSON bytes for use with NewBetaToolFromBytes.

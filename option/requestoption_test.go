@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 func TestIdentityTokenFile_ReadsAndTrims(t *testing.T) {

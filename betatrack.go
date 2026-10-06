@@ -13,14 +13,14 @@ import (
 	"net/url"
 	"slices"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apiform"
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
-	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/internal/apiform"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/internal/apiquery"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/pagination"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
 )
 
 // BetaSkillService contains methods and other services that help with interacting
@@ -44,7 +44,7 @@ func NewBetaSkillService(opts ...option.RequestOption) (r BetaSkillService) {
 	return
 }
 
-// Create Skill
+// Create Track
 func (r *BetaSkillService) New(ctx context.Context, params BetaSkillNewParams, opts ...option.RequestOption) (res *BetaSkillNewResponse, err error) {
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
@@ -56,7 +56,7 @@ func (r *BetaSkillService) New(ctx context.Context, params BetaSkillNewParams, o
 	return res, err
 }
 
-// Get Skill
+// Get Track
 func (r *BetaSkillService) Get(ctx context.Context, skillID string, query BetaSkillGetParams, opts ...option.RequestOption) (res *BetaSkillGetResponse, err error) {
 	for _, v := range query.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
@@ -64,7 +64,7 @@ func (r *BetaSkillService) Get(ctx context.Context, skillID string, query BetaSk
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
 	if skillID == "" {
-		err = errors.New("missing required skill_id parameter")
+		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
 	path := fmt.Sprintf("v1/tracks/%s?beta=true", skillID)
@@ -98,7 +98,7 @@ func (r *BetaSkillService) ListAutoPaging(ctx context.Context, params BetaSkillL
 	return pagination.NewPageCursorAutoPager(r.List(ctx, params, opts...))
 }
 
-// Delete Skill
+// Delete Track
 func (r *BetaSkillService) Delete(ctx context.Context, skillID string, body BetaSkillDeleteParams, opts ...option.RequestOption) (res *BetaSkillDeleteResponse, err error) {
 	for _, v := range body.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
@@ -106,7 +106,7 @@ func (r *BetaSkillService) Delete(ctx context.Context, skillID string, body Beta
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
 	if skillID == "" {
-		err = errors.New("missing required skill_id parameter")
+		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
 	path := fmt.Sprintf("v1/tracks/%s?beta=true", skillID)
@@ -115,33 +115,33 @@ func (r *BetaSkillService) Delete(ctx context.Context, skillID string, body Beta
 }
 
 type BetaSkillNewResponse struct {
-	// Unique identifier for the skill.
+	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
 	ID string `json:"id" api:"required"`
-	// ISO 8601 timestamp of when the skill was created.
+	// ISO 8601 timestamp of when the track was created.
 	CreatedAt string `json:"created_at" api:"required"`
-	// Display title for the skill.
+	// Display title for the track.
 	//
 	// This is a human-readable label that is not included in the prompt sent to the
 	// model.
 	DisplayTitle string `json:"display_title" api:"required"`
-	// The latest version identifier for the skill.
+	// The latest version identifier for the track.
 	//
-	// This represents the most recent version of the skill that has been created.
+	// This represents the most recent version of the track that has been created.
 	LatestVersion string `json:"latest_version" api:"required"`
-	// Source of the skill.
+	// Source of the track.
 	//
 	// This may be one of the following values:
 	//
-	// - `"custom"`: the skill was created by a user
-	// - `"Juglow"`: the skill was created by Juglow
+	// - `"custom"`: the track was created by a user
+	// - `"Juglow"`: the track was created by Juglow
 	Source string `json:"source" api:"required"`
 	// Object type.
 	//
-	// For tracks, this is always `"skill"`.
+	// For tracks, this is always `"track"`.
 	Type string `json:"type" api:"required"`
-	// ISO 8601 timestamp of when the skill was last updated.
+	// ISO 8601 timestamp of when the track was last updated.
 	UpdatedAt string `json:"updated_at" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -164,33 +164,33 @@ func (r *BetaSkillNewResponse) UnmarshalJSON(data []byte) error {
 }
 
 type BetaSkillGetResponse struct {
-	// Unique identifier for the skill.
+	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
 	ID string `json:"id" api:"required"`
-	// ISO 8601 timestamp of when the skill was created.
+	// ISO 8601 timestamp of when the track was created.
 	CreatedAt string `json:"created_at" api:"required"`
-	// Display title for the skill.
+	// Display title for the track.
 	//
 	// This is a human-readable label that is not included in the prompt sent to the
 	// model.
 	DisplayTitle string `json:"display_title" api:"required"`
-	// The latest version identifier for the skill.
+	// The latest version identifier for the track.
 	//
-	// This represents the most recent version of the skill that has been created.
+	// This represents the most recent version of the track that has been created.
 	LatestVersion string `json:"latest_version" api:"required"`
-	// Source of the skill.
+	// Source of the track.
 	//
 	// This may be one of the following values:
 	//
-	// - `"custom"`: the skill was created by a user
-	// - `"Juglow"`: the skill was created by Juglow
+	// - `"custom"`: the track was created by a user
+	// - `"Juglow"`: the track was created by Juglow
 	Source string `json:"source" api:"required"`
 	// Object type.
 	//
-	// For tracks, this is always `"skill"`.
+	// For tracks, this is always `"track"`.
 	Type string `json:"type" api:"required"`
-	// ISO 8601 timestamp of when the skill was last updated.
+	// ISO 8601 timestamp of when the track was last updated.
 	UpdatedAt string `json:"updated_at" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -213,33 +213,33 @@ func (r *BetaSkillGetResponse) UnmarshalJSON(data []byte) error {
 }
 
 type BetaSkillListResponse struct {
-	// Unique identifier for the skill.
+	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
 	ID string `json:"id" api:"required"`
-	// ISO 8601 timestamp of when the skill was created.
+	// ISO 8601 timestamp of when the track was created.
 	CreatedAt string `json:"created_at" api:"required"`
-	// Display title for the skill.
+	// Display title for the track.
 	//
 	// This is a human-readable label that is not included in the prompt sent to the
 	// model.
 	DisplayTitle string `json:"display_title" api:"required"`
-	// The latest version identifier for the skill.
+	// The latest version identifier for the track.
 	//
-	// This represents the most recent version of the skill that has been created.
+	// This represents the most recent version of the track that has been created.
 	LatestVersion string `json:"latest_version" api:"required"`
-	// Source of the skill.
+	// Source of the track.
 	//
 	// This may be one of the following values:
 	//
-	// - `"custom"`: the skill was created by a user
-	// - `"Juglow"`: the skill was created by Juglow
+	// - `"custom"`: the track was created by a user
+	// - `"Juglow"`: the track was created by Juglow
 	Source string `json:"source" api:"required"`
 	// Object type.
 	//
-	// For tracks, this is always `"skill"`.
+	// For tracks, this is always `"track"`.
 	Type string `json:"type" api:"required"`
-	// ISO 8601 timestamp of when the skill was last updated.
+	// ISO 8601 timestamp of when the track was last updated.
 	UpdatedAt string `json:"updated_at" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -262,13 +262,13 @@ func (r *BetaSkillListResponse) UnmarshalJSON(data []byte) error {
 }
 
 type BetaSkillDeleteResponse struct {
-	// Unique identifier for the skill.
+	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
 	ID string `json:"id" api:"required"`
 	// Deleted object type.
 	//
-	// For tracks, this is always `"skill_deleted"`.
+	// For tracks, this is always `"track_deleted"`.
 	Type string `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -286,12 +286,12 @@ func (r *BetaSkillDeleteResponse) UnmarshalJSON(data []byte) error {
 }
 
 type BetaSkillNewParams struct {
-	// Files to upload for the skill.
+	// Files to upload for the track.
 	//
-	// All files must be in the same top-level directory and must include a SKILL.md
+	// All files must be in the same top-level directory and must include a TRACK.md
 	// file at the root of that directory.
 	Files []io.Reader `json:"files,omitzero" api:"required" format:"binary"`
-	// Display title for the skill.
+	// Display title for the track.
 	//
 	// This is a human-readable label that is not included in the prompt sent to the
 	// model.

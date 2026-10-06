@@ -5,7 +5,7 @@ import (
 	stdjson "encoding/json"
 	"reflect"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/encoding/json/shims"
+	"github.com/takebox/juglow-sdk-go/internal/encoding/json/shims"
 )
 
 type Option func(*encOpts)

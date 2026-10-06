@@ -6,12 +6,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	Juglow "github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	Juglow "github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 // SetupSkills must apply the request options it is given (the environment key,
-// for self-hosted callers) to its API calls. The session lookup and skill
+// for self-hosted callers) to its API calls. The session lookup and track
 // endpoints are environment-scoped: if the per-call options are dropped the
 // request falls back to the client's default credentials and fails. This
 // guards the regression where SetupSkills ignored its opts and tracks were

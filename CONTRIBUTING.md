@@ -45,7 +45,7 @@ To use a local version of this library from source in another project, edit the 
 directive. This can be done through the CLI with the following:
 
 ```sh
-$ go mod edit -replace github.com/Juglows/Juglow-sdk-go=/path/to/Juglow-sdk-go
+$ go mod edit -replace github.com/takebox/juglow-sdk-go=/path/to/Juglow-sdk-go
 ```
 
 ## Running tests

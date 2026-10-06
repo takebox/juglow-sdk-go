@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/aws"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/aws"
 )
 
 // Live integration tests for the AWS gateway client. Skipped unless Juglow_LIVE=1.

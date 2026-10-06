@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	Juglow "github.com/Juglows/Juglow-sdk-go"
+	Juglow "github.com/takebox/juglow-sdk-go"
 )
 
 // defaultMaxFileBytes is the read/edit size cap used when

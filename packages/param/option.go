@@ -3,7 +3,7 @@
 import (
 	"encoding/json"
 	"fmt"
-	shimjson "github.com/Juglows/Juglow-sdk-go/internal/encoding/json"
+	shimjson "github.com/takebox/juglow-sdk-go/internal/encoding/json"
 	"time"
 )
 

@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go/config"
+	"github.com/takebox/juglow-sdk-go/config"
 )
 
 // setupConfigDir creates a temp config dir with configs/<profile>.json written

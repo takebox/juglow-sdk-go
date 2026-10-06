@@ -3,9 +3,9 @@
 import (
 	"context"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/config"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/config"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 func main() {

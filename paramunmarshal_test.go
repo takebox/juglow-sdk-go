@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go"
 )
 
 func TestParamUnmarshalNullAnyFieldDecodesToNil(t *testing.T) {

@@ -14,9 +14,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/config"
-	"github.com/Juglows/Juglow-sdk-go/internal/auth"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/config"
+	"github.com/takebox/juglow-sdk-go/internal/auth"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
 	"github.com/tidwall/sjson"
 )
 
@@ -139,7 +139,7 @@ func WithFederationTokenProvider(provider IdentityTokenFunc, opts FederationOpti
 // which can be supplied to clients, services, and methods. You can read more about this functional
 // options pattern in our [README].
 //
-// [README]: https://pkg.go.dev/github.com/Juglows/Juglow-sdk-go#readme-requestoptions
+// [README]: https://pkg.go.dev/github.com/takebox/juglow-sdk-go#readme-requestoptions
 type RequestOption = requestconfig.RequestOption
 
 // WithBaseURL returns a RequestOption that sets the BaseURL for the client.

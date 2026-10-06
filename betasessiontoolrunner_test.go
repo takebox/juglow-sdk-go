@@ -15,8 +15,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 	"github.com/stretchr/testify/require"
 )
 

@@ -12,13 +12,13 @@ import (
 	"slices"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
-	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/internal/apiquery"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/pagination"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
 )
 
 // BetaDeploymentService contains methods and other services that help with
@@ -618,7 +618,7 @@ type BetaManagedAgentsDeploymentPausedReasonErrorUnion struct {
 	// "environment_not_found_error", "vault_not_found_error", "file_not_found_error",
 	// "session_resource_not_found_error", "workspace_archived_error",
 	// "organization_disabled_error", "memory_store_archived_error",
-	// "skill_not_found_error", "vault_archived_error", "unknown_error",
+	// "track_not_found_error", "vault_archived_error", "unknown_error",
 	// "self_hosted_resources_unsupported_error", "mcp_egress_blocked_error".
 	Type string `json:"type"`
 	JSON struct {
@@ -703,7 +703,7 @@ func (u BetaManagedAgentsDeploymentPausedReasonErrorUnion) AsAny() anyBetaManage
 		return u.AsOrganizationDisabledError()
 	case "memory_store_archived_error":
 		return u.AsMemoryStoreArchivedError()
-	case "skill_not_found_error":
+	case "track_not_found_error":
 		return u.AsSkillNotFoundError()
 	case "vault_archived_error":
 		return u.AsVaultArchivedError()
@@ -1697,9 +1697,9 @@ const (
 	BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorTypeSessionResourceNotFoundError BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType = "session_resource_not_found_error"
 )
 
-// A skill referenced by the deployment's agent no longer exists.
+// A track referenced by the deployment's agent no longer exists.
 type BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError struct {
-	// Any of "skill_not_found_error".
+	// Any of "track_not_found_error".
 	Type BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorType `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -1720,7 +1720,7 @@ func (r *BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError) UnmarshalJSO
 type BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorType string
 
 const (
-	BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorTypeSkillNotFoundError BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorType = "skill_not_found_error"
+	BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorTypeSkillNotFoundError BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorType = "track_not_found_error"
 )
 
 // An unrecognized error auto-paused the deployment. A fallback variant; matches a

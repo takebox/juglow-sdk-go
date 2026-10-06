@@ -2,7 +2,7 @@
 // Google Cloud â€” the first-party Juglow API served through the Google Cloud
 // gateway.
 //
-// This is distinct from the older [github.com/Juglows/Juglow-sdk-go/vertex]
+// This is distinct from the older [github.com/takebox/juglow-sdk-go/vertex]
 // package, which targets the :rawPredict publisher-model API (publisher
 // model IDs, messages only). This client speaks the full first-party Juglow
 // API: requests pass through the gateway unchanged â€” standard /v1/* paths,
@@ -16,8 +16,8 @@ import (
 
 	"golang.org/x/oauth2"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 // ClientConfig holds the configuration for creating a haijun Platform on Google Cloud client.

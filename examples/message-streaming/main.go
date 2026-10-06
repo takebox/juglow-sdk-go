@@ -3,7 +3,7 @@
 import (
 	"context"
 
-	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go"
 )
 
 func main() {

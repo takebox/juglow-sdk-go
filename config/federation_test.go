@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go/config"
+	"github.com/takebox/juglow-sdk-go/config"
 )
 
 func TestExchangeFederationAssertion_Success(t *testing.T) {

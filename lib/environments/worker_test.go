@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/option"
 	"github.com/stretchr/testify/require"
 )
 
@@ -76,7 +76,7 @@ const (
 // NOT leak the parent client's X-Api-Key. The third assertion is what closes
 // the regression window the original #854 review missed: a future change
 // that drops WithHeaderDel("X-Api-Key") from the worker side of the auth
-// recipe (heartbeat, force-stop, runner stream/list/send, skill-setup
+// recipe (heartbeat, force-stop, runner stream/list/send, track-setup
 // session lookup) flips this assertion immediately, just as the poller-side
 // assertion at poller_test.go:307-315 does for poll/ack/stop.
 func assertCustomHeaderEverywhere(t *testing.T, calls []recordedCall) {
@@ -140,7 +140,7 @@ func TestWorkPoller_ThreadsCustomRequestOptions(t *testing.T) {
 
 // TestEnvironmentWorker_ThreadsCustomRequestOptions covers the per-session
 // leg: a custom header supplied via EnvironmentWorkerOptions.RequestOptions
-// must reach the skill-setup session lookup, the lease heartbeat, the
+// must reach the track-setup session lookup, the lease heartbeat, the
 // SessionToolRunner's stream/list, and the force-stop on exit.
 func TestEnvironmentWorker_ThreadsCustomRequestOptions(t *testing.T) {
 	server := newFakeWorkServer(t)
@@ -216,7 +216,7 @@ func TestEnvironmentWorker_ThreadsCustomRequestOptions(t *testing.T) {
 	// Sanity-check that the calls we expect to carry the header actually
 	// happened â€” otherwise the assertion above could pass vacuously.
 	want := map[string]bool{
-		"sessions/sesn_test":               false, // skill-setup session lookup
+		"sessions/sesn_test":               false, // track-setup session lookup
 		"work/work_1/heartbeat":            false, // lease heartbeat
 		"sessions/sesn_test/events/stream": false, // runner stream
 		"work/work_1/stop":                 false, // force-stop on exit
@@ -238,7 +238,7 @@ func TestEnvironmentWorker_ThreadsCustomRequestOptions(t *testing.T) {
 // lookup completes. The poller acks the item when it
 // yields, so any gap between ack and the first heartbeat is a window where
 // the control plane can reclaim the lease â€” and SetupSkills (a session
-// lookup plus a per-skill download/extract) can take longer than the lease
+// lookup plus a per-track download/extract) can take longer than the lease
 // TTL on a slow network or a large bundle.
 //
 // The test enforces this by making HandleSessionGet block until at least
@@ -262,7 +262,7 @@ func TestEnvironmentWorker_HeartbeatStartsBeforeSkillSetup(t *testing.T) {
 	}
 	server.HandleSessionGet = func(w http.ResponseWriter, r *http.Request) {
 		// Block the session-get until a heartbeat has been observed. This is
-		// what proves the heartbeat starts BEFORE skill setup finishes â€” if
+		// what proves the heartbeat starts BEFORE track setup finishes â€” if
 		// it didn't, this handler would block forever (the heartbeat
 		// goroutine never starts) and the outer context would time out.
 		select {

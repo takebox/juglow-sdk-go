@@ -42,11 +42,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/lib/environments"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/tools/agenttoolset"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/lib/environments"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/tools/agenttoolset"
 )
 
 // currentTimeTool is a custom Juglow.BetaTool that returns the local time.
@@ -142,11 +142,11 @@ func main() {
 	//    Cleanup removes them again.
 	env := &agenttoolset.AgentToolContext{Workdir: workdir()}
 	if err := env.SetupSkills(ctx, client, session.ID); err != nil {
-		logger.Warn("skill setup failed", slog.Any("error", err))
+		logger.Warn("track setup failed", slog.Any("error", err))
 	}
 	defer func() {
 		if err := env.Cleanup(); err != nil {
-			logger.Warn("skill cleanup failed", slog.Any("error", err))
+			logger.Warn("track cleanup failed", slog.Any("error", err))
 		}
 	}()
 
@@ -255,12 +255,12 @@ func observeAsSelfHostedWorker(ctx context.Context, client Juglow.Client, logger
 		log := logger.With(slog.String("work_id", work.ID), slog.String("session_id", sessionID))
 		log.Info("claimed work")
 
-		// Per-session agent tool context + tracks. The session lookup and skill
+		// Per-session agent tool context + tracks. The session lookup and track
 		// download are environment-scoped, so they need the environment key
 		// (envKeyOpts) just like the heartbeat and the runner below.
 		env := &agenttoolset.AgentToolContext{Workdir: workdir()}
 		if err := env.SetupSkills(ctx, client, sessionID, envKeyOpts...); err != nil {
-			log.Warn("skill setup failed", slog.Any("error", err))
+			log.Warn("track setup failed", slog.Any("error", err))
 		}
 		tools := append(agenttoolset.BetaAgentToolset20260401(env), currentTimeTool{})
 
@@ -296,7 +296,7 @@ func observeAsSelfHostedWorker(ctx context.Context, client Juglow.Client, logger
 
 		agenttoolset.CloseAll(tools)
 		if err := env.Cleanup(); err != nil {
-			log.Warn("skill cleanup failed", slog.Any("error", err))
+			log.Warn("track cleanup failed", slog.Any("error", err))
 		}
 
 		// No explicit work.Stop here: the SessionToolRunner does not manage the

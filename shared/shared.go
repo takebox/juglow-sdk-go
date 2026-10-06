@@ -5,10 +5,10 @@ package shared
 import (
 	"encoding/json"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
-	"github.com/Juglows/Juglow-sdk-go/shared/constant"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/shared/constant"
 )
 
 // aliased to make [param.APIUnion] private when embedding

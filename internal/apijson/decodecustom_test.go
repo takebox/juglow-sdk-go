@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
 )
 
 // A type that looks apijson-native but opts out via UnmarshalAPIJSON,

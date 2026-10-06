@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apierror"
-	"github.com/Juglows/Juglow-sdk-go/packages/ssestream"
-	"github.com/Juglows/Juglow-sdk-go/shared"
+	"github.com/takebox/juglow-sdk-go/internal/apierror"
+	"github.com/takebox/juglow-sdk-go/packages/ssestream"
+	"github.com/takebox/juglow-sdk-go/shared"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

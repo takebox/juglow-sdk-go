@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/bedrock"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/bedrock"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 // loggingMiddleware logs each request and response. Because it is registered

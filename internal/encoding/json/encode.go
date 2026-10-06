@@ -19,8 +19,8 @@ import (
 	"encoding"
 	"encoding/base64"
 	"fmt"
-	"github.com/Juglows/Juglow-sdk-go/internal/encoding/json/sentinel"
-	"github.com/Juglows/Juglow-sdk-go/internal/encoding/json/shims"
+	"github.com/takebox/juglow-sdk-go/internal/encoding/json/sentinel"
+	"github.com/takebox/juglow-sdk-go/internal/encoding/json/shims"
 	"math"
 	"reflect"
 	"slices"
@@ -385,8 +385,7 @@ func typeEncoder(t reflect.Type) encoderFunc {
 	// func is only used for recursive types.
 	var (
 		wg sync.WaitGroup
-		f  encoderFunc
-	)
+		f  encoderFunc )
 	wg.Add(1)
 	fi, loaded := encoderCache.LoadOrStore(t, encoderFunc(func(e *encodeState, v reflect.Value, opts encOpts) {
 		wg.Wait()
@@ -817,8 +816,7 @@ func (me mapEncoder) encode(e *encodeState, v reflect.Value, opts encOpts) {
 	var (
 		sv  = make([]reflectWithString, v.Len())
 		mi  = v.MapRange()
-		err error
-	)
+		err error )
 	for i := 0; mi.Next(); i++ {
 		if sv[i].ks, err = resolveKeyName(mi.Key()); err != nil {
 			e.error(fmt.Errorf("json: encoding error for type %q: %q", v.Type().String(), err.Error()))

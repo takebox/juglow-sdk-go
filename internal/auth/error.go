@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/Juglows/Juglow-sdk-go/config"
+	"github.com/takebox/juglow-sdk-go/config"
 )
 
 // ErrNoCredentials is the sentinel for the case where the default credential

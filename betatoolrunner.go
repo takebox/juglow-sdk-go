@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"iter"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/stainlessheader"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/internal/stainlessheader"
+	"github.com/takebox/juglow-sdk-go/option"
 	"golang.org/x/sync/errgroup"
 )
 

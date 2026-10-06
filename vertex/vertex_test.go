@@ -15,9 +15,9 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	sdkoption "github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	sdkoption "github.com/takebox/juglow-sdk-go/option"
 )
 
 func TestBaseURLForRegion(t *testing.T) {

@@ -4,7 +4,7 @@
 // same file, alias one of them:
 //
 //	import (
-//	    Juglowaws "github.com/Juglows/Juglow-sdk-go/aws"
+//	    Juglowaws "github.com/takebox/juglow-sdk-go/aws"
 //	    awssdk "github.com/aws/aws-sdk-go-v2/aws"
 //	)
 package aws
@@ -13,9 +13,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/internal/awsauth"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/internal/awsauth"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 const defaultServiceName = "aws-external-Juglow"

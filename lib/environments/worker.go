@@ -9,11 +9,11 @@ import (
 	"os"
 	"time"
 
-	Juglow "github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/internal/stainlessheader"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/tools/agenttoolset"
+	Juglow "github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/internal/stainlessheader"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/tools/agenttoolset"
 )
 
 const (
@@ -74,13 +74,13 @@ type EnvironmentWorkerOptions struct {
 	ToolsFunc func(env *agenttoolset.AgentToolContext) []Juglow.BetaTool
 
 	// MaxIdle is forwarded to the per-session
-	// [github.com/Juglows/Juglow-sdk-go.SessionToolRunner].
+	// [github.com/takebox/juglow-sdk-go.SessionToolRunner].
 	MaxIdle *time.Duration
 
 	// RequestOptions are applied to every request the worker issues, on top
 	// of the environment-key auth and x-stainless-helper telemetry it adds
 	// itself: the [WorkPoller]'s Poll/Ack/Stop, the lease heartbeat and
-	// force-stop, the per-session skill download, and the SessionToolRunner's
+	// force-stop, the per-session track download, and the SessionToolRunner's
 	// event stream/list/send. Use it for a proxy/custom header or a base-URL
 	// override that must reach the whole self-hosted runner. These options are
 	// applied first, so the worker's own environment-key auth and helper
@@ -93,7 +93,7 @@ type EnvironmentWorkerOptions struct {
 
 // EnvironmentWorker is the self-hosted environment runner, composed from the
 // control-plane [WorkPoller] and the per-session
-// [github.com/Juglows/Juglow-sdk-go.SessionToolRunner].
+// [github.com/takebox/juglow-sdk-go.SessionToolRunner].
 //
 // For each claimed `session` work item it builds the per-session
 // [agenttoolset.AgentToolContext], downloads the session agent's tracks
@@ -262,9 +262,9 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *Juglow.BetaSel
 	log = log.With(slog.String("work_id", work.ID), slog.String("session_id", sessionID))
 
 	// The environment key authorizes the per-session calls: the lease
-	// heartbeat and the force-stop here, the skill download below, plus the
+	// heartbeat and the force-stop here, the track download below, plus the
 	// SessionToolRunner's stream/list/send. The x-stainless-helper header
-	// attributes the heartbeat/force-stop/skill traffic to this helper.
+	// attributes the heartbeat/force-stop/track traffic to this helper.
 	// helperReqOpts also clears the parent client's default X-Api-Key so it
 	// doesn't ride alongside the bearer credential. Caller-supplied
 	// RequestOptions are applied first so a proxy/custom header reaches every
@@ -284,16 +284,16 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *Juglow.BetaSel
 
 	// Per-session context: cancelled when the outer ctx is cancelled (it is a
 	// child), when the session runner finishes, or when the lease heartbeat
-	// says to stop. Constructed BEFORE skill setup so the heartbeat goroutine
+	// says to stop. Constructed BEFORE track setup so the heartbeat goroutine
 	// below can use it.
 	sessCtx, sessCancel := context.WithCancel(ctx)
 	defer sessCancel()
 
-	// Start the lease heartbeat BEFORE skill setup. The poller already acked
+	// Start the lease heartbeat BEFORE track setup. The poller already acked
 	// this work item when it yielded â€” every second between the ack and the
 	// first heartbeat is a window during which the control plane sees no
 	// liveness signal and may reclaim the lease. SetupSkills below can be
-	// slow (it issues a session lookup plus a per-skill download/extract that
+	// slow (it issues a session lookup plus a per-track download/extract that
 	// can dwarf the lease TTL on a slow network or a large bundle), so
 	// starting the heartbeat afterwards was a race that let a second worker
 	// pick up the same session.
@@ -308,28 +308,27 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *Juglow.BetaSel
 		UnrestrictedPaths: w.opts.UnrestrictedPaths,
 		MaxFileBytes:      w.opts.MaxFileBytes,
 	}
-	// The session lookup and skill download are environment-scoped, so they
+	// The session lookup and track download are environment-scoped, so they
 	// need the environment key like the heartbeat/stop and the runner do â€”
 	// without it they fall back to the client's default credentials and fail.
 	// Use sessCtx so a heartbeat-driven lease loss (the heartbeat goroutine
 	// cancels sessCtx on a permanent failure / stopping state / 412 reclaim)
-	// also aborts the skill download instead of letting it run to completion
+	// also aborts the track download instead of letting it run to completion
 	// on a session we no longer own.
 	if err := env.SetupSkills(sessCtx, w.client, sessionID, hbStopOpts...); err != nil {
-		log.Warn("skill setup failed", slog.Any("error", err))
+		log.Warn("track setup failed", slog.Any("error", err))
 	}
 	// Clean up the tracks this work item downloaded so one session's tracks
 	// don't leak into the next item served by the same worker.
 	defer func() {
 		if err := env.Cleanup(); err != nil {
-			log.Warn("skill cleanup failed", slog.Any("error", err))
+			log.Warn("track cleanup failed", slog.Any("error", err))
 		}
 	}()
 
 	var (
 		tools      []Juglow.BetaTool
-		closeTools bool
-	)
+		closeTools bool )
 	switch {
 	case w.opts.ToolsFunc != nil:
 		tools = w.opts.ToolsFunc(env)

@@ -2,8 +2,8 @@
 
 import (
 	"encoding/json"
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
 	"testing"
 )
 

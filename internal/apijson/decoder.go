@@ -13,7 +13,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 
 	"github.com/tidwall/gjson"
 )
@@ -107,8 +107,7 @@ func (d *decoderBuilder) typeDecoder(t reflect.Type) decoderFunc {
 	// func is only used for recursive types.
 	var (
 		wg sync.WaitGroup
-		f  decoderFunc
-	)
+		f  decoderFunc )
 	wg.Add(1)
 	fi, loaded := decoders.LoadOrStore(entry, decoderFunc(func(node gjson.Result, v reflect.Value, state *decoderState) error {
 		wg.Wait()
@@ -465,8 +464,7 @@ func (d *decoderBuilder) newStructTypeDecoder(t reflect.Type) decoderFunc {
 			var (
 				dest reflect.Value
 				fn   decoderFunc
-				meta Field
-			)
+				meta Field )
 			if explicit {
 				fn = df.fn
 				dest = value.FieldByIndex(df.idx)

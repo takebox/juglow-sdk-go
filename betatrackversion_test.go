@@ -12,9 +12,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/internal/testutil"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 func TestBetaSkillVersionNewWithOptionalParams(t *testing.T) {
@@ -31,7 +31,7 @@ func TestBetaSkillVersionNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Beta.tracks.Versions.New(
 		context.TODO(),
-		"skill_id",
+		"track_id",
 		Juglow.BetaSkillVersionNewParams{
 			Files: []io.Reader{io.Reader(bytes.NewBuffer([]byte("Example data")))},
 			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
@@ -62,7 +62,7 @@ func TestBetaSkillVersionGetWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"version",
 		Juglow.BetaSkillVersionGetParams{
-			SkillID: "skill_id",
+			SkillID: "track_id",
 			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
@@ -89,7 +89,7 @@ func TestBetaSkillVersionListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Beta.tracks.Versions.List(
 		context.TODO(),
-		"skill_id",
+		"track_id",
 		Juglow.BetaSkillVersionListParams{
 			Limit: Juglow.Int(0),
 			Page:  Juglow.String("page"),
@@ -121,7 +121,7 @@ func TestBetaSkillVersionDeleteWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"version",
 		Juglow.BetaSkillVersionDeleteParams{
-			SkillID: "skill_id",
+			SkillID: "track_id",
 			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
@@ -149,7 +149,7 @@ func TestBetaSkillVersionDownloadWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"version",
 		Juglow.BetaSkillVersionDownloadParams{
-			SkillID: "skill_id",
+			SkillID: "track_id",
 			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)

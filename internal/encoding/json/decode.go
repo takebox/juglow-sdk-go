@@ -14,7 +14,7 @@ import (
 	"encoding"
 	"encoding/base64"
 	"fmt"
-	"github.com/Juglows/Juglow-sdk-go/internal/encoding/json/shims"
+	"github.com/takebox/juglow-sdk-go/internal/encoding/json/shims"
 	"reflect"
 	"strconv"
 	"strings"

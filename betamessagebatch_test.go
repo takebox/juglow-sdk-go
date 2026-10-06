@@ -8,10 +8,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/shared/constant"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/internal/testutil"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/shared/constant"
 )
 
 func TestBetaMessageBatchNewWithOptionalParams(t *testing.T) {

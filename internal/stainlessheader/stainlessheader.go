@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
 )
 
 // Header is the helper-telemetry header key. Always this lowercase form;

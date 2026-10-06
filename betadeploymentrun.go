@@ -12,13 +12,13 @@ import (
 	"slices"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
-	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/internal/apiquery"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/pagination"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
 )
 
 // BetaDeploymentRunService contains methods and other services that help with
@@ -177,7 +177,7 @@ type BetaManagedAgentsDeploymentRunErrorUnion struct {
 	Message string `json:"message"`
 	// Any of "environment_archived_error", "agent_archived_error",
 	// "environment_not_found_error", "vault_not_found_error", "vault_archived_error",
-	// "file_not_found_error", "memory_store_archived_error", "skill_not_found_error",
+	// "file_not_found_error", "memory_store_archived_error", "track_not_found_error",
 	// "session_resource_not_found_error", "workspace_archived_error",
 	// "organization_disabled_error", "session_rate_limited_error",
 	// "session_creation_rejected_error", "unknown_error",
@@ -255,7 +255,7 @@ func (u BetaManagedAgentsDeploymentRunErrorUnion) AsAny() anyBetaManagedAgentsDe
 		return u.AsFileNotFoundError()
 	case "memory_store_archived_error":
 		return u.AsMemoryStoreArchivedError()
-	case "skill_not_found_error":
+	case "track_not_found_error":
 		return u.AsSkillNotFoundError()
 	case "session_resource_not_found_error":
 		return u.AsSessionResourceNotFoundError()
@@ -695,11 +695,11 @@ const (
 	BetaManagedAgentsSessionResourceNotFoundRunErrorTypeSessionResourceNotFoundError BetaManagedAgentsSessionResourceNotFoundRunErrorType = "session_resource_not_found_error"
 )
 
-// A skill referenced by the deployment's agent no longer exists.
+// A track referenced by the deployment's agent no longer exists.
 type BetaManagedAgentsSkillNotFoundRunError struct {
 	// Human-readable error description.
 	Message string `json:"message" api:"required"`
-	// Any of "skill_not_found_error".
+	// Any of "track_not_found_error".
 	Type BetaManagedAgentsSkillNotFoundRunErrorType `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -719,7 +719,7 @@ func (r *BetaManagedAgentsSkillNotFoundRunError) UnmarshalJSON(data []byte) erro
 type BetaManagedAgentsSkillNotFoundRunErrorType string
 
 const (
-	BetaManagedAgentsSkillNotFoundRunErrorTypeSkillNotFoundError BetaManagedAgentsSkillNotFoundRunErrorType = "skill_not_found_error"
+	BetaManagedAgentsSkillNotFoundRunErrorTypeSkillNotFoundError BetaManagedAgentsSkillNotFoundRunErrorType = "track_not_found_error"
 )
 
 // BetaManagedAgentsTriggerContextUnion contains all possible properties and values

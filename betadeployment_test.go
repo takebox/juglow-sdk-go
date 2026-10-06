@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/internal/testutil"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 func TestBetaDeploymentNewWithOptionalParams(t *testing.T) {

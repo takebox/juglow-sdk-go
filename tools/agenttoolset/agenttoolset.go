@@ -1,6 +1,6 @@
 ﻿// Package agenttoolset provides Node-equivalent local executors for the
 // `agent_toolset_20260401` tool set â€” `bash`, `read`, `write`, `edit`, `glob`,
-// `grep` â€” plus the workdir/tracks [AgentToolContext] and the skill-download helper
+// `grep` â€” plus the workdir/tracks [AgentToolContext] and the track-download helper
 // ([AgentToolContext.SetupSkills]).
 //
 // This mirrors the SDK's other first-class tool modules: it is the explicit
@@ -13,7 +13,7 @@
 // Messages API, or client.Beta.Sessions.Events.NewToolRunner(â€¦) for a
 // managed-agents session:
 //
-//	import "github.com/Juglows/Juglow-sdk-go/tools/agenttoolset"
+//	import "github.com/takebox/juglow-sdk-go/tools/agenttoolset"
 //
 //	env := &agenttoolset.AgentToolContext{Workdir: "/work"}
 //	tools := agenttoolset.BetaAgentToolset20260401(env)
@@ -45,7 +45,7 @@ import (
 	"strings"
 	"syscall"
 
-	Juglow "github.com/Juglows/Juglow-sdk-go"
+	Juglow "github.com/takebox/juglow-sdk-go"
 )
 
 // AgentToolContext carries per-session configuration the agent_toolset_20260401

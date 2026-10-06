@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go"
 )
 
 func unmarshalBetaContentBlockParam(t *testing.T, jsonData string) Juglow.BetaContentBlockParamUnion {

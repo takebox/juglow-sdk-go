@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	shimjson "github.com/Juglows/Juglow-sdk-go/internal/encoding/json"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	shimjson "github.com/takebox/juglow-sdk-go/internal/encoding/json"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 )
 
 type Struct struct {

@@ -2,18 +2,18 @@
 version: 1
 interactions:
 - request:
-    body: '{"max_tokens":512,"messages":[{"content":[{"text":"Weather in SF?","type":"text"}],"role":"user"}],"model":"claude-3-7-sonnet-latest","tools":[{"input_schema":{"properties":{"city":{"type":"string"},"units":{"enum":["celsius","fahrenheit"],"type":"string"}},"required":["city"],"type":"object"},"name":"get_weather","description":"Get
+    body: '{"max_tokens":512,"messages":[{"content":[{"text":"Weather in SF?","type":"text"}],"role":"user"}],"model":"haijun-3-7-sonnet-latest","tools":[{"input_schema":{"properties":{"city":{"type":"string"},"units":{"enum":["celsius","fahrenheit"],"type":"string"}},"required":["city"],"type":"object"},"name":"get_weather","description":"Get
       weather"}],"stream":true}'
     form: {}
     headers:
       Accept:
       - application/json
-      Anthropic-Version:
+      Takebox AI-Version:
       - "2023-06-01"
       Content-Type:
       - application/json
       User-Agent:
-      - Anthropic/Go 1.16.0
+      - Takebox AI/Go 1.16.0
       X-Api-Key:
       - fake-api-key-for-testing-only
       X-Stainless-Arch:
@@ -30,12 +30,12 @@ interactions:
       - go
       X-Stainless-Runtime-Version:
       - go1.24.5
-    url: https://api.anthropic.com/v1/messages?beta=true
+    url: https://platform.juglow.my.id/v1/messages?beta=true
     method: POST
   response:
     body: |+
       event: message_start
-      data: {"type":"message_start","message":{"model":"claude-3-7-sonnet-20250219","id":"msg_01P7nF1bmxyzFZjF8zwbUDBM","type":"message","role":"assistant","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":394,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":1,"service_tier":"standard"}}       }
+      data: {"type":"message_start","message":{"model":"haijun-3-7-sonnet-20250219","id":"msg_01P7nF1bmxyzFZjF8zwbUDBM","type":"message","role":"assistant","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":394,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":1,"service_tier":"standard"}}       }
 
       event: content_block_start
       data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""} }
@@ -110,31 +110,31 @@ interactions:
       data: {"type":"message_stop"       }
 
     headers:
-      Anthropic-Organization-Id:
+      Takebox AI-Organization-Id:
       - 1577a8a6-174a-4705-916c-6b22ae7a49e6
-      Anthropic-Ratelimit-Input-Tokens-Limit:
+      Takebox AI-Ratelimit-Input-Tokens-Limit:
       - "200000"
-      Anthropic-Ratelimit-Input-Tokens-Remaining:
+      Takebox AI-Ratelimit-Input-Tokens-Remaining:
       - "199000"
-      Anthropic-Ratelimit-Input-Tokens-Reset:
+      Takebox AI-Ratelimit-Input-Tokens-Reset:
       - "2025-10-30T16:17:36Z"
-      Anthropic-Ratelimit-Output-Tokens-Limit:
+      Takebox AI-Ratelimit-Output-Tokens-Limit:
       - "80000"
-      Anthropic-Ratelimit-Output-Tokens-Remaining:
+      Takebox AI-Ratelimit-Output-Tokens-Remaining:
       - "80000"
-      Anthropic-Ratelimit-Output-Tokens-Reset:
+      Takebox AI-Ratelimit-Output-Tokens-Reset:
       - "2025-10-30T16:17:36Z"
-      Anthropic-Ratelimit-Requests-Limit:
+      Takebox AI-Ratelimit-Requests-Limit:
       - "4000"
-      Anthropic-Ratelimit-Requests-Remaining:
+      Takebox AI-Ratelimit-Requests-Remaining:
       - "3999"
-      Anthropic-Ratelimit-Requests-Reset:
+      Takebox AI-Ratelimit-Requests-Reset:
       - "2025-10-30T16:17:36Z"
-      Anthropic-Ratelimit-Tokens-Limit:
+      Takebox AI-Ratelimit-Tokens-Limit:
       - "280000"
-      Anthropic-Ratelimit-Tokens-Remaining:
+      Takebox AI-Ratelimit-Tokens-Remaining:
       - "279000"
-      Anthropic-Ratelimit-Tokens-Reset:
+      Takebox AI-Ratelimit-Tokens-Reset:
       - "2025-10-30T16:17:36Z"
       Cache-Control:
       - no-cache

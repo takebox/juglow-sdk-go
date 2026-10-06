@@ -13,14 +13,14 @@ import (
 	"net/url"
 	"slices"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apiform"
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
-	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/internal/apiform"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/internal/apiquery"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/pagination"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
 )
 
 // BetaSkillVersionService contains methods and other services that help with
@@ -42,7 +42,7 @@ func NewBetaSkillVersionService(opts ...option.RequestOption) (r BetaSkillVersio
 	return
 }
 
-// Create Skill Version
+// Create Track Version
 func (r *BetaSkillVersionService) New(ctx context.Context, skillID string, params BetaSkillVersionNewParams, opts ...option.RequestOption) (res *BetaSkillVersionNewResponse, err error) {
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
@@ -50,7 +50,7 @@ func (r *BetaSkillVersionService) New(ctx context.Context, skillID string, param
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
 	if skillID == "" {
-		err = errors.New("missing required skill_id parameter")
+		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
 	path := fmt.Sprintf("v1/tracks/%s/versions?beta=true", skillID)
@@ -58,7 +58,7 @@ func (r *BetaSkillVersionService) New(ctx context.Context, skillID string, param
 	return res, err
 }
 
-// Get Skill Version
+// Get Track Version
 func (r *BetaSkillVersionService) Get(ctx context.Context, version string, params BetaSkillVersionGetParams, opts ...option.RequestOption) (res *BetaSkillVersionGetResponse, err error) {
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
@@ -66,7 +66,7 @@ func (r *BetaSkillVersionService) Get(ctx context.Context, version string, param
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
 	if params.SkillID == "" {
-		err = errors.New("missing required skill_id parameter")
+		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
 	if version == "" {
@@ -78,7 +78,7 @@ func (r *BetaSkillVersionService) Get(ctx context.Context, version string, param
 	return res, err
 }
 
-// List Skill Versions
+// List Track Versions
 func (r *BetaSkillVersionService) List(ctx context.Context, skillID string, params BetaSkillVersionListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaSkillVersionListResponse], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
@@ -87,7 +87,7 @@ func (r *BetaSkillVersionService) List(ctx context.Context, skillID string, para
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02"), option.WithResponseInto(&raw)}, opts...)
 	if skillID == "" {
-		err = errors.New("missing required skill_id parameter")
+		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
 	path := fmt.Sprintf("v1/tracks/%s/versions?beta=true", skillID)
@@ -103,12 +103,12 @@ func (r *BetaSkillVersionService) List(ctx context.Context, skillID string, para
 	return res, nil
 }
 
-// List Skill Versions
+// List Track Versions
 func (r *BetaSkillVersionService) ListAutoPaging(ctx context.Context, skillID string, params BetaSkillVersionListParams, opts ...option.RequestOption) *pagination.PageCursorAutoPager[BetaSkillVersionListResponse] {
 	return pagination.NewPageCursorAutoPager(r.List(ctx, skillID, params, opts...))
 }
 
-// Delete Skill Version
+// Delete Track Version
 func (r *BetaSkillVersionService) Delete(ctx context.Context, version string, params BetaSkillVersionDeleteParams, opts ...option.RequestOption) (res *BetaSkillVersionDeleteResponse, err error) {
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
@@ -116,7 +116,7 @@ func (r *BetaSkillVersionService) Delete(ctx context.Context, version string, pa
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
 	if params.SkillID == "" {
-		err = errors.New("missing required skill_id parameter")
+		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
 	if version == "" {
@@ -128,7 +128,7 @@ func (r *BetaSkillVersionService) Delete(ctx context.Context, version string, pa
 	return res, err
 }
 
-// Download a skill version's content as a zip archive.
+// Download a track version's content as a zip archive.
 func (r *BetaSkillVersionService) Download(ctx context.Context, version string, params BetaSkillVersionDownloadParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
@@ -136,7 +136,7 @@ func (r *BetaSkillVersionService) Download(ctx context.Context, version string, 
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02"), option.WithHeader("Accept", "application/binary")}, opts...)
 	if params.SkillID == "" {
-		err = errors.New("missing required skill_id parameter")
+		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
 	if version == "" {
@@ -149,31 +149,31 @@ func (r *BetaSkillVersionService) Download(ctx context.Context, version string, 
 }
 
 type BetaSkillVersionNewResponse struct {
-	// Unique identifier for the skill version.
+	// Unique identifier for the track version.
 	//
 	// The format and length of IDs may change over time.
 	ID string `json:"id" api:"required"`
-	// ISO 8601 timestamp of when the skill version was created.
+	// ISO 8601 timestamp of when the track version was created.
 	CreatedAt string `json:"created_at" api:"required"`
-	// Description of the skill version.
+	// Description of the track version.
 	//
-	// This is extracted from the SKILL.md file in the skill upload.
+	// This is extracted from the TRACK.md file in the track upload.
 	Description string `json:"description" api:"required"`
-	// Directory name of the skill version.
+	// Directory name of the track version.
 	//
 	// This is the top-level directory name that was extracted from the uploaded files.
 	Directory string `json:"directory" api:"required"`
-	// Human-readable name of the skill version.
+	// Human-readable name of the track version.
 	//
-	// This is extracted from the SKILL.md file in the skill upload.
+	// This is extracted from the TRACK.md file in the track upload.
 	Name string `json:"name" api:"required"`
-	// Identifier for the skill that this version belongs to.
-	SkillID string `json:"skill_id" api:"required"`
+	// Identifier for the track that this version belongs to.
+	SkillID string `json:"track_id" api:"required"`
 	// Object type.
 	//
-	// For Skill Versions, this is always `"skill_version"`.
+	// For Track Versions, this is always `"track_version"`.
 	Type string `json:"type" api:"required"`
-	// Version identifier for the skill.
+	// Version identifier for the track.
 	//
 	// Each version is identified by a Unix epoch timestamp (e.g., "1759178010641129").
 	Version string `json:"version" api:"required"`
@@ -199,31 +199,31 @@ func (r *BetaSkillVersionNewResponse) UnmarshalJSON(data []byte) error {
 }
 
 type BetaSkillVersionGetResponse struct {
-	// Unique identifier for the skill version.
+	// Unique identifier for the track version.
 	//
 	// The format and length of IDs may change over time.
 	ID string `json:"id" api:"required"`
-	// ISO 8601 timestamp of when the skill version was created.
+	// ISO 8601 timestamp of when the track version was created.
 	CreatedAt string `json:"created_at" api:"required"`
-	// Description of the skill version.
+	// Description of the track version.
 	//
-	// This is extracted from the SKILL.md file in the skill upload.
+	// This is extracted from the TRACK.md file in the track upload.
 	Description string `json:"description" api:"required"`
-	// Directory name of the skill version.
+	// Directory name of the track version.
 	//
 	// This is the top-level directory name that was extracted from the uploaded files.
 	Directory string `json:"directory" api:"required"`
-	// Human-readable name of the skill version.
+	// Human-readable name of the track version.
 	//
-	// This is extracted from the SKILL.md file in the skill upload.
+	// This is extracted from the TRACK.md file in the track upload.
 	Name string `json:"name" api:"required"`
-	// Identifier for the skill that this version belongs to.
-	SkillID string `json:"skill_id" api:"required"`
+	// Identifier for the track that this version belongs to.
+	SkillID string `json:"track_id" api:"required"`
 	// Object type.
 	//
-	// For Skill Versions, this is always `"skill_version"`.
+	// For Track Versions, this is always `"track_version"`.
 	Type string `json:"type" api:"required"`
-	// Version identifier for the skill.
+	// Version identifier for the track.
 	//
 	// Each version is identified by a Unix epoch timestamp (e.g., "1759178010641129").
 	Version string `json:"version" api:"required"`
@@ -249,31 +249,31 @@ func (r *BetaSkillVersionGetResponse) UnmarshalJSON(data []byte) error {
 }
 
 type BetaSkillVersionListResponse struct {
-	// Unique identifier for the skill version.
+	// Unique identifier for the track version.
 	//
 	// The format and length of IDs may change over time.
 	ID string `json:"id" api:"required"`
-	// ISO 8601 timestamp of when the skill version was created.
+	// ISO 8601 timestamp of when the track version was created.
 	CreatedAt string `json:"created_at" api:"required"`
-	// Description of the skill version.
+	// Description of the track version.
 	//
-	// This is extracted from the SKILL.md file in the skill upload.
+	// This is extracted from the TRACK.md file in the track upload.
 	Description string `json:"description" api:"required"`
-	// Directory name of the skill version.
+	// Directory name of the track version.
 	//
 	// This is the top-level directory name that was extracted from the uploaded files.
 	Directory string `json:"directory" api:"required"`
-	// Human-readable name of the skill version.
+	// Human-readable name of the track version.
 	//
-	// This is extracted from the SKILL.md file in the skill upload.
+	// This is extracted from the TRACK.md file in the track upload.
 	Name string `json:"name" api:"required"`
-	// Identifier for the skill that this version belongs to.
-	SkillID string `json:"skill_id" api:"required"`
+	// Identifier for the track that this version belongs to.
+	SkillID string `json:"track_id" api:"required"`
 	// Object type.
 	//
-	// For Skill Versions, this is always `"skill_version"`.
+	// For Track Versions, this is always `"track_version"`.
 	Type string `json:"type" api:"required"`
-	// Version identifier for the skill.
+	// Version identifier for the track.
 	//
 	// Each version is identified by a Unix epoch timestamp (e.g., "1759178010641129").
 	Version string `json:"version" api:"required"`
@@ -299,13 +299,13 @@ func (r *BetaSkillVersionListResponse) UnmarshalJSON(data []byte) error {
 }
 
 type BetaSkillVersionDeleteResponse struct {
-	// Version identifier for the skill.
+	// Version identifier for the track.
 	//
 	// Each version is identified by a Unix epoch timestamp (e.g., "1759178010641129").
 	ID string `json:"id" api:"required"`
 	// Deleted object type.
 	//
-	// For Skill Versions, this is always `"skill_version_deleted"`.
+	// For Track Versions, this is always `"track_version_deleted"`.
 	Type string `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -323,9 +323,9 @@ func (r *BetaSkillVersionDeleteResponse) UnmarshalJSON(data []byte) error {
 }
 
 type BetaSkillVersionNewParams struct {
-	// Files to upload for the skill.
+	// Files to upload for the track.
 	//
-	// All files must be in the same top-level directory and must include a SKILL.md
+	// All files must be in the same top-level directory and must include a TRACK.md
 	// file at the root of that directory.
 	Files []io.Reader `json:"files,omitzero" api:"required" format:"binary"`
 	// Optional header to specify the beta version(s) you want to use.
@@ -352,10 +352,10 @@ func (r BetaSkillVersionNewParams) MarshalMultipart() (data []byte, contentType 
 }
 
 type BetaSkillVersionGetParams struct {
-	// Unique identifier for the skill.
+	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
-	SkillID string `path:"skill_id" api:"required" json:"-"`
+	SkillID string `path:"track_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
 	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
@@ -383,20 +383,20 @@ func (r BetaSkillVersionListParams) URLQuery() (v url.Values, err error) {
 }
 
 type BetaSkillVersionDeleteParams struct {
-	// Unique identifier for the skill.
+	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
-	SkillID string `path:"skill_id" api:"required" json:"-"`
+	SkillID string `path:"track_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
 	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaSkillVersionDownloadParams struct {
-	// Unique identifier for the skill.
+	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
-	SkillID string `path:"skill_id" api:"required" json:"-"`
+	SkillID string `path:"track_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
 	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj

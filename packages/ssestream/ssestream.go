@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apierror"
+	"github.com/takebox/juglow-sdk-go/internal/apierror"
 )
 
 type Decoder interface {

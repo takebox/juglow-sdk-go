@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go/config"
+	"github.com/takebox/juglow-sdk-go/config"
 )
 
 func TestNoCredentialsError_IsSentinel(t *testing.T) {

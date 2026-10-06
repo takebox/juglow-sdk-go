@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/googlecloud"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/googlecloud"
 )
 
 // haijun Platform on Google Cloud: the full first-party Juglow API served

@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 // messagesServer scripts POST /v1/messages: the first call returns a tool_use

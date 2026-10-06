@@ -3,18 +3,18 @@ version: 1
 interactions:
 - request:
     body: '{"max_tokens":512,"messages":[{"content":[{"text":"What''s the weather
-      in San Francisco, New York, and London? Check all three cities at once.","type":"text"}],"role":"user"}],"model":"claude-3-7-sonnet-latest","tools":[{"input_schema":{"properties":{"city":{"type":"string"},"units":{"enum":["celsius","fahrenheit"],"type":"string"}},"required":["city"],"type":"object"},"name":"get_weather","description":"Get
+      in San Francisco, New York, and London? Check all three cities at once.","type":"text"}],"role":"user"}],"model":"haijun-3-7-sonnet-latest","tools":[{"input_schema":{"properties":{"city":{"type":"string"},"units":{"enum":["celsius","fahrenheit"],"type":"string"}},"required":["city"],"type":"object"},"name":"get_weather","description":"Get
       weather for a city"}]}'
     form: {}
     headers:
       Accept:
       - application/json
-      Anthropic-Version:
+      Takebox AI-Version:
       - "2023-06-01"
       Content-Type:
       - application/json
       User-Agent:
-      - Anthropic/Go 1.19.0
+      - Takebox AI/Go 1.19.0
       X-Api-Key:
       - fake-api-key-for-testing-only
       X-Stainless-Arch:
@@ -33,39 +33,39 @@ interactions:
       - go1.25.5
       X-Stainless-Timeout:
       - "600"
-    url: https://api.anthropic.com/v1/messages?beta=true
+    url: https://platform.juglow.my.id/v1/messages?beta=true
     method: POST
   response:
-    body: '{"model":"claude-3-7-sonnet-20250219","id":"msg_01GhukHZbus69MS8zCp3tqTa","type":"message","role":"assistant","content":[{"type":"text","text":"I''d
+    body: '{"model":"haijun-3-7-sonnet-20250219","id":"msg_01GhukHZbus69MS8zCp3tqTa","type":"message","role":"assistant","content":[{"type":"text","text":"I''d
       be happy to check the weather for San Francisco, New York, and London for you.
       I''ll need to look up each city individually."},{"type":"tool_use","id":"toolu_019dfQh1VSo4ykF3MUFvGpMg","name":"get_weather","input":{"city":"San
       Francisco"}}],"stop_reason":"tool_use","stop_sequence":null,"usage":{"input_tokens":414,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":85,"service_tier":"standard"}}'
     headers:
-      Anthropic-Organization-Id:
+      Takebox AI-Organization-Id:
       - 4b663dca-f14e-490d-9965-801817fd453d
-      Anthropic-Ratelimit-Input-Tokens-Limit:
+      Takebox AI-Ratelimit-Input-Tokens-Limit:
       - "40000"
-      Anthropic-Ratelimit-Input-Tokens-Remaining:
+      Takebox AI-Ratelimit-Input-Tokens-Remaining:
       - "39000"
-      Anthropic-Ratelimit-Input-Tokens-Reset:
+      Takebox AI-Ratelimit-Input-Tokens-Reset:
       - "2026-01-23T07:42:01Z"
-      Anthropic-Ratelimit-Output-Tokens-Limit:
+      Takebox AI-Ratelimit-Output-Tokens-Limit:
       - "16000"
-      Anthropic-Ratelimit-Output-Tokens-Remaining:
+      Takebox AI-Ratelimit-Output-Tokens-Remaining:
       - "16000"
-      Anthropic-Ratelimit-Output-Tokens-Reset:
+      Takebox AI-Ratelimit-Output-Tokens-Reset:
       - "2026-01-23T07:42:02Z"
-      Anthropic-Ratelimit-Requests-Limit:
+      Takebox AI-Ratelimit-Requests-Limit:
       - "1000"
-      Anthropic-Ratelimit-Requests-Remaining:
+      Takebox AI-Ratelimit-Requests-Remaining:
       - "998"
-      Anthropic-Ratelimit-Requests-Reset:
+      Takebox AI-Ratelimit-Requests-Reset:
       - "2026-01-23T07:42:00Z"
-      Anthropic-Ratelimit-Tokens-Limit:
+      Takebox AI-Ratelimit-Tokens-Limit:
       - "56000"
-      Anthropic-Ratelimit-Tokens-Remaining:
+      Takebox AI-Ratelimit-Tokens-Remaining:
       - "55000"
-      Anthropic-Ratelimit-Tokens-Reset:
+      Takebox AI-Ratelimit-Tokens-Reset:
       - "2026-01-23T07:42:01Z"
       Cf-Cache-Status:
       - DYNAMIC
@@ -94,18 +94,18 @@ interactions:
       be happy to check the weather for San Francisco, New York, and London for you.
       I''ll need to look up each city individually.","type":"text"},{"id":"toolu_019dfQh1VSo4ykF3MUFvGpMg","input":{"city":"San
       Francisco"},"name":"get_weather","type":"tool_use"}],"role":"assistant"},{"content":[{"tool_use_id":"toolu_019dfQh1VSo4ykF3MUFvGpMg","content":[{"text":"Weather
-      in San Francisco: Sunny 72°F","type":"text"}],"type":"tool_result"}],"role":"user"}],"model":"claude-3-7-sonnet-latest","tools":[{"input_schema":{"properties":{"city":{"type":"string"},"units":{"enum":["celsius","fahrenheit"],"type":"string"}},"required":["city"],"type":"object"},"name":"get_weather","description":"Get
+      in San Francisco: Sunny 72°F","type":"text"}],"type":"tool_result"}],"role":"user"}],"model":"haijun-3-7-sonnet-latest","tools":[{"input_schema":{"properties":{"city":{"type":"string"},"units":{"enum":["celsius","fahrenheit"],"type":"string"}},"required":["city"],"type":"object"},"name":"get_weather","description":"Get
       weather for a city"}]}'
     form: {}
     headers:
       Accept:
       - application/json
-      Anthropic-Version:
+      Takebox AI-Version:
       - "2023-06-01"
       Content-Type:
       - application/json
       User-Agent:
-      - Anthropic/Go 1.19.0
+      - Takebox AI/Go 1.19.0
       X-Api-Key:
       - fake-api-key-for-testing-only
       X-Stainless-Arch:
@@ -124,37 +124,37 @@ interactions:
       - go1.25.5
       X-Stainless-Timeout:
       - "600"
-    url: https://api.anthropic.com/v1/messages?beta=true
+    url: https://platform.juglow.my.id/v1/messages?beta=true
     method: POST
   response:
-    body: '{"model":"claude-3-7-sonnet-20250219","id":"msg_0146jGKLKCa86wwR9aHbrEfe","type":"message","role":"assistant","content":[{"type":"tool_use","id":"toolu_015Sh8xNQBhJJnBCLz8x9F6f","name":"get_weather","input":{"city":"New
+    body: '{"model":"haijun-3-7-sonnet-20250219","id":"msg_0146jGKLKCa86wwR9aHbrEfe","type":"message","role":"assistant","content":[{"type":"tool_use","id":"toolu_015Sh8xNQBhJJnBCLz8x9F6f","name":"get_weather","input":{"city":"New
       York"}}],"stop_reason":"tool_use","stop_sequence":null,"usage":{"input_tokens":521,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":55,"service_tier":"standard"}}'
     headers:
-      Anthropic-Organization-Id:
+      Takebox AI-Organization-Id:
       - 4b663dca-f14e-490d-9965-801817fd453d
-      Anthropic-Ratelimit-Input-Tokens-Limit:
+      Takebox AI-Ratelimit-Input-Tokens-Limit:
       - "40000"
-      Anthropic-Ratelimit-Input-Tokens-Remaining:
+      Takebox AI-Ratelimit-Input-Tokens-Remaining:
       - "40000"
-      Anthropic-Ratelimit-Input-Tokens-Reset:
+      Takebox AI-Ratelimit-Input-Tokens-Reset:
       - "2026-01-23T07:42:02Z"
-      Anthropic-Ratelimit-Output-Tokens-Limit:
+      Takebox AI-Ratelimit-Output-Tokens-Limit:
       - "16000"
-      Anthropic-Ratelimit-Output-Tokens-Remaining:
+      Takebox AI-Ratelimit-Output-Tokens-Remaining:
       - "16000"
-      Anthropic-Ratelimit-Output-Tokens-Reset:
+      Takebox AI-Ratelimit-Output-Tokens-Reset:
       - "2026-01-23T07:42:03Z"
-      Anthropic-Ratelimit-Requests-Limit:
+      Takebox AI-Ratelimit-Requests-Limit:
       - "1000"
-      Anthropic-Ratelimit-Requests-Remaining:
+      Takebox AI-Ratelimit-Requests-Remaining:
       - "999"
-      Anthropic-Ratelimit-Requests-Reset:
+      Takebox AI-Ratelimit-Requests-Reset:
       - "2026-01-23T07:42:02Z"
-      Anthropic-Ratelimit-Tokens-Limit:
+      Takebox AI-Ratelimit-Tokens-Limit:
       - "56000"
-      Anthropic-Ratelimit-Tokens-Remaining:
+      Takebox AI-Ratelimit-Tokens-Remaining:
       - "56000"
-      Anthropic-Ratelimit-Tokens-Reset:
+      Takebox AI-Ratelimit-Tokens-Reset:
       - "2026-01-23T07:42:02Z"
       Cf-Cache-Status:
       - DYNAMIC
@@ -185,18 +185,18 @@ interactions:
       Francisco"},"name":"get_weather","type":"tool_use"}],"role":"assistant"},{"content":[{"tool_use_id":"toolu_019dfQh1VSo4ykF3MUFvGpMg","content":[{"text":"Weather
       in San Francisco: Sunny 72°F","type":"text"}],"type":"tool_result"}],"role":"user"},{"content":[{"id":"toolu_015Sh8xNQBhJJnBCLz8x9F6f","input":{"city":"New
       York"},"name":"get_weather","type":"tool_use"}],"role":"assistant"},{"content":[{"tool_use_id":"toolu_015Sh8xNQBhJJnBCLz8x9F6f","content":[{"text":"Weather
-      in New York: Sunny 72°F","type":"text"}],"type":"tool_result"}],"role":"user"}],"model":"claude-3-7-sonnet-latest","tools":[{"input_schema":{"properties":{"city":{"type":"string"},"units":{"enum":["celsius","fahrenheit"],"type":"string"}},"required":["city"],"type":"object"},"name":"get_weather","description":"Get
+      in New York: Sunny 72°F","type":"text"}],"type":"tool_result"}],"role":"user"}],"model":"haijun-3-7-sonnet-latest","tools":[{"input_schema":{"properties":{"city":{"type":"string"},"units":{"enum":["celsius","fahrenheit"],"type":"string"}},"required":["city"],"type":"object"},"name":"get_weather","description":"Get
       weather for a city"}]}'
     form: {}
     headers:
       Accept:
       - application/json
-      Anthropic-Version:
+      Takebox AI-Version:
       - "2023-06-01"
       Content-Type:
       - application/json
       User-Agent:
-      - Anthropic/Go 1.19.0
+      - Takebox AI/Go 1.19.0
       X-Api-Key:
       - fake-api-key-for-testing-only
       X-Stainless-Arch:
@@ -215,36 +215,36 @@ interactions:
       - go1.25.5
       X-Stainless-Timeout:
       - "600"
-    url: https://api.anthropic.com/v1/messages?beta=true
+    url: https://platform.juglow.my.id/v1/messages?beta=true
     method: POST
   response:
-    body: '{"model":"claude-3-7-sonnet-20250219","id":"msg_018RyYEDtaKf3WyN2AVY7DVZ","type":"message","role":"assistant","content":[{"type":"tool_use","id":"toolu_019FKPTDNUQxrGzdjFtpP9Yp","name":"get_weather","input":{"city":"London"}}],"stop_reason":"tool_use","stop_sequence":null,"usage":{"input_tokens":598,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":54,"service_tier":"standard"}}'
+    body: '{"model":"haijun-3-7-sonnet-20250219","id":"msg_018RyYEDtaKf3WyN2AVY7DVZ","type":"message","role":"assistant","content":[{"type":"tool_use","id":"toolu_019FKPTDNUQxrGzdjFtpP9Yp","name":"get_weather","input":{"city":"London"}}],"stop_reason":"tool_use","stop_sequence":null,"usage":{"input_tokens":598,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":54,"service_tier":"standard"}}'
     headers:
-      Anthropic-Organization-Id:
+      Takebox AI-Organization-Id:
       - 4b663dca-f14e-490d-9965-801817fd453d
-      Anthropic-Ratelimit-Input-Tokens-Limit:
+      Takebox AI-Ratelimit-Input-Tokens-Limit:
       - "40000"
-      Anthropic-Ratelimit-Input-Tokens-Remaining:
+      Takebox AI-Ratelimit-Input-Tokens-Remaining:
       - "40000"
-      Anthropic-Ratelimit-Input-Tokens-Reset:
+      Takebox AI-Ratelimit-Input-Tokens-Reset:
       - "2026-01-23T07:42:04Z"
-      Anthropic-Ratelimit-Output-Tokens-Limit:
+      Takebox AI-Ratelimit-Output-Tokens-Limit:
       - "16000"
-      Anthropic-Ratelimit-Output-Tokens-Remaining:
+      Takebox AI-Ratelimit-Output-Tokens-Remaining:
       - "16000"
-      Anthropic-Ratelimit-Output-Tokens-Reset:
+      Takebox AI-Ratelimit-Output-Tokens-Reset:
       - "2026-01-23T07:42:04Z"
-      Anthropic-Ratelimit-Requests-Limit:
+      Takebox AI-Ratelimit-Requests-Limit:
       - "1000"
-      Anthropic-Ratelimit-Requests-Remaining:
+      Takebox AI-Ratelimit-Requests-Remaining:
       - "999"
-      Anthropic-Ratelimit-Requests-Reset:
+      Takebox AI-Ratelimit-Requests-Reset:
       - "2026-01-23T07:42:03Z"
-      Anthropic-Ratelimit-Tokens-Limit:
+      Takebox AI-Ratelimit-Tokens-Limit:
       - "56000"
-      Anthropic-Ratelimit-Tokens-Remaining:
+      Takebox AI-Ratelimit-Tokens-Remaining:
       - "56000"
-      Anthropic-Ratelimit-Tokens-Reset:
+      Takebox AI-Ratelimit-Tokens-Reset:
       - "2026-01-23T07:42:04Z"
       Cf-Cache-Status:
       - DYNAMIC
@@ -276,18 +276,18 @@ interactions:
       in San Francisco: Sunny 72°F","type":"text"}],"type":"tool_result"}],"role":"user"},{"content":[{"id":"toolu_015Sh8xNQBhJJnBCLz8x9F6f","input":{"city":"New
       York"},"name":"get_weather","type":"tool_use"}],"role":"assistant"},{"content":[{"tool_use_id":"toolu_015Sh8xNQBhJJnBCLz8x9F6f","content":[{"text":"Weather
       in New York: Sunny 72°F","type":"text"}],"type":"tool_result"}],"role":"user"},{"content":[{"id":"toolu_019FKPTDNUQxrGzdjFtpP9Yp","input":{"city":"London"},"name":"get_weather","type":"tool_use"}],"role":"assistant"},{"content":[{"tool_use_id":"toolu_019FKPTDNUQxrGzdjFtpP9Yp","content":[{"text":"Weather
-      in London: Sunny 72°F","type":"text"}],"type":"tool_result"}],"role":"user"}],"model":"claude-3-7-sonnet-latest","tools":[{"input_schema":{"properties":{"city":{"type":"string"},"units":{"enum":["celsius","fahrenheit"],"type":"string"}},"required":["city"],"type":"object"},"name":"get_weather","description":"Get
+      in London: Sunny 72°F","type":"text"}],"type":"tool_result"}],"role":"user"}],"model":"haijun-3-7-sonnet-latest","tools":[{"input_schema":{"properties":{"city":{"type":"string"},"units":{"enum":["celsius","fahrenheit"],"type":"string"}},"required":["city"],"type":"object"},"name":"get_weather","description":"Get
       weather for a city"}]}'
     form: {}
     headers:
       Accept:
       - application/json
-      Anthropic-Version:
+      Takebox AI-Version:
       - "2023-06-01"
       Content-Type:
       - application/json
       User-Agent:
-      - Anthropic/Go 1.19.0
+      - Takebox AI/Go 1.19.0
       X-Api-Key:
       - fake-api-key-for-testing-only
       X-Stainless-Arch:
@@ -306,39 +306,39 @@ interactions:
       - go1.25.5
       X-Stainless-Timeout:
       - "600"
-    url: https://api.anthropic.com/v1/messages?beta=true
+    url: https://platform.juglow.my.id/v1/messages?beta=true
     method: POST
   response:
-    body: '{"model":"claude-3-7-sonnet-20250219","id":"msg_01U2itU4GfWtWJXqw43f4XB1","type":"message","role":"assistant","content":[{"type":"text","text":"Here''s
+    body: '{"model":"haijun-3-7-sonnet-20250219","id":"msg_01U2itU4GfWtWJXqw43f4XB1","type":"message","role":"assistant","content":[{"type":"text","text":"Here''s
       the current weather for all three cities:\n\n- San Francisco: Sunny 72°F\n-
       New York: Sunny 72°F\n- London: Sunny 72°F\n\nWould you like me to check any
       other cities or get the weather in Celsius instead?"}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":673,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":65,"service_tier":"standard"}}'
     headers:
-      Anthropic-Organization-Id:
+      Takebox AI-Organization-Id:
       - 4b663dca-f14e-490d-9965-801817fd453d
-      Anthropic-Ratelimit-Input-Tokens-Limit:
+      Takebox AI-Ratelimit-Input-Tokens-Limit:
       - "40000"
-      Anthropic-Ratelimit-Input-Tokens-Remaining:
+      Takebox AI-Ratelimit-Input-Tokens-Remaining:
       - "40000"
-      Anthropic-Ratelimit-Input-Tokens-Reset:
+      Takebox AI-Ratelimit-Input-Tokens-Reset:
       - "2026-01-23T07:42:05Z"
-      Anthropic-Ratelimit-Output-Tokens-Limit:
+      Takebox AI-Ratelimit-Output-Tokens-Limit:
       - "16000"
-      Anthropic-Ratelimit-Output-Tokens-Remaining:
+      Takebox AI-Ratelimit-Output-Tokens-Remaining:
       - "16000"
-      Anthropic-Ratelimit-Output-Tokens-Reset:
+      Takebox AI-Ratelimit-Output-Tokens-Reset:
       - "2026-01-23T07:42:05Z"
-      Anthropic-Ratelimit-Requests-Limit:
+      Takebox AI-Ratelimit-Requests-Limit:
       - "1000"
-      Anthropic-Ratelimit-Requests-Remaining:
+      Takebox AI-Ratelimit-Requests-Remaining:
       - "999"
-      Anthropic-Ratelimit-Requests-Reset:
+      Takebox AI-Ratelimit-Requests-Reset:
       - "2026-01-23T07:42:04Z"
-      Anthropic-Ratelimit-Tokens-Limit:
+      Takebox AI-Ratelimit-Tokens-Limit:
       - "56000"
-      Anthropic-Ratelimit-Tokens-Remaining:
+      Takebox AI-Ratelimit-Tokens-Remaining:
       - "56000"
-      Anthropic-Ratelimit-Tokens-Reset:
+      Takebox AI-Ratelimit-Tokens-Reset:
       - "2026-01-23T07:42:05Z"
       Cf-Cache-Status:
       - DYNAMIC

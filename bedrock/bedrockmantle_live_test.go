@@ -5,8 +5,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/bedrock"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/bedrock"
 )
 
 // Live integration tests for Bedrock Mantle. Skipped unless Juglow_LIVE=1.

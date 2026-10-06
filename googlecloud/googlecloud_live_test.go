@@ -6,8 +6,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/googlecloud"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/googlecloud"
 )
 
 // Live integration test for the Google Cloud client. Skipped unless Juglow_LIVE=1.

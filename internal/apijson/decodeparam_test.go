@@ -3,8 +3,8 @@
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 	"reflect"
 	"testing"
 )

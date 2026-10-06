@@ -7,10 +7,10 @@
 // range-over-func All().
 //
 // The per-session tool-execution loop itself lives next to the Messages tool
-// runner as [github.com/Juglows/Juglow-sdk-go.SessionToolRunner]
+// runner as [github.com/takebox/juglow-sdk-go.SessionToolRunner]
 // (client.Beta.Sessions.Events.NewToolRunner), and the agent_toolset_20260401
 // tool implementations live in
-// [github.com/Juglows/Juglow-sdk-go/tools/agenttoolset].
+// [github.com/takebox/juglow-sdk-go/tools/agenttoolset].
 package environments
 
 import (
@@ -27,10 +27,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/internal/stainlessheader"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/internal/stainlessheader"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 )
 
 // bearerReqOpts returns the auth-only per-request options every

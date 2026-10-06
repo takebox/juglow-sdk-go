@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/option"
 	standardwebhooks "github.com/standard-webhooks/standard-webhooks/libraries/go"
 )
 

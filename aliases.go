@@ -3,9 +3,9 @@
 package Juglow
 
 import (
-	"github.com/Juglows/Juglow-sdk-go/internal/apierror"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/shared"
+	"github.com/takebox/juglow-sdk-go/internal/apierror"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/shared"
 )
 
 // aliased to make [param.APIUnion] private when embedding

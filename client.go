@@ -12,11 +12,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/config"
-	"github.com/Juglows/Juglow-sdk-go/internal/auth"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/shared/constant"
+	"github.com/takebox/juglow-sdk-go/config"
+	"github.com/takebox/juglow-sdk-go/internal/auth"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/shared/constant"
 )
 
 // Client creates a struct with services and top level methods that help with

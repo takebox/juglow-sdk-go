@@ -1,7 +1,7 @@
 ﻿package apijson
 
 import (
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
 	"reflect"
 )
 

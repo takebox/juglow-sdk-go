@@ -3,8 +3,8 @@
 import (
 	"context"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/bedrock"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/bedrock"
 )
 
 func main() {

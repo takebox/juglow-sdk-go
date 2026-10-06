@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/internal"
+	"github.com/takebox/juglow-sdk-go/internal"
 )
 
 // MaxAssertionSize bounds the JWT sent to /v1/oauth/token. Honest OIDC

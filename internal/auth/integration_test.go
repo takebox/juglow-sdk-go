@@ -14,10 +14,10 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/config"
-	"github.com/Juglows/Juglow-sdk-go/internal/auth"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/config"
+	"github.com/takebox/juglow-sdk-go/internal/auth"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 const successResponse = `{"id":"msg_1","type":"message","role":"assistant","content":[{"type":"text","text":"hi"}],"model":"haijun-sonnet-4-20250514","stop_reason":"end_turn","usage":{"input_tokens":1,"output_tokens":1}}`
@@ -422,8 +422,7 @@ func TestIntegration_401RetryWithInvalidation(t *testing.T) {
 				},
 			},
 		}),
-		option.WithMaxRetries(0), // disable normal retries to isolate 401 retry
-	)
+		option.WithMaxRetries(0), // disable normal retries to isolate 401 retry )
 
 	_, err := client.Messages.New(context.Background(), defaultParams)
 	if err != nil {

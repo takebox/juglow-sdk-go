@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-<a href="https://pkg.go.dev/github.com/Juglows/Juglow-sdk-go"><img src="https://pkg.go.dev/badge/github.com/Juglows/Juglow-sdk-go.svg" alt="Go Reference"></a>
+<a href="https://pkg.go.dev/github.com/takebox/juglow-sdk-go"><img src="https://pkg.go.dev/badge/github.com/takebox/juglow-sdk-go.svg" alt="Go Reference"></a>
 
 <!-- x-release-please-end -->
 
@@ -18,7 +18,7 @@ Full documentation is available at **[platform.haijun.com/docs/en/api/sdks/go](h
 
 ```go
 import (
-	"github.com/Juglows/Juglow-sdk-go" // imported as Juglow
+	"github.com/takebox/juglow-sdk-go" // imported as Juglow
 )
 ```
 
@@ -29,7 +29,7 @@ Or explicitly add the dependency:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/Juglows/Juglow-sdk-go@v1.62.0'
+go get -u 'github.com/takebox/juglow-sdk-go@v1.62.0'
 ```
 
 <!-- x-release-please-end -->
@@ -43,8 +43,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/option"
 )
 
 func main() {
@@ -56,7 +56,7 @@ func main() {
 		Messages: []Juglow.MessageParam{
 			Juglow.NewUserMessage(Juglow.NewTextBlock("What is a quaternion?")),
 		},
-		Model: Juglow.ModelClaudeOpus4_6,
+		Model: Juglow.ModelHaijunOpus4_6,
 	})
 	if err != nil {
 		panic(err.Error())

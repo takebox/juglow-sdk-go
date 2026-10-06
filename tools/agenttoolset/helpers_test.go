@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	Juglow "github.com/Juglows/Juglow-sdk-go"
+	Juglow "github.com/takebox/juglow-sdk-go"
 )
 
 // runTool executes a BetaTool the way a session/Messages tool runner would and

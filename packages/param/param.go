@@ -2,7 +2,7 @@
 
 import (
 	"encoding/json"
-	"github.com/Juglows/Juglow-sdk-go/internal/encoding/json/sentinel"
+	"github.com/takebox/juglow-sdk-go/internal/encoding/json/sentinel"
 	"reflect"
 )
 

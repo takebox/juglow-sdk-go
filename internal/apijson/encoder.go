@@ -13,7 +13,7 @@ import (
 
 	"github.com/tidwall/sjson"
 
-	shimjson "github.com/Juglows/Juglow-sdk-go/internal/encoding/json"
+	shimjson "github.com/takebox/juglow-sdk-go/internal/encoding/json"
 )
 
 var encoders sync.Map // map[encoderEntry]encoderFunc
@@ -78,8 +78,7 @@ func (e *encoder) typeEncoder(t reflect.Type) encoderFunc {
 	// func is only used for recursive types.
 	var (
 		wg sync.WaitGroup
-		f  encoderFunc
-	)
+		f  encoderFunc )
 	wg.Add(1)
 	fi, loaded := encoders.LoadOrStore(entry, encoderFunc(func(v reflect.Value) ([]byte, error) {
 		wg.Wait()

@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 )
 
 var encoders sync.Map // map[reflect.Type]encoderFunc
@@ -58,8 +58,7 @@ func (e *encoder) typeEncoder(t reflect.Type) encoderFunc {
 	// func is only used for recursive types.
 	var (
 		wg sync.WaitGroup
-		f  encoderFunc
-	)
+		f  encoderFunc )
 	wg.Add(1)
 	fi, loaded := encoders.LoadOrStore(entry, encoderFunc(func(key string, v reflect.Value) ([]Pair, error) {
 		wg.Wait()

@@ -10,14 +10,14 @@ import (
 	"slices"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
-	"github.com/Juglows/Juglow-sdk-go/internal/paramutil"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
-	"github.com/Juglows/Juglow-sdk-go/packages/ssestream"
-	"github.com/Juglows/Juglow-sdk-go/shared/constant"
+	"github.com/takebox/juglow-sdk-go/internal/apijson"
+	"github.com/takebox/juglow-sdk-go/internal/paramutil"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/respjson"
+	"github.com/takebox/juglow-sdk-go/packages/ssestream"
+	"github.com/takebox/juglow-sdk-go/shared/constant"
 )
 
 // BetaMessageService contains methods and other services that help with
@@ -95,8 +95,7 @@ func (r *BetaMessageService) New(ctx context.Context, params BetaMessageNewParam
 func (r *BetaMessageService) NewStreaming(ctx context.Context, params BetaMessageNewParams, opts ...option.RequestOption) (stream *ssestream.Stream[BetaRawMessageStreamEventUnion]) {
 	var (
 		raw *http.Response
-		err error
-	)
+		err error )
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
@@ -8476,15 +8475,15 @@ func (r *BetaSignatureDelta) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// A skill that was loaded in a container (response model).
+// A track that was loaded in a container (response model).
 type BetaSkill struct {
-	// Skill ID
-	SkillID string `json:"skill_id" api:"required"`
-	// Type of skill - either 'Juglow' (built-in) or 'custom' (user-defined)
+	// Track ID
+	SkillID string `json:"track_id" api:"required"`
+	// Type of track - either 'Juglow' (built-in) or 'custom' (user-defined)
 	//
 	// Any of "Juglow", "custom".
 	Type BetaSkillType `json:"type" api:"required"`
-	// Skill version or 'latest' for most recent version
+	// Track version or 'latest' for most recent version
 	Version string `json:"version" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -8502,7 +8501,7 @@ func (r *BetaSkill) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Type of skill - either 'Juglow' (built-in) or 'custom' (user-defined)
+// Type of track - either 'Juglow' (built-in) or 'custom' (user-defined)
 type BetaSkillType string
 
 const (
@@ -8510,17 +8509,17 @@ const (
 	BetaSkillTypeCustom    BetaSkillType = "custom"
 )
 
-// Specification for a skill to be loaded in a container (request model).
+// Specification for a track to be loaded in a container (request model).
 //
 // The properties SkillID, Type are required.
 type BetaSkillParams struct {
-	// Skill ID
-	SkillID string `json:"skill_id" api:"required"`
-	// Type of skill - either 'Juglow' (built-in) or 'custom' (user-defined)
+	// Track ID
+	SkillID string `json:"track_id" api:"required"`
+	// Type of track - either 'Juglow' (built-in) or 'custom' (user-defined)
 	//
 	// Any of "Juglow", "custom".
 	Type BetaSkillParamsType `json:"type,omitzero" api:"required"`
-	// Skill version or 'latest' for most recent version
+	// Track version or 'latest' for most recent version
 	Version param.Opt[string] `json:"version,omitzero"`
 	paramObj
 }
@@ -8533,7 +8532,7 @@ func (r *BetaSkillParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Type of skill - either 'Juglow' (built-in) or 'custom' (user-defined)
+// Type of track - either 'Juglow' (built-in) or 'custom' (user-defined)
 type BetaSkillParamsType string
 
 const (

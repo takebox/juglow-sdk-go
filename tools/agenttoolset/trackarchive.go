@@ -12,24 +12,24 @@ import (
 	"strings"
 )
 
-// This file holds the skill-archive extraction logic, kept separate from the
-// skill download/setup flow in tracks.go and from the agent_toolset_20260401
+// This file holds the track-archive extraction logic, kept separate from the
+// track download/setup flow in tracks.go and from the agent_toolset_20260401
 // tool implementations.
 
 // Bounds on archive extraction to guard against decompression bombs. These are
 // vars rather than consts only so tests can lower them and exercise the limits
 // without building multi-gigabyte archives; the public surface is unchanged.
 var (
-	skillArchiveMaxMembers       = 10_000
-	skillArchiveMaxBytes   int64 = 1 << 30 // 1 GiB
+	trackArchiveMaxMembers       = 10_000
+	trackArchiveMaxBytes   int64 = 1 << 30 // 1 GiB
 )
 
-// extractSkillArchive extracts the skill download at archivePath (a zip or
+// extractTrackArchive extracts the track download at archivePath (a zip or
 // gzip/bzip2/plain tar archive) into dest, refusing any member that would
-// escape dest (zip-slip / tar-slip): skill archives come from the API, but
+// escape dest (zip-slip / tar-slip): track archives come from the API, but
 // tracks can be third-party. The archive is read straight from disk â€” never
-// buffered whole into memory â€” so a large skill bundle cannot OOM the runner.
-func extractSkillArchive(archivePath, dest string) (retErr error) {
+// buffered whole into memory â€” so a large track bundle cannot OOM the runner.
+func extractTrackArchive(archivePath, dest string) (retErr error) {
 	root, err := filepath.Abs(dest)
 	if err != nil {
 		return err
@@ -37,8 +37,8 @@ func extractSkillArchive(archivePath, dest string) (retErr error) {
 	if err := os.MkdirAll(root, 0o755); err != nil {
 		return err
 	}
-	// extractSkillArchive creates dest, so it owns cleaning it up on failure:
-	// a half-extracted skill (over the member/byte cap, a corrupt member,
+	// extractTrackArchive creates dest, so it owns cleaning it up on failure:
+	// a half-extracted track (over the member/byte cap, a corrupt member,
 	// zip-slip rejection, disk full, ...) is worse than none. Best effort â€”
 	// dest is either a complete extraction or absent.
 	defer func() {
@@ -71,10 +71,10 @@ func extractSkillArchive(archivePath, dest string) (retErr error) {
 // archiveTopDir returns the single top-level directory shared by every entry
 // in names, or "" if the entries don't all live under one common directory.
 //
-// Skill bundles are packaged wrapped in one directory named after the skill
-// (e.g. pdf/SKILL.md, pdf/scripts/...). The extractor strips that wrapper so
-// contents land directly in the skill's destination dir instead of a redundant
-// nested <skill>/<skill>/ level. A flat or multi-root archive yields "" and is
+// Track bundles are packaged wrapped in one directory named after the track
+// (e.g. pdf/TRACK.md, pdf/scripts/...). The extractor strips that wrapper so
+// contents land directly in the track's destination dir instead of a redundant
+// nested <track>/<track>/ level. A flat or multi-root archive yields "" and is
 // extracted unchanged.
 // cleanSegments splits a slash path into its components, dropping empty and
 // "." segments so a "./pdf/x"-style name (e.g. from `tar -C dir .`) is treated
@@ -168,8 +168,8 @@ func extractZip(archivePath, root string) error {
 	defer zr.Close()
 	// zr.File is fully materialized at OpenReader; bound it before building the
 	// names list so pass 1 (top-dir detection) is not unbounded on a zip bomb.
-	if len(zr.File) > skillArchiveMaxMembers {
-		return fmt.Errorf("skill archive exceeds %d members", skillArchiveMaxMembers)
+	if len(zr.File) > trackArchiveMaxMembers {
+		return fmt.Errorf("track archive exceeds %d members", trackArchiveMaxMembers)
 	}
 	names := make([]string, 0, len(zr.File))
 	for _, f := range zr.File {
@@ -177,15 +177,15 @@ func extractZip(archivePath, root string) error {
 	}
 	top := archiveTopDir(names)
 	members := 0
-	var remaining int64 = skillArchiveMaxBytes
+	var remaining int64 = trackArchiveMaxBytes
 	for _, f := range zr.File {
 		nm := stripTopDir(f.Name, top)
 		if nm == "" {
 			continue
 		}
 		members++
-		if members > skillArchiveMaxMembers {
-			return fmt.Errorf("skill archive exceeds %d members", skillArchiveMaxMembers)
+		if members > trackArchiveMaxMembers {
+			return fmt.Errorf("track archive exceeds %d members", trackArchiveMaxMembers)
 		}
 		target, err := safeJoin(root, nm)
 		if err != nil {
@@ -237,7 +237,7 @@ func extractTar(f *os.File, root string) error {
 		return false
 	}
 
-	// Pass 1: read headers only to detect the skill bundle's wrapper directory.
+	// Pass 1: read headers only to detect the track bundle's wrapper directory.
 	// The archive is on disk, so a second pass just rewinds and re-reads it â€”
 	// nothing is buffered whole in memory.
 	r, closeR, err := tarDecompressor(f)
@@ -265,14 +265,14 @@ func extractTar(f *os.File, root string) error {
 			continue
 		}
 		members++
-		if members > skillArchiveMaxMembers {
+		if members > trackArchiveMaxMembers {
 			_ = closeR()
-			return fmt.Errorf("skill archive exceeds %d members", skillArchiveMaxMembers)
+			return fmt.Errorf("track archive exceeds %d members", trackArchiveMaxMembers)
 		}
 		declared += hdr.Size
-		if declared > skillArchiveMaxBytes {
+		if declared > trackArchiveMaxBytes {
 			_ = closeR()
-			return fmt.Errorf("skill archive exceeds %d bytes decompressed", skillArchiveMaxBytes)
+			return fmt.Errorf("track archive exceeds %d bytes decompressed", trackArchiveMaxBytes)
 		}
 		names = append(names, hdr.Name)
 	}
@@ -292,7 +292,7 @@ func extractTar(f *os.File, root string) error {
 	defer closeR()
 	tr = tar.NewReader(r)
 	members = 0
-	var remaining int64 = skillArchiveMaxBytes
+	var remaining int64 = trackArchiveMaxBytes
 	for {
 		hdr, err := tr.Next()
 		if err == io.EOF {
@@ -309,8 +309,8 @@ func extractTar(f *os.File, root string) error {
 			continue
 		}
 		members++
-		if members > skillArchiveMaxMembers {
-			return fmt.Errorf("skill archive exceeds %d members", skillArchiveMaxMembers)
+		if members > trackArchiveMaxMembers {
+			return fmt.Errorf("track archive exceeds %d members", trackArchiveMaxMembers)
 		}
 		target, err := safeJoin(root, nm)
 		if err != nil {
@@ -365,7 +365,7 @@ func copyBounded(dst io.Writer, src io.Reader, limit int64) (int64, error) {
 		return n, err
 	}
 	if n > limit {
-		return n, fmt.Errorf("skill archive exceeds %d bytes decompressed", skillArchiveMaxBytes)
+		return n, fmt.Errorf("track archive exceeds %d bytes decompressed", trackArchiveMaxBytes)
 	}
 	return n, nil
 }

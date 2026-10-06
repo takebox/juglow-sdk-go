@@ -11,8 +11,8 @@ import (
 	"google.golang.org/api/option"
 	"google.golang.org/api/transport"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	sdkoption "github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	sdkoption "github.com/takebox/juglow-sdk-go/option"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )

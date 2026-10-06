@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/Juglows/Juglow-sdk-go/mcp"
+	"github.com/takebox/juglow-sdk-go/mcp"
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
 

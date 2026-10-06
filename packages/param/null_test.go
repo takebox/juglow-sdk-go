@@ -2,7 +2,7 @@
 
 import (
 	"encoding/json"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 	"testing"
 )
 

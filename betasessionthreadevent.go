@@ -10,12 +10,12 @@ import (
 	"net/url"
 	"slices"
 
-	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
-	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
-	"github.com/Juglows/Juglow-sdk-go/option"
-	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
-	"github.com/Juglows/Juglow-sdk-go/packages/ssestream"
+	"github.com/takebox/juglow-sdk-go/internal/apiquery"
+	"github.com/takebox/juglow-sdk-go/internal/requestconfig"
+	"github.com/takebox/juglow-sdk-go/option"
+	"github.com/takebox/juglow-sdk-go/packages/pagination"
+	"github.com/takebox/juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go/packages/ssestream"
 )
 
 // BetaSessionThreadEventService contains methods and other services that help with
@@ -75,8 +75,7 @@ func (r *BetaSessionThreadEventService) ListAutoPaging(ctx context.Context, thre
 func (r *BetaSessionThreadEventService) StreamEvents(ctx context.Context, threadID string, params BetaSessionThreadEventStreamParams, opts ...option.RequestOption) (stream *ssestream.Stream[BetaManagedAgentsStreamSessionThreadEventsUnion]) {
 	var (
 		raw *http.Response
-		err error
-	)
+		err error )
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}

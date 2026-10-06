@@ -8,15 +8,15 @@ import (
 	"os"
 	"time"
 
-	"github.com/Juglows/Juglow-sdk-go"
-	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/takebox/juglow-sdk-go"
+	"github.com/takebox/juglow-sdk-go/packages/param"
 )
 
 const (
 	mcpServerName = "github"
 	mcpServerURL  = "https://api.githubcopilot.com/mcp/"
 
-	prompt = "Hi! List every tool and skill you have access to, grouped by where they " +
+	prompt = "Hi! List every tool and track you have access to, grouped by where they " +
 		"came from (built-in toolset, custom tool, MCP server, tracks)."
 )
 
@@ -62,21 +62,21 @@ func main() {
 	}
 	fmt.Println("Created credential:", credential.ID)
 
-	// Upload a custom skill
-	skillFile, err := os.Open("agents-comprehensive/greeting-SKILL.md")
+	// Upload a custom track
+	skillFile, err := os.Open("agents-comprehensive/greeting-TRACK.md")
 	if err != nil {
 		panic(err)
 	}
 	defer skillFile.Close()
 
-	skill, err := client.Beta.tracks.New(ctx, Juglow.BetaSkillNewParams{
+	track, err := client.Beta.tracks.New(ctx, Juglow.BetaSkillNewParams{
 		DisplayTitle: param.NewOpt(fmt.Sprintf("comprehensive-greeting-%d", time.Now().UnixMilli())),
-		Files:        []io.Reader{namedReader{skillFile, "greeting/SKILL.md"}},
+		Files:        []io.Reader{namedReader{skillFile, "greeting/TRACK.md"}},
 	})
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Created skill:", skill.ID)
+	fmt.Println("Created track:", track.ID)
 
 	// Create v1 of the agent with the built-in toolset, an MCP server, and a custom tool
 	agentV1, err := client.Beta.Agents.New(ctx, Juglow.BetaAgentNewParams{
@@ -129,7 +129,7 @@ func main() {
 			{
 				OfCustom: &Juglow.BetaManagedAgentsCustomSkillParams{
 					Type:    Juglow.BetaManagedAgentsCustomSkillParamsTypeCustom,
-					SkillID: skill.ID,
+					SkillID: track.ID,
 				},
 			},
 			{
