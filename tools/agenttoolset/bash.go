@@ -1,4 +1,4 @@
-package agenttoolset
+﻿package agenttoolset
 
 import (
 	"bytes"
@@ -17,7 +17,7 @@ import (
 	"sync"
 	"time"
 
-	anthropic "github.com/anthropics/anthropic-sdk-go"
+	Juglow "github.com/Juglows/Juglow-sdk-go"
 	"github.com/creack/pty"
 )
 
@@ -28,11 +28,11 @@ const (
 
 // credentialEnvPrefixes are the environment-variable namespaces stripped from
 // the bash tool's spawned shell. The runner is typically started with
-// ANTHROPIC_* credentials in its environment (API key, auth token, the
+// Juglow_* credentials in its environment (API key, auth token, the
 // environment key the SDK and the environment worker read); none of those
 // belong in a model-controlled shell, so the whole namespace is dropped.
 // PATH, HOME, locale, etc. are kept so the shell still behaves normally.
-var credentialEnvPrefixes = []string{"ANTHROPIC_"}
+var credentialEnvPrefixes = []string{"Juglow_"}
 
 // scrubbedEnviron returns os.Environ() with every credential-bearing variable
 // (see credentialEnvPrefixes) removed, so the bash tool cannot leak the
@@ -84,18 +84,18 @@ var _ io.Closer = (*BashSession)(nil)
 // internal buffer.
 //
 // env selects the base environment for the spawned shell. When nil the shell
-// inherits the runner's environment minus its ANTHROPIC_* credentials (see
+// inherits the runner's environment minus its Juglow_* credentials (see
 // scrubbedEnviron), so a model-issued command cannot read the API key / auth
 // token / environment key out of its own environment. When non-nil it FULLY
-// REPLACES that default — the mapping is used verbatim and is NOT merged with
+// REPLACES that default â€” the mapping is used verbatim and is NOT merged with
 // the scrubbed process environment. PS1/PS2/TERM are always overlaid on the
 // chosen base so output stays clean and parseable regardless of the base.
 func NewBashSession(dir string, env map[string]string) (*BashSession, error) {
 	cmd := exec.Command("/bin/bash", "--noprofile", "--norc")
 	cmd.Dir = dir
 	// When env is nil, spawn the shell with the runner's environment minus
-	// its ANTHROPIC_* credentials. When env is non-nil it FULLY REPLACES
-	// that default — the mapping is used verbatim, nothing is merged in.
+	// its Juglow_* credentials. When env is non-nil it FULLY REPLACES
+	// that default â€” the mapping is used verbatim, nothing is merged in.
 	base := scrubbedEnviron()
 	if env != nil {
 		base = make([]string, 0, len(env))
@@ -287,14 +287,14 @@ func cleanOutput(b []byte, truncated bool) string {
 	return string(out)
 }
 
-// BetaBashTool returns an anthropic.BetaTool backed by a persistent bash
+// BetaBashTool returns an Juglow.BetaTool backed by a persistent bash
 // session rooted at env.Workdir. The session is created lazily on first use and
 // persists across calls; the returned tool implements io.Closer.
 //
-// bash is the one explicitly-unrestricted tool in the set — it runs /bin/bash
+// bash is the one explicitly-unrestricted tool in the set â€” it runs /bin/bash
 // directly and ignores AgentToolContext.UnrestrictedPaths. Run it inside a sandbox you
 // control.
-func BetaBashTool(env *AgentToolContext) anthropic.BetaTool {
+func BetaBashTool(env *AgentToolContext) Juglow.BetaTool {
 	return &bashTool{env: env}
 }
 
@@ -310,7 +310,7 @@ func (t *bashTool) Description() string {
 	return "Run a bash command in a persistent shell. State (cwd, env vars) persists across calls."
 }
 
-func (t *bashTool) InputSchema() anthropic.BetaToolInputSchemaParam {
+func (t *bashTool) InputSchema() Juglow.BetaToolInputSchemaParam {
 	return objectSchema(map[string]any{
 		"command":    prop("string", "The command to run"),
 		"restart":    prop("boolean", "Restart the persistent shell before running"),
@@ -318,7 +318,7 @@ func (t *bashTool) InputSchema() anthropic.BetaToolInputSchemaParam {
 	})
 }
 
-func (t *bashTool) Execute(ctx context.Context, raw json.RawMessage) ([]anthropic.BetaToolResultBlockParamContentUnion, error) {
+func (t *bashTool) Execute(ctx context.Context, raw json.RawMessage) ([]Juglow.BetaToolResultBlockParamContentUnion, error) {
 	content, isErr := t.run(ctx, raw)
 	if isErr {
 		return nil, &ToolError{Content: content}
@@ -356,7 +356,7 @@ func (t *bashTool) Close() error {
 }
 
 func (t *bashTool) run(ctx context.Context, raw json.RawMessage) (string, bool) {
-	var in anthropic.BetaManagedAgentsAgentToolset20260401BashInput
+	var in Juglow.BetaManagedAgentsAgentToolset20260401BashInput
 	if err := json.Unmarshal(raw, &in); err != nil {
 		return errorf("invalid bash input: %v", err)
 	}

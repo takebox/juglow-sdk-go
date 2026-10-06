@@ -1,4 +1,4 @@
-package awsauth
+﻿package awsauth
 
 import (
 	"bytes"
@@ -16,10 +16,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
-// ClientConfig holds the configuration for creating an Anthropic client that authenticates
+// ClientConfig holds the configuration for creating an Juglow client that authenticates
 // via AWS credentials. This is the internal representation used by both the aws and bedrock
 // mantle packages.
 type ClientConfig struct {
@@ -36,7 +36,7 @@ type ClientConfig struct {
 
 // ResolveParams customizes config resolution per client (env var names, base URL derivation, service name).
 type ResolveParams struct {
-	// EnvAPIKey is the primary environment variable for the API key (e.g. "ANTHROPIC_AWS_API_KEY").
+	// EnvAPIKey is the primary environment variable for the API key (e.g. "Juglow_AWS_API_KEY").
 	EnvAPIKey string
 
 	// EnvAPIKeyFallback is the fallback environment variable for the API key.
@@ -111,7 +111,7 @@ func ResolveConfig(cfg ClientConfig, params ResolveParams) (ResolvedConfig, erro
 	if rc.WorkspaceID == "" && !rc.SkipAuth && (params.EnvWorkspaceID != "" || cfg.WorkspaceID != "") {
 		envHint := params.EnvWorkspaceID
 		if envHint == "" {
-			envHint = "ANTHROPIC_AWS_WORKSPACE_ID"
+			envHint = "Juglow_AWS_WORKSPACE_ID"
 		}
 		return rc, fmt.Errorf("no workspace ID found; set WorkspaceID in ClientConfig or set the %s environment variable", envHint)
 	}
@@ -140,7 +140,7 @@ func ResolveConfig(cfg ClientConfig, params ResolveParams) (ResolvedConfig, erro
 	if rc.BaseURL == "" {
 		envHint := params.EnvBaseURL
 		if envHint == "" {
-			envHint = "ANTHROPIC_AWS_BASE_URL"
+			envHint = "Juglow_AWS_BASE_URL"
 		}
 		return rc, fmt.Errorf("no base URL found; set BaseURL or AWSRegion in ClientConfig, or set the %s or AWS_REGION environment variable", envHint)
 	}
@@ -237,7 +237,7 @@ func SigV4Middleware(signer *v4.Signer, cfg awssdk.Config, serviceName string) o
 	}
 }
 
-// CreateClientOptions returns request options that configure an Anthropic client for use
+// CreateClientOptions returns request options that configure an Juglow client for use
 // with an AWS-based service. The params argument customizes env var names, base URL derivation,
 // and SigV4 service name per client type.
 //
@@ -269,7 +269,7 @@ func CreateClientOptions(ctx context.Context, cfg ClientConfig, params ResolvePa
 		}
 	}
 	if resolved.WorkspaceID != "" {
-		opts = append(opts, option.WithHeader("anthropic-workspace-id", resolved.WorkspaceID))
+		opts = append(opts, option.WithHeader("Juglow-workspace-id", resolved.WorkspaceID))
 	}
 
 	opts = append(opts, userOpts...)

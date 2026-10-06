@@ -1,4 +1,4 @@
-package anthropic
+﻿package Juglow
 
 import (
 	"encoding/json"
@@ -22,7 +22,7 @@ var supportedSchemaKeySet = func() map[string]bool {
 }()
 
 // transformSchema transforms a [jsonschema.Schema] in-place to ensure it
-// conforms to the Anthropic API's expectations.
+// conforms to the Juglow API's expectations.
 //
 // The transformation process:
 //   - Preserves $ref references
@@ -58,7 +58,7 @@ func transformSchema(s *jsonschema.Schema) {
 	s.OneOf = nil
 
 	// Recurse into anyOf variants, dropping any that transformSchema zeroed out
-	// as invalid — a zero jsonschema.Schema marshals as the literal JSON `true`,
+	// as invalid â€” a zero jsonschema.Schema marshals as the literal JSON `true`,
 	// which would otherwise leak into the variant list as a match-everything.
 	if len(s.AnyOf) > 0 {
 		kept := s.AnyOf[:0]
@@ -77,10 +77,10 @@ func transformSchema(s *jsonschema.Schema) {
 		transformSchema(variant)
 	}
 
-	// Bail if the schema carries no shape information — schema is invalid or a
+	// Bail if the schema carries no shape information â€” schema is invalid or a
 	// boolean schema. enum/const/allOf can all stand in for an explicit type.
 	// Boolean schemas (JSON true/false) carry meaning in an unexported field
-	// that zeroing would clear, flipping false→true. Detect them by checking
+	// that zeroing would clear, flipping falseâ†’true. Detect them by checking
 	// whether any exported field is non-zero: if not, the schema is either
 	// boolean (preserve) or truly empty (zeroing is a no-op anyway).
 	if s.Type == "" && len(s.AnyOf) == 0 && len(s.AllOf) == 0 && len(s.Enum) == 0 && s.Const == nil {
@@ -145,7 +145,7 @@ func transformSchema(s *jsonschema.Schema) {
 	}
 }
 
-// transformSchemaMap transforms a JSON schema map to conform to Anthropic's API
+// transformSchemaMap transforms a JSON schema map to conform to Juglow's API
 // requirements. It delegates to [transformSchema] via a JSON round-trip.
 func transformSchemaMap(jsonSchema map[string]any) map[string]any {
 	if jsonSchema == nil {
@@ -258,7 +258,7 @@ func extractUnsupportedFields(s *jsonschema.Schema) map[string]any {
 }
 
 // BetaJSONSchemaOutputFormat creates a BetaJSONOutputFormatParam from a JSON schema map.
-// It transforms the schema to ensure compatibility with Anthropic's JSON schema requirements.
+// It transforms the schema to ensure compatibility with Juglow's JSON schema requirements.
 //
 // Example:
 //
@@ -272,9 +272,9 @@ func extractUnsupportedFields(s *jsonschema.Schema) map[string]any {
 //	}
 //	outputFormat := BetaJSONSchemaOutputFormat(schema)
 //
-//	msg, _ := client.Beta.Messages.New(ctx, anthropic.BetaMessageNewParams{
-//	    Model: anthropic.Model("claude-sonnet-4-5"),
-//	    Messages: anthropic.F([]anthropic.BetaMessageParam{...}),
+//	msg, _ := client.Beta.Messages.New(ctx, Juglow.BetaMessageNewParams{
+//	    Model: Juglow.Model("haijun-sonnet-4-5"),
+//	    Messages: Juglow.F([]Juglow.BetaMessageParam{...}),
 //	    MaxTokens: 1024,
 //	    OutputFormat: outputFormat,
 //	})
@@ -283,7 +283,7 @@ func BetaJSONSchemaOutputFormat(jsonSchema map[string]any) BetaJSONOutputFormatP
 }
 
 // BetaToolInputSchema creates a BetaToolInputSchemaParam from a JSON schema map.
-// It transforms the schema to ensure compatibility with Anthropic's tool calling requirements.
+// It transforms the schema to ensure compatibility with Juglow's tool calling requirements.
 func BetaToolInputSchema(jsonSchema map[string]any) BetaToolInputSchemaParam {
 	return BetaToolInputSchemaParam{ExtraFields: transformSchemaMap(jsonSchema)}
 }

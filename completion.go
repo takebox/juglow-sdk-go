@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -8,17 +8,17 @@ import (
 	"net/http"
 	"slices"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/packages/ssestream"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/packages/ssestream"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 // CompletionService contains methods and other services that help with interacting
-// with the anthropic API.
+// with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -39,16 +39,16 @@ func NewCompletionService(opts ...option.RequestOption) (r CompletionService) {
 // [Legacy] Create a Text Completion.
 //
 // The Text Completions API is a legacy API. We recommend using the
-// [Messages API](https://platform.claude.com/docs/en/api/messages) going forward.
+// [Messages API](https://platform.haijun.com/docs/en/api/messages) going forward.
 //
 // Future models and features will not be compatible with Text Completions. See our
-// [migration guide](https://platform.claude.com/docs/en/build-with-claude/working-with-messages)
+// [migration guide](https://platform.haijun.com/docs/en/build-with-haijun/working-with-messages)
 // for guidance in migrating from Text Completions to Messages.
 //
 // Note: If you choose to set a timeout for this request, we recommend 10 minutes.
 func (r *CompletionService) New(ctx context.Context, params CompletionNewParams, opts ...option.RequestOption) (res *Completion, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/complete"
@@ -59,10 +59,10 @@ func (r *CompletionService) New(ctx context.Context, params CompletionNewParams,
 // [Legacy] Create a Text Completion.
 //
 // The Text Completions API is a legacy API. We recommend using the
-// [Messages API](https://platform.claude.com/docs/en/api/messages) going forward.
+// [Messages API](https://platform.haijun.com/docs/en/api/messages) going forward.
 //
 // Future models and features will not be compatible with Text Completions. See our
-// [migration guide](https://platform.claude.com/docs/en/build-with-claude/working-with-messages)
+// [migration guide](https://platform.haijun.com/docs/en/build-with-haijun/working-with-messages)
 // for guidance in migrating from Text Completions to Messages.
 //
 // Note: If you choose to set a timeout for this request, we recommend 10 minutes.
@@ -72,7 +72,7 @@ func (r *CompletionService) NewStreaming(ctx context.Context, params CompletionN
 		err error
 	)
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	opts = append(opts, option.WithJSONSet("stream", true))
@@ -90,14 +90,14 @@ type Completion struct {
 	Completion string `json:"completion" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// The reason that we stopped.
 	//
 	// This may be one the following values:
 	//
-	//   - `"stop_sequence"`: we reached a stop sequence — either provided by you via the
+	//   - `"stop_sequence"`: we reached a stop sequence â€” either provided by you via the
 	//     `stop_sequences` parameter, or a stop sequence built into the model
 	//   - `"max_tokens"`: we exceeded `max_tokens_to_sample` or the model's maximum
 	StopReason string `json:"stop_reason" api:"required"`
@@ -131,10 +131,10 @@ type CompletionNewParams struct {
 	MaxTokensToSample int64 `json:"max_tokens_to_sample" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
-	// The prompt that you want Claude to complete.
+	// The prompt that you want haijun to complete.
 	//
 	// For proper response generation you will need to format your prompt using
 	// alternating `\n\nHuman:` and `\n\nAssistant:` conversational turns. For example:
@@ -144,9 +144,9 @@ type CompletionNewParams struct {
 	// ```
 	//
 	// See
-	// [prompt validation](https://platform.claude.com/docs/en/build-with-claude/working-with-messages)
+	// [prompt validation](https://platform.haijun.com/docs/en/build-with-haijun/working-with-messages)
 	// and our guide to
-	// [prompt design](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview)
+	// [prompt design](https://platform.haijun.com/docs/en/build-with-haijun/prompt-engineering/overview)
 	// for more details.
 	Prompt string `json:"prompt" api:"required"`
 	// Amount of randomness injected into the response.
@@ -182,7 +182,7 @@ type CompletionNewParams struct {
 	// include additional strings that will cause the model to stop generating.
 	StopSequences []string `json:"stop_sequences,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 

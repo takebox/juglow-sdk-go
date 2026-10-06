@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -12,18 +12,18 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/packages/ssestream"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/packages/ssestream"
 )
 
 // BetaSessionEventService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -45,10 +45,10 @@ func NewBetaSessionEventService(opts ...option.RequestOption) (r BetaSessionEven
 func (r *BetaSessionEventService) List(ctx context.Context, sessionID string, params BetaSessionEventListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaManagedAgentsSessionEventUnion], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
 	if sessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return nil, err
@@ -74,10 +74,10 @@ func (r *BetaSessionEventService) ListAutoPaging(ctx context.Context, sessionID 
 // Send Events
 func (r *BetaSessionEventService) Send(ctx context.Context, sessionID string, params BetaSessionEventSendParams, opts ...option.RequestOption) (res *BetaManagedAgentsSendSessionEvents, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if sessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return nil, err
@@ -94,10 +94,10 @@ func (r *BetaSessionEventService) StreamEvents(ctx context.Context, sessionID st
 		err error
 	)
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if sessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return ssestream.NewStream[BetaManagedAgentsStreamSessionEventsUnion](nil, err)
@@ -241,10 +241,10 @@ func (BetaManagedAgentsSearchResultBlock) implBetaManagedAgentsAgentMCPToolResul
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsAgentMCPToolResultEventContentUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsTextBlock:
-//	case anthropic.BetaManagedAgentsImageBlock:
-//	case anthropic.BetaManagedAgentsDocumentBlock:
-//	case anthropic.BetaManagedAgentsSearchResultBlock:
+//	case Juglow.BetaManagedAgentsTextBlock:
+//	case Juglow.BetaManagedAgentsImageBlock:
+//	case Juglow.BetaManagedAgentsDocumentBlock:
+//	case Juglow.BetaManagedAgentsSearchResultBlock:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -440,8 +440,8 @@ func (BetaManagedAgentsRedactedBlock) implBetaManagedAgentsAgentMessageEventCont
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsAgentMessageEventContentUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsTextBlock:
-//	case anthropic.BetaManagedAgentsRedactedBlock:
+//	case Juglow.BetaManagedAgentsTextBlock:
+//	case Juglow.BetaManagedAgentsRedactedBlock:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -625,10 +625,10 @@ func (BetaManagedAgentsRedactedBlock) implBetaManagedAgentsAgentThreadMessageRec
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsAgentThreadMessageReceivedEventContentUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsTextBlock:
-//	case anthropic.BetaManagedAgentsImageBlock:
-//	case anthropic.BetaManagedAgentsDocumentBlock:
-//	case anthropic.BetaManagedAgentsRedactedBlock:
+//	case Juglow.BetaManagedAgentsTextBlock:
+//	case Juglow.BetaManagedAgentsImageBlock:
+//	case Juglow.BetaManagedAgentsDocumentBlock:
+//	case Juglow.BetaManagedAgentsRedactedBlock:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -793,10 +793,10 @@ func (BetaManagedAgentsRedactedBlock) implBetaManagedAgentsAgentThreadMessageSen
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsAgentThreadMessageSentEventContentUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsTextBlock:
-//	case anthropic.BetaManagedAgentsImageBlock:
-//	case anthropic.BetaManagedAgentsDocumentBlock:
-//	case anthropic.BetaManagedAgentsRedactedBlock:
+//	case Juglow.BetaManagedAgentsTextBlock:
+//	case Juglow.BetaManagedAgentsImageBlock:
+//	case Juglow.BetaManagedAgentsDocumentBlock:
+//	case Juglow.BetaManagedAgentsRedactedBlock:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -964,10 +964,10 @@ func (BetaManagedAgentsSearchResultBlock) implBetaManagedAgentsAgentToolResultEv
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsAgentToolResultEventContentUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsTextBlock:
-//	case anthropic.BetaManagedAgentsImageBlock:
-//	case anthropic.BetaManagedAgentsDocumentBlock:
-//	case anthropic.BetaManagedAgentsSearchResultBlock:
+//	case Juglow.BetaManagedAgentsTextBlock:
+//	case Juglow.BetaManagedAgentsImageBlock:
+//	case Juglow.BetaManagedAgentsDocumentBlock:
+//	case Juglow.BetaManagedAgentsSearchResultBlock:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1225,7 +1225,7 @@ func (r *BetaManagedAgentsBase64ImageSourceParam) UnmarshalJSON(data []byte) err
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The caller's organization or workspace cannot make model requests — out of
+// The caller's organization or workspace cannot make model requests â€” out of
 // credits or spend limit reached. Retrying with the same credentials will not
 // succeed; the caller must resolve the billing state.
 type BetaManagedAgentsBillingError struct {
@@ -1282,9 +1282,9 @@ func (BetaManagedAgentsRetryStatusTerminal) implBetaManagedAgentsBillingErrorRet
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsBillingErrorRetryStatusUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsRetryStatusRetrying:
-//	case anthropic.BetaManagedAgentsRetryStatusExhausted:
-//	case anthropic.BetaManagedAgentsRetryStatusTerminal:
+//	case Juglow.BetaManagedAgentsRetryStatusRetrying:
+//	case Juglow.BetaManagedAgentsRetryStatusExhausted:
+//	case Juglow.BetaManagedAgentsRetryStatusTerminal:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1395,9 +1395,9 @@ func (BetaManagedAgentsRetryStatusTerminal) implBetaManagedAgentsCredentialHostU
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsRetryStatusRetrying:
-//	case anthropic.BetaManagedAgentsRetryStatusExhausted:
-//	case anthropic.BetaManagedAgentsRetryStatusTerminal:
+//	case Juglow.BetaManagedAgentsRetryStatusRetrying:
+//	case Juglow.BetaManagedAgentsRetryStatusExhausted:
+//	case Juglow.BetaManagedAgentsRetryStatusTerminal:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1524,10 +1524,10 @@ func (BetaManagedAgentsFileDocumentSource) implBetaManagedAgentsDocumentBlockSou
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsDocumentBlockSourceUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsBase64DocumentSource:
-//	case anthropic.BetaManagedAgentsPlainTextDocumentSource:
-//	case anthropic.BetaManagedAgentsURLDocumentSource:
-//	case anthropic.BetaManagedAgentsFileDocumentSource:
+//	case Juglow.BetaManagedAgentsBase64DocumentSource:
+//	case Juglow.BetaManagedAgentsPlainTextDocumentSource:
+//	case Juglow.BetaManagedAgentsURLDocumentSource:
+//	case Juglow.BetaManagedAgentsFileDocumentSource:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1914,10 +1914,10 @@ type betaManagedAgentsEventParamsUnionContent struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *[]anthropic.BetaManagedAgentsUserMessageEventParamsContentUnion:
-//	case *[]anthropic.BetaManagedAgentsUserCustomToolResultEventParamsContentUnion:
-//	case *[]anthropic.BetaManagedAgentsUserToolResultEventParamsContentUnion:
-//	case *[]anthropic.BetaManagedAgentsSystemContentBlockParam:
+//	case *[]Juglow.BetaManagedAgentsUserMessageEventParamsContentUnion:
+//	case *[]Juglow.BetaManagedAgentsUserCustomToolResultEventParamsContentUnion:
+//	case *[]Juglow.BetaManagedAgentsUserToolResultEventParamsContentUnion:
+//	case *[]Juglow.BetaManagedAgentsSystemContentBlockParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -2174,9 +2174,9 @@ func (BetaManagedAgentsFileImageSource) implBetaManagedAgentsImageBlockSourceUni
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsImageBlockSourceUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsBase64ImageSource:
-//	case anthropic.BetaManagedAgentsURLImageSource:
-//	case anthropic.BetaManagedAgentsFileImageSource:
+//	case Juglow.BetaManagedAgentsBase64ImageSource:
+//	case Juglow.BetaManagedAgentsURLImageSource:
+//	case Juglow.BetaManagedAgentsFileImageSource:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -2382,9 +2382,9 @@ func (BetaManagedAgentsRetryStatusTerminal) implBetaManagedAgentsMCPAuthenticati
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsMCPAuthenticationFailedErrorRetryStatusUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsRetryStatusRetrying:
-//	case anthropic.BetaManagedAgentsRetryStatusExhausted:
-//	case anthropic.BetaManagedAgentsRetryStatusTerminal:
+//	case Juglow.BetaManagedAgentsRetryStatusRetrying:
+//	case Juglow.BetaManagedAgentsRetryStatusExhausted:
+//	case Juglow.BetaManagedAgentsRetryStatusTerminal:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -2492,9 +2492,9 @@ func (BetaManagedAgentsRetryStatusTerminal) implBetaManagedAgentsMCPConnectionFa
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsMCPConnectionFailedErrorRetryStatusUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsRetryStatusRetrying:
-//	case anthropic.BetaManagedAgentsRetryStatusExhausted:
-//	case anthropic.BetaManagedAgentsRetryStatusTerminal:
+//	case Juglow.BetaManagedAgentsRetryStatusRetrying:
+//	case Juglow.BetaManagedAgentsRetryStatusExhausted:
+//	case Juglow.BetaManagedAgentsRetryStatusTerminal:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -2600,9 +2600,9 @@ func (BetaManagedAgentsRetryStatusTerminal) implBetaManagedAgentsModelOverloaded
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsModelOverloadedErrorRetryStatusUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsRetryStatusRetrying:
-//	case anthropic.BetaManagedAgentsRetryStatusExhausted:
-//	case anthropic.BetaManagedAgentsRetryStatusTerminal:
+//	case Juglow.BetaManagedAgentsRetryStatusRetrying:
+//	case Juglow.BetaManagedAgentsRetryStatusExhausted:
+//	case Juglow.BetaManagedAgentsRetryStatusTerminal:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -2705,9 +2705,9 @@ func (BetaManagedAgentsRetryStatusTerminal) implBetaManagedAgentsModelRateLimite
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsModelRateLimitedErrorRetryStatusUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsRetryStatusRetrying:
-//	case anthropic.BetaManagedAgentsRetryStatusExhausted:
-//	case anthropic.BetaManagedAgentsRetryStatusTerminal:
+//	case Juglow.BetaManagedAgentsRetryStatusRetrying:
+//	case Juglow.BetaManagedAgentsRetryStatusExhausted:
+//	case Juglow.BetaManagedAgentsRetryStatusTerminal:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -2810,9 +2810,9 @@ func (BetaManagedAgentsRetryStatusTerminal) implBetaManagedAgentsModelRequestFai
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsModelRequestFailedErrorRetryStatusUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsRetryStatusRetrying:
-//	case anthropic.BetaManagedAgentsRetryStatusExhausted:
-//	case anthropic.BetaManagedAgentsRetryStatusTerminal:
+//	case Juglow.BetaManagedAgentsRetryStatusRetrying:
+//	case Juglow.BetaManagedAgentsRetryStatusExhausted:
+//	case Juglow.BetaManagedAgentsRetryStatusTerminal:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -2928,7 +2928,7 @@ func (r *BetaManagedAgentsPlainTextDocumentSourceParam) UnmarshalJSON(data []byt
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Placeholder for content withheld by Anthropic model policy.
+// Placeholder for content withheld by Juglow model policy.
 type BetaManagedAgentsRedactedBlock struct {
 	// Any of "redacted".
 	Type BetaManagedAgentsRedactedBlockType `json:"type" api:"required"`
@@ -2962,7 +2962,7 @@ const (
 	BetaManagedAgentsRedactedBlockTypeRedacted BetaManagedAgentsRedactedBlockType = "redacted"
 )
 
-// Placeholder for content withheld by Anthropic model policy.
+// Placeholder for content withheld by Juglow model policy.
 //
 // The property Type is required.
 type BetaManagedAgentsRedactedBlockParam struct {
@@ -3323,13 +3323,13 @@ func (BetaManagedAgentsSystemMessageEvent) implBetaManagedAgentsSendSessionEvent
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsSendSessionEventsDataUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsUserMessageEvent:
-//	case anthropic.BetaManagedAgentsUserInterruptEvent:
-//	case anthropic.BetaManagedAgentsUserToolConfirmationEvent:
-//	case anthropic.BetaManagedAgentsUserCustomToolResultEvent:
-//	case anthropic.BetaManagedAgentsUserDefineOutcomeEvent:
-//	case anthropic.BetaManagedAgentsUserToolResultEvent:
-//	case anthropic.BetaManagedAgentsSystemMessageEvent:
+//	case Juglow.BetaManagedAgentsUserMessageEvent:
+//	case Juglow.BetaManagedAgentsUserInterruptEvent:
+//	case Juglow.BetaManagedAgentsUserToolConfirmationEvent:
+//	case Juglow.BetaManagedAgentsUserCustomToolResultEvent:
+//	case Juglow.BetaManagedAgentsUserDefineOutcomeEvent:
+//	case Juglow.BetaManagedAgentsUserToolResultEvent:
+//	case Juglow.BetaManagedAgentsSystemMessageEvent:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -3436,7 +3436,7 @@ func (r *BetaManagedAgentsSendSessionEventsDataUnionContent) UnmarshalJSON(data 
 
 // The agent stopped because the session's tracked list cost reached its budget, or
 // because its usage includes a model with no list price (which the budget cannot
-// measure). Raise the budget to continue — or, if raising is rejected because a
+// measure). Raise the budget to continue â€” or, if raising is rejected because a
 // model has no list price, remove the budget.
 type BetaManagedAgentsSessionBudgetReached struct {
 	// Any of "budget_reached".
@@ -3461,7 +3461,7 @@ const (
 	BetaManagedAgentsSessionBudgetReachedTypeBudgetReached BetaManagedAgentsSessionBudgetReachedType = "budget_reached"
 )
 
-// Emitted when a session has been deleted. Terminates any active event stream — no
+// Emitted when a session has been deleted. Terminates any active event stream â€” no
 // further events will be emitted for this session.
 type BetaManagedAgentsSessionDeletedEvent struct {
 	// Unique identifier for this event.
@@ -3612,14 +3612,14 @@ func (BetaManagedAgentsCredentialHostUnreachableError) implBetaManagedAgentsSess
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsSessionErrorEventErrorUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsUnknownError:
-//	case anthropic.BetaManagedAgentsModelOverloadedError:
-//	case anthropic.BetaManagedAgentsModelRateLimitedError:
-//	case anthropic.BetaManagedAgentsModelRequestFailedError:
-//	case anthropic.BetaManagedAgentsMCPConnectionFailedError:
-//	case anthropic.BetaManagedAgentsMCPAuthenticationFailedError:
-//	case anthropic.BetaManagedAgentsBillingError:
-//	case anthropic.BetaManagedAgentsCredentialHostUnreachableError:
+//	case Juglow.BetaManagedAgentsUnknownError:
+//	case Juglow.BetaManagedAgentsModelOverloadedError:
+//	case Juglow.BetaManagedAgentsModelRateLimitedError:
+//	case Juglow.BetaManagedAgentsModelRequestFailedError:
+//	case Juglow.BetaManagedAgentsMCPConnectionFailedError:
+//	case Juglow.BetaManagedAgentsMCPAuthenticationFailedError:
+//	case Juglow.BetaManagedAgentsBillingError:
+//	case Juglow.BetaManagedAgentsCredentialHostUnreachableError:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -3927,41 +3927,41 @@ func (BetaManagedAgentsSessionUsageEvent) implBetaManagedAgentsSessionEventUnion
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsSessionEventUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsUserMessageEvent:
-//	case anthropic.BetaManagedAgentsUserInterruptEvent:
-//	case anthropic.BetaManagedAgentsUserToolConfirmationEvent:
-//	case anthropic.BetaManagedAgentsUserCustomToolResultEvent:
-//	case anthropic.BetaManagedAgentsAgentCustomToolUseEvent:
-//	case anthropic.BetaManagedAgentsAgentMessageEvent:
-//	case anthropic.BetaManagedAgentsAgentThinkingEvent:
-//	case anthropic.BetaManagedAgentsAgentMCPToolUseEvent:
-//	case anthropic.BetaManagedAgentsAgentMCPToolResultEvent:
-//	case anthropic.BetaManagedAgentsAgentToolUseEvent:
-//	case anthropic.BetaManagedAgentsAgentToolResultEvent:
-//	case anthropic.BetaManagedAgentsAgentThreadMessageReceivedEvent:
-//	case anthropic.BetaManagedAgentsAgentThreadMessageSentEvent:
-//	case anthropic.BetaManagedAgentsAgentThreadContextCompactedEvent:
-//	case anthropic.BetaManagedAgentsSessionErrorEvent:
-//	case anthropic.BetaManagedAgentsSessionStatusRescheduledEvent:
-//	case anthropic.BetaManagedAgentsSessionStatusRunningEvent:
-//	case anthropic.BetaManagedAgentsSessionStatusIdleEvent:
-//	case anthropic.BetaManagedAgentsSessionStatusTerminatedEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadCreatedEvent:
-//	case anthropic.BetaManagedAgentsSpanOutcomeEvaluationStartEvent:
-//	case anthropic.BetaManagedAgentsSpanOutcomeEvaluationEndEvent:
-//	case anthropic.BetaManagedAgentsSpanModelRequestStartEvent:
-//	case anthropic.BetaManagedAgentsSpanModelRequestEndEvent:
-//	case anthropic.BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent:
-//	case anthropic.BetaManagedAgentsUserDefineOutcomeEvent:
-//	case anthropic.BetaManagedAgentsSessionDeletedEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadStatusRunningEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadStatusIdleEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadStatusTerminatedEvent:
-//	case anthropic.BetaManagedAgentsUserToolResultEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadStatusRescheduledEvent:
-//	case anthropic.BetaManagedAgentsSessionUpdatedEvent:
-//	case anthropic.BetaManagedAgentsSystemMessageEvent:
-//	case anthropic.BetaManagedAgentsSessionUsageEvent:
+//	case Juglow.BetaManagedAgentsUserMessageEvent:
+//	case Juglow.BetaManagedAgentsUserInterruptEvent:
+//	case Juglow.BetaManagedAgentsUserToolConfirmationEvent:
+//	case Juglow.BetaManagedAgentsUserCustomToolResultEvent:
+//	case Juglow.BetaManagedAgentsAgentCustomToolUseEvent:
+//	case Juglow.BetaManagedAgentsAgentMessageEvent:
+//	case Juglow.BetaManagedAgentsAgentThinkingEvent:
+//	case Juglow.BetaManagedAgentsAgentMCPToolUseEvent:
+//	case Juglow.BetaManagedAgentsAgentMCPToolResultEvent:
+//	case Juglow.BetaManagedAgentsAgentToolUseEvent:
+//	case Juglow.BetaManagedAgentsAgentToolResultEvent:
+//	case Juglow.BetaManagedAgentsAgentThreadMessageReceivedEvent:
+//	case Juglow.BetaManagedAgentsAgentThreadMessageSentEvent:
+//	case Juglow.BetaManagedAgentsAgentThreadContextCompactedEvent:
+//	case Juglow.BetaManagedAgentsSessionErrorEvent:
+//	case Juglow.BetaManagedAgentsSessionStatusRescheduledEvent:
+//	case Juglow.BetaManagedAgentsSessionStatusRunningEvent:
+//	case Juglow.BetaManagedAgentsSessionStatusIdleEvent:
+//	case Juglow.BetaManagedAgentsSessionStatusTerminatedEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadCreatedEvent:
+//	case Juglow.BetaManagedAgentsSpanOutcomeEvaluationStartEvent:
+//	case Juglow.BetaManagedAgentsSpanOutcomeEvaluationEndEvent:
+//	case Juglow.BetaManagedAgentsSpanModelRequestStartEvent:
+//	case Juglow.BetaManagedAgentsSpanModelRequestEndEvent:
+//	case Juglow.BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent:
+//	case Juglow.BetaManagedAgentsUserDefineOutcomeEvent:
+//	case Juglow.BetaManagedAgentsSessionDeletedEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadStatusRunningEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadStatusIdleEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadStatusTerminatedEvent:
+//	case Juglow.BetaManagedAgentsUserToolResultEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadStatusRescheduledEvent:
+//	case Juglow.BetaManagedAgentsSessionUpdatedEvent:
+//	case Juglow.BetaManagedAgentsSystemMessageEvent:
+//	case Juglow.BetaManagedAgentsSessionUsageEvent:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -4475,10 +4475,10 @@ func (BetaManagedAgentsSessionBudgetReached) implBetaManagedAgentsSessionStatusI
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsSessionStatusIdleEventStopReasonUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsSessionEndTurn:
-//	case anthropic.BetaManagedAgentsSessionRequiresAction:
-//	case anthropic.BetaManagedAgentsSessionRetriesExhausted:
-//	case anthropic.BetaManagedAgentsSessionBudgetReached:
+//	case Juglow.BetaManagedAgentsSessionEndTurn:
+//	case Juglow.BetaManagedAgentsSessionRequiresAction:
+//	case Juglow.BetaManagedAgentsSessionRetriesExhausted:
+//	case Juglow.BetaManagedAgentsSessionBudgetReached:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -4733,10 +4733,10 @@ func (BetaManagedAgentsSessionBudgetReached) implBetaManagedAgentsSessionThreadS
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsSessionThreadStatusIdleEventStopReasonUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsSessionEndTurn:
-//	case anthropic.BetaManagedAgentsSessionRequiresAction:
-//	case anthropic.BetaManagedAgentsSessionRetriesExhausted:
-//	case anthropic.BetaManagedAgentsSessionBudgetReached:
+//	case Juglow.BetaManagedAgentsSessionEndTurn:
+//	case Juglow.BetaManagedAgentsSessionRequiresAction:
+//	case Juglow.BetaManagedAgentsSessionRetriesExhausted:
+//	case Juglow.BetaManagedAgentsSessionBudgetReached:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -5055,7 +5055,7 @@ const (
 // Emitted when an outcome evaluation cycle completes. Carries the verdict and
 // aggregate token usage. A verdict of `needs_revision` means another evaluation
 // cycle follows; `satisfied`, `max_iterations_reached`, `failed`, or `interrupted`
-// are terminal — no further evaluation cycles follow.
+// are terminal â€” no further evaluation cycles follow.
 type BetaManagedAgentsSpanOutcomeEvaluationEndEvent struct {
 	// Unique identifier for this event.
 	ID string `json:"id" api:"required"`
@@ -5074,7 +5074,7 @@ type BetaManagedAgentsSpanOutcomeEvaluationEndEvent struct {
 	// Evaluation verdict. 'satisfied': criteria met, session goes idle.
 	// 'needs_revision': criteria not met, another revision cycle follows.
 	// 'max_iterations_reached': evaluation budget exhausted with criteria still unmet
-	// — one final acknowledgment turn follows before the session goes idle, but no
+	// â€” one final acknowledgment turn follows before the session goes idle, but no
 	// further evaluation runs. 'failed': grader determined the rubric does not apply
 	// to the deliverables. 'interrupted': user sent an interrupt while evaluation was
 	// in progress.
@@ -5421,43 +5421,43 @@ func (BetaManagedAgentsSessionUsageEvent) implBetaManagedAgentsStreamSessionEven
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsStreamSessionEventsUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsUserMessageEvent:
-//	case anthropic.BetaManagedAgentsUserInterruptEvent:
-//	case anthropic.BetaManagedAgentsUserToolConfirmationEvent:
-//	case anthropic.BetaManagedAgentsUserCustomToolResultEvent:
-//	case anthropic.BetaManagedAgentsAgentCustomToolUseEvent:
-//	case anthropic.BetaManagedAgentsAgentMessageEvent:
-//	case anthropic.BetaManagedAgentsAgentThinkingEvent:
-//	case anthropic.BetaManagedAgentsAgentMCPToolUseEvent:
-//	case anthropic.BetaManagedAgentsAgentMCPToolResultEvent:
-//	case anthropic.BetaManagedAgentsAgentToolUseEvent:
-//	case anthropic.BetaManagedAgentsAgentToolResultEvent:
-//	case anthropic.BetaManagedAgentsAgentThreadMessageReceivedEvent:
-//	case anthropic.BetaManagedAgentsAgentThreadMessageSentEvent:
-//	case anthropic.BetaManagedAgentsAgentThreadContextCompactedEvent:
-//	case anthropic.BetaManagedAgentsSessionErrorEvent:
-//	case anthropic.BetaManagedAgentsSessionStatusRescheduledEvent:
-//	case anthropic.BetaManagedAgentsSessionStatusRunningEvent:
-//	case anthropic.BetaManagedAgentsSessionStatusIdleEvent:
-//	case anthropic.BetaManagedAgentsSessionStatusTerminatedEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadCreatedEvent:
-//	case anthropic.BetaManagedAgentsSpanOutcomeEvaluationStartEvent:
-//	case anthropic.BetaManagedAgentsSpanOutcomeEvaluationEndEvent:
-//	case anthropic.BetaManagedAgentsSpanModelRequestStartEvent:
-//	case anthropic.BetaManagedAgentsSpanModelRequestEndEvent:
-//	case anthropic.BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent:
-//	case anthropic.BetaManagedAgentsUserDefineOutcomeEvent:
-//	case anthropic.BetaManagedAgentsSessionDeletedEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadStatusRunningEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadStatusIdleEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadStatusTerminatedEvent:
-//	case anthropic.BetaManagedAgentsUserToolResultEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadStatusRescheduledEvent:
-//	case anthropic.BetaManagedAgentsSessionUpdatedEvent:
-//	case anthropic.BetaManagedAgentsStartEvent:
-//	case anthropic.BetaManagedAgentsDeltaEvent:
-//	case anthropic.BetaManagedAgentsSystemMessageEvent:
-//	case anthropic.BetaManagedAgentsSessionUsageEvent:
+//	case Juglow.BetaManagedAgentsUserMessageEvent:
+//	case Juglow.BetaManagedAgentsUserInterruptEvent:
+//	case Juglow.BetaManagedAgentsUserToolConfirmationEvent:
+//	case Juglow.BetaManagedAgentsUserCustomToolResultEvent:
+//	case Juglow.BetaManagedAgentsAgentCustomToolUseEvent:
+//	case Juglow.BetaManagedAgentsAgentMessageEvent:
+//	case Juglow.BetaManagedAgentsAgentThinkingEvent:
+//	case Juglow.BetaManagedAgentsAgentMCPToolUseEvent:
+//	case Juglow.BetaManagedAgentsAgentMCPToolResultEvent:
+//	case Juglow.BetaManagedAgentsAgentToolUseEvent:
+//	case Juglow.BetaManagedAgentsAgentToolResultEvent:
+//	case Juglow.BetaManagedAgentsAgentThreadMessageReceivedEvent:
+//	case Juglow.BetaManagedAgentsAgentThreadMessageSentEvent:
+//	case Juglow.BetaManagedAgentsAgentThreadContextCompactedEvent:
+//	case Juglow.BetaManagedAgentsSessionErrorEvent:
+//	case Juglow.BetaManagedAgentsSessionStatusRescheduledEvent:
+//	case Juglow.BetaManagedAgentsSessionStatusRunningEvent:
+//	case Juglow.BetaManagedAgentsSessionStatusIdleEvent:
+//	case Juglow.BetaManagedAgentsSessionStatusTerminatedEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadCreatedEvent:
+//	case Juglow.BetaManagedAgentsSpanOutcomeEvaluationStartEvent:
+//	case Juglow.BetaManagedAgentsSpanOutcomeEvaluationEndEvent:
+//	case Juglow.BetaManagedAgentsSpanModelRequestStartEvent:
+//	case Juglow.BetaManagedAgentsSpanModelRequestEndEvent:
+//	case Juglow.BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent:
+//	case Juglow.BetaManagedAgentsUserDefineOutcomeEvent:
+//	case Juglow.BetaManagedAgentsSessionDeletedEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadStatusRunningEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadStatusIdleEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadStatusTerminatedEvent:
+//	case Juglow.BetaManagedAgentsUserToolResultEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadStatusRescheduledEvent:
+//	case Juglow.BetaManagedAgentsSessionUpdatedEvent:
+//	case Juglow.BetaManagedAgentsStartEvent:
+//	case Juglow.BetaManagedAgentsDeltaEvent:
+//	case Juglow.BetaManagedAgentsSystemMessageEvent:
+//	case Juglow.BetaManagedAgentsSessionUsageEvent:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -5952,7 +5952,7 @@ func (r *BetaManagedAgentsTextBlockParam) UnmarshalJSON(data []byte) error {
 
 // Rubric content provided inline as text.
 type BetaManagedAgentsTextRubric struct {
-	// Rubric content. Plain text or markdown — the grader treats it as freeform text.
+	// Rubric content. Plain text or markdown â€” the grader treats it as freeform text.
 	Content string `json:"content" api:"required"`
 	// Any of "text".
 	Type BetaManagedAgentsTextRubricType `json:"type" api:"required"`
@@ -5981,7 +5981,7 @@ const (
 //
 // The properties Content, Type are required.
 type BetaManagedAgentsTextRubricParams struct {
-	// Rubric content. Plain text or markdown — the grader treats it as freeform text.
+	// Rubric content. Plain text or markdown â€” the grader treats it as freeform text.
 	// Maximum 262144 characters.
 	Content string `json:"content" api:"required"`
 	// Any of "text".
@@ -6060,9 +6060,9 @@ func (BetaManagedAgentsRetryStatusTerminal) implBetaManagedAgentsUnknownErrorRet
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsUnknownErrorRetryStatusUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsRetryStatusRetrying:
-//	case anthropic.BetaManagedAgentsRetryStatusExhausted:
-//	case anthropic.BetaManagedAgentsRetryStatusTerminal:
+//	case Juglow.BetaManagedAgentsRetryStatusRetrying:
+//	case Juglow.BetaManagedAgentsRetryStatusExhausted:
+//	case Juglow.BetaManagedAgentsRetryStatusTerminal:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -6224,7 +6224,7 @@ type BetaManagedAgentsUserCustomToolResultEvent struct {
 	ID string `json:"id" api:"required"`
 	// The id of the `agent.custom_tool_use` event this result corresponds to, which
 	// can be found in the last `session.status_idle`
-	// [event's](https://platform.claude.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids)
+	// [event's](https://platform.haijun.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids)
 	// `stop_reason.event_ids` field.
 	CustomToolUseID string `json:"custom_tool_use_id" api:"required"`
 	// Any of "user.custom_tool_result".
@@ -6317,10 +6317,10 @@ func (BetaManagedAgentsSearchResultBlock) implBetaManagedAgentsUserCustomToolRes
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsUserCustomToolResultEventContentUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsTextBlock:
-//	case anthropic.BetaManagedAgentsImageBlock:
-//	case anthropic.BetaManagedAgentsDocumentBlock:
-//	case anthropic.BetaManagedAgentsSearchResultBlock:
+//	case Juglow.BetaManagedAgentsTextBlock:
+//	case Juglow.BetaManagedAgentsImageBlock:
+//	case Juglow.BetaManagedAgentsDocumentBlock:
+//	case Juglow.BetaManagedAgentsSearchResultBlock:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -6404,7 +6404,7 @@ func (r *BetaManagedAgentsUserCustomToolResultEventContentUnionSource) Unmarshal
 type BetaManagedAgentsUserCustomToolResultEventParams struct {
 	// The id of the `agent.custom_tool_use` event this result corresponds to, which
 	// can be found in the last `session.status_idle`
-	// [event's](https://platform.claude.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids)
+	// [event's](https://platform.haijun.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids)
 	// `stop_reason.event_ids` field.
 	CustomToolUseID string `json:"custom_tool_use_id" api:"required"`
 	// Any of "user.custom_tool_result".
@@ -6543,13 +6543,13 @@ type betaManagedAgentsUserCustomToolResultEventParamsContentUnionSource struct{ 
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaManagedAgentsBase64ImageSourceParam:
-//	case *anthropic.BetaManagedAgentsURLImageSourceParam:
-//	case *anthropic.BetaManagedAgentsFileImageSourceParam:
-//	case *anthropic.BetaManagedAgentsBase64DocumentSourceParam:
-//	case *anthropic.BetaManagedAgentsPlainTextDocumentSourceParam:
-//	case *anthropic.BetaManagedAgentsURLDocumentSourceParam:
-//	case *anthropic.BetaManagedAgentsFileDocumentSourceParam:
+//	case *Juglow.BetaManagedAgentsBase64ImageSourceParam:
+//	case *Juglow.BetaManagedAgentsURLImageSourceParam:
+//	case *Juglow.BetaManagedAgentsFileImageSourceParam:
+//	case *Juglow.BetaManagedAgentsBase64DocumentSourceParam:
+//	case *Juglow.BetaManagedAgentsPlainTextDocumentSourceParam:
+//	case *Juglow.BetaManagedAgentsURLDocumentSourceParam:
+//	case *Juglow.BetaManagedAgentsFileDocumentSourceParam:
 //	case *string:
 //	default:
 //	    fmt.Errorf("not present")
@@ -6695,8 +6695,8 @@ func (BetaManagedAgentsTextRubric) implBetaManagedAgentsUserDefineOutcomeEventRu
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsUserDefineOutcomeEventRubricUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsFileRubric:
-//	case anthropic.BetaManagedAgentsTextRubric:
+//	case Juglow.BetaManagedAgentsFileRubric:
+//	case Juglow.BetaManagedAgentsTextRubric:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -6744,7 +6744,7 @@ type BetaManagedAgentsUserDefineOutcomeEventParams struct {
 	Rubric BetaManagedAgentsUserDefineOutcomeEventParamsRubricUnion `json:"rubric,omitzero" api:"required"`
 	// Any of "user.define_outcome".
 	Type BetaManagedAgentsUserDefineOutcomeEventParamsType `json:"type,omitzero" api:"required"`
-	// Eval→revision cycles before giving up. Default 3, max 20.
+	// Evalâ†’revision cycles before giving up. Default 3, max 20.
 	MaxIterations param.Opt[int64] `json:"max_iterations,omitzero"`
 	paramObj
 }
@@ -6956,10 +6956,10 @@ func (BetaManagedAgentsRedactedBlock) implBetaManagedAgentsUserMessageEventConte
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsUserMessageEventContentUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsTextBlock:
-//	case anthropic.BetaManagedAgentsImageBlock:
-//	case anthropic.BetaManagedAgentsDocumentBlock:
-//	case anthropic.BetaManagedAgentsRedactedBlock:
+//	case Juglow.BetaManagedAgentsTextBlock:
+//	case Juglow.BetaManagedAgentsImageBlock:
+//	case Juglow.BetaManagedAgentsDocumentBlock:
+//	case Juglow.BetaManagedAgentsRedactedBlock:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -7149,13 +7149,13 @@ type betaManagedAgentsUserMessageEventParamsContentUnionSource struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaManagedAgentsBase64ImageSourceParam:
-//	case *anthropic.BetaManagedAgentsURLImageSourceParam:
-//	case *anthropic.BetaManagedAgentsFileImageSourceParam:
-//	case *anthropic.BetaManagedAgentsBase64DocumentSourceParam:
-//	case *anthropic.BetaManagedAgentsPlainTextDocumentSourceParam:
-//	case *anthropic.BetaManagedAgentsURLDocumentSourceParam:
-//	case *anthropic.BetaManagedAgentsFileDocumentSourceParam:
+//	case *Juglow.BetaManagedAgentsBase64ImageSourceParam:
+//	case *Juglow.BetaManagedAgentsURLImageSourceParam:
+//	case *Juglow.BetaManagedAgentsFileImageSourceParam:
+//	case *Juglow.BetaManagedAgentsBase64DocumentSourceParam:
+//	case *Juglow.BetaManagedAgentsPlainTextDocumentSourceParam:
+//	case *Juglow.BetaManagedAgentsURLDocumentSourceParam:
+//	case *Juglow.BetaManagedAgentsFileDocumentSourceParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -7242,7 +7242,7 @@ type BetaManagedAgentsUserToolConfirmationEvent struct {
 	Result BetaManagedAgentsUserToolConfirmationEventResult `json:"result" api:"required"`
 	// The id of the `agent.tool_use` or `agent.mcp_tool_use` event this result
 	// corresponds to, which can be found in the last `session.status_idle`
-	// [event's](https://platform.claude.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids)
+	// [event's](https://platform.haijun.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids)
 	// `stop_reason.event_ids` field.
 	ToolUseID string `json:"tool_use_id" api:"required"`
 	// Any of "user.tool_confirmation".
@@ -7300,7 +7300,7 @@ type BetaManagedAgentsUserToolConfirmationEventParams struct {
 	Result BetaManagedAgentsUserToolConfirmationEventParamsResult `json:"result,omitzero" api:"required"`
 	// The id of the `agent.tool_use` or `agent.mcp_tool_use` event this result
 	// corresponds to, which can be found in the last `session.status_idle`
-	// [event's](https://platform.claude.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids)
+	// [event's](https://platform.haijun.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids)
 	// `stop_reason.event_ids` field.
 	ToolUseID string `json:"tool_use_id" api:"required"`
 	// Any of "user.tool_confirmation".
@@ -7341,7 +7341,7 @@ const (
 type BetaManagedAgentsUserToolResultEventParams struct {
 	// The id of the `agent.tool_use` event this result corresponds to, which can be
 	// found in the last `session.status_idle`
-	// [event's](https://platform.claude.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids)
+	// [event's](https://platform.haijun.com/docs/en/api/beta/sessions/events/list#beta_managed_agents_session_requires_action.event_ids)
 	// `stop_reason.event_ids` field.
 	ToolUseID string `json:"tool_use_id" api:"required"`
 	// Any of "user.tool_result".
@@ -7480,13 +7480,13 @@ type betaManagedAgentsUserToolResultEventParamsContentUnionSource struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaManagedAgentsBase64ImageSourceParam:
-//	case *anthropic.BetaManagedAgentsURLImageSourceParam:
-//	case *anthropic.BetaManagedAgentsFileImageSourceParam:
-//	case *anthropic.BetaManagedAgentsBase64DocumentSourceParam:
-//	case *anthropic.BetaManagedAgentsPlainTextDocumentSourceParam:
-//	case *anthropic.BetaManagedAgentsURLDocumentSourceParam:
-//	case *anthropic.BetaManagedAgentsFileDocumentSourceParam:
+//	case *Juglow.BetaManagedAgentsBase64ImageSourceParam:
+//	case *Juglow.BetaManagedAgentsURLImageSourceParam:
+//	case *Juglow.BetaManagedAgentsFileImageSourceParam:
+//	case *Juglow.BetaManagedAgentsBase64DocumentSourceParam:
+//	case *Juglow.BetaManagedAgentsPlainTextDocumentSourceParam:
+//	case *Juglow.BetaManagedAgentsURLDocumentSourceParam:
+//	case *Juglow.BetaManagedAgentsFileDocumentSourceParam:
 //	case *string:
 //	default:
 //	    fmt.Errorf("not present")
@@ -7584,7 +7584,7 @@ type BetaSessionEventListParams struct {
 	// example, `user.message` or `agent.tool_use`). Omit to return all event types.
 	Types []string `query:"types,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -7610,7 +7610,7 @@ type BetaSessionEventSendParams struct {
 	// Events to send to the `session`.
 	Events []BetaManagedAgentsEventParamsUnion `json:"events,omitzero" api:"required"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -7627,15 +7627,15 @@ type BetaSessionEventStreamParams struct {
 	// `event_delta`) while an event is being produced, before the event itself
 	// arrives. Deltas are best-effort; when the final event is produced it carries the
 	// complete content. A model request that ends early (an error or interrupt)
-	// produces no final event — its terminal `span.model_request_end` closes the
+	// produces no final event â€” its terminal `span.model_request_end` closes the
 	// preview. Accepts one or more event types to preview and may be repeated:
 	// `agent.message` streams `content_delta` fragments; `agent.thinking` is
-	// start-only — a signal that the agent has begun extended thinking, concluded by
+	// start-only â€” a signal that the agent has begun extended thinking, concluded by
 	// the `agent.thinking` event itself. Only previews of the requested event types
 	// are sent.
 	EventDeltas []BetaManagedAgentsDeltaType `query:"event_deltas,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 

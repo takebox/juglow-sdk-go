@@ -1,8 +1,8 @@
-package paramutil
+﻿package paramutil
 
 import (
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
 )
 
 func AddrIfPresent[T comparable](v param.Opt[T]) *T {

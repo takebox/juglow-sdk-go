@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"bytes"
@@ -14,19 +14,19 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apiform"
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiform"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 // BetaFileService contains methods and other services that help with interacting
-// with the anthropic API.
+// with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -48,10 +48,10 @@ func NewBetaFileService(opts ...option.RequestOption) (r BetaFileService) {
 func (r *BetaFileService) List(ctx context.Context, params BetaFileListParams, opts ...option.RequestOption) (res *pagination.Page[FileMetadata], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "files-api-2025-04-14"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "files-api-2025-04-14"), option.WithResponseInto(&raw)}, opts...)
 	path := "v1/files?beta=true"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
 	if err != nil {
@@ -73,10 +73,10 @@ func (r *BetaFileService) ListAutoPaging(ctx context.Context, params BetaFileLis
 // Delete File
 func (r *BetaFileService) Delete(ctx context.Context, fileID string, body BetaFileDeleteParams, opts ...option.RequestOption) (res *DeletedFile, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "files-api-2025-04-14")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "files-api-2025-04-14")}, opts...)
 	if fileID == "" {
 		err = errors.New("missing required file_id parameter")
 		return nil, err
@@ -89,10 +89,10 @@ func (r *BetaFileService) Delete(ctx context.Context, fileID string, body BetaFi
 // Download File
 func (r *BetaFileService) Download(ctx context.Context, fileID string, query BetaFileDownloadParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	for _, v := range query.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "files-api-2025-04-14"), option.WithHeader("Accept", "application/binary")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "files-api-2025-04-14"), option.WithHeader("Accept", "application/binary")}, opts...)
 	if fileID == "" {
 		err = errors.New("missing required file_id parameter")
 		return nil, err
@@ -105,10 +105,10 @@ func (r *BetaFileService) Download(ctx context.Context, fileID string, query Bet
 // Get File Metadata
 func (r *BetaFileService) GetMetadata(ctx context.Context, fileID string, query BetaFileGetMetadataParams, opts ...option.RequestOption) (res *FileMetadata, err error) {
 	for _, v := range query.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "files-api-2025-04-14")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "files-api-2025-04-14")}, opts...)
 	if fileID == "" {
 		err = errors.New("missing required file_id parameter")
 		return nil, err
@@ -121,10 +121,10 @@ func (r *BetaFileService) GetMetadata(ctx context.Context, fileID string, query 
 // Upload File
 func (r *BetaFileService) Upload(ctx context.Context, params BetaFileUploadParams, opts ...option.RequestOption) (res *FileMetadata, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "files-api-2025-04-14")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "files-api-2025-04-14")}, opts...)
 	path := "v1/files?beta=true"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
@@ -241,7 +241,7 @@ type BetaFileListParams struct {
 	// (e.g., a session ID).
 	ScopeID param.Opt[string] `query:"scope_id,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -255,19 +255,19 @@ func (r BetaFileListParams) URLQuery() (v url.Values, err error) {
 
 type BetaFileDeleteParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaFileDownloadParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaFileGetMetadataParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -275,7 +275,7 @@ type BetaFileUploadParams struct {
 	// The file to upload
 	File io.Reader `json:"file,omitzero" api:"required" format:"binary"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 

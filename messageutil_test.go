@@ -1,17 +1,17 @@
-package anthropic_test
+﻿package Juglow_test
 
 import (
 	"encoding/json"
 	"reflect"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
-func unmarshalContentBlockParam(t *testing.T, jsonData string) anthropic.ContentBlockParamUnion {
+func unmarshalContentBlockParam(t *testing.T, jsonData string) Juglow.ContentBlockParamUnion {
 	t.Helper()
-	var block anthropic.ContentBlockUnion
+	var block Juglow.ContentBlockUnion
 	err := json.Unmarshal([]byte(jsonData), &block)
 	if err != nil {
 		t.Fatalf("Failed to unmarshal JSON: %v", err)
@@ -36,7 +36,7 @@ func TestContentBlockUnionToParam(t *testing.T) {
 
 	t.Run("WebSearchToolResultBlock with search results", func(t *testing.T) {
 		result := unmarshalContentBlockParam(t, `{"type":"web_search_tool_result","tool_use_id":"test123","content":[{"type":"web_search_result","title":"Test Web Title","url":"https://test.com","encrypted_content":"abc123","page_age":"1 day ago"}]}`)
-		var block anthropic.ContentBlockUnion
+		var block Juglow.ContentBlockUnion
 		if err := json.Unmarshal([]byte(`{"type":"web_search_tool_result","tool_use_id":"test123","content":[{"type":"web_search_result","title":"Test Web Title","url":"https://test.com","encrypted_content":"abc123","page_age":"1 day ago"}]}`), &block); err != nil {
 			t.Fatalf("Failed to unmarshal: %v", err)
 		}
@@ -95,7 +95,7 @@ func TestTextCitationToParamKeepsAllFields(t *testing.T) {
 
 // TestTextCitationToParamExhaustive guards against converter drift: every
 // citation variant round-trips fully-populated JSON, and every exported
-// field of the resulting param must be set — a spec-added field that the
+// field of the resulting param must be set â€” a spec-added field that the
 // converter forgets to copy fails here without a hand-written assertion.
 func TestTextCitationToParamExhaustive(t *testing.T) {
 	cases := map[string]string{

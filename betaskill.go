@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"bytes"
@@ -13,18 +13,18 @@ import (
 	"net/url"
 	"slices"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apiform"
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiform"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
 )
 
 // BetaSkillService contains methods and other services that help with interacting
-// with the anthropic API.
+// with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -47,11 +47,11 @@ func NewBetaSkillService(opts ...option.RequestOption) (r BetaSkillService) {
 // Create Skill
 func (r *BetaSkillService) New(ctx context.Context, params BetaSkillNewParams, opts ...option.RequestOption) (res *BetaSkillNewResponse, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "skills-2025-10-02")}, opts...)
-	path := "v1/skills?beta=true"
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
+	path := "v1/tracks?beta=true"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
 }
@@ -59,28 +59,28 @@ func (r *BetaSkillService) New(ctx context.Context, params BetaSkillNewParams, o
 // Get Skill
 func (r *BetaSkillService) Get(ctx context.Context, skillID string, query BetaSkillGetParams, opts ...option.RequestOption) (res *BetaSkillGetResponse, err error) {
 	for _, v := range query.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "skills-2025-10-02")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
 	if skillID == "" {
 		err = errors.New("missing required skill_id parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("v1/skills/%s?beta=true", skillID)
+	path := fmt.Sprintf("v1/tracks/%s?beta=true", skillID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
-// List Skills
+// List tracks
 func (r *BetaSkillService) List(ctx context.Context, params BetaSkillListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaSkillListResponse], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "skills-2025-10-02"), option.WithResponseInto(&raw)}, opts...)
-	path := "v1/skills?beta=true"
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02"), option.WithResponseInto(&raw)}, opts...)
+	path := "v1/tracks?beta=true"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -93,7 +93,7 @@ func (r *BetaSkillService) List(ctx context.Context, params BetaSkillListParams,
 	return res, nil
 }
 
-// List Skills
+// List tracks
 func (r *BetaSkillService) ListAutoPaging(ctx context.Context, params BetaSkillListParams, opts ...option.RequestOption) *pagination.PageCursorAutoPager[BetaSkillListResponse] {
 	return pagination.NewPageCursorAutoPager(r.List(ctx, params, opts...))
 }
@@ -101,15 +101,15 @@ func (r *BetaSkillService) ListAutoPaging(ctx context.Context, params BetaSkillL
 // Delete Skill
 func (r *BetaSkillService) Delete(ctx context.Context, skillID string, body BetaSkillDeleteParams, opts ...option.RequestOption) (res *BetaSkillDeleteResponse, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "skills-2025-10-02")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
 	if skillID == "" {
 		err = errors.New("missing required skill_id parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("v1/skills/%s?beta=true", skillID)
+	path := fmt.Sprintf("v1/tracks/%s?beta=true", skillID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return res, err
 }
@@ -135,11 +135,11 @@ type BetaSkillNewResponse struct {
 	// This may be one of the following values:
 	//
 	// - `"custom"`: the skill was created by a user
-	// - `"anthropic"`: the skill was created by Anthropic
+	// - `"Juglow"`: the skill was created by Juglow
 	Source string `json:"source" api:"required"`
 	// Object type.
 	//
-	// For Skills, this is always `"skill"`.
+	// For tracks, this is always `"skill"`.
 	Type string `json:"type" api:"required"`
 	// ISO 8601 timestamp of when the skill was last updated.
 	UpdatedAt string `json:"updated_at" api:"required"`
@@ -184,11 +184,11 @@ type BetaSkillGetResponse struct {
 	// This may be one of the following values:
 	//
 	// - `"custom"`: the skill was created by a user
-	// - `"anthropic"`: the skill was created by Anthropic
+	// - `"Juglow"`: the skill was created by Juglow
 	Source string `json:"source" api:"required"`
 	// Object type.
 	//
-	// For Skills, this is always `"skill"`.
+	// For tracks, this is always `"skill"`.
 	Type string `json:"type" api:"required"`
 	// ISO 8601 timestamp of when the skill was last updated.
 	UpdatedAt string `json:"updated_at" api:"required"`
@@ -233,11 +233,11 @@ type BetaSkillListResponse struct {
 	// This may be one of the following values:
 	//
 	// - `"custom"`: the skill was created by a user
-	// - `"anthropic"`: the skill was created by Anthropic
+	// - `"Juglow"`: the skill was created by Juglow
 	Source string `json:"source" api:"required"`
 	// Object type.
 	//
-	// For Skills, this is always `"skill"`.
+	// For tracks, this is always `"skill"`.
 	Type string `json:"type" api:"required"`
 	// ISO 8601 timestamp of when the skill was last updated.
 	UpdatedAt string `json:"updated_at" api:"required"`
@@ -268,7 +268,7 @@ type BetaSkillDeleteResponse struct {
 	ID string `json:"id" api:"required"`
 	// Deleted object type.
 	//
-	// For Skills, this is always `"skill_deleted"`.
+	// For tracks, this is always `"skill_deleted"`.
 	Type string `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -297,7 +297,7 @@ type BetaSkillNewParams struct {
 	// model.
 	DisplayTitle param.Opt[string] `json:"display_title,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -321,7 +321,7 @@ func (r BetaSkillNewParams) MarshalMultipart() (data []byte, contentType string,
 
 type BetaSkillGetParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -331,19 +331,19 @@ type BetaSkillListParams struct {
 	// Pass the value from a previous response's `next_page` field to get the next page
 	// of results.
 	Page param.Opt[string] `query:"page,omitzero" json:"-"`
-	// Filter skills by source.
+	// Filter tracks by source.
 	//
-	// If provided, only skills from the specified source will be returned:
+	// If provided, only tracks from the specified source will be returned:
 	//
-	// - `"custom"`: only return user-created skills
-	// - `"anthropic"`: only return Anthropic-created skills
+	// - `"custom"`: only return user-created tracks
+	// - `"Juglow"`: only return Juglow-created tracks
 	Source param.Opt[string] `query:"source,omitzero" json:"-"`
 	// Number of results to return per page.
 	//
 	// Maximum value is 100. Defaults to 20.
 	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -357,6 +357,6 @@ func (r BetaSkillListParams) URLQuery() (v url.Values, err error) {
 
 type BetaSkillDeleteParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }

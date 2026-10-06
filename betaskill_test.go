@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"bytes"
@@ -10,9 +10,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBetaSkillNewWithOptionalParams(t *testing.T) {
@@ -23,17 +23,17 @@ func TestBetaSkillNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Skills.New(context.TODO(), anthropic.BetaSkillNewParams{
+	_, err := client.Beta.tracks.New(context.TODO(), Juglow.BetaSkillNewParams{
 		Files:        []io.Reader{io.Reader(bytes.NewBuffer([]byte("Example data")))},
-		DisplayTitle: anthropic.String("display_title"),
-		Betas:        []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		DisplayTitle: Juglow.String("display_title"),
+		Betas:        []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -49,19 +49,19 @@ func TestBetaSkillGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Skills.Get(
+	_, err := client.Beta.tracks.Get(
 		context.TODO(),
 		"skill_id",
-		anthropic.BetaSkillGetParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaSkillGetParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -77,18 +77,18 @@ func TestBetaSkillListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Skills.List(context.TODO(), anthropic.BetaSkillListParams{
-		Limit:  anthropic.Int(0),
-		Page:   anthropic.String("page"),
-		Source: anthropic.String("source"),
-		Betas:  []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+	_, err := client.Beta.tracks.List(context.TODO(), Juglow.BetaSkillListParams{
+		Limit:  Juglow.Int(0),
+		Page:   Juglow.String("page"),
+		Source: Juglow.String("source"),
+		Betas:  []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -104,19 +104,19 @@ func TestBetaSkillDeleteWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Skills.Delete(
+	_, err := client.Beta.tracks.Delete(
 		context.TODO(),
 		"skill_id",
-		anthropic.BetaSkillDeleteParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaSkillDeleteParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

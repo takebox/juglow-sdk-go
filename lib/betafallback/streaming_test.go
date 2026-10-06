@@ -1,4 +1,4 @@
-package betafallback_test
+﻿package betafallback_test
 
 import (
 	"context"
@@ -10,14 +10,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/lib/betafallback"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/lib/betafallback"
+	"github.com/Juglows/Juglow-sdk-go/option"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
-// sseTransport returns canned responses in order — SSE by default — and
+// sseTransport returns canned responses in order â€” SSE by default â€” and
 // records request bodies and beta headers.
 type sseTransport struct {
 	t            *testing.T
@@ -34,7 +34,7 @@ func (s *sseTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	var body map[string]any
 	require.NoError(s.t, json.Unmarshal(buf, &body))
 	s.bodies = append(s.bodies, body)
-	s.betas = append(s.betas, req.Header.Values("anthropic-beta"))
+	s.betas = append(s.betas, req.Header.Values("Juglow-beta"))
 	require.NotEmpty(s.t, s.responses, "more requests than scripted responses")
 	next := s.responses[0]
 	s.responses = s.responses[1:]
@@ -91,10 +91,10 @@ const tokenWithClaim = `"fallback_credit_token":"credit-token-a","fallback_has_p
 const tokenNoClaim = `"fallback_credit_token":"credit-token-a","fallback_has_prefill_claim":false`
 const noToken = `"fallback_credit_token":null,"fallback_has_prefill_claim":null`
 
-func streamingFallbackClient(t *testing.T, transport *sseTransport, fallbacks []anthropic.BetaFallbackParam) anthropic.Client {
+func streamingFallbackClient(t *testing.T, transport *sseTransport, fallbacks []Juglow.BetaFallbackParam) Juglow.Client {
 	transport.t = t
-	return anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	return Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{Transport: transport}),
 		option.WithMaxRetries(0),
 		option.WithMiddleware(betafallback.BetaRefusalFallbackMiddleware(fallbacks)),
@@ -103,10 +103,10 @@ func streamingFallbackClient(t *testing.T, transport *sseTransport, fallbacks []
 
 // collectStream drains a streaming call, returning the accumulated message,
 // the (type, index) sequence, and each message_delta's raw JSON.
-func collectStream(t *testing.T, client anthropic.Client, ctx context.Context, params anthropic.BetaMessageNewParams, opts ...option.RequestOption) (anthropic.BetaMessage, []string, []string) {
+func collectStream(t *testing.T, client Juglow.Client, ctx context.Context, params Juglow.BetaMessageNewParams, opts ...option.RequestOption) (Juglow.BetaMessage, []string, []string) {
 	stream := client.Beta.Messages.NewStreaming(ctx, params, opts...)
 	defer stream.Close()
-	var msg anthropic.BetaMessage
+	var msg Juglow.BetaMessage
 	var sequence []string
 	var deltas []string
 	for stream.Next() {
@@ -146,7 +146,7 @@ func TestStreamingRefusalSplicesIntoOneMessage(t *testing.T) {
 	transport := &sseTransport{responses: []string{
 		refusalStream("primary-model", tokenWithClaim), servedStream("fallback-model"),
 	}}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	msg, sequence, deltas := collectStream(t, client, context.Background(), fallbackTestParams)
 
@@ -159,12 +159,12 @@ func TestStreamingRefusalSplicesIntoOneMessage(t *testing.T) {
 		"message_delta", "message_stop",
 	}, sequence)
 
-	assert.Equal(t, anthropic.BetaStopReasonEndTurn, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonEndTurn, msg.StopReason)
 	require.Len(t, msg.Content, 3)
 	boundary := msg.Content[1].AsFallback()
-	assert.Equal(t, anthropic.Model("primary-model"), boundary.From.Model)
-	assert.Equal(t, anthropic.Model("fallback-model"), boundary.To.Model)
-	assert.Equal(t, anthropic.Model("fallback-model"), msg.Model, "the seam relabels the accumulated model")
+	assert.Equal(t, Juglow.Model("primary-model"), boundary.From.Model)
+	assert.Equal(t, Juglow.Model("fallback-model"), boundary.To.Model)
+	assert.Equal(t, Juglow.Model("fallback-model"), msg.Model, "the seam relabels the accumulated model")
 
 	// Terminal usage.iterations carries the whole chain.
 	require.Len(t, deltas, 1)
@@ -188,7 +188,7 @@ func TestStreamingRefusalSplicesIntoOneMessage(t *testing.T) {
 	assert.Equal(t, "assistant", claim["role"])
 	assert.Equal(t, []any{map[string]any{"type": "text", "text": "partial "}}, claim["content"], "echoed verbatim, whitespace included")
 	for i, betas := range transport.betas {
-		assert.Contains(t, betas, string(anthropic.AnthropicBetaFallbackCredit2026_07_01), "request %d", i)
+		assert.Contains(t, betas, string(Juglow.JuglowBetaFallbackCredit2026_07_01), "request %d", i)
 	}
 }
 
@@ -196,7 +196,7 @@ func TestStreamingClaimFalseRetriesTheExactBody(t *testing.T) {
 	transport := &sseTransport{responses: []string{
 		refusalStream("primary-model", tokenNoClaim), servedStream("fallback-model"),
 	}}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	_, _, _ = collectStream(t, client, context.Background(), fallbackTestParams)
 	require.Len(t, transport.bodies, 2)
@@ -209,10 +209,10 @@ func TestStreamingMidStreamTokenlessRefusalSurfacesUntouched(t *testing.T) {
 	// Content already streamed and no token minted: no retry, the refusal
 	// passes through as-is.
 	transport := &sseTransport{responses: []string{refusalStream("primary-model", noToken)}}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	msg, sequence, _ := collectStream(t, client, context.Background(), fallbackTestParams)
-	assert.Equal(t, anthropic.BetaStopReasonRefusal, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonRefusal, msg.StopReason)
 	require.Len(t, transport.bodies, 1)
 	assert.Contains(t, sequence, "message_stop")
 	for _, block := range msg.Content {
@@ -221,16 +221,16 @@ func TestStreamingMidStreamTokenlessRefusalSurfacesUntouched(t *testing.T) {
 }
 
 func TestStreamingPreStreamTokenlessRefusalRetries(t *testing.T) {
-	// Nothing streamed yet, so the retry is free and invisible — token or no
+	// Nothing streamed yet, so the retry is free and invisible â€” token or no
 	// token.
 	preStream := event("message_start", `{"type":"message_start","message":{"type":"message","id":"msg_primary","role":"assistant","content":[],"model":"primary-model","stop_reason":null,"stop_sequence":null,"stop_details":null,"usage":{"input_tokens":10,"output_tokens":1,"cache_creation_input_tokens":0,"cache_read_input_tokens":0}}}`) +
 		event("message_delta", `{"type":"message_delta","delta":{"stop_reason":"refusal","stop_sequence":null,"stop_details":{"type":"refusal","category":"x","explanation":null,"fallback_credit_token":null}},"usage":{"input_tokens":10,"output_tokens":1,"cache_read_input_tokens":0,"cache_creation_input_tokens":0}}`) +
 		event("message_stop", `{"type":"message_stop"}`)
 	transport := &sseTransport{responses: []string{preStream, servedStream("fallback-model")}}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	msg, sequence, _ := collectStream(t, client, context.Background(), fallbackTestParams)
-	assert.Equal(t, anthropic.BetaStopReasonEndTurn, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonEndTurn, msg.StopReason)
 	require.Len(t, transport.bodies, 2)
 	_, hasToken := transport.bodies[1]["fallback_credit_token"]
 	assert.False(t, hasToken, "no token minted, none sent")
@@ -239,7 +239,7 @@ func TestStreamingPreStreamTokenlessRefusalRetries(t *testing.T) {
 	// queued ahead of the serving hop's content, the primary's message id.
 	assert.Equal(t, "message_start", sequence[0])
 	require.Len(t, msg.Content, 2)
-	assert.Equal(t, anthropic.Model("primary-model"), msg.Content[0].AsFallback().From.Model)
+	assert.Equal(t, Juglow.Model("primary-model"), msg.Content[0].AsFallback().From.Model)
 	assert.Equal(t, "msg_primary", msg.ID, "the envelope keeps the primary's message id")
 }
 
@@ -250,10 +250,10 @@ func TestStreamingFailedHopSkipsToTheNextEntry(t *testing.T) {
 		responses: []string{refusalStream("primary-model", tokenWithClaim), `{}`, servedStream("fallback-2")},
 		statuses:  []int{200, 500, 200},
 	}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-1"}, {Model: "fallback-2"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-1"}, {Model: "fallback-2"}})
 
 	msg, _, _ := collectStream(t, client, context.Background(), fallbackTestParams)
-	assert.Equal(t, anthropic.BetaStopReasonEndTurn, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonEndTurn, msg.StopReason)
 	require.Len(t, transport.bodies, 3)
 	assert.Equal(t, creditTokenBody("credit-token-a"), transport.bodies[2]["fallback_credit_token"])
 	assert.Len(t, transport.bodies[2]["messages"].([]any), 2, "the claim carries to the next entry")
@@ -272,10 +272,10 @@ func TestStreamingExhaustedChainDegradesToTheHeldRefusal(t *testing.T) {
 		responses: []string{refusalStream("primary-model", tokenNoClaim), `{}`, `{}`},
 		statuses:  []int{200, 500, 503},
 	}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-1"}, {Model: "fallback-2"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-1"}, {Model: "fallback-2"}})
 
 	msg, sequence, deltas := collectStream(t, client, context.Background(), fallbackTestParams)
-	assert.Equal(t, anthropic.BetaStopReasonRefusal, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonRefusal, msg.StopReason)
 	assert.Contains(t, sequence, "message_stop")
 	for _, block := range msg.Content {
 		assert.NotEqual(t, "fallback", string(block.Type), "failed hops leave no boundary")
@@ -293,11 +293,11 @@ func TestStreamingRateLimitedHopRecommendsTheUnreachableModel(t *testing.T) {
 		responses: []string{refusalStream("primary-model", tokenNoClaim), `{}`},
 		statuses:  []int{200, 429},
 	}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	msg, _, _ := collectStream(t, client, context.Background(), fallbackTestParams)
-	assert.Equal(t, anthropic.BetaStopReasonRefusal, msg.StopReason)
-	assert.Equal(t, anthropic.Model("fallback-model"), msg.StopDetails.RecommendedModel)
+	assert.Equal(t, Juglow.BetaStopReasonRefusal, msg.StopReason)
+	assert.Equal(t, Juglow.Model("fallback-model"), msg.StopDetails.RecommendedModel)
 }
 
 func TestStreaming400OnAClaimedAttemptRetriesTheLastEntryWithoutTheClaim(t *testing.T) {
@@ -305,10 +305,10 @@ func TestStreaming400OnAClaimedAttemptRetriesTheLastEntryWithoutTheClaim(t *test
 		responses: []string{refusalStream("primary-model", tokenWithClaim), `{}`, servedStream("fallback-model")},
 		statuses:  []int{200, 400, 200},
 	}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	msg, _, _ := collectStream(t, client, context.Background(), fallbackTestParams)
-	assert.Equal(t, anthropic.BetaStopReasonEndTurn, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonEndTurn, msg.StopReason)
 	require.Len(t, transport.bodies, 3)
 	assert.Len(t, transport.bodies[1]["messages"].([]any), 2, "first attempt carries the claim")
 	assert.Len(t, transport.bodies[2]["messages"].([]any), 1, "the degrade drops the claim turn")
@@ -323,7 +323,7 @@ func TestStreamingHopSuppliedIterationsRideThroughLabeled(t *testing.T) {
 	refusal := strings.Replace(refusalStream("primary-model", tokenNoClaim),
 		`"cache_creation_input_tokens":0}}`, `"cache_creation_input_tokens":0`+supplied+`}}`, 1)
 	transport := &sseTransport{responses: []string{refusal, servedStream("fallback-model")}}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	_, _, deltas := collectStream(t, client, context.Background(), fallbackTestParams)
 	require.NotEmpty(t, deltas)
@@ -342,10 +342,10 @@ func TestStreaming400OnATokenedAttemptRetriesTheLastEntryTokenless(t *testing.T)
 		responses: []string{refusalStream("primary-model", tokenNoClaim), `{}`, servedStream("fallback-model")},
 		statuses:  []int{200, 400, 200},
 	}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	msg, _, _ := collectStream(t, client, context.Background(), fallbackTestParams)
-	assert.Equal(t, anthropic.BetaStopReasonEndTurn, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonEndTurn, msg.StopReason)
 	require.Len(t, transport.bodies, 3)
 	assert.Equal(t, creditTokenBody("credit-token-a"), transport.bodies[1]["fallback_credit_token"], "first attempt redeems")
 	assert.Equal(t, "fallback-model", transport.bodies[2]["model"], "same entry retried")
@@ -357,7 +357,7 @@ func TestStreamingTrimsReplayedFallbackTurns(t *testing.T) {
 	// The refused model's thinking and unfinished tool call are removed
 	// along with the fallback block; the serving model's text stays.
 	transport := &sseTransport{responses: []string{servedStream("fallback-model")}}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	params := fallbackTestParams
 	msg, _, _ := collectStream(t, client, context.Background(), params,
@@ -372,7 +372,7 @@ func TestStreamingTrimsReplayedFallbackTurns(t *testing.T) {
 			}},
 			{"role": "user", "content": "more"},
 		}))
-	assert.Equal(t, anthropic.BetaStopReasonEndTurn, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonEndTurn, msg.StopReason)
 
 	require.Len(t, transport.bodies, 1)
 	sent := transport.bodies[0]["messages"].([]any)[1].(map[string]any)["content"].([]any)
@@ -387,10 +387,10 @@ func TestStreamingMidBlockRefusalClosesTheOpenBlock(t *testing.T) {
 	transport := &sseTransport{responses: []string{
 		cutRefusalStream("primary-model", tokenWithClaim), servedStream("fallback-model"),
 	}}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	msg, sequence, _ := collectStream(t, client, context.Background(), fallbackTestParams)
-	assert.Equal(t, anthropic.BetaStopReasonEndTurn, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonEndTurn, msg.StopReason)
 	assert.Contains(t, sequence, "content_block_stop:0", "the cut-open block is closed before the boundary")
 
 	// The synthetic close does not damage the claim: the partial still rides.
@@ -401,13 +401,13 @@ func TestStreamingMidBlockRefusalClosesTheOpenBlock(t *testing.T) {
 
 func TestStreamingPinnedConversationStartsAtTheFallback(t *testing.T) {
 	transport := &sseTransport{responses: []string{servedStream("fallback-model")}}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	state := &betafallback.BetaFallbackState{}
 	state.SetIndex(0)
 	msg, _, _ := collectStream(t, client, context.Background(), fallbackTestParams,
 		betafallback.WithBetaFallbackState(state))
-	assert.Equal(t, anthropic.BetaStopReasonEndTurn, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonEndTurn, msg.StopReason)
 	require.Len(t, transport.bodies, 1)
 	assert.Equal(t, "fallback-model", transport.bodies[0]["model"])
 	_, hasToken := transport.bodies[0]["fallback_credit_token"]
@@ -416,7 +416,7 @@ func TestStreamingPinnedConversationStartsAtTheFallback(t *testing.T) {
 
 func TestStreamingPinPastTheChainErrors(t *testing.T) {
 	transport := &sseTransport{responses: []string{servedStream("fallback-model")}}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	stale := &betafallback.BetaFallbackState{}
 	stale.SetIndex(1)
@@ -431,11 +431,11 @@ func TestStreamingServerSideFallbacksError(t *testing.T) {
 	// Only one chain can adjudicate refusals; erroring beats silently
 	// picking one.
 	transport := &sseTransport{responses: []string{servedStream("server-fallback")}}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	params := fallbackTestParams
-	params.Fallbacks = anthropic.BetaFallbacksParamUnion{
-		OfBetaFallbackArray: []anthropic.BetaFallbackParam{{Model: "server-fallback"}},
+	params.Fallbacks = Juglow.BetaFallbacksParamUnion{
+		OfBetaFallbackArray: []Juglow.BetaFallbackParam{{Model: "server-fallback"}},
 	}
 	stream := client.Beta.Messages.NewStreaming(context.Background(), params)
 	for stream.Next() {
@@ -452,7 +452,7 @@ func TestStreamingEmptyChainIgnoresAPin(t *testing.T) {
 	state.SetIndex(3)
 	msg, _, _ := collectStream(t, client, context.Background(), fallbackTestParams,
 		betafallback.WithBetaFallbackState(state))
-	assert.Equal(t, anthropic.BetaStopReasonEndTurn, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonEndTurn, msg.StopReason)
 	require.Len(t, transport.bodies, 1)
 	assert.Equal(t, "primary-model", transport.bodies[0]["model"], "no pin to apply against an empty chain")
 	assert.Empty(t, transport.betas[0])
@@ -463,19 +463,19 @@ func TestStreamingNonSSEHopIsAFailureNotTruncation(t *testing.T) {
 		responses:    []string{refusalStream("primary-model", tokenNoClaim), `{"type": "message"}`},
 		contentTypes: []string{"text/event-stream", "application/json"},
 	}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	msg, sequence, _ := collectStream(t, client, context.Background(), fallbackTestParams)
-	assert.Equal(t, anthropic.BetaStopReasonRefusal, msg.StopReason, "must terminate, not truncate")
+	assert.Equal(t, Juglow.BetaStopReasonRefusal, msg.StopReason, "must terminate, not truncate")
 	assert.Contains(t, sequence, "message_stop")
 }
 
 func TestStreamingEncodedResponsePassesThroughUnread(t *testing.T) {
 	// A still-encoded body (caller-set Accept-Encoding) can't be spliced.
 	middleware := betafallback.BetaRefusalFallbackMiddleware(
-		[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+		[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 	)
-	req, err := http.NewRequest(http.MethodPost, "https://api.anthropic.com/v1/messages?beta=true",
+	req, err := http.NewRequest(http.MethodPost, "https://platform.juglow.my.id/v1/messages?beta=true",
 		strings.NewReader(`{"model": "primary-model", "messages": [], "max_tokens": 16, "stream": true}`))
 	require.NoError(t, err)
 	req.Header.Set("Content-Type", "application/json")
@@ -504,8 +504,8 @@ func TestStreamingFallbackRedirectsThroughAPlatformTransform(t *testing.T) {
 		refusalStream("primary-model", tokenNoClaim), servedStream("fallback-model"),
 	}}
 	transport.t = t
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{Transport: roundTripFunc(func(req *http.Request) (*http.Response, error) {
 			paths = append(paths, req.URL.Path)
 			sig := req.Header.Get("X-Fake-Signature")
@@ -518,14 +518,14 @@ func TestStreamingFallbackRedirectsThroughAPlatformTransform(t *testing.T) {
 		option.WithMaxRetries(0),
 		option.WithMiddleware(
 			betafallback.BetaRefusalFallbackMiddleware(
-				[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+				[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 			),
 			fakePlatformTransform,
 		),
 	)
 
 	msg, _, _ := collectStream(t, client, context.Background(), fallbackTestParams)
-	assert.Equal(t, anthropic.BetaStopReasonEndTurn, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonEndTurn, msg.StopReason)
 	assert.Equal(t, []string{"/model/primary-model/invoke", "/model/fallback-model/invoke"}, paths)
 	require.Len(t, transport.bodies, 2)
 	_, hasModel := transport.bodies[1]["model"]

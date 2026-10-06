@@ -1,4 +1,4 @@
-package config_test
+﻿package config_test
 
 import (
 	"encoding/json"
@@ -10,19 +10,19 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/config"
 )
 
 func TestDefaultDir_HonorsEnv(t *testing.T) {
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
 	if got := config.DefaultDir(); got != dir {
 		t.Errorf("DefaultDir() = %q, want %q", got, dir)
 	}
 }
 
 func TestPathHelpers(t *testing.T) {
-	dir := "/etc/anthropic"
+	dir := "/etc/Juglow"
 	want := map[string]string{
 		"profile":     filepath.Join(dir, "configs", "work.json"),
 		"credentials": filepath.Join(dir, "credentials", "work.json"),
@@ -40,7 +40,7 @@ func TestPathHelpers(t *testing.T) {
 }
 
 func TestDirHelpers_MatchPerProfileParents(t *testing.T) {
-	dir := "/etc/anthropic"
+	dir := "/etc/Juglow"
 	// ProfilesDir / CredentialsDir must be exactly the parent of the
 	// per-profile paths so callers that previously derived the directory via
 	// filepath.Dir(ProfilePath(dir, "_")) get the same result.
@@ -55,8 +55,8 @@ func TestDirHelpers_MatchPerProfileParents(t *testing.T) {
 func TestLoadProfile(t *testing.T) {
 	dir := t.TempDir()
 	// Point env resolution at a different profile so we prove LoadProfile
-	// bypasses ANTHROPIC_PROFILE / active_config.
-	t.Setenv("ANTHROPIC_PROFILE", "not-the-one-we-load")
+	// bypasses Juglow_PROFILE / active_config.
+	t.Setenv("Juglow_PROFILE", "not-the-one-we-load")
 
 	cfg := &config.Config{
 		BaseURL:            "https://api.example.com",
@@ -197,8 +197,8 @@ func TestSaveProfile_WritesFileWithMode0644(t *testing.T) {
 
 func TestSaveProfile_LoadConfigRoundTrip(t *testing.T) {
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "rt")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "rt")
 
 	original := &config.Config{
 		BaseURL:        "https://rt.example.com",
@@ -239,15 +239,15 @@ func TestSaveProfile_LoadConfigRoundTrip(t *testing.T) {
 }
 
 // TestSaveProfile_LoadSaveKeepsCredentialsPathBlank verifies that a
-// load → save cycle doesn't rewrite a blank credentials_path into an
+// load â†’ save cycle doesn't rewrite a blank credentials_path into an
 // absolute path pinned to the current $HOME. LoadConfig defaults the
 // field at read time for the SDK's own consumers; SaveProfile must
 // strip that default back out before writing so the on-disk file stays
 // relocatable.
 func TestSaveProfile_LoadSaveKeepsCredentialsPathBlank(t *testing.T) {
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "portable")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "portable")
 
 	// Initial save: caller never sets CredentialsPath.
 	original := &config.Config{
@@ -267,7 +267,7 @@ func TestSaveProfile_LoadSaveKeepsCredentialsPathBlank(t *testing.T) {
 		t.Fatal("LoadConfig should populate the default CredentialsPath for runtime use")
 	}
 
-	// Save again — the default path must not be persisted back.
+	// Save again â€” the default path must not be persisted back.
 	if err := config.SaveProfile(dir, "portable", loaded); err != nil {
 		t.Fatal(err)
 	}
@@ -492,8 +492,8 @@ func TestLoadProfile_MissingVersionDecodesAsZero(t *testing.T) {
 	if err := os.WriteFile(path, []byte(body), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "old")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "old")
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		t.Fatalf("LoadConfig on no-version file: %v", err)
@@ -535,9 +535,9 @@ func TestSetActiveProfile_WritesPointer(t *testing.T) {
 
 func TestSetActiveProfile_SwitchesLoadedProfile(t *testing.T) {
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "")
-	os.Unsetenv("ANTHROPIC_PROFILE")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "")
+	os.Unsetenv("Juglow_PROFILE")
 
 	for _, name := range []string{"alpha", "beta"} {
 		cfg := &config.Config{
@@ -623,7 +623,7 @@ func TestDeleteProfile_Idempotent(t *testing.T) {
 // TestWriteCredentials_UniqueTmpFilename verifies that two concurrent
 // writes to the same target use different sibling tmp filenames so they
 // don't trample each other. The previous fixed "<path>.tmp" was a race
-// — a second writer would overwrite the first writer's tmp before its
+// â€” a second writer would overwrite the first writer's tmp before its
 // rename completed.
 func TestWriteCredentials_UniqueTmpFilename(t *testing.T) {
 	dir := t.TempDir()
@@ -651,7 +651,7 @@ func TestWriteCredentials_UniqueTmpFilename(t *testing.T) {
 // TestWriteCredentials_RejectsSymlinkTarget verifies that an attacker who
 // pre-plants a symlink at the credentials path cannot redirect the write.
 // The read-side check (checkCredentialsFileSafety) is insufficient on its
-// own — the write path is the injection vector for an attacker who can
+// own â€” the write path is the injection vector for an attacker who can
 // place a symlink before first-write.
 func TestWriteCredentials_RejectsSymlinkTarget(t *testing.T) {
 	dir := t.TempDir()

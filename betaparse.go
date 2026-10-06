@@ -1,4 +1,4 @@
-package anthropic
+﻿package Juglow
 
 import (
 	"encoding/json"
@@ -13,13 +13,13 @@ import (
 // ErrStructuredOutputParse is returned (wrapped) by [BetaMessageService.New]
 // when the API request succeeds but the response body can't be unmarshaled
 // into the struct pointer passed as Schema. The *BetaMessage is still
-// returned in that case — check it alongside the error:
+// returned in that case â€” check it alongside the error:
 //
 //	msg, err := client.Beta.Messages.New(ctx, params)
-//	if errors.Is(err, anthropic.ErrStructuredOutputParse) {
+//	if errors.Is(err, Juglow.ErrStructuredOutputParse) {
 //	    // msg is valid; the model's response didn't match the struct shape.
 //	}
-var ErrStructuredOutputParse = errors.New("anthropic: failed to parse structured output")
+var ErrStructuredOutputParse = errors.New("Juglow: failed to parse structured output")
 
 // schemaCache caches the final json.RawMessage (post-transform) keyed by
 // reflect.Type, so repeated requests with the same struct type skip reflection,
@@ -29,7 +29,7 @@ var ErrStructuredOutputParse = errors.New("anthropic: failed to parse structured
 // uses a fixed set of struct types (typically < 100, ~1KB each). Programs that
 // synthesize types dynamically via reflect.StructOf with per-request shapes
 // should precompute their schemas instead of relying on this cache.
-var schemaCache sync.Map // reflect.Type → json.RawMessage
+var schemaCache sync.Map // reflect.Type â†’ json.RawMessage
 
 // schemaToRaw converts a value to a json.RawMessage JSON schema suitable for the wire.
 // If v is already a json.RawMessage, it is returned as-is.
@@ -47,17 +47,17 @@ func schemaToRaw(v any) (json.RawMessage, error) {
 	case map[string]any:
 		b, err := json.Marshal(s)
 		if err != nil {
-			return nil, fmt.Errorf("anthropic: failed to marshal schema: %w", err)
+			return nil, fmt.Errorf("Juglow: failed to marshal schema: %w", err)
 		}
 		return json.RawMessage(b), nil
 	}
 
 	val := reflect.ValueOf(v)
 	if val.Kind() != reflect.Ptr || val.IsNil() {
-		return nil, fmt.Errorf("anthropic: Schema must be a non-nil pointer to a struct, map[string]any, or json.RawMessage, got %T", v)
+		return nil, fmt.Errorf("Juglow: Schema must be a non-nil pointer to a struct, map[string]any, or json.RawMessage, got %T", v)
 	}
 	if val.Elem().Kind() != reflect.Struct {
-		return nil, fmt.Errorf("anthropic: Schema must be a pointer to a struct, got pointer to %s", val.Elem().Kind())
+		return nil, fmt.Errorf("Juglow: Schema must be a pointer to a struct, got pointer to %s", val.Elem().Kind())
 	}
 
 	// Cache the final json.RawMessage by reflect.Type so repeated requests
@@ -75,7 +75,7 @@ func schemaToRaw(v any) (json.RawMessage, error) {
 
 	result, err := json.Marshal(schema)
 	if err != nil {
-		return nil, fmt.Errorf("anthropic: failed to marshal JSON schema: %w", err)
+		return nil, fmt.Errorf("Juglow: failed to marshal JSON schema: %w", err)
 	}
 
 	raw := json.RawMessage(result)

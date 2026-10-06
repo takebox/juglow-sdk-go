@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -11,10 +11,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 func TestMessageNewWithOptionalParams(t *testing.T) {
@@ -25,80 +25,80 @@ func TestMessageNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
+	_, err := client.Messages.New(context.TODO(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{{
-			Content: []anthropic.ContentBlockParamUnion{{
-				OfText: &anthropic.TextBlockParam{
+		Messages: []Juglow.MessageParam{{
+			Content: []Juglow.ContentBlockParamUnion{{
+				OfText: &Juglow.TextBlockParam{
 					Text: "x",
-					CacheControl: anthropic.CacheControlEphemeralParam{
-						TTL: anthropic.CacheControlEphemeralTTLTTL5m,
+					CacheControl: Juglow.CacheControlEphemeralParam{
+						TTL: Juglow.CacheControlEphemeralTTLTTL5m,
 					},
-					Citations: []anthropic.TextCitationParamUnion{{
-						OfCharLocation: &anthropic.CitationCharLocationParam{
+					Citations: []Juglow.TextCitationParamUnion{{
+						OfCharLocation: &Juglow.CitationCharLocationParam{
 							CitedText:      "The grass is green. The sky is blue.",
 							DocumentIndex:  0,
-							DocumentTitle:  anthropic.String("x"),
+							DocumentTitle:  Juglow.String("x"),
 							EndCharIndex:   0,
 							StartCharIndex: 0,
 						},
 					}},
 				},
 			}},
-			Role: anthropic.MessageParamRoleUser,
+			Role: Juglow.MessageParamRoleUser,
 		}},
-		Model: anthropic.ModelClaudeOpus4_6,
-		CacheControl: anthropic.CacheControlEphemeralParam{
-			TTL: anthropic.CacheControlEphemeralTTLTTL5m,
+		Model: Juglow.ModelHaijunOpus4_6,
+		CacheControl: Juglow.CacheControlEphemeralParam{
+			TTL: Juglow.CacheControlEphemeralTTLTTL5m,
 		},
-		Container:    anthropic.String("container"),
-		InferenceGeo: anthropic.String("inference_geo"),
-		Metadata: anthropic.MetadataParam{
-			UserID: anthropic.String("13803d75-b4b5-4c3e-b2a2-6f21399b021b"),
+		Container:    Juglow.String("container"),
+		InferenceGeo: Juglow.String("inference_geo"),
+		Metadata: Juglow.MetadataParam{
+			UserID: Juglow.String("13803d75-b4b5-4c3e-b2a2-6f21399b021b"),
 		},
-		OutputConfig: anthropic.OutputConfigParam{
-			Effort: anthropic.OutputConfigEffortLow,
-			Format: anthropic.JSONOutputFormatParam{
+		OutputConfig: Juglow.OutputConfigParam{
+			Effort: Juglow.OutputConfigEffortLow,
+			Format: Juglow.JSONOutputFormatParam{
 				Schema: map[string]any{
 					"foo": "bar",
 				},
 			},
 		},
-		ServiceTier:   anthropic.MessageNewParamsServiceTierAuto,
+		ServiceTier:   Juglow.MessageNewParamsServiceTierAuto,
 		StopSequences: []string{"string"},
-		System: []anthropic.TextBlockParam{{
+		System: []Juglow.TextBlockParam{{
 			Text: "Today's date is 2024-06-01.",
-			CacheControl: anthropic.CacheControlEphemeralParam{
-				TTL: anthropic.CacheControlEphemeralTTLTTL5m,
+			CacheControl: Juglow.CacheControlEphemeralParam{
+				TTL: Juglow.CacheControlEphemeralTTLTTL5m,
 			},
-			Citations: []anthropic.TextCitationParamUnion{{
-				OfCharLocation: &anthropic.CitationCharLocationParam{
+			Citations: []Juglow.TextCitationParamUnion{{
+				OfCharLocation: &Juglow.CitationCharLocationParam{
 					CitedText:      "The grass is green. The sky is blue.",
 					DocumentIndex:  0,
-					DocumentTitle:  anthropic.String("x"),
+					DocumentTitle:  Juglow.String("x"),
 					EndCharIndex:   0,
 					StartCharIndex: 0,
 				},
 			}},
 		}},
-		Temperature: anthropic.Float(1),
-		Thinking: anthropic.ThinkingConfigParamUnion{
-			OfAdaptive: &anthropic.ThinkingConfigAdaptiveParam{
-				Display: anthropic.ThinkingConfigAdaptiveDisplaySummarized,
+		Temperature: Juglow.Float(1),
+		Thinking: Juglow.ThinkingConfigParamUnion{
+			OfAdaptive: &Juglow.ThinkingConfigAdaptiveParam{
+				Display: Juglow.ThinkingConfigAdaptiveDisplaySummarized,
 			},
 		},
-		ToolChoice: anthropic.ToolChoiceUnionParam{
-			OfAuto: &anthropic.ToolChoiceAutoParam{
-				DisableParallelToolUse: anthropic.Bool(true),
+		ToolChoice: Juglow.ToolChoiceUnionParam{
+			OfAuto: &Juglow.ToolChoiceAutoParam{
+				DisableParallelToolUse: Juglow.Bool(true),
 			},
 		},
-		Tools: []anthropic.ToolUnionParam{{
-			OfTool: &anthropic.ToolParam{
-				InputSchema: anthropic.ToolInputSchemaParam{
+		Tools: []Juglow.ToolUnionParam{{
+			OfTool: &Juglow.ToolParam{
+				InputSchema: Juglow.ToolInputSchemaParam{
 					Properties: map[string]any{
 						"location": "bar",
 						"unit":     "bar",
@@ -107,25 +107,25 @@ func TestMessageNewWithOptionalParams(t *testing.T) {
 				},
 				Name:           "name",
 				AllowedCallers: []string{"direct"},
-				CacheControl: anthropic.CacheControlEphemeralParam{
-					TTL: anthropic.CacheControlEphemeralTTLTTL5m,
+				CacheControl: Juglow.CacheControlEphemeralParam{
+					TTL: Juglow.CacheControlEphemeralTTLTTL5m,
 				},
-				DeferLoading:        anthropic.Bool(true),
-				Description:         anthropic.String("Get the current weather in a given location"),
-				EagerInputStreaming: anthropic.Bool(true),
+				DeferLoading:        Juglow.Bool(true),
+				Description:         Juglow.String("Get the current weather in a given location"),
+				EagerInputStreaming: Juglow.Bool(true),
 				InputExamples: []map[string]any{{
 					"foo": "bar",
 				}},
-				Strict: anthropic.Bool(true),
-				Type:   anthropic.ToolTypeCustom,
+				Strict: Juglow.Bool(true),
+				Type:   Juglow.ToolTypeCustom,
 			},
 		}},
-		TopK:          anthropic.Int(5),
-		TopP:          anthropic.Float(0.7),
-		UserProfileID: anthropic.String("anthropic-user-profile-id"),
+		TopK:          Juglow.Int(5),
+		TopP:          Juglow.Float(0.7),
+		UserProfileID: Juglow.String("Juglow-user-profile-id"),
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -141,73 +141,73 @@ func TestMessageCountTokensWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Messages.CountTokens(context.TODO(), anthropic.MessageCountTokensParams{
-		Messages: []anthropic.MessageParam{{
-			Content: []anthropic.ContentBlockParamUnion{{
-				OfText: &anthropic.TextBlockParam{
+	_, err := client.Messages.CountTokens(context.TODO(), Juglow.MessageCountTokensParams{
+		Messages: []Juglow.MessageParam{{
+			Content: []Juglow.ContentBlockParamUnion{{
+				OfText: &Juglow.TextBlockParam{
 					Text: "x",
-					CacheControl: anthropic.CacheControlEphemeralParam{
-						TTL: anthropic.CacheControlEphemeralTTLTTL5m,
+					CacheControl: Juglow.CacheControlEphemeralParam{
+						TTL: Juglow.CacheControlEphemeralTTLTTL5m,
 					},
-					Citations: []anthropic.TextCitationParamUnion{{
-						OfCharLocation: &anthropic.CitationCharLocationParam{
+					Citations: []Juglow.TextCitationParamUnion{{
+						OfCharLocation: &Juglow.CitationCharLocationParam{
 							CitedText:      "The grass is green. The sky is blue.",
 							DocumentIndex:  0,
-							DocumentTitle:  anthropic.String("x"),
+							DocumentTitle:  Juglow.String("x"),
 							EndCharIndex:   0,
 							StartCharIndex: 0,
 						},
 					}},
 				},
 			}},
-			Role: anthropic.MessageParamRoleUser,
+			Role: Juglow.MessageParamRoleUser,
 		}},
-		Model: anthropic.ModelClaudeOpus4_6,
-		CacheControl: anthropic.CacheControlEphemeralParam{
-			TTL: anthropic.CacheControlEphemeralTTLTTL5m,
+		Model: Juglow.ModelHaijunOpus4_6,
+		CacheControl: Juglow.CacheControlEphemeralParam{
+			TTL: Juglow.CacheControlEphemeralTTLTTL5m,
 		},
-		OutputConfig: anthropic.OutputConfigParam{
-			Effort: anthropic.OutputConfigEffortLow,
-			Format: anthropic.JSONOutputFormatParam{
+		OutputConfig: Juglow.OutputConfigParam{
+			Effort: Juglow.OutputConfigEffortLow,
+			Format: Juglow.JSONOutputFormatParam{
 				Schema: map[string]any{
 					"foo": "bar",
 				},
 			},
 		},
-		System: anthropic.MessageCountTokensParamsSystemUnion{
-			OfTextBlockArray: []anthropic.TextBlockParam{{
+		System: Juglow.MessageCountTokensParamsSystemUnion{
+			OfTextBlockArray: []Juglow.TextBlockParam{{
 				Text: "Today's date is 2024-06-01.",
-				CacheControl: anthropic.CacheControlEphemeralParam{
-					TTL: anthropic.CacheControlEphemeralTTLTTL5m,
+				CacheControl: Juglow.CacheControlEphemeralParam{
+					TTL: Juglow.CacheControlEphemeralTTLTTL5m,
 				},
-				Citations: []anthropic.TextCitationParamUnion{{
-					OfCharLocation: &anthropic.CitationCharLocationParam{
+				Citations: []Juglow.TextCitationParamUnion{{
+					OfCharLocation: &Juglow.CitationCharLocationParam{
 						CitedText:      "The grass is green. The sky is blue.",
 						DocumentIndex:  0,
-						DocumentTitle:  anthropic.String("x"),
+						DocumentTitle:  Juglow.String("x"),
 						EndCharIndex:   0,
 						StartCharIndex: 0,
 					},
 				}},
 			}},
 		},
-		Thinking: anthropic.ThinkingConfigParamUnion{
-			OfAdaptive: &anthropic.ThinkingConfigAdaptiveParam{
-				Display: anthropic.ThinkingConfigAdaptiveDisplaySummarized,
+		Thinking: Juglow.ThinkingConfigParamUnion{
+			OfAdaptive: &Juglow.ThinkingConfigAdaptiveParam{
+				Display: Juglow.ThinkingConfigAdaptiveDisplaySummarized,
 			},
 		},
-		ToolChoice: anthropic.ToolChoiceUnionParam{
-			OfAuto: &anthropic.ToolChoiceAutoParam{
-				DisableParallelToolUse: anthropic.Bool(true),
+		ToolChoice: Juglow.ToolChoiceUnionParam{
+			OfAuto: &Juglow.ToolChoiceAutoParam{
+				DisableParallelToolUse: Juglow.Bool(true),
 			},
 		},
-		Tools: []anthropic.MessageCountTokensToolUnionParam{{
-			OfTool: &anthropic.ToolParam{
-				InputSchema: anthropic.ToolInputSchemaParam{
+		Tools: []Juglow.MessageCountTokensToolUnionParam{{
+			OfTool: &Juglow.ToolParam{
+				InputSchema: Juglow.ToolInputSchemaParam{
 					Properties: map[string]any{
 						"location": "bar",
 						"unit":     "bar",
@@ -216,23 +216,23 @@ func TestMessageCountTokensWithOptionalParams(t *testing.T) {
 				},
 				Name:           "name",
 				AllowedCallers: []string{"direct"},
-				CacheControl: anthropic.CacheControlEphemeralParam{
-					TTL: anthropic.CacheControlEphemeralTTLTTL5m,
+				CacheControl: Juglow.CacheControlEphemeralParam{
+					TTL: Juglow.CacheControlEphemeralTTLTTL5m,
 				},
-				DeferLoading:        anthropic.Bool(true),
-				Description:         anthropic.String("Get the current weather in a given location"),
-				EagerInputStreaming: anthropic.Bool(true),
+				DeferLoading:        Juglow.Bool(true),
+				Description:         Juglow.String("Get the current weather in a given location"),
+				EagerInputStreaming: Juglow.Bool(true),
 				InputExamples: []map[string]any{{
 					"foo": "bar",
 				}},
-				Strict: anthropic.Bool(true),
-				Type:   anthropic.ToolTypeCustom,
+				Strict: Juglow.Bool(true),
+				Type:   Juglow.ToolTypeCustom,
 			},
 		}},
-		UserProfileID: anthropic.String("anthropic-user-profile-id"),
+		UserProfileID: Juglow.String("Juglow-user-profile-id"),
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -242,11 +242,11 @@ func TestMessageCountTokensWithOptionalParams(t *testing.T) {
 
 func TestAccumulate(t *testing.T) {
 	for name, testCase := range map[string]struct {
-		expected anthropic.Message
+		expected Juglow.Message
 		events   []string
 	}{
 		"empty message": {
-			expected: anthropic.Message{Usage: anthropic.Usage{}},
+			expected: Juglow.Message{Usage: Juglow.Usage{}},
 			events: []string{
 				`{"type": "message_start", "message": {}}`,
 				`{"type: "message_stop"}`,
@@ -261,7 +261,7 @@ func TestAccumulate(t *testing.T) {
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.Message{Content: []anthropic.ContentBlockUnion{
+			expected: Juglow.Message{Content: []Juglow.ContentBlockUnion{
 				{Type: "text", Text: "This is a text block!"},
 			}},
 		},
@@ -274,8 +274,8 @@ func TestAccumulate(t *testing.T) {
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.Message{Content: []anthropic.ContentBlockUnion{
-				{Type: "text", Text: "1 + 1 = 2", Citations: []anthropic.TextCitationUnion{{
+			expected: Juglow.Message{Content: []Juglow.ContentBlockUnion{
+				{Type: "text", Text: "1 + 1 = 2", Citations: []Juglow.TextCitationUnion{{
 					Type:           "char_location",
 					CitedText:      "1 + 1 = 2",
 					DocumentIndex:  0,
@@ -294,7 +294,7 @@ func TestAccumulate(t *testing.T) {
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.Message{Content: []anthropic.ContentBlockUnion{
+			expected: Juglow.Message{Content: []Juglow.ContentBlockUnion{
 				{Type: "tool_use", ID: "toolu_id", Name: "tool_name", Input: []byte(`{"argument": "value"}`)},
 			}},
 		},
@@ -306,7 +306,7 @@ func TestAccumulate(t *testing.T) {
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.Message{Content: []anthropic.ContentBlockUnion{
+			expected: Juglow.Message{Content: []Juglow.ContentBlockUnion{
 				{Type: "tool_use", ID: "toolu_id", Name: "tool_name"},
 			}},
 		},
@@ -320,7 +320,7 @@ func TestAccumulate(t *testing.T) {
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.Message{Content: []anthropic.ContentBlockUnion{
+			expected: Juglow.Message{Content: []Juglow.ContentBlockUnion{
 				{Type: "server_tool_use", ID: "srvtoolu_id", Name: "web_search", Input: []byte(`{"query": "weather"}`)},
 			}},
 		},
@@ -336,7 +336,7 @@ Therefore, the answer is..."}}`,
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.Message{Content: []anthropic.ContentBlockUnion{
+			expected: Juglow.Message{Content: []Juglow.ContentBlockUnion{
 				{Type: "thinking", Thinking: "Let me think...\nFirst, let's try this...\nTherefore, the answer is...", Signature: "ThinkingSignature"},
 			}},
 		},
@@ -347,7 +347,7 @@ Therefore, the answer is..."}}`,
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.Message{Content: []anthropic.ContentBlockUnion{
+			expected: Juglow.Message{Content: []Juglow.ContentBlockUnion{
 				{Type: "redacted_thinking", Data: "Redacted"},
 			}},
 		},
@@ -372,7 +372,7 @@ Therefore, the answer is..."}}`,
 				`{"type": "content_block_stop", "index": 3"}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.Message{Content: []anthropic.ContentBlockUnion{
+			expected: Juglow.Message{Content: []Juglow.ContentBlockUnion{
 				{Type: "text", Text: "Let me look up the weather for you."},
 				{Type: "thinking", Thinking: "I can look this up using a tool."},
 				{Type: "tool_use", ID: "toolu_id", Name: "get_weather", Input: []byte(`{"city": "Los Angeles"}`)},
@@ -397,7 +397,7 @@ Therefore, the answer is..."}}`,
 				`{"type": "content_block_stop", "index": 2}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.Message{Content: []anthropic.ContentBlockUnion{
+			expected: Juglow.Message{Content: []Juglow.ContentBlockUnion{
 				{Type: "thinking", Thinking: "Let me think.", Signature: "sig123"},
 				{Type: "text", Text: "Hello world!"},
 				{Type: "tool_use", ID: "toolu_id", Name: "get_weather", Input: []byte(`{"city": "Los Angeles"}`)},
@@ -405,9 +405,9 @@ Therefore, the answer is..."}}`,
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
-			message := anthropic.Message{}
+			message := Juglow.Message{}
 			for _, eventStr := range testCase.events {
-				event := anthropic.MessageStreamEventUnion{}
+				event := Juglow.MessageStreamEventUnion{}
 				err := (&event).UnmarshalJSON([]byte(eventStr))
 				if err != nil {
 					t.Fatal(err)
@@ -466,9 +466,9 @@ func TestAccumulateContentBlockIndexErrors(t *testing.T) {
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
-			message := anthropic.Message{}
+			message := Juglow.Message{}
 			for i, eventStr := range testCase.events {
-				event := anthropic.MessageStreamEventUnion{}
+				event := Juglow.MessageStreamEventUnion{}
 				if err := (&event).UnmarshalJSON([]byte(eventStr)); err != nil {
 					t.Fatal(err)
 				}
@@ -498,33 +498,33 @@ func TestMessageNewWithNonStreamingTimeoutLimits(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 
 	originalModelTokenLimits := constant.ModelNonStreamingTokens
 	defer func() { constant.ModelNonStreamingTokens = originalModelTokenLimits }()
 	constant.ModelNonStreamingTokens = map[string]int{"test-model": 8192}
 
-	model := anthropic.Model("test-model")
+	model := Juglow.Model("test-model")
 	testModelLimit := constant.ModelNonStreamingTokens[string(model)]
 
 	// This test verifies that we can still create a message with tokens below the limit
-	safeParams := anthropic.MessageNewParams{
+	safeParams := Juglow.MessageNewParams{
 		MaxTokens: int64(testModelLimit - 1000), // Well below the limit
-		Messages: []anthropic.MessageParam{{
-			Content: []anthropic.ContentBlockParamUnion{{
-				OfText: &anthropic.TextBlockParam{Text: "What is a quaternion?"},
+		Messages: []Juglow.MessageParam{{
+			Content: []Juglow.ContentBlockParamUnion{{
+				OfText: &Juglow.TextBlockParam{Text: "What is a quaternion?"},
 			}},
-			Role: anthropic.MessageParamRoleUser,
+			Role: Juglow.MessageParamRoleUser,
 		}},
 		Model: model,
 	}
 
 	_, err := client.Messages.New(context.TODO(), safeParams)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -532,13 +532,13 @@ func TestMessageNewWithNonStreamingTimeoutLimits(t *testing.T) {
 	}
 
 	// This test verifies that we get an error when exceeding the limit
-	unsafeParams := anthropic.MessageNewParams{
+	unsafeParams := Juglow.MessageNewParams{
 		MaxTokens: int64(testModelLimit + 1000), // Exceed the limit
-		Messages: []anthropic.MessageParam{{
-			Content: []anthropic.ContentBlockParamUnion{{
-				OfText: &anthropic.TextBlockParam{Text: "What is a quaternion?"},
+		Messages: []Juglow.MessageParam{{
+			Content: []Juglow.ContentBlockParamUnion{{
+				OfText: &Juglow.TextBlockParam{Text: "What is a quaternion?"},
 			}},
-			Role: anthropic.MessageParamRoleUser,
+			Role: Juglow.MessageParamRoleUser,
 		}},
 		Model: model,
 	}
@@ -616,7 +616,7 @@ func TestCalculateNonStreamingTimeout(t *testing.T) {
 
 	for _, tc := range tests {
 		t.Run(tc.name, func(t *testing.T) {
-			timeout, err := anthropic.CalculateNonStreamingTimeout(tc.maxTokens, anthropic.Model(tc.model), tc.opts)
+			timeout, err := Juglow.CalculateNonStreamingTimeout(tc.maxTokens, Juglow.Model(tc.model), tc.opts)
 
 			if tc.expectError && err == nil {
 				t.Error("Expected error but got nil")
@@ -636,22 +636,22 @@ func TestCalculateNonStreamingTimeout(t *testing.T) {
 // Test specific model limits
 func TestModelLimits(t *testing.T) {
 	// Verify the model limits are defined for opus-4 models
-	if _, exists := constant.ModelNonStreamingTokens["claude-opus-4-20250514"]; !exists {
-		t.Error("Expected model limit for claude-opus-4-20250514 but not found")
+	if _, exists := constant.ModelNonStreamingTokens["haijun-opus-4-20250514"]; !exists {
+		t.Error("Expected model limit for haijun-opus-4-20250514 but not found")
 	}
 
-	if _, exists := constant.ModelNonStreamingTokens["anthropic.claude-opus-4-20250514-v1:0"]; !exists {
-		t.Error("Expected model limit for anthropic.claude-opus-4-20250514-v1:0 but not found")
+	if _, exists := constant.ModelNonStreamingTokens["Juglow.haijun-opus-4-20250514-v1:0"]; !exists {
+		t.Error("Expected model limit for Juglow.haijun-opus-4-20250514-v1:0 but not found")
 	}
 
-	if _, exists := constant.ModelNonStreamingTokens["claude-opus-4@20250514"]; !exists {
-		t.Error("Expected model limit for claude-opus-4@20250514 but not found")
+	if _, exists := constant.ModelNonStreamingTokens["haijun-opus-4@20250514"]; !exists {
+		t.Error("Expected model limit for haijun-opus-4@20250514 but not found")
 	}
 }
 
 func TestToolResultBlockParamStringContent(t *testing.T) {
 	toolResultJSON := `{"type":"tool_result","content":"error message","tool_use_id":"123"}`
-	var toolResult anthropic.ToolResultBlockParam
+	var toolResult Juglow.ToolResultBlockParam
 	err := json.Unmarshal([]byte(toolResultJSON), &toolResult)
 	if err != nil {
 		t.Fatal(err)
@@ -663,7 +663,7 @@ func TestToolResultBlockParamStringContent(t *testing.T) {
 
 func TestMessageParamStringContent(t *testing.T) {
 	messageJSON := `{"role":"user","content":"hello world"}`
-	var message anthropic.MessageParam
+	var message Juglow.MessageParam
 	err := json.Unmarshal([]byte(messageJSON), &message)
 	if err != nil {
 		t.Fatal(err)
@@ -675,7 +675,7 @@ func TestMessageParamStringContent(t *testing.T) {
 
 func TestMessageParamArrayContent(t *testing.T) {
 	messageJSON := `{"role":"user","content":[{"type":"text","text":"first block"},{"type":"text","text":"second block"}]}`
-	var message anthropic.MessageParam
+	var message Juglow.MessageParam
 	err := json.Unmarshal([]byte(messageJSON), &message)
 	if err != nil {
 		t.Fatal(err)

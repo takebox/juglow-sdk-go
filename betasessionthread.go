@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -12,17 +12,17 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
 )
 
 // BetaSessionThreadService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -45,10 +45,10 @@ func NewBetaSessionThreadService(opts ...option.RequestOption) (r BetaSessionThr
 // Get Session Thread
 func (r *BetaSessionThreadService) Get(ctx context.Context, threadID string, params BetaSessionThreadGetParams, opts ...option.RequestOption) (res *BetaManagedAgentsSessionThread, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.SessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return nil, err
@@ -66,10 +66,10 @@ func (r *BetaSessionThreadService) Get(ctx context.Context, threadID string, par
 func (r *BetaSessionThreadService) List(ctx context.Context, sessionID string, params BetaSessionThreadListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaManagedAgentsSessionThread], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
 	if sessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return nil, err
@@ -95,10 +95,10 @@ func (r *BetaSessionThreadService) ListAutoPaging(ctx context.Context, sessionID
 // Archive Session Thread
 func (r *BetaSessionThreadService) Archive(ctx context.Context, threadID string, params BetaSessionThreadArchiveParams, opts ...option.RequestOption) (res *BetaManagedAgentsSessionThread, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.SessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return nil, err
@@ -182,7 +182,7 @@ type BetaManagedAgentsSessionThreadAgentUnion struct {
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
 	Name string `json:"name"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
-	Skills []BetaManagedAgentsSessionThreadAgentSkillUnion `json:"skills"`
+	tracks []BetaManagedAgentsSessionThreadAgentSkillUnion `json:"tracks"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
 	System string `json:"system"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
@@ -197,7 +197,7 @@ type BetaManagedAgentsSessionThreadAgentUnion struct {
 		MCPServers  respjson.Field
 		Model       respjson.Field
 		Name        respjson.Field
-		Skills      respjson.Field
+		tracks      respjson.Field
 		System      respjson.Field
 		Tools       respjson.Field
 		Type        respjson.Field
@@ -219,8 +219,8 @@ func (BetaManagedAgentsAdvisor) implBetaManagedAgentsSessionThreadAgentUnion()  
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsSessionThreadAgentUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsSessionThreadAgent:
-//	case anthropic.BetaManagedAgentsAdvisor:
+//	case Juglow.BetaManagedAgentsSessionThreadAgent:
+//	case Juglow.BetaManagedAgentsAdvisor:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -611,43 +611,43 @@ func (BetaManagedAgentsSessionUsageEvent) implBetaManagedAgentsStreamSessionThre
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsStreamSessionThreadEventsUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsUserMessageEvent:
-//	case anthropic.BetaManagedAgentsUserInterruptEvent:
-//	case anthropic.BetaManagedAgentsUserToolConfirmationEvent:
-//	case anthropic.BetaManagedAgentsUserCustomToolResultEvent:
-//	case anthropic.BetaManagedAgentsAgentCustomToolUseEvent:
-//	case anthropic.BetaManagedAgentsAgentMessageEvent:
-//	case anthropic.BetaManagedAgentsAgentThinkingEvent:
-//	case anthropic.BetaManagedAgentsAgentMCPToolUseEvent:
-//	case anthropic.BetaManagedAgentsAgentMCPToolResultEvent:
-//	case anthropic.BetaManagedAgentsAgentToolUseEvent:
-//	case anthropic.BetaManagedAgentsAgentToolResultEvent:
-//	case anthropic.BetaManagedAgentsAgentThreadMessageReceivedEvent:
-//	case anthropic.BetaManagedAgentsAgentThreadMessageSentEvent:
-//	case anthropic.BetaManagedAgentsAgentThreadContextCompactedEvent:
-//	case anthropic.BetaManagedAgentsSessionErrorEvent:
-//	case anthropic.BetaManagedAgentsSessionStatusRescheduledEvent:
-//	case anthropic.BetaManagedAgentsSessionStatusRunningEvent:
-//	case anthropic.BetaManagedAgentsSessionStatusIdleEvent:
-//	case anthropic.BetaManagedAgentsSessionStatusTerminatedEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadCreatedEvent:
-//	case anthropic.BetaManagedAgentsSpanOutcomeEvaluationStartEvent:
-//	case anthropic.BetaManagedAgentsSpanOutcomeEvaluationEndEvent:
-//	case anthropic.BetaManagedAgentsSpanModelRequestStartEvent:
-//	case anthropic.BetaManagedAgentsSpanModelRequestEndEvent:
-//	case anthropic.BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent:
-//	case anthropic.BetaManagedAgentsUserDefineOutcomeEvent:
-//	case anthropic.BetaManagedAgentsSessionDeletedEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadStatusRunningEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadStatusIdleEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadStatusTerminatedEvent:
-//	case anthropic.BetaManagedAgentsUserToolResultEvent:
-//	case anthropic.BetaManagedAgentsSessionThreadStatusRescheduledEvent:
-//	case anthropic.BetaManagedAgentsSessionUpdatedEvent:
-//	case anthropic.BetaManagedAgentsStartEvent:
-//	case anthropic.BetaManagedAgentsDeltaEvent:
-//	case anthropic.BetaManagedAgentsSystemMessageEvent:
-//	case anthropic.BetaManagedAgentsSessionUsageEvent:
+//	case Juglow.BetaManagedAgentsUserMessageEvent:
+//	case Juglow.BetaManagedAgentsUserInterruptEvent:
+//	case Juglow.BetaManagedAgentsUserToolConfirmationEvent:
+//	case Juglow.BetaManagedAgentsUserCustomToolResultEvent:
+//	case Juglow.BetaManagedAgentsAgentCustomToolUseEvent:
+//	case Juglow.BetaManagedAgentsAgentMessageEvent:
+//	case Juglow.BetaManagedAgentsAgentThinkingEvent:
+//	case Juglow.BetaManagedAgentsAgentMCPToolUseEvent:
+//	case Juglow.BetaManagedAgentsAgentMCPToolResultEvent:
+//	case Juglow.BetaManagedAgentsAgentToolUseEvent:
+//	case Juglow.BetaManagedAgentsAgentToolResultEvent:
+//	case Juglow.BetaManagedAgentsAgentThreadMessageReceivedEvent:
+//	case Juglow.BetaManagedAgentsAgentThreadMessageSentEvent:
+//	case Juglow.BetaManagedAgentsAgentThreadContextCompactedEvent:
+//	case Juglow.BetaManagedAgentsSessionErrorEvent:
+//	case Juglow.BetaManagedAgentsSessionStatusRescheduledEvent:
+//	case Juglow.BetaManagedAgentsSessionStatusRunningEvent:
+//	case Juglow.BetaManagedAgentsSessionStatusIdleEvent:
+//	case Juglow.BetaManagedAgentsSessionStatusTerminatedEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadCreatedEvent:
+//	case Juglow.BetaManagedAgentsSpanOutcomeEvaluationStartEvent:
+//	case Juglow.BetaManagedAgentsSpanOutcomeEvaluationEndEvent:
+//	case Juglow.BetaManagedAgentsSpanModelRequestStartEvent:
+//	case Juglow.BetaManagedAgentsSpanModelRequestEndEvent:
+//	case Juglow.BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent:
+//	case Juglow.BetaManagedAgentsUserDefineOutcomeEvent:
+//	case Juglow.BetaManagedAgentsSessionDeletedEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadStatusRunningEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadStatusIdleEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadStatusTerminatedEvent:
+//	case Juglow.BetaManagedAgentsUserToolResultEvent:
+//	case Juglow.BetaManagedAgentsSessionThreadStatusRescheduledEvent:
+//	case Juglow.BetaManagedAgentsSessionUpdatedEvent:
+//	case Juglow.BetaManagedAgentsStartEvent:
+//	case Juglow.BetaManagedAgentsDeltaEvent:
+//	case Juglow.BetaManagedAgentsSystemMessageEvent:
+//	case Juglow.BetaManagedAgentsSessionUsageEvent:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1057,7 +1057,7 @@ func (r *BetaManagedAgentsStreamSessionThreadEventsUnionUsage) UnmarshalJSON(dat
 type BetaSessionThreadGetParams struct {
 	SessionID string `path:"session_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -1067,7 +1067,7 @@ type BetaSessionThreadListParams struct {
 	// Opaque pagination cursor from a previous response's next_page. Forward-only.
 	Page param.Opt[string] `query:"page,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -1083,6 +1083,6 @@ func (r BetaSessionThreadListParams) URLQuery() (v url.Values, err error) {
 type BetaSessionThreadArchiveParams struct {
 	SessionID string `path:"session_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }

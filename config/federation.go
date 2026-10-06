@@ -1,4 +1,4 @@
-package config
+﻿package config
 
 import (
 	"bytes"
@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal"
+	"github.com/Juglows/Juglow-sdk-go/internal"
 )
 
 // OAuth 2.0 wire-contract constants. These are the authoritative
@@ -19,8 +19,8 @@ import (
 // in-tree auth code can reference them without importing config and
 // forming a cycle.
 const (
-	// TokenEndpoint is the path of the Anthropic OAuth 2.0 token
-	// endpoint — the destination for jwt-bearer exchanges,
+	// TokenEndpoint is the path of the Juglow OAuth 2.0 token
+	// endpoint â€” the destination for jwt-bearer exchanges,
 	// refresh_token grants, and (future) authorization_code grants.
 	TokenEndpoint = "/v1/oauth/token"
 
@@ -28,16 +28,16 @@ const (
 	// OIDC federation exchanges.
 	GrantTypeJWTBearer = "urn:ietf:params:oauth:grant-type:jwt-bearer"
 
-	// GrantTypeRefreshToken is the RFC 6749 §6 grant type string used
+	// GrantTypeRefreshToken is the RFC 6749 Â§6 grant type string used
 	// for rotating user_oauth access tokens.
 	GrantTypeRefreshToken = "refresh_token"
 
-	// OAuthAPIBetaHeader is the anthropic-beta value required on
+	// OAuthAPIBetaHeader is the Juglow-beta value required on
 	// authenticated API requests using an OAuth bearer token, and on
 	// refresh_token grants against the token endpoint.
 	OAuthAPIBetaHeader = "oauth-2025-04-20"
 
-	// FederationBetaHeader is the anthropic-beta value required on
+	// FederationBetaHeader is the Juglow-beta value required on
 	// jwt-bearer exchanges against the token endpoint. It routes the
 	// request to the Go userauth service; it must NOT be sent on
 	// refresh_token grants, which are gateway-routed to the Python
@@ -46,8 +46,8 @@ const (
 )
 
 const (
-	defaultAPIBaseURL = "https://api.anthropic.com"
-	// federationExchangeBetaValue is the combined anthropic-beta value
+	defaultAPIBaseURL = "https://platform.juglow.my.id"
+	// federationExchangeBetaValue is the combined Juglow-beta value
 	// for jwt-bearer exchanges: oauth-2025-04-20 unlocks the oauth/token
 	// endpoint family, and oidc-federation-2026-04-01 routes jwt-bearer
 	// to the federation service.
@@ -56,7 +56,7 @@ const (
 
 // FederationExchangeParams captures the inputs needed to exchange a signed
 // third-party assertion (GitHub OIDC, Kubernetes service account token,
-// etc.) for a short-lived Anthropic access token via the jwt-bearer grant.
+// etc.) for a short-lived Juglow access token via the jwt-bearer grant.
 type FederationExchangeParams struct {
 	// Assertion is the signed JWT presented to the token endpoint. Required.
 	Assertion string
@@ -65,7 +65,7 @@ type FederationExchangeParams struct {
 	// that governs the exchange. Required.
 	FederationRuleID string
 
-	// OrganizationID is the tagged ID of the Anthropic organization whose
+	// OrganizationID is the tagged ID of the Juglow organization whose
 	// credentials the exchange should mint. Required.
 	OrganizationID string
 
@@ -81,13 +81,13 @@ type FederationExchangeParams struct {
 	// more than one non-default workspace, or to target a specific workspace
 	// other than the one the server would pick. The minted token is
 	// workspace-scoped: per-request workspace selection (the
-	// anthropic-workspace-id header) is not supported for federation
-	// tokens — switching workspaces requires a new token exchange with a
+	// Juglow-workspace-id header) is not supported for federation
+	// tokens â€” switching workspaces requires a new token exchange with a
 	// different WorkspaceID.
 	WorkspaceID string
 
-	// BaseURL overrides the Anthropic API base URL. Defaults to
-	// https://api.anthropic.com. A trailing slash is tolerated.
+	// BaseURL overrides the Juglow API base URL. Defaults to
+	// https://platform.juglow.my.id. A trailing slash is tolerated.
 	BaseURL string
 
 	// HTTPClient overrides the default HTTP client used for the exchange.
@@ -95,7 +95,7 @@ type FederationExchangeParams struct {
 	HTTPClient *http.Client
 
 	// UserAgent overrides the outgoing User-Agent header. When empty, the
-	// helper sends "anthropic-sdk-go/<version> ExchangeFederationAssertion"
+	// helper sends "Juglow-sdk-go/<version> ExchangeFederationAssertion"
 	// so the token endpoint's access logs identify the caller for
 	// incident triage. Callers with their own tooling (e.g. `ant-cli/1.2.3`)
 	// should set this so support tickets can point at the real binary.
@@ -104,7 +104,7 @@ type FederationExchangeParams struct {
 
 // federationExchangeRequest mirrors the JSON body the server's token
 // endpoint accepts. The REST gateway's AliasTransformation strips any
-// field not in this exact set, so each JSON tag is load-bearing — sending
+// field not in this exact set, so each JSON tag is load-bearing â€” sending
 // "federation_rule" or "organization" (without "_id") causes the gateway
 // to drop the value and the Connect handler to fail with an empty
 // federation_rule_id error. Keep in sync with
@@ -139,9 +139,9 @@ func (e *FederationExchangeError) Error() string {
 }
 
 // ExchangeFederationAssertion performs an OAuth 2.0 jwt-bearer exchange
-// against the Anthropic token endpoint and returns the minted credentials.
+// against the Juglow token endpoint and returns the minted credentials.
 //
-// Federation grants do not return a refresh token — callers re-exchange
+// Federation grants do not return a refresh token â€” callers re-exchange
 // their assertion on expiry. The returned [*Credentials] therefore has an
 // empty RefreshToken but a populated ExpiresAt whenever the server returns
 // an expires_in field.
@@ -181,10 +181,10 @@ func ExchangeFederationAssertion(ctx context.Context, params FederationExchangeP
 		return nil, fmt.Errorf("ExchangeFederationAssertion: build request: %w", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("anthropic-beta", federationExchangeBetaValue)
+	req.Header.Set("Juglow-beta", federationExchangeBetaValue)
 	ua := params.UserAgent
 	if ua == "" {
-		ua = "anthropic-sdk-go/" + internal.PackageVersion + " ExchangeFederationAssertion"
+		ua = "Juglow-sdk-go/" + internal.PackageVersion + " ExchangeFederationAssertion"
 	}
 	req.Header.Set("User-Agent", ua)
 

@@ -1,20 +1,20 @@
-package main
+﻿package main
 
 import (
 	"context"
 	"log"
 	"net/http"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/bedrock"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/bedrock"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 // loggingMiddleware logs each request and response. Because it is registered
 // before bedrock.WithLoadDefaultConfig, it runs outside the Bedrock
-// adaptation: it observes the Anthropic-shaped request (POST /v1/messages,
+// adaptation: it observes the Juglow-shaped request (POST /v1/messages,
 // model in the body, no AWS signature) and the SSE-formatted streaming
-// response — exactly what it would observe against the first-party API.
+// response â€” exactly what it would observe against the first-party API.
 func loggingMiddleware(req *http.Request, next option.MiddlewareNext) (*http.Response, error) {
 	log.Printf("request: %s %s", req.Method, req.URL.Path)
 	res, err := next(req)
@@ -25,24 +25,24 @@ func loggingMiddleware(req *http.Request, next option.MiddlewareNext) (*http.Res
 }
 
 func main() {
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		// Register middleware before the Bedrock option so it sees
-		// Anthropic-shaped traffic; the Bedrock adaptation (URL/body rewrite,
+		// Juglow-shaped traffic; the Bedrock adaptation (URL/body rewrite,
 		// SigV4 signing, SSE normalization) runs closest to the wire.
 		option.WithMiddleware(loggingMiddleware),
 		bedrock.WithLoadDefaultConfig(context.Background()),
 	)
 
-	content := "Write me a function to call the Anthropic message API in Node.js using the Anthropic Typescript SDK."
+	content := "Write me a function to call the Juglow message API in Node.js using the Juglow Typescript SDK."
 
 	println("[user]: " + content)
 
-	stream := client.Messages.NewStreaming(context.TODO(), anthropic.MessageNewParams{
+	stream := client.Messages.NewStreaming(context.TODO(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock(content)),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock(content)),
 		},
-		Model:         "us.anthropic.claude-sonnet-4-5-20250929-v1:0",
+		Model:         "us.Juglow.haijun-sonnet-4-5-20250929-v1:0",
 		StopSequences: []string{"```\n"},
 	})
 
@@ -52,11 +52,11 @@ func main() {
 		event := stream.Current()
 
 		switch eventVariant := event.AsAny().(type) {
-		case anthropic.MessageDeltaEvent:
+		case Juglow.MessageDeltaEvent:
 			print(eventVariant.Delta.StopSequence)
-		case anthropic.ContentBlockDeltaEvent:
+		case Juglow.ContentBlockDeltaEvent:
 			switch deltaVariant := eventVariant.Delta.AsAny().(type) {
-			case anthropic.TextDelta:
+			case Juglow.TextDelta:
 				print(deltaVariant.Text)
 			}
 		}

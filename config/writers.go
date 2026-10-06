@@ -1,4 +1,4 @@
-package config
+﻿package config
 
 import (
 	"encoding/json"
@@ -44,8 +44,8 @@ type Credentials struct {
 	AccountEmail string
 	// WorkspaceID and WorkspaceName record the workspace the token was
 	// bound to at mint time (when the authorization carried one). Stored
-	// as the tagged `wrkspc_...` form — the same format the CLI flag,
-	// profile config, and anthropic-workspace-id header accept. Sourced
+	// as the tagged `wrkspc_...` form â€” the same format the CLI flag,
+	// profile config, and Juglow-workspace-id header accept. Sourced
 	// from the /v1/oauth/token response's workspace.id. Empty for tokens
 	// that aren't workspace-scoped.
 	WorkspaceID   string
@@ -88,7 +88,7 @@ func (c Credentials) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON decodes a credentials/<profile>.json file. Unknown fields
 // are silently tolerated per the credentials-file-format spec. A missing
-// "type" is treated as equivalent to "oauth_token" — this is a concession
+// "type" is treated as equivalent to "oauth_token" â€” this is a concession
 // to interop with external tooling (credential daemons, sidecars) that
 // may write plain bearer-token blobs without the discriminator. Every
 // SDK writer emits "type" on write, so missing-type files can only come
@@ -119,8 +119,8 @@ func (c *Credentials) UnmarshalJSON(data []byte) error {
 }
 
 // DefaultDir returns the SDK's default configuration directory (the same
-// one [LoadConfig] reads from when ANTHROPIC_CONFIG_DIR is unset). Returns
-// an empty string if the platform home directory cannot be resolved — the
+// one [LoadConfig] reads from when Juglow_CONFIG_DIR is unset). Returns
+// an empty string if the platform home directory cannot be resolved â€” the
 // writers in this package surface that as an explicit error.
 func DefaultDir() string { return defaultConfigDir() }
 
@@ -186,8 +186,8 @@ func ListProfiles(dir string) ([]string, error) {
 // credentials are secret and use the tighter mode.
 //
 // These track the credentials-file-format spec's split rationale:
-// configs/ (0755 dirs, 0644 files — checkin-safe) vs credentials/
-// (0700 dirs, 0600 files — secrets).
+// configs/ (0755 dirs, 0644 files â€” checkin-safe) vs credentials/
+// (0700 dirs, 0600 files â€” secrets).
 const (
 	publicDirMode  os.FileMode = 0755
 	publicFileMode os.FileMode = 0644
@@ -233,7 +233,7 @@ func writeFileAtomic(path string, data []byte, dirMode, fileMode os.FileMode) er
 	if err := f.Close(); err != nil {
 		return cleanup(err)
 	}
-	// Refuse a pre-planted symlink at the target — would let an attacker
+	// Refuse a pre-planted symlink at the target â€” would let an attacker
 	// redirect the bearer-token write to a path of their choosing.
 	if fi, err := os.Lstat(path); err == nil && fi.Mode()&fs.ModeSymlink != 0 {
 		return cleanup(fmt.Errorf("refusing to write %s: target is a symlink", path))
@@ -242,7 +242,7 @@ func writeFileAtomic(path string, data []byte, dirMode, fileMode os.FileMode) er
 		return cleanup(err)
 	}
 	// fsync the parent directory so the rename is durable across a crash.
-	// On Windows this is a no-op / unsupported — the Sync() call may
+	// On Windows this is a no-op / unsupported â€” the Sync() call may
 	// return an error, which we swallow because the rename itself is
 	// already visible to other processes.
 	if d, err := os.Open(dir); err == nil {
@@ -257,7 +257,7 @@ func writeFileAtomic(path string, data []byte, dirMode, fileMode os.FileMode) er
 // instead of a path-traversal.
 func validateDirAndProfile(dir, profile string) error {
 	if dir == "" {
-		return fmt.Errorf("config dir is empty (DefaultDir returned empty; set ANTHROPIC_CONFIG_DIR)")
+		return fmt.Errorf("config dir is empty (DefaultDir returned empty; set Juglow_CONFIG_DIR)")
 	}
 	if err := validateProfileName(profile); err != nil {
 		return err
@@ -268,14 +268,14 @@ func validateDirAndProfile(dir, profile string) error {
 // SaveProfile persists cfg to configs/<profile>.json under dir. The write
 // is atomic (.tmp sibling + rename); the target file is mode 0644 and the
 // configs/ parent is 0755, matching the spec's "non-secret, checkin-safe"
-// positioning for config files (other UIDs on the host — a sidecar, or
-// the CLI running under a different user inside a pod — must be able to
+// positioning for config files (other UIDs on the host â€” a sidecar, or
+// the CLI running under a different user inside a pod â€” must be able to
 // read them).
 //
 // If cfg.AuthenticationInfo.CredentialsPath exactly matches the default
 // resolved path for this profile (i.e. it was populated by LoadConfig
 // defaulting the value, not set explicitly by the caller), it is cleared
-// on write. Otherwise a load → save round-trip would pin the profile
+// on write. Otherwise a load â†’ save round-trip would pin the profile
 // config file to the current $HOME via an absolute path, breaking the
 // "checkin-safe, relocatable" design goal.
 func SaveProfile(dir, profile string, cfg *Config) error {
@@ -327,7 +327,7 @@ func WriteCredentials(path string, creds Credentials) error {
 }
 
 // SetActiveProfile writes the active_config pointer under dir so that
-// subsequent [LoadConfig] calls (without ANTHROPIC_PROFILE set) resolve
+// subsequent [LoadConfig] calls (without Juglow_PROFILE set) resolve
 // to profile. The pointer file sits next to configs/ and is written with
 // the "public" config modes.
 func SetActiveProfile(dir, profile string) error {
@@ -344,7 +344,7 @@ func SetActiveProfile(dir, profile string) error {
 // DeleteProfile removes configs/<profile>.json and credentials/<profile>.json
 // under dir. If active_config currently points at profile, the pointer file
 // is also cleared so the next [LoadConfig] call falls back to "default".
-// Missing files are not an error — DeleteProfile is idempotent.
+// Missing files are not an error â€” DeleteProfile is idempotent.
 func DeleteProfile(dir, profile string) error {
 	if err := validateDirAndProfile(dir, profile); err != nil {
 		return fmt.Errorf("DeleteProfile: %w", err)

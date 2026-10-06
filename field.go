@@ -1,7 +1,7 @@
-package anthropic
+﻿package Juglow
 
 import (
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 	"io"
 	"time"
 )

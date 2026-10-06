@@ -1,4 +1,4 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package requestconfig
 
@@ -18,15 +18,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal"
-	"github.com/anthropics/anthropic-sdk-go/internal/apierror"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiform"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal"
+	"github.com/Juglows/Juglow-sdk-go/internal/apierror"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiform"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
 )
 
 func getDefaultHeaders() map[string]string {
 	return map[string]string{
-		"User-Agent": fmt.Sprintf("Anthropic/Go %s", internal.PackageVersion),
+		"User-Agent": fmt.Sprintf("Juglow/Go %s", internal.PackageVersion),
 	}
 }
 
@@ -165,7 +165,7 @@ func NewRequestConfig(ctx context.Context, method string, u string, body any, ds
 	for k, v := range getDefaultHeaders() {
 		req.Header.Add(k, v)
 	}
-	req.Header.Set("anthropic-version", "2023-06-01")
+	req.Header.Set("Juglow-version", "2023-06-01")
 	for k, v := range getPlatformProperties() {
 		req.Header.Add(k, v)
 	}

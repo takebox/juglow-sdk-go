@@ -1,38 +1,38 @@
-package main
+﻿package main
 
 import (
 	"context"
 
-	"github.com/anthropics/anthropic-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go"
 )
 
 func main() {
 	// Zero-config workload identity authentication via environment variables.
 	// Set the following env vars before running:
 	//
-	//   ANTHROPIC_FEDERATION_RULE_ID — the federation rule ID
-	//   ANTHROPIC_ORGANIZATION_ID   — the organization ID
-	//   ANTHROPIC_IDENTITY_TOKEN    — a literal JWT identity token
-	//     (or ANTHROPIC_IDENTITY_TOKEN_FILE — path to a file containing the JWT)
+	//   Juglow_FEDERATION_RULE_ID â€” the federation rule ID
+	//   Juglow_ORGANIZATION_ID   â€” the organization ID
+	//   Juglow_IDENTITY_TOKEN    â€” a literal JWT identity token
+	//     (or Juglow_IDENTITY_TOKEN_FILE â€” path to a file containing the JWT)
 	//
 	// Optional:
-	//   ANTHROPIC_SERVICE_ACCOUNT_ID — service account ID
+	//   Juglow_SERVICE_ACCOUNT_ID â€” service account ID
 	//
 	// When these are set, NewClient() automatically exchanges the identity token
-	// for a short-lived Anthropic access token. If an API key is also set, the
+	// for a short-lived Juglow access token. If an API key is also set, the
 	// API key takes precedence.
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 
-	content := "Write me a function to call the Anthropic message API in Node.js using the Anthropic Typescript SDK."
+	content := "Write me a function to call the Juglow message API in Node.js using the Juglow Typescript SDK."
 
 	println("[user]: " + content)
 
-	message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
+	message, err := client.Messages.New(context.TODO(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock(content)),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock(content)),
 		},
-		Model:         anthropic.ModelClaudeSonnet5,
+		Model:         Juglow.ModelHaijunSonnet5,
 		StopSequences: []string{"```\n"},
 	})
 	if err != nil {

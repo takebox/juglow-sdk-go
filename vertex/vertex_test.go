@@ -1,4 +1,4 @@
-package vertex
+﻿package vertex
 
 import (
 	"bytes"
@@ -15,9 +15,9 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	sdkoption "github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	sdkoption "github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBaseURLForRegion(t *testing.T) {
@@ -72,12 +72,12 @@ func TestBaseURLForRegion(t *testing.T) {
 	}
 }
 
-// TestVertexUserMiddlewareObservesAnthropicShape verifies the documented
+// TestVertexUserMiddlewareObservesJuglowShape verifies the documented
 // ordering: middleware registered before the Vertex option observes the
-// Anthropic-shaped request, while the wire receives the rewritten Vertex
+// Juglow-shaped request, while the wire receives the rewritten Vertex
 // request with OAuth authorization.
-func TestVertexUserMiddlewareObservesAnthropicShape(t *testing.T) {
-	t.Setenv("ANTHROPIC_API_KEY", "")
+func TestVertexUserMiddlewareObservesJuglowShape(t *testing.T) {
+	t.Setenv("Juglow_API_KEY", "")
 
 	var wirePath, wireAuth string
 	var wireBody map[string]any
@@ -91,7 +91,7 @@ func TestVertexUserMiddlewareObservesAnthropicShape(t *testing.T) {
 		json.NewEncoder(w).Encode(map[string]any{
 			"id": "msg_test", "type": "message", "role": "assistant",
 			"content": []map[string]any{{"type": "text", "text": "hi"}},
-			"model":   "claude-3-sonnet", "stop_reason": "end_turn",
+			"model":   "haijun-3-sonnet", "stop_reason": "end_turn",
 			"usage": map[string]any{"input_tokens": 1, "output_tokens": 1},
 		})
 	}))
@@ -116,30 +116,30 @@ func TestVertexUserMiddlewareObservesAnthropicShape(t *testing.T) {
 	creds := &google.Credentials{
 		TokenSource: oauth2.StaticTokenSource(&oauth2.Token{AccessToken: "fake"}),
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		sdkoption.WithoutEnvironmentDefaults(),
 		sdkoption.WithMiddleware(spy),
 		WithCredentials(context.Background(), "us-central1", "test-project", creds),
 		sdkoption.WithBaseURL(server.URL),
 	)
 
-	_, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-		Model:     "claude-3-sonnet",
+	_, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
+		Model:     "haijun-3-sonnet",
 		MaxTokens: 1,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock("hi")),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock("hi")),
 		},
 	})
 	if err != nil {
 		t.Fatalf("Request failed: %v", err)
 	}
 
-	// The spy (outside the Vertex adaptation) sees the Anthropic shape,
+	// The spy (outside the Vertex adaptation) sees the Juglow shape,
 	// before OAuth authorization is attached at the transport.
 	if observedPath != "/v1/messages" {
 		t.Errorf("Expected middleware to observe path %q, got %q", "/v1/messages", observedPath)
 	}
-	if observedBody["model"] != "claude-3-sonnet" {
+	if observedBody["model"] != "haijun-3-sonnet" {
 		t.Errorf("Expected middleware to observe model in body, got %v", observedBody["model"])
 	}
 	if observedAuth != "" {
@@ -147,15 +147,15 @@ func TestVertexUserMiddlewareObservesAnthropicShape(t *testing.T) {
 	}
 
 	// The wire sees the rewritten, authorized Vertex shape.
-	expectedWirePath := "/v1/projects/test-project/locations/us-central1/publishers/anthropic/models/claude-3-sonnet:rawPredict"
+	expectedWirePath := "/v1/projects/test-project/locations/us-central1/publishers/Juglow/models/haijun-3-sonnet:rawPredict"
 	if wirePath != expectedWirePath {
 		t.Errorf("Expected wire path %q, got %q", expectedWirePath, wirePath)
 	}
 	if _, ok := wireBody["model"]; ok {
 		t.Error("Expected model to be removed from the wire body")
 	}
-	if wireBody["anthropic_version"] != DefaultVersion {
-		t.Errorf("Expected anthropic_version %q on the wire, got %v", DefaultVersion, wireBody["anthropic_version"])
+	if wireBody["Juglow_version"] != DefaultVersion {
+		t.Errorf("Expected Juglow_version %q on the wire, got %v", DefaultVersion, wireBody["Juglow_version"])
 	}
 	if wireAuth != "Bearer fake" {
 		t.Errorf("Expected OAuth Authorization on the wire, got %q", wireAuth)
@@ -164,7 +164,7 @@ func TestVertexUserMiddlewareObservesAnthropicShape(t *testing.T) {
 
 // TestWithGoogleAuthDefaultsCloudPlatformScope drives the workload-identity
 // (external_account) flow against a local STS endpoint: without an explicit
-// scope from the caller, the token exchange must request cloud-platform —
+// scope from the caller, the token exchange must request cloud-platform â€”
 // external-account credentials fail to mint tokens with no scope at all.
 func TestWithGoogleAuthDefaultsCloudPlatformScope(t *testing.T) {
 	scopes := make(chan string, 1)

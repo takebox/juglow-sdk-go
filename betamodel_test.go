@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBetaModelGetWithOptionalParams(t *testing.T) {
@@ -21,19 +21,19 @@ func TestBetaModelGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Models.Get(
 		context.TODO(),
 		"model_id",
-		anthropic.BetaModelGetParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaModelGetParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -49,18 +49,18 @@ func TestBetaModelListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Models.List(context.TODO(), anthropic.BetaModelListParams{
-		AfterID:  anthropic.String("after_id"),
-		BeforeID: anthropic.String("before_id"),
-		Limit:    anthropic.Int(1),
-		Betas:    []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+	_, err := client.Beta.Models.List(context.TODO(), Juglow.BetaModelListParams{
+		AfterID:  Juglow.String("after_id"),
+		BeforeID: Juglow.String("before_id"),
+		Limit:    Juglow.Int(1),
+		Betas:    []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

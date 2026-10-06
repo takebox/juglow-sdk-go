@@ -1,4 +1,4 @@
-package auth
+﻿package auth
 
 import (
 	"encoding/json"
@@ -6,14 +6,14 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/anthropics/anthropic-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/config"
 )
 
 // ErrNoCredentials is the sentinel for the case where the default credential
 // chain produced no usable credential. Every [NoCredentialsError] value
 // matches this sentinel via [errors.Is], so callers can branch on the
 // class of failure without a type assertion.
-var ErrNoCredentials = errors.New("no Anthropic credentials found")
+var ErrNoCredentials = errors.New("no Juglow credentials found")
 
 // OAuthTokenError is returned when an OAuth token request (workload identity
 // exchange or authorized_user refresh) fails with a non-200 status.
@@ -26,7 +26,7 @@ type OAuthTokenError struct {
 	RequestID string
 	// Hint is an optional caller-supplied diagnostic appended verbatim to
 	// the error message. Callers gate it on the response status and their
-	// own state — Error does not inspect StatusCode or Body to decide
+	// own state â€” Error does not inspect StatusCode or Body to decide
 	// whether to include it.
 	Hint string
 	// WorkloadIdentity is set by the OIDC federation (jwt-bearer) flow to
@@ -64,7 +64,7 @@ func (e *OAuthTokenError) Error() string {
 
 	msg := strings.Join(parts, "; ")
 	if !e.WorkloadIdentity && shouldSuggestRelogin(e.StatusCode, parsed.Error) {
-		msg += " — re-run `ant auth login` to re-authenticate"
+		msg += " â€” re-run `ant auth login` to re-authenticate"
 	}
 	if e.Hint != "" {
 		msg += ". " + e.Hint
@@ -120,14 +120,14 @@ func (e *NoCredentialsError) Is(target error) bool {
 
 func (e *NoCredentialsError) Error() string {
 	var b strings.Builder
-	b.WriteString("no Anthropic credentials found. The SDK tried these sources in order:")
+	b.WriteString("no Juglow credentials found. The SDK tried these sources in order:")
 	for i, s := range e.Sources {
 		fmt.Fprintf(&b, "\n  %d. %s: %s", i+1, s.Name, formatSourceState(s))
 	}
 	b.WriteString("\nTo fix:")
 	b.WriteString("\n  - run `ant auth login` to interactively authenticate, or")
-	b.WriteString("\n  - set ANTHROPIC_API_KEY, or")
-	b.WriteString("\n  - configure workload identity federation with ANTHROPIC_FEDERATION_RULE_ID, ANTHROPIC_ORGANIZATION_ID, and ANTHROPIC_IDENTITY_TOKEN_FILE")
+	b.WriteString("\n  - set Juglow_API_KEY, or")
+	b.WriteString("\n  - configure workload identity federation with Juglow_FEDERATION_RULE_ID, Juglow_ORGANIZATION_ID, and Juglow_IDENTITY_TOKEN_FILE")
 	return b.String()
 }
 

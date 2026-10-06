@@ -1,4 +1,4 @@
-package apiquery
+﻿package apiquery
 
 import (
 	"encoding/json"
@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 )
 
 var encoders sync.Map // map[reflect.Type]encoderFunc

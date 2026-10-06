@@ -1,4 +1,4 @@
-package auth
+﻿package auth
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/config"
 )
 
 func writeCredentials(t *testing.T, path string, data map[string]any) {
@@ -58,7 +58,7 @@ func TestResolveCredentials_OIDCFederation(t *testing.T) {
 		t.Fatal(err)
 	}
 	// For federation profiles workspace_id is sent in the exchange body, not
-	// as a request header — the result must not surface a header value.
+	// as a request header â€” the result must not surface a header value.
 	if result.WorkspaceID != "" {
 		t.Fatalf("federation result should not carry a header workspace_id, got %q", result.WorkspaceID)
 	}
@@ -167,7 +167,7 @@ func TestResolveCredentials_UserOAuthRefresh(t *testing.T) {
 	refreshCalls := 0
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		refreshCalls++
-		beta := r.Header.Get("anthropic-beta")
+		beta := r.Header.Get("Juglow-beta")
 		if strings.Contains(beta, "oidc-federation-2026-04-01") {
 			t.Errorf("refresh request must not carry oidc-federation beta header, got %q", beta)
 		}
@@ -372,7 +372,7 @@ func TestResolveCredentials_UserOAuthNoClientIDExpiredFailsFast(t *testing.T) {
 }
 
 // TestResolveCredentials_OIDCFederationEnvIdentityToken verifies that a
-// profile which omits identity_token falls back to ANTHROPIC_IDENTITY_TOKEN
+// profile which omits identity_token falls back to Juglow_IDENTITY_TOKEN
 // (the literal token env var) in addition to the _FILE variant.
 func TestResolveCredentials_OIDCFederationEnvIdentityToken(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -419,7 +419,7 @@ func TestResolveCredentials_BaseURLFromConfig(t *testing.T) {
 	})
 
 	result, err := ResolveCredentials(&config.Config{
-		BaseURL: "https://staging.anthropic.com",
+		BaseURL: "https://staging.Juglow.com",
 		AuthenticationInfo: &config.AuthenticationInfo{
 			Type:            config.AuthenticationTypeUserOAuth,
 			CredentialsPath: credPath,
@@ -429,8 +429,8 @@ func TestResolveCredentials_BaseURLFromConfig(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.BaseURL != "https://staging.anthropic.com" {
-		t.Fatalf("got base_url %q, want %q", result.BaseURL, "https://staging.anthropic.com")
+	if result.BaseURL != "https://staging.Juglow.com" {
+		t.Fatalf("got base_url %q, want %q", result.BaseURL, "https://staging.Juglow.com")
 	}
 }
 
@@ -511,7 +511,7 @@ func TestCheckCredentialsFileSafety_RejectsGroupReadable(t *testing.T) {
 // TestCheckCredentialsFileSafety_RejectsWorldWritable verifies that a
 // credentials file with world-writable mode is refused. A writable file
 // lets an attacker inject a token the SDK then presents as the caller's
-// identity — at least as dangerous as a readable one.
+// identity â€” at least as dangerous as a readable one.
 func TestCheckCredentialsFileSafety_RejectsWorldWritable(t *testing.T) {
 	credPath := filepath.Join(t.TempDir(), "creds.json")
 	writeCredentials(t, credPath, map[string]any{"type": "oauth_token", "access_token": "tok"})
@@ -528,7 +528,7 @@ func TestCheckCredentialsFileSafety_RejectsWorldWritable(t *testing.T) {
 }
 
 // TestCheckCredentialsFileSafety_AcceptsOwnerOnly verifies that 0600
-// credentials read normally — the safety check is opt-in to risky modes.
+// credentials read normally â€” the safety check is opt-in to risky modes.
 func TestCheckCredentialsFileSafety_AcceptsOwnerOnly(t *testing.T) {
 	credPath := filepath.Join(t.TempDir(), "creds.json")
 	writeCredentials(t, credPath, map[string]any{"type": "oauth_token", "access_token": "tok"})
@@ -611,8 +611,8 @@ func TestResolveCredentials_UserOAuthRefresh_SetsUserAgent(t *testing.T) {
 	if _, err := result.Provider(context.Background(), "", http.DefaultClient.Do); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.HasPrefix(receivedUA, "anthropic-sdk-go/") {
-		t.Errorf("got User-Agent %q, want prefix anthropic-sdk-go/", receivedUA)
+	if !strings.HasPrefix(receivedUA, "Juglow-sdk-go/") {
+		t.Errorf("got User-Agent %q, want prefix Juglow-sdk-go/", receivedUA)
 	}
 	if !strings.Contains(receivedUA, "user-oauth-refresh") {
 		t.Errorf("got User-Agent %q, want context user-oauth-refresh", receivedUA)

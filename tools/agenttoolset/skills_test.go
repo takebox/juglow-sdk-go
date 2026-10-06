@@ -1,4 +1,4 @@
-package agenttoolset
+﻿package agenttoolset
 
 import (
 	"context"
@@ -6,27 +6,27 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	anthropic "github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	Juglow "github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 // SetupSkills must apply the request options it is given (the environment key,
 // for self-hosted callers) to its API calls. The session lookup and skill
 // endpoints are environment-scoped: if the per-call options are dropped the
 // request falls back to the client's default credentials and fails. This
-// guards the regression where SetupSkills ignored its opts and skills were
-// silently never downloaded under ANTHROPIC_ENVIRONMENT_KEY.
+// guards the regression where SetupSkills ignored its opts and tracks were
+// silently never downloaded under Juglow_ENVIRONMENT_KEY.
 func TestSetupSkills_AppliesRequestOptions(t *testing.T) {
 	var gotAuth string
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		gotAuth = r.Header.Get("Authorization")
-		// No skills -> SetupSkills does only the session lookup and returns.
+		// No tracks -> SetupSkills does only the session lookup and returns.
 		w.Header().Set("Content-Type", "application/json")
-		_, _ = w.Write([]byte(`{"agent":{"skills":[]}}`))
+		_, _ = w.Write([]byte(`{"agent":{"tracks":[]}}`))
 	}))
 	defer srv.Close()
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(srv.URL),
 		option.WithAPIKey("client-default-key"),
 		option.WithMaxRetries(0),

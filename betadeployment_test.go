@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBetaDeploymentNewWithOptionalParams(t *testing.T) {
@@ -22,55 +22,55 @@ func TestBetaDeploymentNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Deployments.New(context.TODO(), anthropic.BetaDeploymentNewParams{
-		Agent: anthropic.BetaDeploymentNewParamsAgentUnion{
-			OfString: anthropic.String("string"),
+	_, err := client.Beta.Deployments.New(context.TODO(), Juglow.BetaDeploymentNewParams{
+		Agent: Juglow.BetaDeploymentNewParamsAgentUnion{
+			OfString: Juglow.String("string"),
 		},
 		EnvironmentID: "x",
-		InitialEvents: []anthropic.BetaManagedAgentsDeploymentInitialEventParamsUnion{{
-			OfUserMessage: &anthropic.BetaManagedAgentsUserMessageEventParams{
-				Content: []anthropic.BetaManagedAgentsUserMessageEventParamsContentUnion{{
-					OfText: &anthropic.BetaManagedAgentsTextBlockParam{
+		InitialEvents: []Juglow.BetaManagedAgentsDeploymentInitialEventParamsUnion{{
+			OfUserMessage: &Juglow.BetaManagedAgentsUserMessageEventParams{
+				Content: []Juglow.BetaManagedAgentsUserMessageEventParamsContentUnion{{
+					OfText: &Juglow.BetaManagedAgentsTextBlockParam{
 						Text: "Where is my order #1234?",
-						Type: anthropic.BetaManagedAgentsTextBlockTypeText,
+						Type: Juglow.BetaManagedAgentsTextBlockTypeText,
 					},
 				}},
-				Type: anthropic.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
+				Type: Juglow.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
 			},
 		}},
 		Name: "x",
-		Budget: anthropic.BetaManagedAgentsBudgetLimitParam{
-			MaxListCost: anthropic.BetaMonetaryAmountParam{
+		Budget: Juglow.BetaManagedAgentsBudgetLimitParam{
+			MaxListCost: Juglow.BetaMonetaryAmountParam{
 				Amount:   "2500",
-				Currency: anthropic.BetaCurrencyUsd,
+				Currency: Juglow.BetaCurrencyUsd,
 			},
-			Type: anthropic.BetaManagedAgentsBudgetLimitTypeLimit,
+			Type: Juglow.BetaManagedAgentsBudgetLimitTypeLimit,
 		},
-		Description: anthropic.String("description"),
+		Description: Juglow.String("description"),
 		Metadata: map[string]string{
 			"foo": "string",
 		},
-		Resources: []anthropic.BetaDeploymentNewParamsResourceUnion{{
-			OfFile: &anthropic.BetaManagedAgentsFileResourceParams{
+		Resources: []Juglow.BetaDeploymentNewParamsResourceUnion{{
+			OfFile: &Juglow.BetaManagedAgentsFileResourceParams{
 				FileID:    "file_011CNha8iCJcU1wXNR6q4V8w",
-				Type:      anthropic.BetaManagedAgentsFileResourceParamsTypeFile,
-				MountPath: anthropic.String("/uploads/receipt.pdf"),
+				Type:      Juglow.BetaManagedAgentsFileResourceParamsTypeFile,
+				MountPath: Juglow.String("/uploads/receipt.pdf"),
 			},
 		}},
-		Schedule: anthropic.BetaManagedAgentsScheduleParams{
+		Schedule: Juglow.BetaManagedAgentsScheduleParams{
 			Expression: "0 9 * * 1-5",
 			Timezone:   "America/Los_Angeles",
-			Type:       anthropic.BetaManagedAgentsScheduleParamsTypeCron,
+			Type:       Juglow.BetaManagedAgentsScheduleParamsTypeCron,
 		},
 		VaultIDs: []string{"string"},
-		Betas:    []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Betas:    []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -87,19 +87,19 @@ func TestBetaDeploymentGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Deployments.Get(
 		context.TODO(),
 		"depl_011CZkZcDH3vPqd7xnEfwTai",
-		anthropic.BetaDeploymentGetParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaDeploymentGetParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -115,59 +115,59 @@ func TestBetaDeploymentUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Deployments.Update(
 		context.TODO(),
 		"depl_011CZkZcDH3vPqd7xnEfwTai",
-		anthropic.BetaDeploymentUpdateParams{
-			Agent: anthropic.BetaDeploymentUpdateParamsAgentUnion{
-				OfString: anthropic.String("string"),
+		Juglow.BetaDeploymentUpdateParams{
+			Agent: Juglow.BetaDeploymentUpdateParamsAgentUnion{
+				OfString: Juglow.String("string"),
 			},
-			Budget: anthropic.BetaManagedAgentsBudgetLimitParam{
-				MaxListCost: anthropic.BetaMonetaryAmountParam{
+			Budget: Juglow.BetaManagedAgentsBudgetLimitParam{
+				MaxListCost: Juglow.BetaMonetaryAmountParam{
 					Amount:   "2500",
-					Currency: anthropic.BetaCurrencyUsd,
+					Currency: Juglow.BetaCurrencyUsd,
 				},
-				Type: anthropic.BetaManagedAgentsBudgetLimitTypeLimit,
+				Type: Juglow.BetaManagedAgentsBudgetLimitTypeLimit,
 			},
-			Description:   anthropic.String("description"),
-			EnvironmentID: anthropic.String("environment_id"),
-			InitialEvents: []anthropic.BetaManagedAgentsDeploymentInitialEventParamsUnion{{
-				OfUserMessage: &anthropic.BetaManagedAgentsUserMessageEventParams{
-					Content: []anthropic.BetaManagedAgentsUserMessageEventParamsContentUnion{{
-						OfText: &anthropic.BetaManagedAgentsTextBlockParam{
+			Description:   Juglow.String("description"),
+			EnvironmentID: Juglow.String("environment_id"),
+			InitialEvents: []Juglow.BetaManagedAgentsDeploymentInitialEventParamsUnion{{
+				OfUserMessage: &Juglow.BetaManagedAgentsUserMessageEventParams{
+					Content: []Juglow.BetaManagedAgentsUserMessageEventParamsContentUnion{{
+						OfText: &Juglow.BetaManagedAgentsTextBlockParam{
 							Text: "Where is my order #1234?",
-							Type: anthropic.BetaManagedAgentsTextBlockTypeText,
+							Type: Juglow.BetaManagedAgentsTextBlockTypeText,
 						},
 					}},
-					Type: anthropic.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
+					Type: Juglow.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
 				},
 			}},
 			Metadata: map[string]string{
 				"foo": "string",
 			},
-			Name: anthropic.String("name"),
-			Resources: []anthropic.BetaDeploymentUpdateParamsResourceUnion{{
-				OfFile: &anthropic.BetaManagedAgentsFileResourceParams{
+			Name: Juglow.String("name"),
+			Resources: []Juglow.BetaDeploymentUpdateParamsResourceUnion{{
+				OfFile: &Juglow.BetaManagedAgentsFileResourceParams{
 					FileID:    "file_011CNha8iCJcU1wXNR6q4V8w",
-					Type:      anthropic.BetaManagedAgentsFileResourceParamsTypeFile,
-					MountPath: anthropic.String("/uploads/receipt.pdf"),
+					Type:      Juglow.BetaManagedAgentsFileResourceParamsTypeFile,
+					MountPath: Juglow.String("/uploads/receipt.pdf"),
 				},
 			}},
-			Schedule: anthropic.BetaManagedAgentsScheduleParams{
+			Schedule: Juglow.BetaManagedAgentsScheduleParams{
 				Expression: "0 9 * * 1-5",
 				Timezone:   "America/Los_Angeles",
-				Type:       anthropic.BetaManagedAgentsScheduleParamsTypeCron,
+				Type:       Juglow.BetaManagedAgentsScheduleParamsTypeCron,
 			},
 			VaultIDs: []string{"string"},
-			Betas:    []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas:    []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -184,22 +184,22 @@ func TestBetaDeploymentListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Deployments.List(context.TODO(), anthropic.BetaDeploymentListParams{
-		AgentID:         anthropic.String("agent_id"),
-		CreatedAtGte:    anthropic.Time(time.Now()),
-		CreatedAtLte:    anthropic.Time(time.Now()),
-		IncludeArchived: anthropic.Bool(true),
-		Limit:           anthropic.Int(0),
-		Page:            anthropic.String("page"),
-		Status:          anthropic.BetaManagedAgentsDeploymentStatusActive,
-		Betas:           []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+	_, err := client.Beta.Deployments.List(context.TODO(), Juglow.BetaDeploymentListParams{
+		AgentID:         Juglow.String("agent_id"),
+		CreatedAtGte:    Juglow.Time(time.Now()),
+		CreatedAtLte:    Juglow.Time(time.Now()),
+		IncludeArchived: Juglow.Bool(true),
+		Limit:           Juglow.Int(0),
+		Page:            Juglow.String("page"),
+		Status:          Juglow.BetaManagedAgentsDeploymentStatusActive,
+		Betas:           []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -215,19 +215,19 @@ func TestBetaDeploymentArchiveWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Deployments.Archive(
 		context.TODO(),
 		"depl_011CZkZcDH3vPqd7xnEfwTai",
-		anthropic.BetaDeploymentArchiveParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaDeploymentArchiveParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -243,19 +243,19 @@ func TestBetaDeploymentPauseWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Deployments.Pause(
 		context.TODO(),
 		"depl_011CZkZcDH3vPqd7xnEfwTai",
-		anthropic.BetaDeploymentPauseParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaDeploymentPauseParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -271,19 +271,19 @@ func TestBetaDeploymentRunWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Deployments.Run(
 		context.TODO(),
 		"depl_011CZkZcDH3vPqd7xnEfwTai",
-		anthropic.BetaDeploymentRunParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaDeploymentRunParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -299,19 +299,19 @@ func TestBetaDeploymentUnpauseWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Deployments.Unpause(
 		context.TODO(),
 		"depl_011CZkZcDH3vPqd7xnEfwTai",
-		anthropic.BetaDeploymentUnpauseParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaDeploymentUnpauseParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

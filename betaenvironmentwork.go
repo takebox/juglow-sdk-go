@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -10,19 +10,19 @@ import (
 	"net/url"
 	"slices"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	shimjson "github.com/anthropics/anthropic-sdk-go/internal/encoding/json"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	shimjson "github.com/Juglows/Juglow-sdk-go/internal/encoding/json"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 // BetaEnvironmentWorkService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -48,10 +48,10 @@ func NewBetaEnvironmentWorkService(opts ...option.RequestOption) (r BetaEnvironm
 // Retrieve detailed information about a specific work item.
 func (r *BetaEnvironmentWorkService) Get(ctx context.Context, workID string, params BetaEnvironmentWorkGetParams, opts ...option.RequestOption) (res *BetaSelfHostedWork, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.EnvironmentID == "" {
 		err = errors.New("missing required environment_id parameter")
 		return nil, err
@@ -73,10 +73,10 @@ func (r *BetaEnvironmentWorkService) Get(ctx context.Context, workID string, par
 // Update work item metadata with merge semantics.
 func (r *BetaEnvironmentWorkService) Update(ctx context.Context, workID string, params BetaEnvironmentWorkUpdateParams, opts ...option.RequestOption) (res *BetaSelfHostedWork, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.EnvironmentID == "" {
 		err = errors.New("missing required environment_id parameter")
 		return nil, err
@@ -99,10 +99,10 @@ func (r *BetaEnvironmentWorkService) Update(ctx context.Context, workID string, 
 func (r *BetaEnvironmentWorkService) List(ctx context.Context, environmentID string, params BetaEnvironmentWorkListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaSelfHostedWork], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
 	if environmentID == "" {
 		err = errors.New("missing required environment_id parameter")
 		return nil, err
@@ -139,10 +139,10 @@ func (r *BetaEnvironmentWorkService) ListAutoPaging(ctx context.Context, environ
 // and removing it from the queue.
 func (r *BetaEnvironmentWorkService) Ack(ctx context.Context, workID string, params BetaEnvironmentWorkAckParams, opts ...option.RequestOption) (res *BetaSelfHostedWork, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.EnvironmentID == "" {
 		err = errors.New("missing required environment_id parameter")
 		return nil, err
@@ -164,10 +164,10 @@ func (r *BetaEnvironmentWorkService) Ack(ctx context.Context, workID string, par
 // Record a heartbeat for a work item to maintain the lease.
 func (r *BetaEnvironmentWorkService) Heartbeat(ctx context.Context, workID string, params BetaEnvironmentWorkHeartbeatParams, opts ...option.RequestOption) (res *BetaSelfHostedWorkHeartbeatResponse, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.EnvironmentID == "" {
 		err = errors.New("missing required environment_id parameter")
 		return nil, err
@@ -189,13 +189,13 @@ func (r *BetaEnvironmentWorkService) Heartbeat(ctx context.Context, workID strin
 // Long poll for work items in the queue.
 func (r *BetaEnvironmentWorkService) Poll(ctx context.Context, environmentID string, params BetaEnvironmentWorkPollParams, opts ...option.RequestOption) (res *BetaSelfHostedWork, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
-	if !param.IsOmitted(params.AnthropicWorkerID) {
-		opts = append(opts, option.WithHeader("Anthropic-Worker-ID", fmt.Sprintf("%v", params.AnthropicWorkerID.Value)))
+	if !param.IsOmitted(params.JuglowWorkerID) {
+		opts = append(opts, option.WithHeader("Juglow-Worker-ID", fmt.Sprintf("%v", params.JuglowWorkerID.Value)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if environmentID == "" {
 		err = errors.New("missing required environment_id parameter")
 		return nil, err
@@ -208,10 +208,10 @@ func (r *BetaEnvironmentWorkService) Poll(ctx context.Context, environmentID str
 // Get statistics about the work queue for an environment.
 func (r *BetaEnvironmentWorkService) Stats(ctx context.Context, environmentID string, query BetaEnvironmentWorkStatsParams, opts ...option.RequestOption) (res *BetaSelfHostedWorkQueueStats, err error) {
 	for _, v := range query.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if environmentID == "" {
 		err = errors.New("missing required environment_id parameter")
 		return nil, err
@@ -229,10 +229,10 @@ func (r *BetaEnvironmentWorkService) Stats(ctx context.Context, environmentID st
 // Stop a work item, initiating graceful or forced shutdown.
 func (r *BetaEnvironmentWorkService) Stop(ctx context.Context, workID string, params BetaEnvironmentWorkStopParams, opts ...option.RequestOption) (res *BetaSelfHostedWork, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.EnvironmentID == "" {
 		err = errors.New("missing required environment_id parameter")
 		return nil, err
@@ -510,7 +510,7 @@ func (r *BetaSessionWorkData) UnmarshalJSON(data []byte) error {
 type BetaEnvironmentWorkGetParams struct {
 	EnvironmentID string `path:"environment_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -519,7 +519,7 @@ type BetaEnvironmentWorkUpdateParams struct {
 	// Request to update work item metadata.
 	BetaSelfHostedWorkUpdateRequest BetaSelfHostedWorkUpdateRequestParam
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -536,7 +536,7 @@ type BetaEnvironmentWorkListParams struct {
 	// Maximum number of work items to return
 	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -552,7 +552,7 @@ func (r BetaEnvironmentWorkListParams) URLQuery() (v url.Values, err error) {
 type BetaEnvironmentWorkAckParams struct {
 	EnvironmentID string `path:"environment_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -566,7 +566,7 @@ type BetaEnvironmentWorkHeartbeatParams struct {
 	// Returns 412 Precondition Failed if the actual value doesn't match.
 	ExpectedLastHeartbeat param.Opt[string] `query:"expected_last_heartbeat,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -589,9 +589,9 @@ type BetaEnvironmentWorkPollParams struct {
 	ReclaimOlderThanMs param.Opt[int64] `query:"reclaim_older_than_ms,omitzero" json:"-"`
 	// Unique identifier for the specific worker polling, used to track aggregated
 	// environment-level work metrics in Console
-	AnthropicWorkerID param.Opt[string] `header:"Anthropic-Worker-ID,omitzero" json:"-"`
+	JuglowWorkerID param.Opt[string] `header:"Juglow-Worker-ID,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -606,7 +606,7 @@ func (r BetaEnvironmentWorkPollParams) URLQuery() (v url.Values, err error) {
 
 type BetaEnvironmentWorkStatsParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -615,7 +615,7 @@ type BetaEnvironmentWorkStopParams struct {
 	// Request to stop a work item.
 	BetaSelfHostedWorkStopRequest BetaSelfHostedWorkStopRequestParam
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 

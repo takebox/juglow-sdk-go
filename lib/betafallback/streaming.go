@@ -1,8 +1,8 @@
-package betafallback
+﻿package betafallback
 
 // Streaming half of [BetaRefusalFallbackMiddleware]: a refused streaming
 // attempt is retried down the chain and the retry's events are spliced onto
-// the open stream in server-parity framing — one message_start, a fallback
+// the open stream in server-parity framing â€” one message_start, a fallback
 // boundary block at each model seam, monotonic block indices, and a terminal
 // usage.iterations ledger covering every hop. The splicer is pull-based: hop
 // requests are issued from Read on the consumer's goroutine.
@@ -11,7 +11,7 @@ package betafallback
 // does:
 //   - A mid-stream refusal retries only when it minted a credit token; with
 //     content already streamed and no token, the refusal surfaces untouched.
-//     A pre-stream refusal retries either way — nothing streamed, so the
+//     A pre-stream refusal retries either way â€” nothing streamed, so the
 //     retry is invisible.
 //   - When the refusal advertises stop_details.fallback_has_prefill_claim,
 //     the retry appends one trailing assistant turn echoing the refused
@@ -37,8 +37,8 @@ import (
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/packages/ssestream"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/packages/ssestream"
 )
 
 // handleStreaming runs the streaming fallback path for an eligible request.
@@ -48,7 +48,7 @@ func handleStreaming(
 	next func(*http.Request) (*http.Response, error),
 	orig []byte,
 	body map[string]json.RawMessage,
-	fallbacks []anthropic.BetaFallbackParam,
+	fallbacks []Juglow.BetaFallbackParam,
 	state *BetaFallbackState,
 ) (*http.Response, error) {
 	send := func(payload []byte) (*http.Response, error) {
@@ -159,7 +159,7 @@ type seam struct {
 	category any
 }
 
-// block returns the fallback boundary content block as raw JSON — the shape
+// block returns the fallback boundary content block as raw JSON â€” the shape
 // both the streaming splice and the non-streaming prepend emit, and that
 // trimFallbackTurns keys off on history replay.
 func (s seam) block() json.RawMessage {
@@ -190,7 +190,7 @@ type streamSplicer struct {
 	dec ssestream.Decoder
 
 	body      map[string]json.RawMessage
-	fallbacks []anthropic.BetaFallbackParam
+	fallbacks []Juglow.BetaFallbackParam
 	next      int // next chain index to try
 	state     *BetaFallbackState
 	send      func(body []byte) (*http.Response, error)
@@ -420,7 +420,7 @@ func (s *streamSplicer) closeOpenBlocks() {
 // surface.
 func (s *streamSplicer) handleTerminal(evt ssestream.Event) {
 	parsed := gjson.ParseBytes(evt.Data)
-	refused := parsed.Get("delta.stop_reason").String() == string(anthropic.BetaStopReasonRefusal)
+	refused := parsed.Get("delta.stop_reason").String() == string(Juglow.BetaStopReasonRefusal)
 
 	if !refused {
 		s.ensureWireOpen()
@@ -436,7 +436,7 @@ func (s *streamSplicer) handleTerminal(evt ssestream.Event) {
 
 	token := parsed.Get("delta.stop_details.fallback_credit_token").String()
 	// Token required once content has streamed; a pre-stream refusal retries
-	// free — nothing reached the consumer.
+	// free â€” nothing reached the consumer.
 	canRetry := token != "" || !s.contentSeen
 
 	if s.next < len(s.fallbacks) && canRetry {
@@ -515,7 +515,7 @@ func (s *streamSplicer) rewriteTerminal(data []byte, includeSelf bool, stampReco
 // its terminal delta. A hop reporting its own iterations (a server-stitched
 // envelope, or a server-tool loop) contributes them verbatim; otherwise one
 // entry is synthesized from its delta usage. Every non-final entry is
-// (re)typed message — those attempts did not serve; the final hop's last
+// (re)typed message â€” those attempts did not serve; the final hop's last
 // entry is the fallback_message completer. The hop's model is stamped only
 // when the contribution is unambiguously the hop itself: a single entry. A
 // multi-entry array attributes per-iteration usage the wire did not break
@@ -560,7 +560,7 @@ func (s *streamSplicer) hopIterations(deltaData []byte, final bool) []json.RawMe
 
 // synthesizedEntry derives one ledger entry from a hop that reported no
 // iterations: the base usage fields from its terminal delta, zero where the
-// delta left them out and null cache_creation — message_start's snapshot is
+// delta left them out and null cache_creation â€” message_start's snapshot is
 // a running total, not this attempt's bill.
 func synthesizedEntry(deltaData []byte) json.RawMessage {
 	delta := gjson.GetBytes(deltaData, "usage")
@@ -616,7 +616,7 @@ func (s *streamSplicer) claimBlocks() []json.RawMessage {
 // hopBody builds one retry attempt: the original body with the entry merged
 // over it, the credit token attached, and the continuation appended as one
 // trailing assistant turn.
-func (s *streamSplicer) hopBody(entry anthropic.BetaFallbackParam, token string, continuation []json.RawMessage) ([]byte, error) {
+func (s *streamSplicer) hopBody(entry Juglow.BetaFallbackParam, token string, continuation []json.RawMessage) ([]byte, error) {
 	merged, _, err := mergeFallback(s.body, entry, token)
 	if err != nil {
 		return nil, err
@@ -646,7 +646,7 @@ func (s *streamSplicer) hopBody(entry anthropic.BetaFallbackParam, token string,
 // A chain that never engages degrades to the held refusal.
 func (s *streamSplicer) openNextHop() {
 	lastStatus := 0
-	var lastEntry anthropic.BetaFallbackParam
+	var lastEntry Juglow.BetaFallbackParam
 	for s.next < len(s.fallbacks) {
 		entry := s.fallbacks[s.next]
 		index := s.next
@@ -687,7 +687,7 @@ func (s *streamSplicer) openNextHop() {
 
 	// Final rung: same entry, no echoed partial, no token. A rejected
 	// redemption does not consume the token, so dropping it costs only the
-	// reprice — never the conversation.
+	// reprice â€” never the conversation.
 	if lastStatus == http.StatusBadRequest && s.token != "" {
 		trimmed := s.continuation[:len(s.continuation)-s.lastClaimCount]
 		res, err := s.tryHop(lastEntry, "", trimmed)
@@ -712,7 +712,7 @@ func (s *streamSplicer) openNextHop() {
 // engaged (a readable SSE stream), nil when the hop failed and the chain
 // should move on, or an error for unrecoverable problems building the
 // attempt.
-func (s *streamSplicer) tryHop(entry anthropic.BetaFallbackParam, token string, continuation []json.RawMessage) (*http.Response, error) {
+func (s *streamSplicer) tryHop(entry Juglow.BetaFallbackParam, token string, continuation []json.RawMessage) (*http.Response, error) {
 	payload, err := s.hopBody(entry, token, continuation)
 	if err != nil {
 		return nil, err
@@ -733,7 +733,7 @@ func (s *streamSplicer) tryHop(entry anthropic.BetaFallbackParam, token string, 
 // engage switches the splicer onto a hop that returned a live stream,
 // emitting (or queueing) the fallback boundary between the previous
 // content-bearing model and this hop.
-func (s *streamSplicer) engage(res *http.Response, entry anthropic.BetaFallbackParam) {
+func (s *streamSplicer) engage(res *http.Response, entry Juglow.BetaFallbackParam) {
 	sm := seam{from: s.effModel, to: string(entry.Model), category: s.category}
 	if s.wireOpen {
 		s.closeOpenBlocks()
@@ -759,8 +759,8 @@ func (s *streamSplicer) engage(res *http.Response, entry anthropic.BetaFallbackP
 
 // degrade surfaces the held refusal after every remaining hop failed: its
 // terminal events replay with the chain's ledger and a recommended_model
-// verdict — the unreachable entry on a rate limit, null otherwise.
-func (s *streamSplicer) degrade(lastStatus int, lastEntry anthropic.BetaFallbackParam) {
+// verdict â€” the unreachable entry on a rate limit, null otherwise.
+func (s *streamSplicer) degrade(lastStatus int, lastEntry Juglow.BetaFallbackParam) {
 	held := s.held
 	if held == nil {
 		s.finish(nil)

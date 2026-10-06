@@ -1,17 +1,17 @@
-// Self-contained demo of a self-hosted environment worker.
+﻿// Self-contained demo of a self-hosted environment worker.
 //
 // Creates an agent with agent_toolset_20260401 plus a custom current_time tool,
-// opens a session against ANTHROPIC_ENVIRONMENT_ID, sends a prompt, then runs an
-// EnvironmentWorker (poll for work, set up the workdir + skills, run the local
+// opens a session against Juglow_ENVIRONMENT_ID, sends a prompt, then runs an
+// EnvironmentWorker (poll for work, set up the workdir + tracks, run the local
 // tools against the session's agent.tool_use and agent.custom_tool_use events
 // while heartbeating the work-item lease, force-stop on exit, loop) until a
 // deadline fires.
 //
 // Required environment variables:
 //
-//	ANTHROPIC_API_KEY         - your API key (read by the SDK client)
-//	ANTHROPIC_ENVIRONMENT_ID  - a self-hosted environment to poll
-//	ANTHROPIC_ENVIRONMENT_KEY - the environment's key (authorizes both the
+//	Juglow_API_KEY         - your API key (read by the SDK client)
+//	Juglow_ENVIRONMENT_ID  - a self-hosted environment to poll
+//	Juglow_ENVIRONMENT_KEY - the environment's key (authorizes both the
 //	                            work-poll calls and the per-session calls)
 //
 // Security model: the worker executes bash and file operations directly on the
@@ -26,49 +26,49 @@ import (
 	"os"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/lib/environments"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/tools/agenttoolset"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/lib/environments"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/tools/agenttoolset"
 )
 
-// currentTimeTool is a custom anthropic.BetaTool that returns the local time.
+// currentTimeTool is a custom Juglow.BetaTool that returns the local time.
 // It demonstrates extending the default tool list alongside
 // agent_toolset_20260401.
 type currentTimeTool struct{}
 
 func (currentTimeTool) Name() string        { return "current_time" }
 func (currentTimeTool) Description() string { return "Get the current local time on the worker host." }
-func (currentTimeTool) InputSchema() anthropic.BetaToolInputSchemaParam {
-	return anthropic.BetaToolInputSchemaParam{Properties: map[string]any{}}
+func (currentTimeTool) InputSchema() Juglow.BetaToolInputSchemaParam {
+	return Juglow.BetaToolInputSchemaParam{Properties: map[string]any{}}
 }
-func (currentTimeTool) Execute(context.Context, json.RawMessage) ([]anthropic.BetaToolResultBlockParamContentUnion, error) {
-	return []anthropic.BetaToolResultBlockParamContentUnion{
-		{OfText: &anthropic.BetaTextBlockParam{Text: time.Now().Format(time.RFC3339)}},
+func (currentTimeTool) Execute(context.Context, json.RawMessage) ([]Juglow.BetaToolResultBlockParamContentUnion, error) {
+	return []Juglow.BetaToolResultBlockParamContentUnion{
+		{OfText: &Juglow.BetaTextBlockParam{Text: time.Now().Format(time.RFC3339)}},
 	}, nil
 }
 
 func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	ctx := context.Background()
 
-	envID := mustEnv("ANTHROPIC_ENVIRONMENT_ID")
-	environmentKey := mustEnv("ANTHROPIC_ENVIRONMENT_KEY")
+	envID := mustEnv("Juglow_ENVIRONMENT_ID")
+	environmentKey := mustEnv("Juglow_ENVIRONMENT_KEY")
 
-	agent, err := client.Beta.Agents.New(ctx, anthropic.BetaAgentNewParams{
+	agent, err := client.Beta.Agents.New(ctx, Juglow.BetaAgentNewParams{
 		Name:   "self-hosted-runner-example",
-		Model:  anthropic.BetaManagedAgentsModelConfigParams{ID: "claude-haiku-4-5"},
+		Model:  Juglow.BetaManagedAgentsModelConfigParams{ID: "haijun-haiku-4-5"},
 		System: param.NewOpt("You are running in a self-hosted sandbox. Use the available tools to answer."),
-		Tools: []anthropic.BetaAgentNewParamsToolUnion{
-			{OfAgentToolset20260401: &anthropic.BetaManagedAgentsAgentToolset20260401Params{
+		Tools: []Juglow.BetaAgentNewParamsToolUnion{
+			{OfAgentToolset20260401: &Juglow.BetaManagedAgentsAgentToolset20260401Params{
 				Type: "agent_toolset_20260401",
 			}},
-			{OfCustom: &anthropic.BetaManagedAgentsCustomToolParams{
+			{OfCustom: &Juglow.BetaManagedAgentsCustomToolParams{
 				Type:        "custom",
 				Name:        "current_time",
 				Description: "Get the current local time on the worker host.",
-				InputSchema: anthropic.BetaManagedAgentsCustomToolInputSchemaParam{
+				InputSchema: Juglow.BetaManagedAgentsCustomToolInputSchemaParam{
 					Type:       "object",
 					Properties: map[string]any{},
 				},
@@ -84,13 +84,13 @@ func main() {
 		// parent ctx doesn't skip Archive.
 		cleanup, cancel := context.WithTimeout(context.WithoutCancel(ctx), 10*time.Second)
 		defer cancel()
-		if _, err := client.Beta.Agents.Archive(cleanup, agent.ID, anthropic.BetaAgentArchiveParams{}); err != nil {
+		if _, err := client.Beta.Agents.Archive(cleanup, agent.ID, Juglow.BetaAgentArchiveParams{}); err != nil {
 			logger.Warn("archive agent failed", slog.Any("error", err))
 		}
 	}()
 
-	session, err := client.Beta.Sessions.New(ctx, anthropic.BetaSessionNewParams{
-		Agent:         anthropic.BetaSessionNewParamsAgentUnion{OfString: param.NewOpt(agent.ID)},
+	session, err := client.Beta.Sessions.New(ctx, Juglow.BetaSessionNewParams{
+		Agent:         Juglow.BetaSessionNewParamsAgentUnion{OfString: param.NewOpt(agent.ID)},
 		EnvironmentID: envID,
 		Title:         param.NewOpt("self-hosted-runner-example"),
 	})
@@ -101,26 +101,26 @@ func main() {
 	defer func() {
 		cleanup, cancel := context.WithTimeout(context.WithoutCancel(ctx), 10*time.Second)
 		defer cancel()
-		if _, err := client.Beta.Sessions.Delete(cleanup, session.ID, anthropic.BetaSessionDeleteParams{}); err != nil {
+		if _, err := client.Beta.Sessions.Delete(cleanup, session.ID, Juglow.BetaSessionDeleteParams{}); err != nil {
 			logger.Warn("delete session failed", slog.Any("error", err))
 		}
 	}()
 
 	// TODO(codegen): the autogenerated
 	// BetaManagedAgentsEventParamsOfUserMessage helper omits the
-	// required `type` field — compare its body (no type_ arg) with
+	// required `type` field â€” compare its body (no type_ arg) with
 	// sibling helpers like BetaManagedAgentsEventParamsOfUserInterrupt
 	// (which do take type_). Server validators reject the payload with
 	// "events[0].type: Field required". Workaround: construct the
 	// union directly with Type set. Remove the workaround once the
 	// generator emits the type assignment in the helper.
-	_, err = client.Beta.Sessions.Events.Send(ctx, session.ID, anthropic.BetaSessionEventSendParams{
-		Events: []anthropic.BetaManagedAgentsEventParamsUnion{
-			{OfUserMessage: &anthropic.BetaManagedAgentsUserMessageEventParams{
-				Type: anthropic.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
-				Content: []anthropic.BetaManagedAgentsUserMessageEventParamsContentUnion{
-					{OfText: &anthropic.BetaManagedAgentsTextBlockParam{
-						Type: anthropic.BetaManagedAgentsTextBlockTypeText,
+	_, err = client.Beta.Sessions.Events.Send(ctx, session.ID, Juglow.BetaSessionEventSendParams{
+		Events: []Juglow.BetaManagedAgentsEventParamsUnion{
+			{OfUserMessage: &Juglow.BetaManagedAgentsUserMessageEventParams{
+				Type: Juglow.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
+				Content: []Juglow.BetaManagedAgentsUserMessageEventParamsContentUnion{
+					{OfText: &Juglow.BetaManagedAgentsTextBlockParam{
+						Type: Juglow.BetaManagedAgentsTextBlockTypeText,
 						Text: "What is the current time? Also run pwd to show me the working directory.",
 					}},
 				},
@@ -142,14 +142,14 @@ func main() {
 		Logger:         logger,
 		// Per-session tool factory: the standard agent_toolset_20260401 set
 		// (bound to the session's workdir) plus a custom current_time tool.
-		ToolsFunc: func(env *agenttoolset.AgentToolContext) []anthropic.BetaTool {
+		ToolsFunc: func(env *agenttoolset.AgentToolContext) []Juglow.BetaTool {
 			return append(agenttoolset.BetaAgentToolset20260401(env), currentTimeTool{})
 		},
 	})
 	// worker.Run polls for work and loops. If you instead already hold a
-	// claimed work item — e.g. inside an `ant worker poll --on-work` hook,
-	// which exports ANTHROPIC_WORK_ID / ANTHROPIC_ENVIRONMENT_ID /
-	// ANTHROPIC_SESSION_ID / ANTHROPIC_ENVIRONMENT_KEY — service that single
+	// claimed work item â€” e.g. inside an `ant worker poll --on-work` hook,
+	// which exports Juglow_WORK_ID / Juglow_ENVIRONMENT_ID /
+	// Juglow_SESSION_ID / Juglow_ENVIRONMENT_KEY â€” service that single
 	// item with worker.HandleItem(ctx, environments.HandleItemOptions{}).
 	if err := worker.Run(workCtx); err != nil {
 		fatal(logger, "worker", err)
@@ -157,7 +157,7 @@ func main() {
 
 	// Print a compact transcript.
 	fmt.Println("\n--- session transcript ---")
-	pager := client.Beta.Sessions.Events.ListAutoPaging(ctx, session.ID, anthropic.BetaSessionEventListParams{
+	pager := client.Beta.Sessions.Events.ListAutoPaging(ctx, session.ID, Juglow.BetaSessionEventListParams{
 		Limit: param.NewOpt(int64(100)),
 	})
 	for pager.Next() {
@@ -169,7 +169,7 @@ func main() {
 	}
 }
 
-func summariseEvent(ev anthropic.BetaManagedAgentsSessionEventUnion) string {
+func summariseEvent(ev Juglow.BetaManagedAgentsSessionEventUnion) string {
 	switch ev.Type {
 	case "agent.tool_use", "agent.custom_tool_use":
 		in, _ := json.Marshal(ev.Input)

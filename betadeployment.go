@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -12,17 +12,17 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
 )
 
 // BetaDeploymentService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -43,10 +43,10 @@ func NewBetaDeploymentService(opts ...option.RequestOption) (r BetaDeploymentSer
 // Create Deployment
 func (r *BetaDeploymentService) New(ctx context.Context, params BetaDeploymentNewParams, opts ...option.RequestOption) (res *BetaManagedAgentsDeployment, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	path := "v1/deployments?beta=true"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
@@ -55,10 +55,10 @@ func (r *BetaDeploymentService) New(ctx context.Context, params BetaDeploymentNe
 // Get Deployment
 func (r *BetaDeploymentService) Get(ctx context.Context, deploymentID string, query BetaDeploymentGetParams, opts ...option.RequestOption) (res *BetaManagedAgentsDeployment, err error) {
 	for _, v := range query.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if deploymentID == "" {
 		err = errors.New("missing required deployment_id parameter")
 		return nil, err
@@ -71,10 +71,10 @@ func (r *BetaDeploymentService) Get(ctx context.Context, deploymentID string, qu
 // Update Deployment
 func (r *BetaDeploymentService) Update(ctx context.Context, deploymentID string, params BetaDeploymentUpdateParams, opts ...option.RequestOption) (res *BetaManagedAgentsDeployment, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if deploymentID == "" {
 		err = errors.New("missing required deployment_id parameter")
 		return nil, err
@@ -88,10 +88,10 @@ func (r *BetaDeploymentService) Update(ctx context.Context, deploymentID string,
 func (r *BetaDeploymentService) List(ctx context.Context, params BetaDeploymentListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaManagedAgentsDeployment], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
 	path := "v1/deployments?beta=true"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
 	if err != nil {
@@ -113,10 +113,10 @@ func (r *BetaDeploymentService) ListAutoPaging(ctx context.Context, params BetaD
 // Archive Deployment
 func (r *BetaDeploymentService) Archive(ctx context.Context, deploymentID string, body BetaDeploymentArchiveParams, opts ...option.RequestOption) (res *BetaManagedAgentsDeployment, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if deploymentID == "" {
 		err = errors.New("missing required deployment_id parameter")
 		return nil, err
@@ -129,10 +129,10 @@ func (r *BetaDeploymentService) Archive(ctx context.Context, deploymentID string
 // Pause Deployment
 func (r *BetaDeploymentService) Pause(ctx context.Context, deploymentID string, body BetaDeploymentPauseParams, opts ...option.RequestOption) (res *BetaManagedAgentsDeployment, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if deploymentID == "" {
 		err = errors.New("missing required deployment_id parameter")
 		return nil, err
@@ -145,10 +145,10 @@ func (r *BetaDeploymentService) Pause(ctx context.Context, deploymentID string, 
 // Run Deployment Now
 func (r *BetaDeploymentService) Run(ctx context.Context, deploymentID string, body BetaDeploymentRunParams, opts ...option.RequestOption) (res *BetaManagedAgentsDeploymentRun, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if deploymentID == "" {
 		err = errors.New("missing required deployment_id parameter")
 		return nil, err
@@ -161,10 +161,10 @@ func (r *BetaDeploymentService) Run(ctx context.Context, deploymentID string, bo
 // Unpause Deployment
 func (r *BetaDeploymentService) Unpause(ctx context.Context, deploymentID string, body BetaDeploymentUnpauseParams, opts ...option.RequestOption) (res *BetaManagedAgentsDeployment, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if deploymentID == "" {
 		err = errors.New("missing required deployment_id parameter")
 		return nil, err
@@ -200,7 +200,7 @@ const (
 	BetaManagedAgentsAgentArchivedDeploymentPausedReasonErrorTypeAgentArchivedError BetaManagedAgentsAgentArchivedDeploymentPausedReasonErrorType = "agent_archived_error"
 )
 
-// A deployment is a configured instance of an agent — it binds the agent to
+// A deployment is a configured instance of an agent â€” it binds the agent to
 // everything needed to run it autonomously: an environment, credentials, initial
 // events, and an optional schedule.
 type BetaManagedAgentsDeployment struct {
@@ -328,9 +328,9 @@ func (BetaManagedAgentsDeploymentSystemMessageEvent) implBetaManagedAgentsDeploy
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsDeploymentInitialEventUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsDeploymentUserMessageEvent:
-//	case anthropic.BetaManagedAgentsDeploymentUserDefineOutcomeEvent:
-//	case anthropic.BetaManagedAgentsDeploymentSystemMessageEvent:
+//	case Juglow.BetaManagedAgentsDeploymentUserMessageEvent:
+//	case Juglow.BetaManagedAgentsDeploymentUserDefineOutcomeEvent:
+//	case Juglow.BetaManagedAgentsDeploymentSystemMessageEvent:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -509,8 +509,8 @@ type betaManagedAgentsDeploymentInitialEventParamsUnionContent struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *[]anthropic.BetaManagedAgentsUserMessageEventParamsContentUnion:
-//	case *[]anthropic.BetaManagedAgentsSystemContentBlockParam:
+//	case *[]Juglow.BetaManagedAgentsUserMessageEventParamsContentUnion:
+//	case *[]Juglow.BetaManagedAgentsSystemContentBlockParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -560,8 +560,8 @@ func (BetaManagedAgentsErrorDeploymentPausedReason) implBetaManagedAgentsDeploym
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsDeploymentPausedReasonUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsManualDeploymentPausedReason:
-//	case anthropic.BetaManagedAgentsErrorDeploymentPausedReason:
+//	case Juglow.BetaManagedAgentsManualDeploymentPausedReason:
+//	case Juglow.BetaManagedAgentsErrorDeploymentPausedReason:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -666,20 +666,20 @@ func (BetaManagedAgentsMCPEgressBlockedDeploymentPausedReasonError) implBetaMana
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsDeploymentPausedReasonErrorUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsAgentArchivedDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsFileNotFoundDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsVaultArchivedDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsUnknownDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError:
-//	case anthropic.BetaManagedAgentsMCPEgressBlockedDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsAgentArchivedDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsFileNotFoundDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsVaultArchivedDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsUnknownDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsMCPEgressBlockedDeploymentPausedReasonError:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -839,7 +839,7 @@ type BetaManagedAgentsDeploymentUserDefineOutcomeEvent struct {
 	Rubric BetaManagedAgentsDeploymentUserDefineOutcomeEventRubricUnion `json:"rubric" api:"required"`
 	// Any of "user.define_outcome".
 	Type BetaManagedAgentsDeploymentUserDefineOutcomeEventType `json:"type" api:"required"`
-	// Eval→revision cycles before giving up. Default 3, max 20.
+	// Evalâ†’revision cycles before giving up. Default 3, max 20.
 	MaxIterations int64 `json:"max_iterations" api:"nullable"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -897,8 +897,8 @@ func (BetaManagedAgentsTextRubric) implBetaManagedAgentsDeploymentUserDefineOutc
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsDeploymentUserDefineOutcomeEventRubricUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsFileRubric:
-//	case anthropic.BetaManagedAgentsTextRubric:
+//	case Juglow.BetaManagedAgentsFileRubric:
+//	case Juglow.BetaManagedAgentsTextRubric:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1005,10 +1005,10 @@ func (BetaManagedAgentsRedactedBlock) implBetaManagedAgentsDeploymentUserMessage
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsDeploymentUserMessageEventContentUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsTextBlock:
-//	case anthropic.BetaManagedAgentsImageBlock:
-//	case anthropic.BetaManagedAgentsDocumentBlock:
-//	case anthropic.BetaManagedAgentsRedactedBlock:
+//	case Juglow.BetaManagedAgentsTextBlock:
+//	case Juglow.BetaManagedAgentsImageBlock:
+//	case Juglow.BetaManagedAgentsDocumentBlock:
+//	case Juglow.BetaManagedAgentsRedactedBlock:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1292,8 +1292,8 @@ func (BetaManagedAgentsCommitCheckout) implBetaManagedAgentsGitHubRepositoryReso
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsGitHubRepositoryResourceConfigCheckoutUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsBranchCheckout:
-//	case anthropic.BetaManagedAgentsCommitCheckout:
+//	case Juglow.BetaManagedAgentsBranchCheckout:
+//	case Juglow.BetaManagedAgentsCommitCheckout:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1631,9 +1631,9 @@ func (BetaManagedAgentsMemoryStoreResourceConfig) implBetaManagedAgentsSessionRe
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsSessionResourceConfigUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsGitHubRepositoryResourceConfig:
-//	case anthropic.BetaManagedAgentsFileResourceConfig:
-//	case anthropic.BetaManagedAgentsMemoryStoreResourceConfig:
+//	case Juglow.BetaManagedAgentsGitHubRepositoryResourceConfig:
+//	case Juglow.BetaManagedAgentsFileResourceConfig:
+//	case Juglow.BetaManagedAgentsMemoryStoreResourceConfig:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1857,7 +1857,7 @@ type BetaDeploymentNewParams struct {
 	// this deployment. Maximum 50.
 	VaultIDs []string `json:"vault_ids,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -2011,7 +2011,7 @@ func init() {
 
 type BetaDeploymentGetParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -2046,7 +2046,7 @@ type BetaDeploymentUpdateParams struct {
 	// timezone.
 	Schedule BetaManagedAgentsScheduleParams `json:"schedule,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -2217,7 +2217,7 @@ type BetaDeploymentListParams struct {
 	// Any of "active", "paused".
 	Status BetaManagedAgentsDeploymentStatus `query:"status,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -2232,24 +2232,24 @@ func (r BetaDeploymentListParams) URLQuery() (v url.Values, err error) {
 
 type BetaDeploymentArchiveParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaDeploymentPauseParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaDeploymentRunParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaDeploymentUnpauseParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }

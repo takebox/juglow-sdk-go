@@ -1,19 +1,19 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"encoding/json"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 // BetaService contains methods and other services that help with interacting with
-// the anthropic API.
+// the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -30,7 +30,7 @@ type BetaService struct {
 	Vaults         BetaVaultService
 	MemoryStores   BetaMemoryStoreService
 	Files          BetaFileService
-	Skills         BetaSkillService
+	tracks         BetaSkillService
 	Webhooks       BetaWebhookService
 	UserProfiles   BetaUserProfileService
 	Dreams         BetaDreamService
@@ -53,7 +53,7 @@ func NewBetaService(opts ...option.RequestOption) (r BetaService) {
 	r.Vaults = NewBetaVaultService(opts...)
 	r.MemoryStores = NewBetaMemoryStoreService(opts...)
 	r.Files = NewBetaFileService(opts...)
-	r.Skills = NewBetaSkillService(opts...)
+	r.tracks = NewBetaSkillService(opts...)
 	r.Webhooks = NewBetaWebhookService(opts...)
 	r.UserProfiles = NewBetaUserProfileService(opts...)
 	r.Dreams = NewBetaDreamService(opts...)
@@ -61,42 +61,42 @@ func NewBetaService(opts ...option.RequestOption) (r BetaService) {
 	return
 }
 
-type AnthropicBeta = string
+type JuglowBeta = string
 
 const (
-	AnthropicBetaMessageBatches2024_09_24             AnthropicBeta = "message-batches-2024-09-24"
-	AnthropicBetaPromptCaching2024_07_31              AnthropicBeta = "prompt-caching-2024-07-31"
-	AnthropicBetaComputerUse2024_10_22                AnthropicBeta = "computer-use-2024-10-22"
-	AnthropicBetaComputerUse2025_01_24                AnthropicBeta = "computer-use-2025-01-24"
-	AnthropicBetaPDFs2024_09_25                       AnthropicBeta = "pdfs-2024-09-25"
-	AnthropicBetaTokenCounting2024_11_01              AnthropicBeta = "token-counting-2024-11-01"
-	AnthropicBetaTokenEfficientTools2025_02_19        AnthropicBeta = "token-efficient-tools-2025-02-19"
-	AnthropicBetaOutput128k2025_02_19                 AnthropicBeta = "output-128k-2025-02-19"
-	AnthropicBetaFilesAPI2025_04_14                   AnthropicBeta = "files-api-2025-04-14"
-	AnthropicBetaMCPClient2025_04_04                  AnthropicBeta = "mcp-client-2025-04-04"
-	AnthropicBetaMCPClient2025_11_20                  AnthropicBeta = "mcp-client-2025-11-20"
-	AnthropicBetaDevFullThinking2025_05_14            AnthropicBeta = "dev-full-thinking-2025-05-14"
-	AnthropicBetaInterleavedThinking2025_05_14        AnthropicBeta = "interleaved-thinking-2025-05-14"
-	AnthropicBetaCodeExecution2025_05_22              AnthropicBeta = "code-execution-2025-05-22"
-	AnthropicBetaExtendedCacheTTL2025_04_11           AnthropicBeta = "extended-cache-ttl-2025-04-11"
-	AnthropicBetaContext1m2025_08_07                  AnthropicBeta = "context-1m-2025-08-07"
-	AnthropicBetaContextManagement2025_06_27          AnthropicBeta = "context-management-2025-06-27"
-	AnthropicBetaModelContextWindowExceeded2025_08_26 AnthropicBeta = "model-context-window-exceeded-2025-08-26"
-	AnthropicBetaSkills2025_10_02                     AnthropicBeta = "skills-2025-10-02"
-	AnthropicBetaFastMode2026_02_01                   AnthropicBeta = "fast-mode-2026-02-01"
-	AnthropicBetaOutput300k2026_03_24                 AnthropicBeta = "output-300k-2026-03-24"
-	AnthropicBetaUserProfiles2026_03_24               AnthropicBeta = "user-profiles-2026-03-24"
-	AnthropicBetaAdvisorTool2026_03_01                AnthropicBeta = "advisor-tool-2026-03-01"
-	AnthropicBetaManagedAgents2026_04_01              AnthropicBeta = "managed-agents-2026-04-01"
-	AnthropicBetaCacheDiagnosis2026_04_07             AnthropicBeta = "cache-diagnosis-2026-04-07"
-	AnthropicBetaDreaming2026_04_21                   AnthropicBeta = "dreaming-2026-04-21"
-	AnthropicBetaThinkingTokenCount2026_05_13         AnthropicBeta = "thinking-token-count-2026-05-13"
-	AnthropicBetaServerSideFallback2026_06_01         AnthropicBeta = "server-side-fallback-2026-06-01"
-	AnthropicBetaServerSideFallback2026_07_01         AnthropicBeta = "server-side-fallback-2026-07-01"
-	AnthropicBetaFallbackCredit2026_06_01             AnthropicBeta = "fallback-credit-2026-06-01"
-	AnthropicBetaFallbackCredit2026_07_01             AnthropicBeta = "fallback-credit-2026-07-01"
-	AnthropicBetaAgentMemory2026_07_22                AnthropicBeta = "agent-memory-2026-07-22"
-	AnthropicBetaMidConversationToolChanges2026_07_01 AnthropicBeta = "mid-conversation-tool-changes-2026-07-01"
+	JuglowBetaMessageBatches2024_09_24             JuglowBeta = "message-batches-2024-09-24"
+	JuglowBetaPromptCaching2024_07_31              JuglowBeta = "prompt-caching-2024-07-31"
+	JuglowBetaComputerUse2024_10_22                JuglowBeta = "computer-use-2024-10-22"
+	JuglowBetaComputerUse2025_01_24                JuglowBeta = "computer-use-2025-01-24"
+	JuglowBetaPDFs2024_09_25                       JuglowBeta = "pdfs-2024-09-25"
+	JuglowBetaTokenCounting2024_11_01              JuglowBeta = "token-counting-2024-11-01"
+	JuglowBetaTokenEfficientTools2025_02_19        JuglowBeta = "token-efficient-tools-2025-02-19"
+	JuglowBetaOutput128k2025_02_19                 JuglowBeta = "output-128k-2025-02-19"
+	JuglowBetaFilesAPI2025_04_14                   JuglowBeta = "files-api-2025-04-14"
+	JuglowBetaMCPClient2025_04_04                  JuglowBeta = "mcp-client-2025-04-04"
+	JuglowBetaMCPClient2025_11_20                  JuglowBeta = "mcp-client-2025-11-20"
+	JuglowBetaDevFullThinking2025_05_14            JuglowBeta = "dev-full-thinking-2025-05-14"
+	JuglowBetaInterleavedThinking2025_05_14        JuglowBeta = "interleaved-thinking-2025-05-14"
+	JuglowBetaCodeExecution2025_05_22              JuglowBeta = "code-execution-2025-05-22"
+	JuglowBetaExtendedCacheTTL2025_04_11           JuglowBeta = "extended-cache-ttl-2025-04-11"
+	JuglowBetaContext1m2025_08_07                  JuglowBeta = "context-1m-2025-08-07"
+	JuglowBetaContextManagement2025_06_27          JuglowBeta = "context-management-2025-06-27"
+	JuglowBetaModelContextWindowExceeded2025_08_26 JuglowBeta = "model-context-window-exceeded-2025-08-26"
+	JuglowBetaSkills2025_10_02                     JuglowBeta = "tracks-2025-10-02"
+	JuglowBetaFastMode2026_02_01                   JuglowBeta = "fast-mode-2026-02-01"
+	JuglowBetaOutput300k2026_03_24                 JuglowBeta = "output-300k-2026-03-24"
+	JuglowBetaUserProfiles2026_03_24               JuglowBeta = "user-profiles-2026-03-24"
+	JuglowBetaAdvisorTool2026_03_01                JuglowBeta = "advisor-tool-2026-03-01"
+	JuglowBetaManagedAgents2026_04_01              JuglowBeta = "managed-agents-2026-04-01"
+	JuglowBetaCacheDiagnosis2026_04_07             JuglowBeta = "cache-diagnosis-2026-04-07"
+	JuglowBetaDreaming2026_04_21                   JuglowBeta = "dreaming-2026-04-21"
+	JuglowBetaThinkingTokenCount2026_05_13         JuglowBeta = "thinking-token-count-2026-05-13"
+	JuglowBetaServerSideFallback2026_06_01         JuglowBeta = "server-side-fallback-2026-06-01"
+	JuglowBetaServerSideFallback2026_07_01         JuglowBeta = "server-side-fallback-2026-07-01"
+	JuglowBetaFallbackCredit2026_06_01             JuglowBeta = "fallback-credit-2026-06-01"
+	JuglowBetaFallbackCredit2026_07_01             JuglowBeta = "fallback-credit-2026-07-01"
+	JuglowBetaAgentMemory2026_07_22                JuglowBeta = "agent-memory-2026-07-22"
+	JuglowBetaMidConversationToolChanges2026_07_01 JuglowBeta = "mid-conversation-tool-changes-2026-07-01"
 )
 
 type BetaAPIError struct {
@@ -199,15 +199,15 @@ func (BetaOverloadedError) implBetaErrorUnion()     {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaErrorUnion.AsAny().(type) {
-//	case anthropic.BetaInvalidRequestError:
-//	case anthropic.BetaAuthenticationError:
-//	case anthropic.BetaBillingError:
-//	case anthropic.BetaPermissionError:
-//	case anthropic.BetaNotFoundError:
-//	case anthropic.BetaRateLimitError:
-//	case anthropic.BetaGatewayTimeoutError:
-//	case anthropic.BetaAPIError:
-//	case anthropic.BetaOverloadedError:
+//	case Juglow.BetaInvalidRequestError:
+//	case Juglow.BetaAuthenticationError:
+//	case Juglow.BetaBillingError:
+//	case Juglow.BetaPermissionError:
+//	case Juglow.BetaNotFoundError:
+//	case Juglow.BetaRateLimitError:
+//	case Juglow.BetaGatewayTimeoutError:
+//	case Juglow.BetaAPIError:
+//	case Juglow.BetaOverloadedError:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}

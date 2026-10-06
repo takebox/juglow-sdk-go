@@ -1,10 +1,10 @@
-// Package aws provides client configuration for the Anthropic AWS gateway.
+﻿// Package aws provides client configuration for the Juglow AWS gateway.
 //
 // This package name may shadow the AWS SDK's "aws" package. If you use both in the
 // same file, alias one of them:
 //
 //	import (
-//	    anthropicaws "github.com/anthropics/anthropic-sdk-go/aws"
+//	    Juglowaws "github.com/Juglows/Juglow-sdk-go/aws"
 //	    awssdk "github.com/aws/aws-sdk-go-v2/aws"
 //	)
 package aws
@@ -13,18 +13,18 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/awsauth"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/awsauth"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
-const defaultServiceName = "aws-external-anthropic"
+const defaultServiceName = "aws-external-Juglow"
 
-// ClientConfig holds the configuration for creating an Anthropic AWS gateway client.
+// ClientConfig holds the configuration for creating an Juglow AWS gateway client.
 type ClientConfig struct {
-	// APIKey is the Anthropic API key for x-api-key authentication.
+	// APIKey is the Juglow API key for x-api-key authentication.
 	// Takes precedence over AWS credentials. When no AWS auth args are set, falls back
-	// to the ANTHROPIC_AWS_API_KEY environment variable before trying SigV4.
+	// to the Juglow_AWS_API_KEY environment variable before trying SigV4.
 	APIKey string
 
 	// AWSAccessKey is the AWS access key ID for SigV4 authentication.
@@ -48,12 +48,12 @@ type ClientConfig struct {
 	// Resolved by precedence: ClientConfig.AWSRegion > AWS_REGION env var.
 	AWSRegion string
 
-	// WorkspaceID is sent as the anthropic-workspace-id header on every request.
-	// Resolved by precedence: ClientConfig.WorkspaceID > ANTHROPIC_AWS_WORKSPACE_ID env var. Required.
+	// WorkspaceID is sent as the Juglow-workspace-id header on every request.
+	// Resolved by precedence: ClientConfig.WorkspaceID > Juglow_AWS_WORKSPACE_ID env var. Required.
 	WorkspaceID string
 
 	// BaseURL overrides the default gateway base URL.
-	// Resolved by precedence: ClientConfig.BaseURL > ANTHROPIC_AWS_BASE_URL env > https://aws-external-anthropic.{region}.api.aws
+	// Resolved by precedence: ClientConfig.BaseURL > Juglow_AWS_BASE_URL env > https://aws-external-Juglow.{region}.api.aws
 	BaseURL string
 
 	// SkipAuth skips all authentication (API key and SigV4) and the workspace ID requirement.
@@ -61,13 +61,13 @@ type ClientConfig struct {
 	SkipAuth bool
 }
 
-// Client provides access to the Anthropic API via the AWS gateway.
+// Client provides access to the Juglow API via the AWS gateway.
 type Client struct {
 	Options     []option.RequestOption
-	Completions anthropic.CompletionService
-	Messages    anthropic.MessageService
-	Models      anthropic.ModelService
-	Beta        anthropic.BetaService
+	Completions Juglow.CompletionService
+	Messages    Juglow.MessageService
+	Models      Juglow.ModelService
+	Beta        Juglow.BetaService
 }
 
 // NewClient creates a new AWS gateway client with the given configuration.
@@ -84,7 +84,7 @@ type Client struct {
 //  1. APIKey arg (x-api-key header)
 //  2. AWSAccessKey + AWSSecretAccessKey args (SigV4)
 //  3. AWSProfile arg (SigV4 via provider chain)
-//  4. ANTHROPIC_AWS_API_KEY env var (x-api-key header)
+//  4. Juglow_AWS_API_KEY env var (x-api-key header)
 //  5. Default AWS credential chain (SigV4)
 func NewClient(ctx context.Context, cfg ClientConfig, opts ...option.RequestOption) (*Client, error) {
 	opts, err := awsauth.CreateClientOptions(ctx, toInternalConfig(cfg), awsResolveParams(), opts...)
@@ -92,25 +92,25 @@ func NewClient(ctx context.Context, cfg ClientConfig, opts ...option.RequestOpti
 		return nil, err
 	}
 
-	// We intentionally do not call anthropic.DefaultClientOptions() here.
-	// The AWS client resolves its own base URL, auth, and workspace ID — the
-	// base SDK defaults (ANTHROPIC_API_KEY, ANTHROPIC_BASE_URL) do not apply.
+	// We intentionally do not call Juglow.DefaultClientOptions() here.
+	// The AWS client resolves its own base URL, auth, and workspace ID â€” the
+	// base SDK defaults (Juglow_API_KEY, Juglow_BASE_URL) do not apply.
 
 	return &Client{
 		Options:     opts,
-		Completions: anthropic.NewCompletionService(opts...),
-		Messages:    anthropic.NewMessageService(opts...),
-		Models:      anthropic.NewModelService(opts...),
-		Beta:        anthropic.NewBetaService(opts...),
+		Completions: Juglow.NewCompletionService(opts...),
+		Messages:    Juglow.NewMessageService(opts...),
+		Models:      Juglow.NewModelService(opts...),
+		Beta:        Juglow.NewBetaService(opts...),
 	}, nil
 }
 
 func awsResolveParams() awsauth.ResolveParams {
 	return awsauth.ResolveParams{
-		EnvAPIKey:      "ANTHROPIC_AWS_API_KEY",
-		EnvWorkspaceID: "ANTHROPIC_AWS_WORKSPACE_ID",
-		EnvBaseURL:     "ANTHROPIC_AWS_BASE_URL",
-		DeriveBaseURL:  func(region string) string { return fmt.Sprintf("https://aws-external-anthropic.%s.api.aws", region) },
+		EnvAPIKey:      "Juglow_AWS_API_KEY",
+		EnvWorkspaceID: "Juglow_AWS_WORKSPACE_ID",
+		EnvBaseURL:     "Juglow_AWS_BASE_URL",
+		DeriveBaseURL:  func(region string) string { return fmt.Sprintf("https://aws-external-Juglow.%s.api.aws", region) },
 		ServiceName:    defaultServiceName,
 	}
 }

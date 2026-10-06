@@ -1,11 +1,11 @@
-package apijson
+﻿package apijson
 
 import (
 	"errors"
 	"reflect"
 	"sync"
 
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 
 	"github.com/tidwall/gjson"
 )
@@ -119,7 +119,7 @@ func RegisterDiscriminatedUnion[T any](key string, mappings map[string]reflect.T
 
 // deriveDiscriminator picks the `default:`-tagged field whose values
 // route the most variants uniquely, and returns that field's JSON
-// name plus a value→variant-index map.
+// name plus a valueâ†’variant-index map.
 func deriveDiscriminator(variants []reflect.StructField) (key string, index map[string]int) {
 	byKey := map[string]map[string]int{}
 	for idx, v := range variants {

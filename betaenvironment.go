@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -11,18 +11,18 @@ import (
 	"net/url"
 	"slices"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 // BetaEnvironmentService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -45,10 +45,10 @@ func NewBetaEnvironmentService(opts ...option.RequestOption) (r BetaEnvironmentS
 // Create a new environment with the specified configuration.
 func (r *BetaEnvironmentService) New(ctx context.Context, params BetaEnvironmentNewParams, opts ...option.RequestOption) (res *BetaEnvironment, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	path := "v1/environments?beta=true"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
@@ -57,10 +57,10 @@ func (r *BetaEnvironmentService) New(ctx context.Context, params BetaEnvironment
 // Retrieve a specific environment by ID.
 func (r *BetaEnvironmentService) Get(ctx context.Context, environmentID string, query BetaEnvironmentGetParams, opts ...option.RequestOption) (res *BetaEnvironment, err error) {
 	for _, v := range query.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if environmentID == "" {
 		err = errors.New("missing required environment_id parameter")
 		return nil, err
@@ -73,10 +73,10 @@ func (r *BetaEnvironmentService) Get(ctx context.Context, environmentID string, 
 // Update an existing environment's configuration.
 func (r *BetaEnvironmentService) Update(ctx context.Context, environmentID string, params BetaEnvironmentUpdateParams, opts ...option.RequestOption) (res *BetaEnvironment, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if environmentID == "" {
 		err = errors.New("missing required environment_id parameter")
 		return nil, err
@@ -90,10 +90,10 @@ func (r *BetaEnvironmentService) Update(ctx context.Context, environmentID strin
 func (r *BetaEnvironmentService) List(ctx context.Context, params BetaEnvironmentListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaEnvironment], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
 	path := "v1/environments?beta=true"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
 	if err != nil {
@@ -115,10 +115,10 @@ func (r *BetaEnvironmentService) ListAutoPaging(ctx context.Context, params Beta
 // Delete an environment by ID. Returns a confirmation of the deletion.
 func (r *BetaEnvironmentService) Delete(ctx context.Context, environmentID string, body BetaEnvironmentDeleteParams, opts ...option.RequestOption) (res *BetaEnvironmentDeleteResponse, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if environmentID == "" {
 		err = errors.New("missing required environment_id parameter")
 		return nil, err
@@ -132,10 +132,10 @@ func (r *BetaEnvironmentService) Delete(ctx context.Context, environmentID strin
 // sessions.
 func (r *BetaEnvironmentService) Archive(ctx context.Context, environmentID string, body BetaEnvironmentArchiveParams, opts ...option.RequestOption) (res *BetaEnvironment, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if environmentID == "" {
 		err = errors.New("missing required environment_id parameter")
 		return nil, err
@@ -206,8 +206,8 @@ func (BetaLimitedNetwork) implBetaCloudConfigNetworkingUnion()      {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaCloudConfigNetworkingUnion.AsAny().(type) {
-//	case anthropic.BetaUnrestrictedNetwork:
-//	case anthropic.BetaLimitedNetwork:
+//	case Juglow.BetaUnrestrictedNetwork:
+//	case Juglow.BetaLimitedNetwork:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -340,7 +340,7 @@ type BetaEnvironment struct {
 	ID string `json:"id" api:"required"`
 	// RFC 3339 timestamp when environment was archived, or null if not archived
 	ArchivedAt string `json:"archived_at" api:"required"`
-	// Environment configuration (either Anthropic Cloud or self-hosted)
+	// Environment configuration (either Juglow Cloud or self-hosted)
 	Config BetaEnvironmentConfigUnion `json:"config" api:"required"`
 	// RFC 3339 timestamp when environment was created
 	CreatedAt string `json:"created_at" api:"required"`
@@ -416,8 +416,8 @@ func (BetaSelfHostedConfig) implBetaEnvironmentConfigUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaEnvironmentConfigUnion.AsAny().(type) {
-//	case anthropic.BetaCloudConfig:
-//	case anthropic.BetaSelfHostedConfig:
+//	case Juglow.BetaCloudConfig:
+//	case Juglow.BetaSelfHostedConfig:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -740,7 +740,7 @@ type BetaEnvironmentNewParams struct {
 	// User-provided metadata key-value pairs
 	Metadata map[string]string `json:"metadata,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -824,7 +824,7 @@ const (
 
 type BetaEnvironmentGetParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -845,7 +845,7 @@ type BetaEnvironmentUpdateParams struct {
 	// delete the key.
 	Metadata map[string]string `json:"metadata,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -935,7 +935,7 @@ type BetaEnvironmentListParams struct {
 	// Maximum number of environments to return
 	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -950,12 +950,12 @@ func (r BetaEnvironmentListParams) URLQuery() (v url.Values, err error) {
 
 type BetaEnvironmentDeleteParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaEnvironmentArchiveParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }

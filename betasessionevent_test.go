@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBetaSessionEventListWithOptionalParams(t *testing.T) {
@@ -23,27 +23,27 @@ func TestBetaSessionEventListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Sessions.Events.List(
 		context.TODO(),
 		"sesn_011CZkZAtmR3yMPDzynEDxu7",
-		anthropic.BetaSessionEventListParams{
-			CreatedAtGt:  anthropic.Time(time.Now()),
-			CreatedAtGte: anthropic.Time(time.Now()),
-			CreatedAtLt:  anthropic.Time(time.Now()),
-			CreatedAtLte: anthropic.Time(time.Now()),
-			Limit:        anthropic.Int(0),
-			Order:        anthropic.BetaSessionEventListParamsOrderAsc,
-			Page:         anthropic.String("page"),
+		Juglow.BetaSessionEventListParams{
+			CreatedAtGt:  Juglow.Time(time.Now()),
+			CreatedAtGte: Juglow.Time(time.Now()),
+			CreatedAtLt:  Juglow.Time(time.Now()),
+			CreatedAtLte: Juglow.Time(time.Now()),
+			Limit:        Juglow.Int(0),
+			Order:        Juglow.BetaSessionEventListParamsOrderAsc,
+			Page:         Juglow.String("page"),
 			Types:        []string{"string"},
-			Betas:        []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas:        []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -59,30 +59,30 @@ func TestBetaSessionEventSendWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Sessions.Events.Send(
 		context.TODO(),
 		"sesn_011CZkZAtmR3yMPDzynEDxu7",
-		anthropic.BetaSessionEventSendParams{
-			Events: []anthropic.BetaManagedAgentsEventParamsUnion{{
-				OfUserMessage: &anthropic.BetaManagedAgentsUserMessageEventParams{
-					Content: []anthropic.BetaManagedAgentsUserMessageEventParamsContentUnion{{
-						OfText: &anthropic.BetaManagedAgentsTextBlockParam{
+		Juglow.BetaSessionEventSendParams{
+			Events: []Juglow.BetaManagedAgentsEventParamsUnion{{
+				OfUserMessage: &Juglow.BetaManagedAgentsUserMessageEventParams{
+					Content: []Juglow.BetaManagedAgentsUserMessageEventParamsContentUnion{{
+						OfText: &Juglow.BetaManagedAgentsTextBlockParam{
 							Text: "Where is my order #1234?",
-							Type: anthropic.BetaManagedAgentsTextBlockTypeText,
+							Type: Juglow.BetaManagedAgentsTextBlockTypeText,
 						},
 					}},
-					Type: anthropic.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
+					Type: Juglow.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
 				},
 			}},
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

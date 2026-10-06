@@ -1,4 +1,4 @@
-package anthropic
+﻿package Juglow
 
 import (
 	"context"
@@ -6,8 +6,8 @@ import (
 	"fmt"
 	"iter"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/stainlessheader"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/internal/stainlessheader"
+	"github.com/Juglows/Juglow-sdk-go/option"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -121,7 +121,7 @@ func (b *betaToolRunnerBase) Err() error {
 //   - (nil, ctx.Err()) if context was cancelled
 func (b *betaToolRunnerBase) executeTools(ctx context.Context, message *BetaMessage) (*BetaMessageParam, error) {
 	// A refusal-terminated turn is terminal: its tool calls belong to a dead
-	// conversation — executing them fires side effects the caller never
+	// conversation â€” executing them fires side effects the caller never
 	// confirmed and produces tool_results that cannot be coherently replayed.
 	if message.StopReason == BetaStopReasonRefusal {
 		return nil, nil
@@ -190,7 +190,7 @@ func newBetaToolResultErrorBlockParam(toolUseID string, errorText string) BetaTo
 // availableToolNames returns the tool names currently offered to the model:
 // every registered tool, minus names dropped by tool_removal blocks in
 // role "system" messages, plus names re-enabled by later tool_addition
-// blocks. Removal is only a hint — the model can still call a removed tool —
+// blocks. Removal is only a hint â€” the model can still call a removed tool â€”
 // so a removed tool must resolve to the same not-found result as one that
 // was never registered.
 func (b *betaToolRunnerBase) availableToolNames() map[string]struct{} {

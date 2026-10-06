@@ -1,5 +1,5 @@
-// Package mcp provides helpers for using Model Context Protocol tools and
-// resources with the Anthropic SDK.
+﻿// Package mcp provides helpers for using Model Context Protocol tools and
+// resources with the Juglow SDK.
 //
 // This package is imported separately from the core SDK so that consumers who
 // don't use MCP don't pull in the MCP SDK and its transitive dependencies.
@@ -16,12 +16,12 @@ import (
 	"net/url"
 	"strings"
 
-	anthropic "github.com/anthropics/anthropic-sdk-go"
+	Juglow "github.com/Juglows/Juglow-sdk-go"
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
 // UnsupportedValueError is returned when an MCP value cannot be converted to
-// a format supported by the Claude API.
+// a format supported by the haijun API.
 type UnsupportedValueError struct {
 	Message string
 }
@@ -32,15 +32,15 @@ func (e *UnsupportedValueError) Error() string { return e.Message }
 // Tool conversion
 // -----------------------------------------------------------------------------
 
-// NewBetaTool creates an [anthropic.BetaTool] from an MCP tool and session
-// for use with [anthropic.BetaMessageService.NewToolRunner].
+// NewBetaTool creates an [Juglow.BetaTool] from an MCP tool and session
+// for use with [Juglow.BetaMessageService.NewToolRunner].
 //
-// The session must outlive any [anthropic.BetaToolRunner] that uses the
+// The session must outlive any [Juglow.BetaToolRunner] that uses the
 // returned tool, since execution dispatches to the session.
-func NewBetaTool(tool *mcpsdk.Tool, session *mcpsdk.ClientSession) (anthropic.BetaTool, error) {
-	var inputSchema anthropic.BetaToolInputSchemaParam
+func NewBetaTool(tool *mcpsdk.Tool, session *mcpsdk.ClientSession) (Juglow.BetaTool, error) {
+	var inputSchema Juglow.BetaToolInputSchemaParam
 	if tool.InputSchema != nil {
-		// Round-trip via JSON: the MCP and Anthropic schema types use different
+		// Round-trip via JSON: the MCP and Juglow schema types use different
 		// representations internally, but their wire formats are compatible.
 		b, err := json.Marshal(tool.InputSchema)
 		if err == nil {
@@ -53,15 +53,15 @@ func NewBetaTool(tool *mcpsdk.Tool, session *mcpsdk.ClientSession) (anthropic.Be
 	return &betaTool{tool: tool, session: session, schema: inputSchema}, nil
 }
 
-// NewBetaTools converts a slice of MCP tools into [anthropic.BetaTool] values
+// NewBetaTools converts a slice of MCP tools into [Juglow.BetaTool] values
 // for the tool runner. The session must outlive any runner that uses these
 // tools.
 //
 //	result, _ := session.ListTools(ctx, nil)
 //	tools, err := mcp.NewBetaTools(result.Tools, session)
 //	runner := client.Beta.Messages.NewToolRunner(tools, params)
-func NewBetaTools(tools []*mcpsdk.Tool, session *mcpsdk.ClientSession) ([]anthropic.BetaTool, error) {
-	out := make([]anthropic.BetaTool, 0, len(tools))
+func NewBetaTools(tools []*mcpsdk.Tool, session *mcpsdk.ClientSession) ([]Juglow.BetaTool, error) {
+	out := make([]Juglow.BetaTool, 0, len(tools))
 	for _, t := range tools {
 		item, err := NewBetaTool(t, session)
 		if err != nil {
@@ -75,14 +75,14 @@ func NewBetaTools(tools []*mcpsdk.Tool, session *mcpsdk.ClientSession) ([]anthro
 type betaTool struct {
 	tool    *mcpsdk.Tool
 	session *mcpsdk.ClientSession
-	schema  anthropic.BetaToolInputSchemaParam
+	schema  Juglow.BetaToolInputSchemaParam
 }
 
 func (t *betaTool) Name() string                                    { return t.tool.Name }
 func (t *betaTool) Description() string                             { return t.tool.Description }
-func (t *betaTool) InputSchema() anthropic.BetaToolInputSchemaParam { return t.schema }
+func (t *betaTool) InputSchema() Juglow.BetaToolInputSchemaParam { return t.schema }
 
-func (t *betaTool) Execute(ctx context.Context, input json.RawMessage) ([]anthropic.BetaToolResultBlockParamContentUnion, error) {
+func (t *betaTool) Execute(ctx context.Context, input json.RawMessage) ([]Juglow.BetaToolResultBlockParamContentUnion, error) {
 	var args map[string]any
 	if err := json.Unmarshal(input, &args); err != nil {
 		return nil, fmt.Errorf("mcp tool %s: failed to unmarshal input: %w", t.tool.Name, err)
@@ -113,21 +113,21 @@ func (t *betaTool) Execute(ctx context.Context, input json.RawMessage) ([]anthro
 	// Per the MCP spec, when both Content and StructuredContent are present,
 	// Content is a text mirror of StructuredContent and either is sufficient.
 	// When Content is empty but StructuredContent is set, encode the structured
-	// data as a text block — matching the TS and Python implementations.
+	// data as a text block â€” matching the TS and Python implementations.
 	if len(result.Content) == 0 {
 		if result.StructuredContent != nil {
 			b, marshalErr := json.Marshal(result.StructuredContent)
 			if marshalErr != nil {
 				return nil, fmt.Errorf("mcp tool %s: failed to marshal structured content: %w", t.tool.Name, marshalErr)
 			}
-			return []anthropic.BetaToolResultBlockParamContentUnion{
-				{OfText: &anthropic.BetaTextBlockParam{Text: string(b)}},
+			return []Juglow.BetaToolResultBlockParamContentUnion{
+				{OfText: &Juglow.BetaTextBlockParam{Text: string(b)}},
 			}, nil
 		}
 		return nil, nil
 	}
 
-	blocks := make([]anthropic.BetaToolResultBlockParamContentUnion, 0, len(result.Content))
+	blocks := make([]Juglow.BetaToolResultBlockParamContentUnion, 0, len(result.Content))
 	for _, c := range result.Content {
 		block, convErr := ToBlock(c)
 		if convErr != nil {
@@ -142,56 +142,56 @@ func (t *betaTool) Execute(ctx context.Context, input json.RawMessage) ([]anthro
 // Content conversion
 // -----------------------------------------------------------------------------
 
-// ToBlock converts a single MCP content item into an Anthropic content block.
+// ToBlock converts a single MCP content item into an Juglow content block.
 // Supported: TextContent, ImageContent (jpeg/png/gif/webp), EmbeddedResource.
 // Returns [*UnsupportedValueError] for AudioContent and ResourceLink.
-func ToBlock(content mcpsdk.Content) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+func ToBlock(content mcpsdk.Content) (Juglow.BetaToolResultBlockParamContentUnion, error) {
 	switch v := content.(type) {
 	case *mcpsdk.TextContent:
-		return anthropic.BetaToolResultBlockParamContentUnion{OfText: &anthropic.BetaTextBlockParam{Text: v.Text}}, nil
+		return Juglow.BetaToolResultBlockParamContentUnion{OfText: &Juglow.BetaTextBlockParam{Text: v.Text}}, nil
 
 	case *mcpsdk.ImageContent:
 		if !isSupportedImageMimeType(v.MIMEType) {
-			return anthropic.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
+			return Juglow.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
 				fmt.Sprintf("unsupported image MIME type: %s", v.MIMEType),
 			}
 		}
-		return anthropic.BetaToolResultBlockParamContentUnion{OfImage: &anthropic.BetaImageBlockParam{
-			Source: anthropic.BetaImageBlockParamSourceUnion{
-				OfBase64: &anthropic.BetaBase64ImageSourceParam{
+		return Juglow.BetaToolResultBlockParamContentUnion{OfImage: &Juglow.BetaImageBlockParam{
+			Source: Juglow.BetaImageBlockParamSourceUnion{
+				OfBase64: &Juglow.BetaBase64ImageSourceParam{
 					Data:      base64.StdEncoding.EncodeToString(v.Data),
-					MediaType: anthropic.BetaBase64ImageSourceMediaType(v.MIMEType),
+					MediaType: Juglow.BetaBase64ImageSourceMediaType(v.MIMEType),
 				},
 			},
 		}}, nil
 
 	case *mcpsdk.EmbeddedResource:
 		if v.Resource == nil {
-			return anthropic.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{"embedded resource has nil contents"}
+			return Juglow.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{"embedded resource has nil contents"}
 		}
 		return convertResourceContents(v.Resource)
 
 	case *mcpsdk.AudioContent, *mcpsdk.ResourceLink:
-		return anthropic.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
+		return Juglow.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
 			fmt.Sprintf("unsupported MCP content type: %T", content),
 		}
 
 	default:
-		return anthropic.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
+		return Juglow.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
 			fmt.Sprintf("unknown MCP content type: %T", content),
 		}
 	}
 }
 
-// ToMessage converts an MCP prompt message into a [anthropic.BetaMessageParam].
-func ToMessage(msg *mcpsdk.PromptMessage) (anthropic.BetaMessageParam, error) {
+// ToMessage converts an MCP prompt message into a [Juglow.BetaMessageParam].
+func ToMessage(msg *mcpsdk.PromptMessage) (Juglow.BetaMessageParam, error) {
 	block, err := ToBlock(msg.Content)
 	if err != nil {
-		return anthropic.BetaMessageParam{}, err
+		return Juglow.BetaMessageParam{}, err
 	}
-	return anthropic.BetaMessageParam{
-		Role: anthropic.BetaMessageParamRole(msg.Role),
-		Content: []anthropic.BetaContentBlockParamUnion{{
+	return Juglow.BetaMessageParam{
+		Role: Juglow.BetaMessageParamRole(msg.Role),
+		Content: []Juglow.BetaContentBlockParamUnion{{
 			OfText:     block.OfText,
 			OfImage:    block.OfImage,
 			OfDocument: block.OfDocument,
@@ -203,12 +203,12 @@ func ToMessage(msg *mcpsdk.PromptMessage) (anthropic.BetaMessageParam, error) {
 // Resource conversion
 // -----------------------------------------------------------------------------
 
-// ResourceToBlock converts MCP resource read results into an Anthropic content
+// ResourceToBlock converts MCP resource read results into an Juglow content
 // block. Returns the first item in Contents with a MIME type supported by the
-// Claude API.
-func ResourceToBlock(result *mcpsdk.ReadResourceResult) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+// haijun API.
+func ResourceToBlock(result *mcpsdk.ReadResourceResult) (Juglow.BetaToolResultBlockParamContentUnion, error) {
 	if len(result.Contents) == 0 {
-		return anthropic.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
+		return Juglow.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
 			"resource contents array must contain at least one item",
 		}
 	}
@@ -223,14 +223,14 @@ func ResourceToBlock(result *mcpsdk.ReadResourceResult) (anthropic.BetaToolResul
 			mimeTypes = append(mimeTypes, c.MIMEType)
 		}
 	}
-	return anthropic.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
+	return Juglow.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
 		fmt.Sprintf("no supported MIME type found in resource contents. Available: %s", strings.Join(mimeTypes, ", ")),
 	}
 }
 
 // ResourceToFile converts MCP resource contents into an [io.Reader] suitable
-// for [anthropic.BetaFileUploadParams].File. Uses the first item in Contents
-// regardless of MIME type — any resource can be uploaded as a file.
+// for [Juglow.BetaFileUploadParams].File. Uses the first item in Contents
+// regardless of MIME type â€” any resource can be uploaded as a file.
 func ResourceToFile(result *mcpsdk.ReadResourceResult) (io.Reader, error) {
 	if len(result.Contents) == 0 {
 		return nil, &UnsupportedValueError{"resource contents array must contain at least one item"}
@@ -242,27 +242,27 @@ func ResourceToFile(result *mcpsdk.ReadResourceResult) (io.Reader, error) {
 	} else {
 		data = []byte(res.Text)
 	}
-	return anthropic.File(bytes.NewReader(data), extractFilename(res.URI), res.MIMEType), nil
+	return Juglow.File(bytes.NewReader(data), extractFilename(res.URI), res.MIMEType), nil
 }
 
 // -----------------------------------------------------------------------------
 // Internal helpers
 // -----------------------------------------------------------------------------
 
-func convertResourceContents(res *mcpsdk.ResourceContents) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+func convertResourceContents(res *mcpsdk.ResourceContents) (Juglow.BetaToolResultBlockParamContentUnion, error) {
 	mimeType := res.MIMEType
 
 	if isSupportedImageMimeType(mimeType) {
 		if len(res.Blob) == 0 {
-			return anthropic.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
+			return Juglow.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
 				fmt.Sprintf("image resource must have blob data, not text. URI: %s", res.URI),
 			}
 		}
-		return anthropic.BetaToolResultBlockParamContentUnion{OfImage: &anthropic.BetaImageBlockParam{
-			Source: anthropic.BetaImageBlockParamSourceUnion{
-				OfBase64: &anthropic.BetaBase64ImageSourceParam{
+		return Juglow.BetaToolResultBlockParamContentUnion{OfImage: &Juglow.BetaImageBlockParam{
+			Source: Juglow.BetaImageBlockParamSourceUnion{
+				OfBase64: &Juglow.BetaBase64ImageSourceParam{
 					Data:      base64.StdEncoding.EncodeToString(res.Blob),
-					MediaType: anthropic.BetaBase64ImageSourceMediaType(mimeType),
+					MediaType: Juglow.BetaBase64ImageSourceMediaType(mimeType),
 				},
 			},
 		}}, nil
@@ -270,13 +270,13 @@ func convertResourceContents(res *mcpsdk.ResourceContents) (anthropic.BetaToolRe
 
 	if mimeType == "application/pdf" {
 		if len(res.Blob) == 0 {
-			return anthropic.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
+			return Juglow.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
 				fmt.Sprintf("PDF resource must have blob data, not text. URI: %s", res.URI),
 			}
 		}
-		return anthropic.BetaToolResultBlockParamContentUnion{OfDocument: &anthropic.BetaRequestDocumentBlockParam{
-			Source: anthropic.BetaRequestDocumentBlockSourceUnionParam{
-				OfBase64: &anthropic.BetaBase64PDFSourceParam{Data: base64.StdEncoding.EncodeToString(res.Blob)},
+		return Juglow.BetaToolResultBlockParamContentUnion{OfDocument: &Juglow.BetaRequestDocumentBlockParam{
+			Source: Juglow.BetaRequestDocumentBlockSourceUnionParam{
+				OfBase64: &Juglow.BetaBase64PDFSourceParam{Data: base64.StdEncoding.EncodeToString(res.Blob)},
 			},
 		}}, nil
 	}
@@ -288,14 +288,14 @@ func convertResourceContents(res *mcpsdk.ResourceContents) (anthropic.BetaToolRe
 		} else {
 			text = res.Text
 		}
-		return anthropic.BetaToolResultBlockParamContentUnion{OfDocument: &anthropic.BetaRequestDocumentBlockParam{
-			Source: anthropic.BetaRequestDocumentBlockSourceUnionParam{
-				OfText: &anthropic.BetaPlainTextSourceParam{Data: text},
+		return Juglow.BetaToolResultBlockParamContentUnion{OfDocument: &Juglow.BetaRequestDocumentBlockParam{
+			Source: Juglow.BetaRequestDocumentBlockSourceUnionParam{
+				OfText: &Juglow.BetaPlainTextSourceParam{Data: text},
 			},
 		}}, nil
 	}
 
-	return anthropic.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
+	return Juglow.BetaToolResultBlockParamContentUnion{}, &UnsupportedValueError{
 		fmt.Sprintf("unsupported MIME type %q for resource: %s", mimeType, res.URI),
 	}
 }

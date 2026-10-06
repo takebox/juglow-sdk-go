@@ -1,10 +1,10 @@
-package mcp_test
+﻿package mcp_test
 
 import (
 	"errors"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go/mcp"
+	"github.com/Juglows/Juglow-sdk-go/mcp"
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
@@ -221,7 +221,7 @@ func TestResourceToBlock_ImageWithTextData_Error(t *testing.T) {
 }
 
 func TestResourceToBlock_BlobIsRawBytes(t *testing.T) {
-	// Blob is []byte (already decoded) — no base64 required from the caller.
+	// Blob is []byte (already decoded) â€” no base64 required from the caller.
 	block, err := mcp.ResourceToBlock(&mcpsdk.ReadResourceResult{
 		Contents: []*mcpsdk.ResourceContents{
 			{URI: "file:///file.txt", MIMEType: "text/plain", Blob: []byte("decoded text")},

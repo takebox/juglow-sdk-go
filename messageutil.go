@@ -1,4 +1,4 @@
-package anthropic
+﻿package Juglow
 
 import (
 	"encoding/json"
@@ -8,16 +8,16 @@ import (
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/paramutil"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/paramutil"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 )
 
 // Accumulate builds up the Message incrementally from a MessageStreamEvent. The Message then can be used as
 // any other Message, including the Message.JSON field, which holds the wire JSON with the streamed deltas
 // applied and is complete once message_stop arrives.
 //
-//	message := anthropic.Message{}
+//	message := Juglow.Message{}
 //	for stream.Next() {
 //		event := stream.Current()
 //		message.Accumulate(event)

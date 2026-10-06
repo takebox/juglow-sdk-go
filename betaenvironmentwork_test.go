@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBetaEnvironmentWorkGetWithOptionalParams(t *testing.T) {
@@ -21,20 +21,20 @@ func TestBetaEnvironmentWorkGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Environments.Work.Get(
 		context.TODO(),
 		"work_id",
-		anthropic.BetaEnvironmentWorkGetParams{
+		Juglow.BetaEnvironmentWorkGetParams{
 			EnvironmentID: "env_011CZkZ9X2dpNyB7HsEFoRfW",
-			Betas:         []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas:         []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -50,25 +50,25 @@ func TestBetaEnvironmentWorkUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Environments.Work.Update(
 		context.TODO(),
 		"work_id",
-		anthropic.BetaEnvironmentWorkUpdateParams{
+		Juglow.BetaEnvironmentWorkUpdateParams{
 			EnvironmentID: "env_011CZkZ9X2dpNyB7HsEFoRfW",
-			BetaSelfHostedWorkUpdateRequest: anthropic.BetaSelfHostedWorkUpdateRequestParam{
+			BetaSelfHostedWorkUpdateRequest: Juglow.BetaSelfHostedWorkUpdateRequestParam{
 				Metadata: map[string]string{
 					"foo": "string",
 				},
 			},
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -85,21 +85,21 @@ func TestBetaEnvironmentWorkListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Environments.Work.List(
 		context.TODO(),
 		"env_011CZkZ9X2dpNyB7HsEFoRfW",
-		anthropic.BetaEnvironmentWorkListParams{
-			Limit: anthropic.Int(1),
-			Page:  anthropic.String("page"),
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaEnvironmentWorkListParams{
+			Limit: Juglow.Int(1),
+			Page:  Juglow.String("page"),
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -115,20 +115,20 @@ func TestBetaEnvironmentWorkAckWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Environments.Work.Ack(
 		context.TODO(),
 		"work_id",
-		anthropic.BetaEnvironmentWorkAckParams{
+		Juglow.BetaEnvironmentWorkAckParams{
 			EnvironmentID: "env_011CZkZ9X2dpNyB7HsEFoRfW",
-			Betas:         []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas:         []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -144,22 +144,22 @@ func TestBetaEnvironmentWorkHeartbeatWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Environments.Work.Heartbeat(
 		context.TODO(),
 		"work_id",
-		anthropic.BetaEnvironmentWorkHeartbeatParams{
+		Juglow.BetaEnvironmentWorkHeartbeatParams{
 			EnvironmentID:         "env_011CZkZ9X2dpNyB7HsEFoRfW",
-			DesiredTTLSeconds:     anthropic.Int(0),
-			ExpectedLastHeartbeat: anthropic.String("expected_last_heartbeat"),
-			Betas:                 []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			DesiredTTLSeconds:     Juglow.Int(0),
+			ExpectedLastHeartbeat: Juglow.String("expected_last_heartbeat"),
+			Betas:                 []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -175,22 +175,22 @@ func TestBetaEnvironmentWorkPollWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Environments.Work.Poll(
 		context.TODO(),
 		"env_011CZkZ9X2dpNyB7HsEFoRfW",
-		anthropic.BetaEnvironmentWorkPollParams{
-			BlockMs:            anthropic.Int(1),
-			ReclaimOlderThanMs: anthropic.Int(1),
-			Betas:              []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
-			AnthropicWorkerID:  anthropic.String("Anthropic-Worker-ID"),
+		Juglow.BetaEnvironmentWorkPollParams{
+			BlockMs:            Juglow.Int(1),
+			ReclaimOlderThanMs: Juglow.Int(1),
+			Betas:              []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
+			JuglowWorkerID:  Juglow.String("Juglow-Worker-ID"),
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -207,19 +207,19 @@ func TestBetaEnvironmentWorkStatsWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Environments.Work.Stats(
 		context.TODO(),
 		"env_011CZkZ9X2dpNyB7HsEFoRfW",
-		anthropic.BetaEnvironmentWorkStatsParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaEnvironmentWorkStatsParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -235,23 +235,23 @@ func TestBetaEnvironmentWorkStopWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Environments.Work.Stop(
 		context.TODO(),
 		"work_id",
-		anthropic.BetaEnvironmentWorkStopParams{
+		Juglow.BetaEnvironmentWorkStopParams{
 			EnvironmentID: "env_011CZkZ9X2dpNyB7HsEFoRfW",
-			BetaSelfHostedWorkStopRequest: anthropic.BetaSelfHostedWorkStopRequestParam{
-				Force: anthropic.Bool(true),
+			BetaSelfHostedWorkStopRequest: Juglow.BetaSelfHostedWorkStopRequestParam{
+				Force: Juglow.Bool(true),
 			},
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

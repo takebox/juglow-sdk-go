@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestMessageBatchNewWithOptionalParams(t *testing.T) {
@@ -21,47 +21,47 @@ func TestMessageBatchNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Messages.Batches.New(context.TODO(), anthropic.MessageBatchNewParams{
-		Requests: []anthropic.MessageBatchNewParamsRequest{{
+	_, err := client.Messages.Batches.New(context.TODO(), Juglow.MessageBatchNewParams{
+		Requests: []Juglow.MessageBatchNewParamsRequest{{
 			CustomID: "my-custom-id-1",
-			Params: anthropic.MessageBatchNewParamsRequestParams{
+			Params: Juglow.MessageBatchNewParamsRequestParams{
 				MaxTokens: 1024,
-				Messages: []anthropic.MessageParam{{
-					Content: []anthropic.ContentBlockParamUnion{{
-						OfText: &anthropic.TextBlockParam{
+				Messages: []Juglow.MessageParam{{
+					Content: []Juglow.ContentBlockParamUnion{{
+						OfText: &Juglow.TextBlockParam{
 							Text: "x",
-							CacheControl: anthropic.CacheControlEphemeralParam{
-								TTL: anthropic.CacheControlEphemeralTTLTTL5m,
+							CacheControl: Juglow.CacheControlEphemeralParam{
+								TTL: Juglow.CacheControlEphemeralTTLTTL5m,
 							},
-							Citations: []anthropic.TextCitationParamUnion{{
-								OfCharLocation: &anthropic.CitationCharLocationParam{
+							Citations: []Juglow.TextCitationParamUnion{{
+								OfCharLocation: &Juglow.CitationCharLocationParam{
 									CitedText:      "The grass is green. The sky is blue.",
 									DocumentIndex:  0,
-									DocumentTitle:  anthropic.String("x"),
+									DocumentTitle:  Juglow.String("x"),
 									EndCharIndex:   0,
 									StartCharIndex: 0,
 								},
 							}},
 						},
 					}},
-					Role: anthropic.MessageParamRoleUser,
+					Role: Juglow.MessageParamRoleUser,
 				}},
-				Model: anthropic.ModelClaudeOpus4_6,
-				CacheControl: anthropic.CacheControlEphemeralParam{
-					TTL: anthropic.CacheControlEphemeralTTLTTL5m,
+				Model: Juglow.ModelHaijunOpus4_6,
+				CacheControl: Juglow.CacheControlEphemeralParam{
+					TTL: Juglow.CacheControlEphemeralTTLTTL5m,
 				},
-				Container:    anthropic.String("container"),
-				InferenceGeo: anthropic.String("inference_geo"),
-				Metadata: anthropic.MetadataParam{
-					UserID: anthropic.String("13803d75-b4b5-4c3e-b2a2-6f21399b021b"),
+				Container:    Juglow.String("container"),
+				InferenceGeo: Juglow.String("inference_geo"),
+				Metadata: Juglow.MetadataParam{
+					UserID: Juglow.String("13803d75-b4b5-4c3e-b2a2-6f21399b021b"),
 				},
-				OutputConfig: anthropic.OutputConfigParam{
-					Effort: anthropic.OutputConfigEffortLow,
-					Format: anthropic.JSONOutputFormatParam{
+				OutputConfig: Juglow.OutputConfigParam{
+					Effort: Juglow.OutputConfigEffortLow,
+					Format: Juglow.JSONOutputFormatParam{
 						Schema: map[string]any{
 							"foo": "bar",
 						},
@@ -69,36 +69,36 @@ func TestMessageBatchNewWithOptionalParams(t *testing.T) {
 				},
 				ServiceTier:   "auto",
 				StopSequences: []string{"string"},
-				Stream:        anthropic.Bool(false),
-				System: []anthropic.TextBlockParam{{
+				Stream:        Juglow.Bool(false),
+				System: []Juglow.TextBlockParam{{
 					Text: "Today's date is 2024-06-01.",
-					CacheControl: anthropic.CacheControlEphemeralParam{
-						TTL: anthropic.CacheControlEphemeralTTLTTL5m,
+					CacheControl: Juglow.CacheControlEphemeralParam{
+						TTL: Juglow.CacheControlEphemeralTTLTTL5m,
 					},
-					Citations: []anthropic.TextCitationParamUnion{{
-						OfCharLocation: &anthropic.CitationCharLocationParam{
+					Citations: []Juglow.TextCitationParamUnion{{
+						OfCharLocation: &Juglow.CitationCharLocationParam{
 							CitedText:      "The grass is green. The sky is blue.",
 							DocumentIndex:  0,
-							DocumentTitle:  anthropic.String("x"),
+							DocumentTitle:  Juglow.String("x"),
 							EndCharIndex:   0,
 							StartCharIndex: 0,
 						},
 					}},
 				}},
-				Temperature: anthropic.Float(1),
-				Thinking: anthropic.ThinkingConfigParamUnion{
-					OfAdaptive: &anthropic.ThinkingConfigAdaptiveParam{
-						Display: anthropic.ThinkingConfigAdaptiveDisplaySummarized,
+				Temperature: Juglow.Float(1),
+				Thinking: Juglow.ThinkingConfigParamUnion{
+					OfAdaptive: &Juglow.ThinkingConfigAdaptiveParam{
+						Display: Juglow.ThinkingConfigAdaptiveDisplaySummarized,
 					},
 				},
-				ToolChoice: anthropic.ToolChoiceUnionParam{
-					OfAuto: &anthropic.ToolChoiceAutoParam{
-						DisableParallelToolUse: anthropic.Bool(true),
+				ToolChoice: Juglow.ToolChoiceUnionParam{
+					OfAuto: &Juglow.ToolChoiceAutoParam{
+						DisableParallelToolUse: Juglow.Bool(true),
 					},
 				},
-				Tools: []anthropic.ToolUnionParam{{
-					OfTool: &anthropic.ToolParam{
-						InputSchema: anthropic.ToolInputSchemaParam{
+				Tools: []Juglow.ToolUnionParam{{
+					OfTool: &Juglow.ToolParam{
+						InputSchema: Juglow.ToolInputSchemaParam{
 							Properties: map[string]any{
 								"location": "bar",
 								"unit":     "bar",
@@ -107,27 +107,27 @@ func TestMessageBatchNewWithOptionalParams(t *testing.T) {
 						},
 						Name:           "name",
 						AllowedCallers: []string{"direct"},
-						CacheControl: anthropic.CacheControlEphemeralParam{
-							TTL: anthropic.CacheControlEphemeralTTLTTL5m,
+						CacheControl: Juglow.CacheControlEphemeralParam{
+							TTL: Juglow.CacheControlEphemeralTTLTTL5m,
 						},
-						DeferLoading:        anthropic.Bool(true),
-						Description:         anthropic.String("Get the current weather in a given location"),
-						EagerInputStreaming: anthropic.Bool(true),
+						DeferLoading:        Juglow.Bool(true),
+						Description:         Juglow.String("Get the current weather in a given location"),
+						EagerInputStreaming: Juglow.Bool(true),
 						InputExamples: []map[string]any{{
 							"foo": "bar",
 						}},
-						Strict: anthropic.Bool(true),
-						Type:   anthropic.ToolTypeCustom,
+						Strict: Juglow.Bool(true),
+						Type:   Juglow.ToolTypeCustom,
 					},
 				}},
-				TopK: anthropic.Int(5),
-				TopP: anthropic.Float(0.7),
+				TopK: Juglow.Int(5),
+				TopP: Juglow.Float(0.7),
 			},
 		}},
-		UserProfileID: anthropic.String("anthropic-user-profile-id"),
+		UserProfileID: Juglow.String("Juglow-user-profile-id"),
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -143,13 +143,13 @@ func TestMessageBatchGet(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Messages.Batches.Get(context.TODO(), "message_batch_id")
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -165,17 +165,17 @@ func TestMessageBatchListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Messages.Batches.List(context.TODO(), anthropic.MessageBatchListParams{
-		AfterID:  anthropic.String("after_id"),
-		BeforeID: anthropic.String("before_id"),
-		Limit:    anthropic.Int(1),
+	_, err := client.Messages.Batches.List(context.TODO(), Juglow.MessageBatchListParams{
+		AfterID:  Juglow.String("after_id"),
+		BeforeID: Juglow.String("before_id"),
+		Limit:    Juglow.Int(1),
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -191,13 +191,13 @@ func TestMessageBatchDelete(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Messages.Batches.Delete(context.TODO(), "message_batch_id")
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -213,13 +213,13 @@ func TestMessageBatchCancel(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Messages.Batches.Cancel(context.TODO(), "message_batch_id")
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

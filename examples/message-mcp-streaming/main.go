@@ -1,40 +1,40 @@
-package main
+﻿package main
 
 import (
 	"context"
 	"fmt"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 )
 
 func main() {
-	client := anthropic.NewClient(option.WithHeader("anthropic-beta", anthropic.AnthropicBetaMCPClient2025_04_04))
+	client := Juglow.NewClient(option.WithHeader("Juglow-beta", Juglow.JuglowBetaMCPClient2025_04_04))
 
-	mcpServers := []anthropic.BetaRequestMCPServerURLDefinitionParam{
+	mcpServers := []Juglow.BetaRequestMCPServerURLDefinitionParam{
 		{
 			URL:                "http://example-server.modelcontextprotocol.io/sse",
 			Name:               "example",
 			AuthorizationToken: param.NewOpt("YOUR_TOKEN"),
-			ToolConfiguration: anthropic.BetaRequestMCPServerToolConfigurationParam{
-				Enabled:      anthropic.Bool(true),
+			ToolConfiguration: Juglow.BetaRequestMCPServerToolConfigurationParam{
+				Enabled:      Juglow.Bool(true),
 				AllowedTools: []string{"echo", "add"},
 			},
 		},
 	}
 
-	stream := client.Beta.Messages.NewStreaming(context.TODO(), anthropic.BetaMessageNewParams{
+	stream := client.Beta.Messages.NewStreaming(context.TODO(), Juglow.BetaMessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.BetaMessageParam{
-			anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("what is 1+1?")),
+		Messages: []Juglow.BetaMessageParam{
+			Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("what is 1+1?")),
 		},
 		MCPServers:    mcpServers,
-		Model:         anthropic.ModelClaudeSonnet5,
+		Model:         Juglow.ModelHaijunSonnet5,
 		StopSequences: []string{"```\n"},
 	})
 
-	message := anthropic.BetaMessage{}
+	message := Juglow.BetaMessage{}
 	for stream.Next() {
 		event := stream.Current()
 		err := message.Accumulate(event)
@@ -44,11 +44,11 @@ func main() {
 		}
 
 		switch eventVariant := event.AsAny().(type) {
-		case anthropic.BetaRawMessageDeltaEvent:
+		case Juglow.BetaRawMessageDeltaEvent:
 			print(eventVariant.Delta.StopSequence)
-		case anthropic.BetaRawContentBlockDeltaEvent:
+		case Juglow.BetaRawContentBlockDeltaEvent:
 			switch deltaVariant := eventVariant.Delta.AsAny().(type) {
-			case anthropic.BetaTextDelta:
+			case Juglow.BetaTextDelta:
 				print(deltaVariant.Text)
 			}
 		default:

@@ -1,4 +1,4 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package ssestream
 
@@ -11,7 +11,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apierror"
+	"github.com/Juglows/Juglow-sdk-go/internal/apierror"
 )
 
 type Decoder interface {

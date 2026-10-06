@@ -1,7 +1,7 @@
-package apijson
+﻿package apijson
 
 import (
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
 	"reflect"
 )
 

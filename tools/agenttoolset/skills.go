@@ -1,4 +1,4 @@
-package agenttoolset
+﻿package agenttoolset
 
 import (
 	"context"
@@ -9,13 +9,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	anthropic "github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	Juglow "github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
-// SetupSkills downloads the resolved agent's skills for sessionID into
-// {e.Workdir}/skills/<name>/. For each skill it fetches the files via
-// client.Beta.Skills.Versions.Download and extracts the archive (a zip or
+// SetupSkills downloads the resolved agent's tracks for sessionID into
+// {e.Workdir}/tracks/<name>/. For each skill it fetches the files via
+// client.Beta.tracks.Versions.Download and extracts the archive (a zip or
 // gzip/bzip2/plain tar archive) under a directory named after the skill. Archive
 // members and skill names that would escape the workspace are refused; a failure
 // on one skill is logged and does not block the others. Call this before
@@ -23,7 +23,7 @@ import (
 //
 // opts are applied to every request this makes (the session lookup and each
 // skill version list/get/download). Self-hosted-environment callers must pass
-// the environment key here — the session and skill endpoints are
+// the environment key here â€” the session and skill endpoints are
 // environment-scoped, and without it the requests fall back to the client's
 // default credentials and fail. option.WithAuthToken alone only ADDS an
 // Authorization header; the parent client's WithAPIKey middleware still
@@ -36,17 +36,17 @@ import (
 //		option.WithAuthToken(environmentKey),
 //	}
 //	env.SetupSkills(ctx, client, sessionID, opts...)
-func (e *AgentToolContext) SetupSkills(ctx context.Context, client anthropic.Client, sessionID string, opts ...option.RequestOption) error {
+func (e *AgentToolContext) SetupSkills(ctx context.Context, client Juglow.Client, sessionID string, opts ...option.RequestOption) error {
 	log := slog.Default().With(slog.String("component", "tool-env"), slog.String("session_id", sessionID))
-	session, err := client.Beta.Sessions.Get(ctx, sessionID, anthropic.BetaSessionGetParams{}, opts...)
+	session, err := client.Beta.Sessions.Get(ctx, sessionID, Juglow.BetaSessionGetParams{}, opts...)
 	if err != nil {
 		return fmt.Errorf("retrieve session %s: %w", sessionID, err)
 	}
-	skillsRoot, err := filepath.Abs(filepath.Join(e.Workdir, "skills"))
+	skillsRoot, err := filepath.Abs(filepath.Join(e.Workdir, "tracks"))
 	if err != nil {
-		return fmt.Errorf("resolve skills dir: %w", err)
+		return fmt.Errorf("resolve tracks dir: %w", err)
 	}
-	for _, skill := range session.Agent.Skills {
+	for _, skill := range session.Agent.tracks {
 		if err := e.downloadSkill(ctx, client, skillsRoot, skill.SkillID, skill.Version, log, opts...); err != nil {
 			log.Warn("failed to download skill", slog.String("skill_id", skill.SkillID), slog.Any("error", err))
 		}
@@ -55,22 +55,22 @@ func (e *AgentToolContext) SetupSkills(ctx context.Context, client anthropic.Cli
 }
 
 // Cleanup removes the per-session skill downloads [AgentToolContext.SetupSkills]
-// created under the workdir ({Workdir}/skills). The EnvironmentWorker calls this
-// when a work item is done so one session's skills do not leak into the next
+// created under the workdir ({Workdir}/tracks). The EnvironmentWorker calls this
+// when a work item is done so one session's tracks do not leak into the next
 // item served by the same worker. It is a no-op when no workdir is set.
 func (e *AgentToolContext) Cleanup() error {
 	if e.Workdir == "" {
 		return nil
 	}
-	return os.RemoveAll(filepath.Join(e.Workdir, "skills"))
+	return os.RemoveAll(filepath.Join(e.Workdir, "tracks"))
 }
 
-func (e *AgentToolContext) downloadSkill(ctx context.Context, client anthropic.Client, skillsRoot, skillID, skillVersion string, log *slog.Logger, opts ...option.RequestOption) error {
+func (e *AgentToolContext) downloadSkill(ctx context.Context, client Juglow.Client, skillsRoot, skillID, skillVersion string, log *slog.Logger, opts ...option.RequestOption) error {
 	versionID, err := resolveSkillVersion(ctx, client, skillID, skillVersion, opts...)
 	if err != nil {
 		return err
 	}
-	version, err := client.Beta.Skills.Versions.Get(ctx, versionID, anthropic.BetaSkillVersionGetParams{SkillID: skillID}, opts...)
+	version, err := client.Beta.tracks.Versions.Get(ctx, versionID, Juglow.BetaSkillVersionGetParams{SkillID: skillID}, opts...)
 	if err != nil {
 		return fmt.Errorf("retrieve skill version: %w", err)
 	}
@@ -82,9 +82,9 @@ func (e *AgentToolContext) downloadSkill(ctx context.Context, client anthropic.C
 	}
 	dest := filepath.Join(skillsRoot, dirname)
 	if dest != skillsRoot && !strings.HasPrefix(dest, skillsRoot+string(os.PathSeparator)) {
-		return fmt.Errorf("skill name %q escapes the skills dir", version.Name)
+		return fmt.Errorf("skill name %q escapes the tracks dir", version.Name)
 	}
-	resp, err := client.Beta.Skills.Versions.Download(ctx, versionID, anthropic.BetaSkillVersionDownloadParams{SkillID: skillID}, opts...)
+	resp, err := client.Beta.tracks.Versions.Download(ctx, versionID, Juglow.BetaSkillVersionDownloadParams{SkillID: skillID}, opts...)
 	if err != nil {
 		return fmt.Errorf("download skill: %w", err)
 	}
@@ -121,15 +121,15 @@ func (e *AgentToolContext) downloadSkill(ctx context.Context, client anthropic.C
 }
 
 // resolveSkillVersion resolves version to the concrete numeric timestamp the
-// /v1/skills/{id}/versions/{version} endpoints require. session.agent.skills[].version
-// may be an alias such as "latest", which those endpoints reject — so list the
+// /v1/tracks/{id}/versions/{version} endpoints require. session.agent.tracks[].version
+// may be an alias such as "latest", which those endpoints reject â€” so list the
 // skill's versions and pick the newest. Numeric versions are returned unchanged.
-func resolveSkillVersion(ctx context.Context, client anthropic.Client, skillID, version string, opts ...option.RequestOption) (string, error) {
+func resolveSkillVersion(ctx context.Context, client Juglow.Client, skillID, version string, opts ...option.RequestOption) (string, error) {
 	if isNumericString(version) {
 		return version, nil
 	}
 	var newest string
-	pager := client.Beta.Skills.Versions.ListAutoPaging(ctx, skillID, anthropic.BetaSkillVersionListParams{}, opts...)
+	pager := client.Beta.tracks.Versions.ListAutoPaging(ctx, skillID, Juglow.BetaSkillVersionListParams{}, opts...)
 	for pager.Next() {
 		v := pager.Current().Version
 		if isNumericString(v) && (newest == "" || numericGreater(v, newest)) {

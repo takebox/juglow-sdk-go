@@ -1,4 +1,4 @@
-package agenttoolset
+﻿package agenttoolset
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	anthropic "github.com/anthropics/anthropic-sdk-go"
+	Juglow "github.com/Juglows/Juglow-sdk-go"
 )
 
 // defaultMaxFileBytes is the read/edit size cap used when
@@ -17,7 +17,7 @@ const defaultMaxFileBytes = 256 * 1024
 
 // resolveMaxBytes turns a configured cap into an effective size limit. Zero
 // selects def (the built-in default); a negative value disables the size check
-// entirely (capped == false). It governs only the size guard — callers still
+// entirely (capped == false). It governs only the size guard â€” callers still
 // reject non-regular files, since the FIFO/device hang hazard is unrelated to
 // memory headroom.
 func resolveMaxBytes(configured, def int64) (limit int64, capped bool) {
@@ -31,9 +31,9 @@ func resolveMaxBytes(configured, def int64) (limit int64, capped bool) {
 	}
 }
 
-// BetaReadTool returns an anthropic.BetaTool that reads file contents under
+// BetaReadTool returns an Juglow.BetaTool that reads file contents under
 // env.Workdir.
-func BetaReadTool(env *AgentToolContext) anthropic.BetaTool {
+func BetaReadTool(env *AgentToolContext) Juglow.BetaTool {
 	return &funcTool{
 		name:        "read",
 		description: "Read a UTF-8 text file rooted at the workdir.",
@@ -50,9 +50,9 @@ func BetaReadTool(env *AgentToolContext) anthropic.BetaTool {
 	}
 }
 
-// BetaWriteTool returns an anthropic.BetaTool that writes file contents under
+// BetaWriteTool returns an Juglow.BetaTool that writes file contents under
 // env.Workdir, creating parent directories as needed.
-func BetaWriteTool(env *AgentToolContext) anthropic.BetaTool {
+func BetaWriteTool(env *AgentToolContext) Juglow.BetaTool {
 	return &funcTool{
 		name:        "write",
 		description: "Write a UTF-8 text file rooted at the workdir, creating parent directories as needed.",
@@ -65,9 +65,9 @@ func BetaWriteTool(env *AgentToolContext) anthropic.BetaTool {
 	}
 }
 
-// BetaEditTool returns an anthropic.BetaTool that performs unique-match string
+// BetaEditTool returns an Juglow.BetaTool that performs unique-match string
 // replacement in a file under env.Workdir.
-func BetaEditTool(env *AgentToolContext) anthropic.BetaTool {
+func BetaEditTool(env *AgentToolContext) Juglow.BetaTool {
 	return &funcTool{
 		name:        "edit",
 		description: "Replace a unique occurrence of old_string with new_string in a file (set replace_all to replace every occurrence).",
@@ -83,7 +83,7 @@ func BetaEditTool(env *AgentToolContext) anthropic.BetaTool {
 }
 
 func execRead(_ context.Context, raw json.RawMessage, env *AgentToolContext) (string, bool) {
-	var in anthropic.BetaManagedAgentsAgentToolset20260401ReadInput
+	var in Juglow.BetaManagedAgentsAgentToolset20260401ReadInput
 	if err := json.Unmarshal(raw, &in); err != nil {
 		return errorf("invalid read input: %v", err)
 	}
@@ -137,7 +137,7 @@ func execRead(_ context.Context, raw json.RawMessage, env *AgentToolContext) (st
 }
 
 func execWrite(_ context.Context, raw json.RawMessage, env *AgentToolContext) (string, bool) {
-	var in anthropic.BetaManagedAgentsAgentToolset20260401WriteInput
+	var in Juglow.BetaManagedAgentsAgentToolset20260401WriteInput
 	if err := json.Unmarshal(raw, &in); err != nil {
 		return errorf("invalid write input: %v", err)
 	}
@@ -160,7 +160,7 @@ func execWrite(_ context.Context, raw json.RawMessage, env *AgentToolContext) (s
 }
 
 func execEdit(_ context.Context, raw json.RawMessage, env *AgentToolContext) (string, bool) {
-	var in anthropic.BetaManagedAgentsAgentToolset20260401EditInput
+	var in Juglow.BetaManagedAgentsAgentToolset20260401EditInput
 	if err := json.Unmarshal(raw, &in); err != nil {
 		return errorf("invalid edit input: %v", err)
 	}

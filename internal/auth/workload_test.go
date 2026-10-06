@@ -1,4 +1,4 @@
-package auth
+﻿package auth
 
 import (
 	"context"
@@ -28,7 +28,7 @@ func TestWorkloadIdentityCredentials_Exchange(t *testing.T) {
 	var receivedBetaHeader string
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		receivedBetaHeader = r.Header.Get("anthropic-beta")
+		receivedBetaHeader = r.Header.Get("Juglow-beta")
 		if err := json.NewDecoder(r.Body).Decode(&receivedBody); err != nil {
 			t.Fatal(err)
 		}
@@ -303,8 +303,8 @@ func TestWorkloadIdentityCredentials_SetsUserAgent(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.HasPrefix(receivedUA, "anthropic-sdk-go/") {
-		t.Errorf("got User-Agent %q, want prefix anthropic-sdk-go/", receivedUA)
+	if !strings.HasPrefix(receivedUA, "Juglow-sdk-go/") {
+		t.Errorf("got User-Agent %q, want prefix Juglow-sdk-go/", receivedUA)
 	}
 	if !strings.Contains(receivedUA, "oidc-federation") {
 		t.Errorf("got User-Agent %q, want context oidc-federation", receivedUA)
@@ -353,7 +353,7 @@ func errStatusServer(t *testing.T, status int) *httptest.Server {
 
 // TestWorkloadIdentityCredentials_401NoWorkspaceIDIncludesHint verifies that
 // a 401 with no WorkspaceID surfaces the full hint: the always-on federation
-// guidance and auth-event pointer, plus the workspace-scope clause — such a
+// guidance and auth-event pointer, plus the workspace-scope clause â€” such a
 // 401 is most often a federation rule spanning multiple workspaces, and the
 // server can't pick one for us.
 func TestWorkloadIdentityCredentials_401NoWorkspaceIDIncludesHint(t *testing.T) {
@@ -375,8 +375,8 @@ func TestWorkloadIdentityCredentials_401NoWorkspaceIDIncludesHint(t *testing.T) 
 	if !strings.Contains(msg, "Ensure your federation rule matches your identity token") {
 		t.Errorf("expected hint to include federation-rule guidance, got: %s", msg)
 	}
-	if !strings.Contains(msg, "ANTHROPIC_WORKSPACE_ID") {
-		t.Errorf("expected hint to mention ANTHROPIC_WORKSPACE_ID, got: %s", msg)
+	if !strings.Contains(msg, "Juglow_WORKSPACE_ID") {
+		t.Errorf("expected hint to mention Juglow_WORKSPACE_ID, got: %s", msg)
 	}
 	if !strings.Contains(msg, "scoped to multiple workspaces") {
 		t.Errorf("expected hint to mention 'scoped to multiple workspaces', got: %s", msg)
@@ -384,7 +384,7 @@ func TestWorkloadIdentityCredentials_401NoWorkspaceIDIncludesHint(t *testing.T) 
 	if !strings.Contains(msg, "workspace_id") {
 		t.Errorf("expected hint to mention the 'workspace_id' config key, got: %s", msg)
 	}
-	// The hint must point at a type consumers can actually import — the
+	// The hint must point at a type consumers can actually import â€” the
 	// public option.FederationOptions, not the internal OIDCFederationConfig.
 	if !strings.Contains(msg, "option.FederationOptions") {
 		t.Errorf("expected hint to reference option.FederationOptions, got: %s", msg)
@@ -429,7 +429,7 @@ func TestWorkloadIdentityCredentials_401WithWorkspaceIDOmitsWorkspaceHint(t *tes
 	if !strings.Contains(msg, "View your authentication events") {
 		t.Errorf("expected hint to point at the authentication-events page, got: %s", msg)
 	}
-	if strings.Contains(msg, "ANTHROPIC_WORKSPACE_ID") {
+	if strings.Contains(msg, "Juglow_WORKSPACE_ID") {
 		t.Errorf("workspace-scope clause must be omitted when WorkspaceID is set, got: %s", msg)
 	}
 	if strings.Contains(msg, "scoped to multiple workspaces") {
@@ -445,7 +445,7 @@ func TestWorkloadIdentityCredentials_401WithWorkspaceIDOmitsWorkspaceHint(t *tes
 // `ant auth login`. Machine credentials have no interactive browser
 // login to re-run; that remediation is only meaningful for the user_oauth
 // flow. The cases below are exactly the statuses (and the invalid_grant
-// RFC code) that trigger the relogin suffix on the user_oauth path — see
+// RFC code) that trigger the relogin suffix on the user_oauth path â€” see
 // shouldSuggestRelogin and TestOAuthTokenError_*SuggestsRelogin.
 //
 // Only the 401 row also carries the workload-identity hint; with the relogin
@@ -537,7 +537,7 @@ func TestWorkloadIdentityCredentials_Non401NoWorkspaceIDOmitsHint(t *testing.T) 
 	if strings.Contains(msg, "View your authentication events") {
 		t.Errorf("hint must be omitted on non-401, got: %s", msg)
 	}
-	if strings.Contains(msg, "ANTHROPIC_WORKSPACE_ID") {
+	if strings.Contains(msg, "Juglow_WORKSPACE_ID") {
 		t.Errorf("hint must be omitted on non-401, got: %s", msg)
 	}
 }

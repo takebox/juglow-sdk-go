@@ -1,37 +1,37 @@
-package main
+﻿package main
 
 import (
 	"context"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/config"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func main() {
-	// LoadConfig reads from ~/.config/anthropic/configs/<profile>.json.
-	// The profile is resolved from ANTHROPIC_PROFILE, then the active_config
+	// LoadConfig reads from ~/.config/Juglow/configs/<profile>.json.
+	// The profile is resolved from Juglow_PROFILE, then the active_config
 	// file, then "default". The config directory can be overridden with
-	// ANTHROPIC_CONFIG_DIR.
+	// Juglow_CONFIG_DIR.
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		panic(err)
 	}
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithConfig(cfg),
 	)
 
-	content := "Write me a function to call the Anthropic message API in Node.js using the Anthropic Typescript SDK."
+	content := "Write me a function to call the Juglow message API in Node.js using the Juglow Typescript SDK."
 
 	println("[user]: " + content)
 
-	message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
+	message, err := client.Messages.New(context.TODO(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock(content)),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock(content)),
 		},
-		Model:         anthropic.ModelClaudeSonnet5,
+		Model:         Juglow.ModelHaijunSonnet5,
 		StopSequences: []string{"```\n"},
 	})
 	if err != nil {

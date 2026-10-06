@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -10,10 +10,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 func TestBetaMessageNewWithOptionalParams(t *testing.T) {
@@ -24,138 +24,138 @@ func TestBetaMessageNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Messages.New(context.TODO(), anthropic.BetaMessageNewParams{
+	_, err := client.Beta.Messages.New(context.TODO(), Juglow.BetaMessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.BetaMessageParam{{
-			Content: []anthropic.BetaContentBlockParamUnion{{
-				OfText: &anthropic.BetaTextBlockParam{
+		Messages: []Juglow.BetaMessageParam{{
+			Content: []Juglow.BetaContentBlockParamUnion{{
+				OfText: &Juglow.BetaTextBlockParam{
 					Text: "x",
-					CacheControl: anthropic.BetaCacheControlEphemeralParam{
-						TTL: anthropic.BetaCacheControlEphemeralTTLTTL5m,
+					CacheControl: Juglow.BetaCacheControlEphemeralParam{
+						TTL: Juglow.BetaCacheControlEphemeralTTLTTL5m,
 					},
-					Citations: []anthropic.BetaTextCitationParamUnion{{
-						OfCharLocation: &anthropic.BetaCitationCharLocationParam{
+					Citations: []Juglow.BetaTextCitationParamUnion{{
+						OfCharLocation: &Juglow.BetaCitationCharLocationParam{
 							CitedText:      "The grass is green. The sky is blue.",
 							DocumentIndex:  0,
-							DocumentTitle:  anthropic.String("x"),
+							DocumentTitle:  Juglow.String("x"),
 							EndCharIndex:   0,
 							StartCharIndex: 0,
 						},
 					}},
 				},
 			}},
-			Role: anthropic.BetaMessageParamRoleUser,
+			Role: Juglow.BetaMessageParamRoleUser,
 		}},
-		Model: anthropic.ModelClaudeOpus4_6,
-		CacheControl: anthropic.BetaCacheControlEphemeralParam{
-			TTL: anthropic.BetaCacheControlEphemeralTTLTTL5m,
+		Model: Juglow.ModelHaijunOpus4_6,
+		CacheControl: Juglow.BetaCacheControlEphemeralParam{
+			TTL: Juglow.BetaCacheControlEphemeralTTLTTL5m,
 		},
-		Container: anthropic.BetaMessageNewParamsContainerUnion{
-			OfContainers: &anthropic.BetaContainerParams{
-				ID: anthropic.String("id"),
-				Skills: []anthropic.BetaSkillParams{{
+		Container: Juglow.BetaMessageNewParamsContainerUnion{
+			OfContainers: &Juglow.BetaContainerParams{
+				ID: Juglow.String("id"),
+				tracks: []Juglow.BetaSkillParams{{
 					SkillID: "pdf",
-					Type:    anthropic.BetaSkillParamsTypeAnthropic,
-					Version: anthropic.String("latest"),
+					Type:    Juglow.BetaSkillParamsTypeJuglow,
+					Version: Juglow.String("latest"),
 				}},
 			},
 		},
-		ContextManagement: anthropic.BetaContextManagementConfigParam{
-			Edits: []anthropic.BetaContextManagementConfigEditUnionParam{{
-				OfClearToolUses20250919: &anthropic.BetaClearToolUses20250919EditParam{
-					ClearAtLeast: anthropic.BetaInputTokensClearAtLeastParam{
+		ContextManagement: Juglow.BetaContextManagementConfigParam{
+			Edits: []Juglow.BetaContextManagementConfigEditUnionParam{{
+				OfClearToolUses20250919: &Juglow.BetaClearToolUses20250919EditParam{
+					ClearAtLeast: Juglow.BetaInputTokensClearAtLeastParam{
 						Value: 0,
 					},
-					ClearToolInputs: anthropic.BetaClearToolUses20250919EditClearToolInputsUnionParam{
-						OfBool: anthropic.Bool(true),
+					ClearToolInputs: Juglow.BetaClearToolUses20250919EditClearToolInputsUnionParam{
+						OfBool: Juglow.Bool(true),
 					},
 					ExcludeTools: []string{"string"},
-					Keep: anthropic.BetaToolUsesKeepParam{
+					Keep: Juglow.BetaToolUsesKeepParam{
 						Value: 0,
 					},
-					Trigger: anthropic.BetaClearToolUses20250919EditTriggerUnionParam{
-						OfInputTokens: &anthropic.BetaInputTokensTriggerParam{
+					Trigger: Juglow.BetaClearToolUses20250919EditTriggerUnionParam{
+						OfInputTokens: &Juglow.BetaInputTokensTriggerParam{
 							Value: 1,
 						},
 					},
 				},
 			}},
 		},
-		Diagnostics: anthropic.BetaDiagnosticsParam{
-			PreviousMessageID: anthropic.String("previous_message_id"),
+		Diagnostics: Juglow.BetaDiagnosticsParam{
+			PreviousMessageID: Juglow.String("previous_message_id"),
 		},
-		FallbackCreditToken: anthropic.BetaMessageNewParamsFallbackCreditTokenUnion{
-			OfString: anthropic.String("x"),
+		FallbackCreditToken: Juglow.BetaMessageNewParamsFallbackCreditTokenUnion{
+			OfString: Juglow.String("x"),
 		},
-		Fallbacks: anthropic.BetaFallbacksParamUnion{
+		Fallbacks: Juglow.BetaFallbacksParamUnion{
 			OfDefault: constant.ValueOf[constant.Default](),
 		},
-		InferenceGeo: anthropic.String("inference_geo"),
-		MCPServers: []anthropic.BetaRequestMCPServerURLDefinitionParam{{
+		InferenceGeo: Juglow.String("inference_geo"),
+		MCPServers: []Juglow.BetaRequestMCPServerURLDefinitionParam{{
 			Name:               "name",
 			URL:                "url",
-			AuthorizationToken: anthropic.String("authorization_token"),
-			ToolConfiguration: anthropic.BetaRequestMCPServerToolConfigurationParam{
+			AuthorizationToken: Juglow.String("authorization_token"),
+			ToolConfiguration: Juglow.BetaRequestMCPServerToolConfigurationParam{
 				AllowedTools: []string{"string"},
-				Enabled:      anthropic.Bool(true),
+				Enabled:      Juglow.Bool(true),
 			},
 		}},
-		Metadata: anthropic.BetaMetadataParam{
-			UserID: anthropic.String("13803d75-b4b5-4c3e-b2a2-6f21399b021b"),
+		Metadata: Juglow.BetaMetadataParam{
+			UserID: Juglow.String("13803d75-b4b5-4c3e-b2a2-6f21399b021b"),
 		},
-		OutputConfig: anthropic.BetaOutputConfigParam{
-			Effort: anthropic.BetaOutputConfigEffortLow,
-			Format: anthropic.BetaJSONOutputFormatParam{
+		OutputConfig: Juglow.BetaOutputConfigParam{
+			Effort: Juglow.BetaOutputConfigEffortLow,
+			Format: Juglow.BetaJSONOutputFormatParam{
 				Schema: map[string]any{
 					"foo": "bar",
 				},
 			},
-			TaskBudget: anthropic.BetaTokenTaskBudgetParam{
+			TaskBudget: Juglow.BetaTokenTaskBudgetParam{
 				Total:     1024,
-				Remaining: anthropic.Int(0),
+				Remaining: Juglow.Int(0),
 			},
 		},
-		OutputFormat: anthropic.BetaJSONOutputFormatParam{
+		OutputFormat: Juglow.BetaJSONOutputFormatParam{
 			Schema: map[string]any{
 				"foo": "bar",
 			},
 		},
-		ServiceTier:   anthropic.BetaMessageNewParamsServiceTierAuto,
-		Speed:         anthropic.BetaMessageNewParamsSpeedStandard,
+		ServiceTier:   Juglow.BetaMessageNewParamsServiceTierAuto,
+		Speed:         Juglow.BetaMessageNewParamsSpeedStandard,
 		StopSequences: []string{"string"},
-		System: []anthropic.BetaTextBlockParam{{
+		System: []Juglow.BetaTextBlockParam{{
 			Text: "Today's date is 2024-06-01.",
-			CacheControl: anthropic.BetaCacheControlEphemeralParam{
-				TTL: anthropic.BetaCacheControlEphemeralTTLTTL5m,
+			CacheControl: Juglow.BetaCacheControlEphemeralParam{
+				TTL: Juglow.BetaCacheControlEphemeralTTLTTL5m,
 			},
-			Citations: []anthropic.BetaTextCitationParamUnion{{
-				OfCharLocation: &anthropic.BetaCitationCharLocationParam{
+			Citations: []Juglow.BetaTextCitationParamUnion{{
+				OfCharLocation: &Juglow.BetaCitationCharLocationParam{
 					CitedText:      "The grass is green. The sky is blue.",
 					DocumentIndex:  0,
-					DocumentTitle:  anthropic.String("x"),
+					DocumentTitle:  Juglow.String("x"),
 					EndCharIndex:   0,
 					StartCharIndex: 0,
 				},
 			}},
 		}},
-		Temperature: anthropic.Float(1),
-		Thinking: anthropic.BetaThinkingConfigParamUnion{
-			OfAdaptive: &anthropic.BetaThinkingConfigAdaptiveParam{
-				Display: anthropic.BetaThinkingConfigAdaptiveDisplaySummarized,
+		Temperature: Juglow.Float(1),
+		Thinking: Juglow.BetaThinkingConfigParamUnion{
+			OfAdaptive: &Juglow.BetaThinkingConfigAdaptiveParam{
+				Display: Juglow.BetaThinkingConfigAdaptiveDisplaySummarized,
 			},
 		},
-		ToolChoice: anthropic.BetaToolChoiceUnionParam{
-			OfAuto: &anthropic.BetaToolChoiceAutoParam{
-				DisableParallelToolUse: anthropic.Bool(true),
+		ToolChoice: Juglow.BetaToolChoiceUnionParam{
+			OfAuto: &Juglow.BetaToolChoiceAutoParam{
+				DisableParallelToolUse: Juglow.Bool(true),
 			},
 		},
-		Tools: []anthropic.BetaToolUnionParam{{
-			OfTool: &anthropic.BetaToolParam{
-				InputSchema: anthropic.BetaToolInputSchemaParam{
+		Tools: []Juglow.BetaToolUnionParam{{
+			OfTool: &Juglow.BetaToolParam{
+				InputSchema: Juglow.BetaToolInputSchemaParam{
 					Properties: map[string]any{
 						"location": "bar",
 						"unit":     "bar",
@@ -164,26 +164,26 @@ func TestBetaMessageNewWithOptionalParams(t *testing.T) {
 				},
 				Name:           "name",
 				AllowedCallers: []string{"direct"},
-				CacheControl: anthropic.BetaCacheControlEphemeralParam{
-					TTL: anthropic.BetaCacheControlEphemeralTTLTTL5m,
+				CacheControl: Juglow.BetaCacheControlEphemeralParam{
+					TTL: Juglow.BetaCacheControlEphemeralTTLTTL5m,
 				},
-				DeferLoading:        anthropic.Bool(true),
-				Description:         anthropic.String("Get the current weather in a given location"),
-				EagerInputStreaming: anthropic.Bool(true),
+				DeferLoading:        Juglow.Bool(true),
+				Description:         Juglow.String("Get the current weather in a given location"),
+				EagerInputStreaming: Juglow.Bool(true),
 				InputExamples: []map[string]any{{
 					"foo": "bar",
 				}},
-				Strict: anthropic.Bool(true),
-				Type:   anthropic.BetaToolTypeCustom,
+				Strict: Juglow.Bool(true),
+				Type:   Juglow.BetaToolTypeCustom,
 			},
 		}},
-		TopK:          anthropic.Int(5),
-		TopP:          anthropic.Float(0.7),
-		Betas:         []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
-		UserProfileID: anthropic.String("anthropic-user-profile-id"),
+		TopK:          Juglow.Int(5),
+		TopP:          Juglow.Float(0.7),
+		Betas:         []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
+		UserProfileID: Juglow.String("Juglow-user-profile-id"),
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -199,113 +199,113 @@ func TestBetaMessageCountTokensWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Messages.CountTokens(context.TODO(), anthropic.BetaMessageCountTokensParams{
-		Messages: []anthropic.BetaMessageParam{{
-			Content: []anthropic.BetaContentBlockParamUnion{{
-				OfText: &anthropic.BetaTextBlockParam{
+	_, err := client.Beta.Messages.CountTokens(context.TODO(), Juglow.BetaMessageCountTokensParams{
+		Messages: []Juglow.BetaMessageParam{{
+			Content: []Juglow.BetaContentBlockParamUnion{{
+				OfText: &Juglow.BetaTextBlockParam{
 					Text: "x",
-					CacheControl: anthropic.BetaCacheControlEphemeralParam{
-						TTL: anthropic.BetaCacheControlEphemeralTTLTTL5m,
+					CacheControl: Juglow.BetaCacheControlEphemeralParam{
+						TTL: Juglow.BetaCacheControlEphemeralTTLTTL5m,
 					},
-					Citations: []anthropic.BetaTextCitationParamUnion{{
-						OfCharLocation: &anthropic.BetaCitationCharLocationParam{
+					Citations: []Juglow.BetaTextCitationParamUnion{{
+						OfCharLocation: &Juglow.BetaCitationCharLocationParam{
 							CitedText:      "The grass is green. The sky is blue.",
 							DocumentIndex:  0,
-							DocumentTitle:  anthropic.String("x"),
+							DocumentTitle:  Juglow.String("x"),
 							EndCharIndex:   0,
 							StartCharIndex: 0,
 						},
 					}},
 				},
 			}},
-			Role: anthropic.BetaMessageParamRoleUser,
+			Role: Juglow.BetaMessageParamRoleUser,
 		}},
-		Model: anthropic.ModelClaudeOpus4_6,
-		CacheControl: anthropic.BetaCacheControlEphemeralParam{
-			TTL: anthropic.BetaCacheControlEphemeralTTLTTL5m,
+		Model: Juglow.ModelHaijunOpus4_6,
+		CacheControl: Juglow.BetaCacheControlEphemeralParam{
+			TTL: Juglow.BetaCacheControlEphemeralTTLTTL5m,
 		},
-		ContextManagement: anthropic.BetaContextManagementConfigParam{
-			Edits: []anthropic.BetaContextManagementConfigEditUnionParam{{
-				OfClearToolUses20250919: &anthropic.BetaClearToolUses20250919EditParam{
-					ClearAtLeast: anthropic.BetaInputTokensClearAtLeastParam{
+		ContextManagement: Juglow.BetaContextManagementConfigParam{
+			Edits: []Juglow.BetaContextManagementConfigEditUnionParam{{
+				OfClearToolUses20250919: &Juglow.BetaClearToolUses20250919EditParam{
+					ClearAtLeast: Juglow.BetaInputTokensClearAtLeastParam{
 						Value: 0,
 					},
-					ClearToolInputs: anthropic.BetaClearToolUses20250919EditClearToolInputsUnionParam{
-						OfBool: anthropic.Bool(true),
+					ClearToolInputs: Juglow.BetaClearToolUses20250919EditClearToolInputsUnionParam{
+						OfBool: Juglow.Bool(true),
 					},
 					ExcludeTools: []string{"string"},
-					Keep: anthropic.BetaToolUsesKeepParam{
+					Keep: Juglow.BetaToolUsesKeepParam{
 						Value: 0,
 					},
-					Trigger: anthropic.BetaClearToolUses20250919EditTriggerUnionParam{
-						OfInputTokens: &anthropic.BetaInputTokensTriggerParam{
+					Trigger: Juglow.BetaClearToolUses20250919EditTriggerUnionParam{
+						OfInputTokens: &Juglow.BetaInputTokensTriggerParam{
 							Value: 1,
 						},
 					},
 				},
 			}},
 		},
-		MCPServers: []anthropic.BetaRequestMCPServerURLDefinitionParam{{
+		MCPServers: []Juglow.BetaRequestMCPServerURLDefinitionParam{{
 			Name:               "name",
 			URL:                "url",
-			AuthorizationToken: anthropic.String("authorization_token"),
-			ToolConfiguration: anthropic.BetaRequestMCPServerToolConfigurationParam{
+			AuthorizationToken: Juglow.String("authorization_token"),
+			ToolConfiguration: Juglow.BetaRequestMCPServerToolConfigurationParam{
 				AllowedTools: []string{"string"},
-				Enabled:      anthropic.Bool(true),
+				Enabled:      Juglow.Bool(true),
 			},
 		}},
-		OutputConfig: anthropic.BetaOutputConfigParam{
-			Effort: anthropic.BetaOutputConfigEffortLow,
-			Format: anthropic.BetaJSONOutputFormatParam{
+		OutputConfig: Juglow.BetaOutputConfigParam{
+			Effort: Juglow.BetaOutputConfigEffortLow,
+			Format: Juglow.BetaJSONOutputFormatParam{
 				Schema: map[string]any{
 					"foo": "bar",
 				},
 			},
-			TaskBudget: anthropic.BetaTokenTaskBudgetParam{
+			TaskBudget: Juglow.BetaTokenTaskBudgetParam{
 				Total:     1024,
-				Remaining: anthropic.Int(0),
+				Remaining: Juglow.Int(0),
 			},
 		},
-		OutputFormat: anthropic.BetaJSONOutputFormatParam{
+		OutputFormat: Juglow.BetaJSONOutputFormatParam{
 			Schema: map[string]any{
 				"foo": "bar",
 			},
 		},
-		Speed: anthropic.BetaMessageCountTokensParamsSpeedStandard,
-		System: anthropic.BetaMessageCountTokensParamsSystemUnion{
-			OfBetaTextBlockArray: []anthropic.BetaTextBlockParam{{
+		Speed: Juglow.BetaMessageCountTokensParamsSpeedStandard,
+		System: Juglow.BetaMessageCountTokensParamsSystemUnion{
+			OfBetaTextBlockArray: []Juglow.BetaTextBlockParam{{
 				Text: "Today's date is 2024-06-01.",
-				CacheControl: anthropic.BetaCacheControlEphemeralParam{
-					TTL: anthropic.BetaCacheControlEphemeralTTLTTL5m,
+				CacheControl: Juglow.BetaCacheControlEphemeralParam{
+					TTL: Juglow.BetaCacheControlEphemeralTTLTTL5m,
 				},
-				Citations: []anthropic.BetaTextCitationParamUnion{{
-					OfCharLocation: &anthropic.BetaCitationCharLocationParam{
+				Citations: []Juglow.BetaTextCitationParamUnion{{
+					OfCharLocation: &Juglow.BetaCitationCharLocationParam{
 						CitedText:      "The grass is green. The sky is blue.",
 						DocumentIndex:  0,
-						DocumentTitle:  anthropic.String("x"),
+						DocumentTitle:  Juglow.String("x"),
 						EndCharIndex:   0,
 						StartCharIndex: 0,
 					},
 				}},
 			}},
 		},
-		Thinking: anthropic.BetaThinkingConfigParamUnion{
-			OfAdaptive: &anthropic.BetaThinkingConfigAdaptiveParam{
-				Display: anthropic.BetaThinkingConfigAdaptiveDisplaySummarized,
+		Thinking: Juglow.BetaThinkingConfigParamUnion{
+			OfAdaptive: &Juglow.BetaThinkingConfigAdaptiveParam{
+				Display: Juglow.BetaThinkingConfigAdaptiveDisplaySummarized,
 			},
 		},
-		ToolChoice: anthropic.BetaToolChoiceUnionParam{
-			OfAuto: &anthropic.BetaToolChoiceAutoParam{
-				DisableParallelToolUse: anthropic.Bool(true),
+		ToolChoice: Juglow.BetaToolChoiceUnionParam{
+			OfAuto: &Juglow.BetaToolChoiceAutoParam{
+				DisableParallelToolUse: Juglow.Bool(true),
 			},
 		},
-		Tools: []anthropic.BetaMessageCountTokensParamsToolUnion{{
-			OfTool: &anthropic.BetaToolParam{
-				InputSchema: anthropic.BetaToolInputSchemaParam{
+		Tools: []Juglow.BetaMessageCountTokensParamsToolUnion{{
+			OfTool: &Juglow.BetaToolParam{
+				InputSchema: Juglow.BetaToolInputSchemaParam{
 					Properties: map[string]any{
 						"location": "bar",
 						"unit":     "bar",
@@ -314,24 +314,24 @@ func TestBetaMessageCountTokensWithOptionalParams(t *testing.T) {
 				},
 				Name:           "name",
 				AllowedCallers: []string{"direct"},
-				CacheControl: anthropic.BetaCacheControlEphemeralParam{
-					TTL: anthropic.BetaCacheControlEphemeralTTLTTL5m,
+				CacheControl: Juglow.BetaCacheControlEphemeralParam{
+					TTL: Juglow.BetaCacheControlEphemeralTTLTTL5m,
 				},
-				DeferLoading:        anthropic.Bool(true),
-				Description:         anthropic.String("Get the current weather in a given location"),
-				EagerInputStreaming: anthropic.Bool(true),
+				DeferLoading:        Juglow.Bool(true),
+				Description:         Juglow.String("Get the current weather in a given location"),
+				EagerInputStreaming: Juglow.Bool(true),
 				InputExamples: []map[string]any{{
 					"foo": "bar",
 				}},
-				Strict: anthropic.Bool(true),
-				Type:   anthropic.BetaToolTypeCustom,
+				Strict: Juglow.Bool(true),
+				Type:   Juglow.BetaToolTypeCustom,
 			},
 		}},
-		Betas:         []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
-		UserProfileID: anthropic.String("anthropic-user-profile-id"),
+		Betas:         []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
+		UserProfileID: Juglow.String("Juglow-user-profile-id"),
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -341,11 +341,11 @@ func TestBetaMessageCountTokensWithOptionalParams(t *testing.T) {
 
 func TestBetaAccumulate(t *testing.T) {
 	for name, testCase := range map[string]struct {
-		expected anthropic.BetaMessage
+		expected Juglow.BetaMessage
 		events   []string
 	}{
 		"empty message": {
-			expected: anthropic.BetaMessage{Usage: anthropic.BetaUsage{}},
+			expected: Juglow.BetaMessage{Usage: Juglow.BetaUsage{}},
 			events: []string{
 				`{"type": "message_start", "message": {}}`,
 				`{"type: "message_stop"}`,
@@ -360,7 +360,7 @@ func TestBetaAccumulate(t *testing.T) {
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{Content: []anthropic.BetaContentBlockUnion{
+			expected: Juglow.BetaMessage{Content: []Juglow.BetaContentBlockUnion{
 				{Type: "text", Text: "This is a text block!"},
 			}},
 		},
@@ -373,8 +373,8 @@ func TestBetaAccumulate(t *testing.T) {
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{Content: []anthropic.BetaContentBlockUnion{
-				{Type: "text", Text: "1 + 1 = 2", Citations: []anthropic.BetaTextCitationUnion{{
+			expected: Juglow.BetaMessage{Content: []Juglow.BetaContentBlockUnion{
+				{Type: "text", Text: "1 + 1 = 2", Citations: []Juglow.BetaTextCitationUnion{{
 					Type:           "char_location",
 					CitedText:      "1 + 1 = 2",
 					DocumentIndex:  0,
@@ -393,7 +393,7 @@ func TestBetaAccumulate(t *testing.T) {
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{Content: []anthropic.BetaContentBlockUnion{
+			expected: Juglow.BetaMessage{Content: []Juglow.BetaContentBlockUnion{
 				{Type: "tool_use", ID: "toolu_id", Name: "tool_name", Input: []byte(`{"argument": "value"}`)},
 			}},
 		},
@@ -405,7 +405,7 @@ func TestBetaAccumulate(t *testing.T) {
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{Content: []anthropic.BetaContentBlockUnion{
+			expected: Juglow.BetaMessage{Content: []Juglow.BetaContentBlockUnion{
 				{Type: "tool_use", ID: "toolu_id", Name: "tool_name"},
 			}},
 		},
@@ -419,7 +419,7 @@ func TestBetaAccumulate(t *testing.T) {
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{Content: []anthropic.BetaContentBlockUnion{
+			expected: Juglow.BetaMessage{Content: []Juglow.BetaContentBlockUnion{
 				{Type: "server_tool_use", ID: "srvtoolu_id", Name: "web_search", Input: []byte(`{"query": "weather"}`)},
 			}},
 		},
@@ -435,7 +435,7 @@ Therefore, the answer is..."}}`,
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{Content: []anthropic.BetaContentBlockUnion{
+			expected: Juglow.BetaMessage{Content: []Juglow.BetaContentBlockUnion{
 				{Type: "thinking", Thinking: "Let me think...\nFirst, let's try this...\nTherefore, the answer is...", Signature: "ThinkingSignature"},
 			}},
 		},
@@ -446,7 +446,7 @@ Therefore, the answer is..."}}`,
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{Content: []anthropic.BetaContentBlockUnion{
+			expected: Juglow.BetaMessage{Content: []Juglow.BetaContentBlockUnion{
 				{Type: "redacted_thinking", Data: "Redacted"},
 			}},
 		},
@@ -458,8 +458,8 @@ Therefore, the answer is..."}}`,
 				`{"type": "content_block_stop", "index": 0}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{Content: []anthropic.BetaContentBlockUnion{
-				{Type: "compaction", Content: anthropic.BetaContentBlockUnionContent{OfString: "Summary of the conversation so far."}},
+			expected: Juglow.BetaMessage{Content: []Juglow.BetaContentBlockUnion{
+				{Type: "compaction", Content: Juglow.BetaContentBlockUnionContent{OfString: "Summary of the conversation so far."}},
 			}},
 		},
 		"refusal with stop_details and usage": {
@@ -470,20 +470,20 @@ Therefore, the answer is..."}}`,
 				`{"type": "message_delta", "delta": {"stop_reason": "refusal", "stop_details": {"type": "refusal", "category": "cyber", "explanation": "Declined by a streaming policy classifier."}}, "usage": {"input_tokens": 15, "output_tokens": 8, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 0, "server_tool_use": {"web_search_requests": 2}}}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{
-				Content: []anthropic.BetaContentBlockUnion{
+			expected: Juglow.BetaMessage{
+				Content: []Juglow.BetaContentBlockUnion{
 					{Type: "text", Text: "I cannot help"},
 				},
 				StopReason: "refusal",
-				StopDetails: anthropic.BetaRefusalStopDetails{
+				StopDetails: Juglow.BetaRefusalStopDetails{
 					Type:        "refusal",
 					Category:    "cyber",
 					Explanation: "Declined by a streaming policy classifier.",
 				},
-				Usage: anthropic.BetaUsage{
+				Usage: Juglow.BetaUsage{
 					InputTokens:   15,
 					OutputTokens:  8,
-					ServerToolUse: anthropic.BetaServerToolUsage{WebSearchRequests: 2},
+					ServerToolUse: Juglow.BetaServerToolUsage{WebSearchRequests: 2},
 				},
 			},
 		},
@@ -495,18 +495,18 @@ Therefore, the answer is..."}}`,
 				`{"type": "message_delta", "delta": {"stop_reason": "end_turn"}, "usage": {"input_tokens": 15, "output_tokens": 8, "fallback_credit": {"status": {"type": "not_applied", "reason": "expired", "remove_to_redeem": ["fallback_credit_token"]}}}}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{
-				Content: []anthropic.BetaContentBlockUnion{
+			expected: Juglow.BetaMessage{
+				Content: []Juglow.BetaContentBlockUnion{
 					{Type: "text", Text: "Hi"},
 				},
 				StopReason: "end_turn",
-				Usage: anthropic.BetaUsage{
+				Usage: Juglow.BetaUsage{
 					InputTokens:  15,
 					OutputTokens: 8,
-					FallbackCredit: anthropic.BetaFallbackCreditUsage{
-						Status: anthropic.BetaFallbackCreditUsageStatusUnion{
+					FallbackCredit: Juglow.BetaFallbackCreditUsage{
+						Status: Juglow.BetaFallbackCreditUsageStatusUnion{
 							Type:           "not_applied",
-							Reason:         anthropic.BetaFallbackCreditNotAppliedReasonExpired,
+							Reason:         Juglow.BetaFallbackCreditNotAppliedReasonExpired,
 							RemoveToRedeem: []string{"fallback_credit_token"},
 						},
 					},
@@ -534,7 +534,7 @@ Therefore, the answer is..."}}`,
 				`{"type": "content_block_stop", "index": 3"}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{Content: []anthropic.BetaContentBlockUnion{
+			expected: Juglow.BetaMessage{Content: []Juglow.BetaContentBlockUnion{
 				{Type: "text", Text: "Let me look up the weather for you."},
 				{Type: "thinking", Thinking: "I can look this up using a tool."},
 				{Type: "tool_use", ID: "toolu_id", Name: "get_weather", Input: []byte(`{"city": "Los Angeles"}`)},
@@ -549,17 +549,17 @@ Therefore, the answer is..."}}`,
 				`{"type": "message_delta", "delta": {"stop_reason": "end_turn"}, "usage": {"output_tokens": 5}}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{
+			expected: Juglow.BetaMessage{
 				Model: "model-b",
-				Content: []anthropic.BetaContentBlockUnion{
+				Content: []Juglow.BetaContentBlockUnion{
 					{
 						Type: "fallback",
-						From: anthropic.BetaFallbackInfo{Model: "model-a"},
-						To:   anthropic.BetaFallbackInfo{Model: "model-b"},
+						From: Juglow.BetaFallbackInfo{Model: "model-a"},
+						To:   Juglow.BetaFallbackInfo{Model: "model-b"},
 					},
 				},
 				StopReason: "end_turn",
-				Usage:      anthropic.BetaUsage{OutputTokens: 5},
+				Usage:      Juglow.BetaUsage{OutputTokens: 5},
 			},
 		},
 		"interleaved content blocks": {
@@ -580,7 +580,7 @@ Therefore, the answer is..."}}`,
 				`{"type": "content_block_stop", "index": 2}`,
 				`{"type": "message_stop"}`,
 			},
-			expected: anthropic.BetaMessage{Content: []anthropic.BetaContentBlockUnion{
+			expected: Juglow.BetaMessage{Content: []Juglow.BetaContentBlockUnion{
 				{Type: "thinking", Thinking: "Let me think.", Signature: "sig123"},
 				{Type: "text", Text: "Hello world!"},
 				{Type: "tool_use", ID: "toolu_id", Name: "get_weather", Input: []byte(`{"city": "Los Angeles"}`)},
@@ -588,9 +588,9 @@ Therefore, the answer is..."}}`,
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
-			message := anthropic.BetaMessage{}
+			message := Juglow.BetaMessage{}
 			for _, eventStr := range testCase.events {
-				event := anthropic.BetaRawMessageStreamEventUnion{}
+				event := Juglow.BetaRawMessageStreamEventUnion{}
 				err := (&event).UnmarshalJSON([]byte(eventStr))
 				if err != nil {
 					t.Fatal(err)
@@ -649,9 +649,9 @@ func TestBetaAccumulateContentBlockIndexErrors(t *testing.T) {
 		},
 	} {
 		t.Run(name, func(t *testing.T) {
-			message := anthropic.BetaMessage{}
+			message := Juglow.BetaMessage{}
 			for i, eventStr := range testCase.events {
-				event := anthropic.BetaRawMessageStreamEventUnion{}
+				event := Juglow.BetaRawMessageStreamEventUnion{}
 				if err := (&event).UnmarshalJSON([]byte(eventStr)); err != nil {
 					t.Fatal(err)
 				}

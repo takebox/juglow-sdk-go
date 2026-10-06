@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBetaMemoryStoreMemoryNewWithOptionalParams(t *testing.T) {
@@ -21,22 +21,22 @@ func TestBetaMemoryStoreMemoryNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.MemoryStores.Memories.New(
 		context.TODO(),
 		"memory_store_id",
-		anthropic.BetaMemoryStoreMemoryNewParams{
-			Content: anthropic.String("content"),
+		Juglow.BetaMemoryStoreMemoryNewParams{
+			Content: Juglow.String("content"),
 			Path:    "xx",
-			View:    anthropic.BetaManagedAgentsMemoryViewBasic,
-			Betas:   []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			View:    Juglow.BetaManagedAgentsMemoryViewBasic,
+			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -52,21 +52,21 @@ func TestBetaMemoryStoreMemoryGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.MemoryStores.Memories.Get(
 		context.TODO(),
 		"memory_id",
-		anthropic.BetaMemoryStoreMemoryGetParams{
+		Juglow.BetaMemoryStoreMemoryGetParams{
 			MemoryStoreID: "memory_store_id",
-			View:          anthropic.BetaManagedAgentsMemoryViewBasic,
-			Betas:         []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			View:          Juglow.BetaManagedAgentsMemoryViewBasic,
+			Betas:         []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -82,27 +82,27 @@ func TestBetaMemoryStoreMemoryUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.MemoryStores.Memories.Update(
 		context.TODO(),
 		"memory_id",
-		anthropic.BetaMemoryStoreMemoryUpdateParams{
+		Juglow.BetaMemoryStoreMemoryUpdateParams{
 			MemoryStoreID: "memory_store_id",
-			View:          anthropic.BetaManagedAgentsMemoryViewBasic,
-			Content:       anthropic.String("content"),
-			Path:          anthropic.String("xx"),
-			Precondition: anthropic.BetaManagedAgentsPreconditionParam{
-				Type:          anthropic.BetaManagedAgentsPreconditionTypeContentSha256,
-				ContentSha256: anthropic.String("content_sha256"),
+			View:          Juglow.BetaManagedAgentsMemoryViewBasic,
+			Content:       Juglow.String("content"),
+			Path:          Juglow.String("xx"),
+			Precondition: Juglow.BetaManagedAgentsPreconditionParam{
+				Type:          Juglow.BetaManagedAgentsPreconditionTypeContentSha256,
+				ContentSha256: Juglow.String("content_sha256"),
 			},
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -119,24 +119,24 @@ func TestBetaMemoryStoreMemoryListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.MemoryStores.Memories.List(
 		context.TODO(),
 		"memory_store_id",
-		anthropic.BetaMemoryStoreMemoryListParams{
-			Depth:      anthropic.Int(0),
-			Limit:      anthropic.Int(0),
-			Page:       anthropic.String("page"),
-			PathPrefix: anthropic.String("path_prefix"),
-			View:       anthropic.BetaManagedAgentsMemoryViewBasic,
-			Betas:      []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaMemoryStoreMemoryListParams{
+			Depth:      Juglow.Int(0),
+			Limit:      Juglow.Int(0),
+			Page:       Juglow.String("page"),
+			PathPrefix: Juglow.String("path_prefix"),
+			View:       Juglow.BetaManagedAgentsMemoryViewBasic,
+			Betas:      []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -152,21 +152,21 @@ func TestBetaMemoryStoreMemoryDeleteWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.MemoryStores.Memories.Delete(
 		context.TODO(),
 		"memory_id",
-		anthropic.BetaMemoryStoreMemoryDeleteParams{
+		Juglow.BetaMemoryStoreMemoryDeleteParams{
 			MemoryStoreID:         "memory_store_id",
-			ExpectedContentSha256: anthropic.String("expected_content_sha256"),
-			Betas:                 []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			ExpectedContentSha256: Juglow.String("expected_content_sha256"),
+			Betas:                 []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

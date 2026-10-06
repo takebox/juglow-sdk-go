@@ -1,12 +1,12 @@
-// Example demonstrating the Tool Runner framework with streaming
+﻿// Example demonstrating the Tool Runner framework with streaming
 package main
 
 import (
 	"context"
 	"fmt"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/toolrunner"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/toolrunner"
 )
 
 type WeatherRequest struct {
@@ -21,7 +21,7 @@ func colorAssistant(s string) string         { return colorWith("32", s) } // gr
 func colorTool(s string) string              { return colorWith("33", s) } // yellow
 func colorThinking(s string) string          { return colorWith("90", s) } // grey
 
-func getWeather(ctx context.Context, req WeatherRequest) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+func getWeather(ctx context.Context, req WeatherRequest) (Juglow.BetaToolResultBlockParamContentUnion, error) {
 	fmt.Printf("%s%s %+v\n", colorTool("[tool get_weather]: "), "called with", req)
 
 	temp := 22
@@ -29,15 +29,15 @@ func getWeather(ctx context.Context, req WeatherRequest) (anthropic.BetaToolResu
 		temp = 72
 	}
 
-	return anthropic.BetaToolResultBlockParamContentUnion{
-		OfText: &anthropic.BetaTextBlockParam{
+	return Juglow.BetaToolResultBlockParamContentUnion{
+		OfText: &Juglow.BetaTextBlockParam{
 			Text: fmt.Sprintf("The current weather in %s is %d degrees %s. Tomorrow's weather will be cloudy and colder.", req.City, temp, req.Units),
 		},
 	}, nil
 }
 
 func main() {
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	ctx := context.Background()
 
 	weatherTool, err := toolrunner.NewBetaToolFromJSONSchema("get_weather", "Get current weather information for a city", getWeather)
@@ -49,15 +49,15 @@ func main() {
 	userQuestion := "What's the weather like in San Francisco? Please use Fahrenheit and include the forecast."
 	fmt.Println(colorUser("[user]: ") + userQuestion)
 
-	tools := []anthropic.BetaTool{weatherTool}
+	tools := []Juglow.BetaTool{weatherTool}
 
-	runner := client.Beta.Messages.NewToolRunnerStreaming(tools, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet5,
+	runner := client.Beta.Messages.NewToolRunnerStreaming(tools, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet5,
 			MaxTokens: 1000,
-			Messages: []anthropic.BetaMessageParam{
-				anthropic.NewBetaUserMessage(
-					anthropic.NewBetaTextBlock(userQuestion),
+			Messages: []Juglow.BetaMessageParam{
+				Juglow.NewBetaUserMessage(
+					Juglow.NewBetaTextBlock(userQuestion),
 				),
 			},
 		},
@@ -72,35 +72,35 @@ func main() {
 				return
 			}
 			switch eventVariant := event.AsAny().(type) {
-			case anthropic.BetaRawMessageStartEvent:
+			case Juglow.BetaRawMessageStartEvent:
 				fmt.Print(colorAssistant("[assistant]: "))
-			case anthropic.BetaRawContentBlockStartEvent:
+			case Juglow.BetaRawContentBlockStartEvent:
 				switch cb := eventVariant.ContentBlock.AsAny().(type) {
-				case anthropic.BetaToolUseBlock:
+				case Juglow.BetaToolUseBlock:
 					// Assistant is initiating a tool call; stream its JSON input deltas next
 					label := fmt.Sprintf("[tool call %s]: ", cb.Name)
 					fmt.Print(colorTool(label))
-				case anthropic.BetaTextBlock:
+				case Juglow.BetaTextBlock:
 					// nothing, normal assistant text will follow via deltas
-				case anthropic.BetaThinkingBlock:
+				case Juglow.BetaThinkingBlock:
 					fmt.Print(colorThinking("[assistant thinking]: "))
 				}
-			case anthropic.BetaRawContentBlockDeltaEvent:
+			case Juglow.BetaRawContentBlockDeltaEvent:
 				switch deltaVariant := eventVariant.Delta.AsAny().(type) {
-				case anthropic.BetaTextDelta:
+				case Juglow.BetaTextDelta:
 					fmt.Print(colorAssistant(deltaVariant.Text))
-				case anthropic.BetaInputJSONDelta:
+				case Juglow.BetaInputJSONDelta:
 					if deltaVariant.PartialJSON != "" {
 						fmt.Print(colorTool(deltaVariant.PartialJSON))
 					}
-				case anthropic.BetaThinkingDelta:
+				case Juglow.BetaThinkingDelta:
 					fmt.Print(colorThinking(deltaVariant.Thinking))
 				}
-			case anthropic.BetaRawContentBlockStopEvent:
+			case Juglow.BetaRawContentBlockStopEvent:
 				fmt.Println()
-			case anthropic.BetaRawMessageDeltaEvent:
+			case Juglow.BetaRawMessageDeltaEvent:
 				// No visible text here; keep for completeness
-			case anthropic.BetaRawMessageStopEvent:
+			case Juglow.BetaRawMessageStopEvent:
 				fmt.Println()
 			}
 		}

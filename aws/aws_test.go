@@ -1,4 +1,4 @@
-package aws
+﻿package aws
 
 import (
 	"bytes"
@@ -15,8 +15,8 @@ import (
 	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/awsauth"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/awsauth"
 )
 
 func makeStaticConfig(region string) awssdk.Config {
@@ -46,7 +46,7 @@ func messagesHandler(captured *capturedRequest) http.HandlerFunc {
 			"type":          "message",
 			"role":          "assistant",
 			"content":       []map[string]any{{"type": "text", "text": "hi"}},
-			"model":         "claude-sonnet-4-6-20250514",
+			"model":         "haijun-sonnet-4-6-20250514",
 			"stop_reason":   "end_turn",
 			"stop_sequence": nil,
 			"usage":         map[string]any{"input_tokens": 1, "output_tokens": 1},
@@ -70,11 +70,11 @@ func newTestClient(t *testing.T, cfg ClientConfig) (*Client, *capturedRequest) {
 
 func sendTestRequest(t *testing.T, client *Client) {
 	t.Helper()
-	_, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-		Model:     "claude-sonnet-4-6-20250514",
+	_, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
+		Model:     "haijun-sonnet-4-6-20250514",
 		MaxTokens: 1,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock("hi")),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock("hi")),
 		},
 	})
 	if err != nil {
@@ -84,15 +84,15 @@ func sendTestRequest(t *testing.T, client *Client) {
 
 // --- Service sync test ---
 
-func TestClientServicesMatchAnthropicClient(t *testing.T) {
+func TestClientServicesMatchJuglowClient(t *testing.T) {
 	awsType := reflect.TypeOf(Client{})
-	anthropicType := reflect.TypeOf(anthropic.Client{})
+	JuglowType := reflect.TypeOf(Juglow.Client{})
 
-	for i := 0; i < anthropicType.NumField(); i++ {
-		field := anthropicType.Field(i)
+	for i := 0; i < JuglowType.NumField(); i++ {
+		field := JuglowType.Field(i)
 		awsField, ok := awsType.FieldByName(field.Name)
 		if !ok {
-			t.Errorf("aws.Client is missing field %q (type %s) from anthropic.Client", field.Name, field.Type)
+			t.Errorf("aws.Client is missing field %q (type %s) from Juglow.Client", field.Name, field.Type)
 			continue
 		}
 		if awsField.Type != field.Type {
@@ -104,8 +104,8 @@ func TestClientServicesMatchAnthropicClient(t *testing.T) {
 // --- Validation tests ---
 
 func TestNewClientRequiresWorkspaceID(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	_, err := NewClient(context.Background(), ClientConfig{
 		AWSRegion:          "us-east-1",
@@ -119,8 +119,8 @@ func TestNewClientRequiresWorkspaceID(t *testing.T) {
 
 func TestNewClientRequiresBaseURLOrRegion(t *testing.T) {
 	t.Setenv("AWS_REGION", "")
-	t.Setenv("ANTHROPIC_AWS_BASE_URL", "")
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "default")
+	t.Setenv("Juglow_AWS_BASE_URL", "")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "default")
 
 	_, err := NewClient(context.Background(), ClientConfig{
 		APIKey: "my-key",
@@ -132,8 +132,8 @@ func TestNewClientRequiresBaseURLOrRegion(t *testing.T) {
 
 func TestNewClientRegionRequiredForSigV4(t *testing.T) {
 	t.Setenv("AWS_REGION", "")
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "default")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "default")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	_, err := NewClient(context.Background(), ClientConfig{
 		AWSAccessKey:       "key",
@@ -147,8 +147,8 @@ func TestNewClientRegionRequiredForSigV4(t *testing.T) {
 // --- API key mode tests ---
 
 func TestAPIKeyModeHeaders(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	client, captured := newTestClient(t, ClientConfig{
 		APIKey:      "my-api-key",
@@ -160,8 +160,8 @@ func TestAPIKeyModeHeaders(t *testing.T) {
 	if got := captured.Headers.Get("X-Api-Key"); got != "my-api-key" {
 		t.Errorf("expected x-api-key %q, got %q", "my-api-key", got)
 	}
-	if got := captured.Headers.Get("Anthropic-Workspace-Id"); got != "ws-123" {
-		t.Errorf("expected anthropic-workspace-id %q, got %q", "ws-123", got)
+	if got := captured.Headers.Get("Juglow-Workspace-Id"); got != "ws-123" {
+		t.Errorf("expected Juglow-workspace-id %q, got %q", "ws-123", got)
 	}
 	if captured.Headers.Get("Authorization") != "" {
 		t.Error("expected no Authorization header in API key mode")
@@ -169,9 +169,9 @@ func TestAPIKeyModeHeaders(t *testing.T) {
 }
 
 func TestAPIKeyFromEnvHeaders(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "env-api-key")
+	t.Setenv("Juglow_AWS_API_KEY", "env-api-key")
 	t.Setenv("AWS_REGION", "us-east-1")
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "")
 
 	client, captured := newTestClient(t, ClientConfig{
 		WorkspaceID: "ws-456",
@@ -184,7 +184,7 @@ func TestAPIKeyFromEnvHeaders(t *testing.T) {
 }
 
 func TestExplicitAPIKeyOverridesEnv(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "env-api-key")
+	t.Setenv("Juglow_AWS_API_KEY", "env-api-key")
 	t.Setenv("AWS_REGION", "us-east-1")
 
 	client, captured := newTestClient(t, ClientConfig{
@@ -201,9 +201,9 @@ func TestExplicitAPIKeyOverridesEnv(t *testing.T) {
 // --- SigV4 mode tests ---
 
 func TestSigV4ModeHeaders(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
-	t.Setenv("ANTHROPIC_API_KEY", "")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
+	t.Setenv("Juglow_API_KEY", "")
 
 	client, captured := newTestClient(t, ClientConfig{
 		AWSRegion:          "us-east-1",
@@ -226,15 +226,15 @@ func TestSigV4ModeHeaders(t *testing.T) {
 	if captured.Headers.Get("X-Amz-Date") == "" {
 		t.Error("expected X-Amz-Date header in SigV4 mode")
 	}
-	if got := captured.Headers.Get("Anthropic-Workspace-Id"); got != "ws-sigv4" {
-		t.Errorf("expected anthropic-workspace-id %q, got %q", "ws-sigv4", got)
+	if got := captured.Headers.Get("Juglow-Workspace-Id"); got != "ws-sigv4" {
+		t.Errorf("expected Juglow-workspace-id %q, got %q", "ws-sigv4", got)
 	}
 }
 
 func TestSigV4WithSessionToken(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
-	t.Setenv("ANTHROPIC_API_KEY", "")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
+	t.Setenv("Juglow_API_KEY", "")
 
 	client, captured := newTestClient(t, ClientConfig{
 		AWSRegion:          "us-east-1",
@@ -253,24 +253,24 @@ func TestSigV4WithSessionToken(t *testing.T) {
 // --- Workspace ID tests ---
 
 func TestWorkspaceIDFromEnv(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "env-workspace")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "test-key")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "env-workspace")
+	t.Setenv("Juglow_AWS_API_KEY", "test-key")
 	t.Setenv("AWS_REGION", "us-east-1")
 
 	client, captured := newTestClient(t, ClientConfig{})
 	sendTestRequest(t, client)
 
-	if got := captured.Headers.Get("Anthropic-Workspace-Id"); got != "env-workspace" {
-		t.Errorf("expected anthropic-workspace-id %q, got %q", "env-workspace", got)
+	if got := captured.Headers.Get("Juglow-Workspace-Id"); got != "env-workspace" {
+		t.Errorf("expected Juglow-workspace-id %q, got %q", "env-workspace", got)
 	}
 }
 
 // --- Base URL tests ---
 
 func TestBaseURLDerivedFromRegion(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_BASE_URL", "")
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_BASE_URL", "")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	resolved, err := awsauth.ResolveConfig(toInternalConfig(ClientConfig{
 		AWSRegion:   "us-west-2",
@@ -280,16 +280,16 @@ func TestBaseURLDerivedFromRegion(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	expected := "https://aws-external-anthropic.us-west-2.api.aws"
+	expected := "https://aws-external-Juglow.us-west-2.api.aws"
 	if resolved.BaseURL != expected {
 		t.Errorf("expected base URL %q, got %q", expected, resolved.BaseURL)
 	}
 }
 
 func TestBaseURLFromEnv(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_BASE_URL", "https://custom.gateway.example.com")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "my-key")
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "")
+	t.Setenv("Juglow_AWS_BASE_URL", "https://custom.gateway.example.com")
+	t.Setenv("Juglow_AWS_API_KEY", "my-key")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "")
 
 	resolved, err := awsauth.ResolveConfig(toInternalConfig(ClientConfig{
 		WorkspaceID: "default",
@@ -303,9 +303,9 @@ func TestBaseURLFromEnv(t *testing.T) {
 }
 
 func TestBaseURLExplicitOverridesRegion(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_BASE_URL", "")
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_BASE_URL", "")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	resolved, err := awsauth.ResolveConfig(toInternalConfig(ClientConfig{
 		BaseURL:     "https://explicit.example.com",
@@ -324,8 +324,8 @@ func TestBaseURLExplicitOverridesRegion(t *testing.T) {
 // --- skipAuth tests ---
 
 func TestSkipAuthNoWorkspaceRequired(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	_, err := NewClient(context.Background(), ClientConfig{
 		BaseURL:  "https://proxy.example.com",
@@ -337,9 +337,9 @@ func TestSkipAuthNoWorkspaceRequired(t *testing.T) {
 }
 
 func TestSkipAuthNoAuthHeaders(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
-	t.Setenv("ANTHROPIC_API_KEY", "")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
+	t.Setenv("Juglow_API_KEY", "")
 
 	client, captured := newTestClient(t, ClientConfig{
 		SkipAuth: true,
@@ -352,15 +352,15 @@ func TestSkipAuthNoAuthHeaders(t *testing.T) {
 	if captured.Headers.Get("X-Amz-Date") != "" {
 		t.Error("expected no X-Amz-Date header with skipAuth")
 	}
-	if captured.Headers.Get("Anthropic-Workspace-Id") != "" {
-		t.Error("expected no anthropic-workspace-id header with skipAuth")
+	if captured.Headers.Get("Juglow-Workspace-Id") != "" {
+		t.Error("expected no Juglow-workspace-id header with skipAuth")
 	}
 }
 
 func TestSkipAuthIgnoresProvidedCreds(t *testing.T) {
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
-	t.Setenv("ANTHROPIC_API_KEY", "")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
+	t.Setenv("Juglow_API_KEY", "")
 
 	client, captured := newTestClient(t, ClientConfig{
 		AWSAccessKey:       "key",
@@ -374,17 +374,17 @@ func TestSkipAuthIgnoresProvidedCreds(t *testing.T) {
 	if captured.Headers.Get("Authorization") != "" {
 		t.Error("expected no Authorization header with skipAuth even when credentials are provided")
 	}
-	if captured.Headers.Get("Anthropic-Workspace-Id") != "" {
-		t.Error("expected no anthropic-workspace-id header with skipAuth even when workspace ID is provided")
+	if captured.Headers.Get("Juglow-Workspace-Id") != "" {
+		t.Error("expected no Juglow-workspace-id header with skipAuth even when workspace ID is provided")
 	}
 }
 
-// --- ANTHROPIC_API_KEY isolation test ---
+// --- Juglow_API_KEY isolation test ---
 
-func TestDoesNotLeakAnthropicAPIKey(t *testing.T) {
-	t.Setenv("ANTHROPIC_API_KEY", "should-not-appear")
-	t.Setenv("ANTHROPIC_AWS_WORKSPACE_ID", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+func TestDoesNotLeakJuglowAPIKey(t *testing.T) {
+	t.Setenv("Juglow_API_KEY", "should-not-appear")
+	t.Setenv("Juglow_AWS_WORKSPACE_ID", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	client, captured := newTestClient(t, ClientConfig{
 		AWSRegion:          "us-east-1",
@@ -407,7 +407,7 @@ func TestAWSMiddlewareSigV4Signing(t *testing.T) {
 	middleware := awsauth.SigV4Middleware(signer, cfg, defaultServiceName)
 
 	body := []byte(`{"messages":[{"role":"user","content":"hello"}]}`)
-	req, err := http.NewRequest("POST", "https://aws-external-anthropic.us-east-1.api.aws/v1/messages", bytes.NewReader(body))
+	req, err := http.NewRequest("POST", "https://aws-external-Juglow.us-east-1.api.aws/v1/messages", bytes.NewReader(body))
 	if err != nil {
 		t.Fatalf("failed to create request: %v", err)
 	}
@@ -439,7 +439,7 @@ func TestAWSMiddlewareEmptyBody(t *testing.T) {
 	signer := v4.NewSigner()
 	middleware := awsauth.SigV4Middleware(signer, cfg, defaultServiceName)
 
-	req, err := http.NewRequest("GET", "https://aws-external-anthropic.us-east-1.api.aws/v1/models", nil)
+	req, err := http.NewRequest("GET", "https://aws-external-Juglow.us-east-1.api.aws/v1/models", nil)
 	if err != nil {
 		t.Fatalf("failed to create request: %v", err)
 	}
@@ -460,7 +460,7 @@ func TestAWSMiddlewareServiceName(t *testing.T) {
 	signer := v4.NewSigner()
 	middleware := awsauth.SigV4Middleware(signer, cfg, defaultServiceName)
 
-	req, err := http.NewRequest("POST", "https://aws-external-anthropic.eu-west-1.api.aws/v1/messages", bytes.NewReader([]byte(`{}`)))
+	req, err := http.NewRequest("POST", "https://aws-external-Juglow.eu-west-1.api.aws/v1/messages", bytes.NewReader([]byte(`{}`)))
 	if err != nil {
 		t.Fatalf("failed to create request: %v", err)
 	}
@@ -489,7 +489,7 @@ func TestAWSMiddlewareQueryParamsIncludedInSignature(t *testing.T) {
 	middleware := awsauth.SigV4Middleware(signer, cfg, defaultServiceName)
 
 	body := []byte(`{}`)
-	urlWithQuery := "https://aws-external-anthropic.us-east-1.api.aws/v1/messages?beta=true&stream=false"
+	urlWithQuery := "https://aws-external-Juglow.us-east-1.api.aws/v1/messages?beta=true&stream=false"
 	req, err := http.NewRequest("POST", urlWithQuery, bytes.NewReader(body))
 	if err != nil {
 		t.Fatalf("failed to create request: %v", err)
@@ -511,7 +511,7 @@ func TestAWSMiddlewareQueryParamsIncludedInSignature(t *testing.T) {
 	}
 
 	middlewareNoQuery := awsauth.SigV4Middleware(signer, cfg, defaultServiceName)
-	reqNoQuery, err := http.NewRequest("POST", "https://aws-external-anthropic.us-east-1.api.aws/v1/messages", bytes.NewReader(body))
+	reqNoQuery, err := http.NewRequest("POST", "https://aws-external-Juglow.us-east-1.api.aws/v1/messages", bytes.NewReader(body))
 	if err != nil {
 		t.Fatalf("failed to create request: %v", err)
 	}
@@ -536,7 +536,7 @@ func TestAWSMiddlewareBodyReplayed(t *testing.T) {
 	middleware := awsauth.SigV4Middleware(signer, cfg, defaultServiceName)
 
 	originalBody := []byte(`{"test":"body content"}`)
-	req, err := http.NewRequest("POST", "https://aws-external-anthropic.us-east-1.api.aws/v1/messages", bytes.NewReader(originalBody))
+	req, err := http.NewRequest("POST", "https://aws-external-Juglow.us-east-1.api.aws/v1/messages", bytes.NewReader(originalBody))
 	if err != nil {
 		t.Fatalf("failed to create request: %v", err)
 	}

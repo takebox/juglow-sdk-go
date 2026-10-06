@@ -1,4 +1,4 @@
-package main
+﻿package main
 
 import (
 	"context"
@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 )
 
 const (
@@ -17,11 +17,11 @@ const (
 	mcpServerURL  = "https://api.githubcopilot.com/mcp/"
 
 	prompt = "Hi! List every tool and skill you have access to, grouped by where they " +
-		"came from (built-in toolset, custom tool, MCP server, skills)."
+		"came from (built-in toolset, custom tool, MCP server, tracks)."
 )
 
 func main() {
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	ctx := context.TODO()
 
 	githubToken := os.Getenv("GITHUB_TOKEN")
@@ -30,7 +30,7 @@ func main() {
 	}
 
 	// Create an environment
-	environment, err := client.Beta.Environments.New(ctx, anthropic.BetaEnvironmentNewParams{
+	environment, err := client.Beta.Environments.New(ctx, Juglow.BetaEnvironmentNewParams{
 		Name: "comprehensive-example-environment",
 	})
 	if err != nil {
@@ -39,7 +39,7 @@ func main() {
 	fmt.Println("Created environment:", environment.ID)
 
 	// Create a vault and store the MCP server credential in it
-	vault, err := client.Beta.Vaults.New(ctx, anthropic.BetaVaultNewParams{
+	vault, err := client.Beta.Vaults.New(ctx, Juglow.BetaVaultNewParams{
 		DisplayName: "comprehensive-example-vault",
 	})
 	if err != nil {
@@ -47,11 +47,11 @@ func main() {
 	}
 	fmt.Println("Created vault:", vault.ID)
 
-	credential, err := client.Beta.Vaults.Credentials.New(ctx, vault.ID, anthropic.BetaVaultCredentialNewParams{
+	credential, err := client.Beta.Vaults.Credentials.New(ctx, vault.ID, Juglow.BetaVaultCredentialNewParams{
 		DisplayName: param.NewOpt("github-mcp"),
-		Auth: anthropic.BetaVaultCredentialNewParamsAuthUnion{
-			OfStaticBearer: &anthropic.BetaManagedAgentsStaticBearerCreateParams{
-				Type:         anthropic.BetaManagedAgentsStaticBearerCreateParamsTypeStaticBearer,
+		Auth: Juglow.BetaVaultCredentialNewParamsAuthUnion{
+			OfStaticBearer: &Juglow.BetaManagedAgentsStaticBearerCreateParams{
+				Type:         Juglow.BetaManagedAgentsStaticBearerCreateParamsTypeStaticBearer,
 				MCPServerURL: mcpServerURL,
 				Token:        githubToken,
 			},
@@ -69,7 +69,7 @@ func main() {
 	}
 	defer skillFile.Close()
 
-	skill, err := client.Beta.Skills.New(ctx, anthropic.BetaSkillNewParams{
+	skill, err := client.Beta.tracks.New(ctx, Juglow.BetaSkillNewParams{
 		DisplayTitle: param.NewOpt(fmt.Sprintf("comprehensive-greeting-%d", time.Now().UnixMilli())),
 		Files:        []io.Reader{namedReader{skillFile, "greeting/SKILL.md"}},
 	})
@@ -79,37 +79,37 @@ func main() {
 	fmt.Println("Created skill:", skill.ID)
 
 	// Create v1 of the agent with the built-in toolset, an MCP server, and a custom tool
-	agentV1, err := client.Beta.Agents.New(ctx, anthropic.BetaAgentNewParams{
+	agentV1, err := client.Beta.Agents.New(ctx, Juglow.BetaAgentNewParams{
 		Name: "comprehensive-example-agent",
-		Model: anthropic.BetaManagedAgentsModelConfigParams{
-			ID: anthropic.BetaManagedAgentsModelClaudeSonnet5,
+		Model: Juglow.BetaManagedAgentsModelConfigParams{
+			ID: Juglow.BetaManagedAgentsModelHaijunSonnet5,
 		},
 		System: param.NewOpt("You are a helpful assistant."),
-		MCPServers: []anthropic.BetaManagedAgentsURLMCPServerParams{
+		MCPServers: []Juglow.BetaManagedAgentsURLMCPServerParams{
 			{
-				Type: anthropic.BetaManagedAgentsURLMCPServerParamsTypeURL,
+				Type: Juglow.BetaManagedAgentsURLMCPServerParamsTypeURL,
 				Name: mcpServerName,
 				URL:  mcpServerURL,
 			},
 		},
-		Tools: []anthropic.BetaAgentNewParamsToolUnion{
+		Tools: []Juglow.BetaAgentNewParamsToolUnion{
 			{
-				OfAgentToolset20260401: &anthropic.BetaManagedAgentsAgentToolset20260401Params{
-					Type: anthropic.BetaManagedAgentsAgentToolset20260401ParamsTypeAgentToolset20260401,
+				OfAgentToolset20260401: &Juglow.BetaManagedAgentsAgentToolset20260401Params{
+					Type: Juglow.BetaManagedAgentsAgentToolset20260401ParamsTypeAgentToolset20260401,
 				},
 			},
 			{
-				OfMCPToolset: &anthropic.BetaManagedAgentsMCPToolsetParams{
-					Type:          anthropic.BetaManagedAgentsMCPToolsetParamsTypeMCPToolset,
+				OfMCPToolset: &Juglow.BetaManagedAgentsMCPToolsetParams{
+					Type:          Juglow.BetaManagedAgentsMCPToolsetParamsTypeMCPToolset,
 					MCPServerName: mcpServerName,
 				},
 			},
 			{
-				OfCustom: &anthropic.BetaManagedAgentsCustomToolParams{
-					Type:        anthropic.BetaManagedAgentsCustomToolParamsTypeCustom,
+				OfCustom: &Juglow.BetaManagedAgentsCustomToolParams{
+					Type:        Juglow.BetaManagedAgentsCustomToolParamsTypeCustom,
 					Name:        "get_weather",
 					Description: "Look up the current weather for a city.",
-					InputSchema: anthropic.BetaManagedAgentsCustomToolInputSchemaParam{
+					InputSchema: Juglow.BetaManagedAgentsCustomToolInputSchemaParam{
 						Properties: map[string]any{"city": map[string]any{"type": "string"}},
 						Required:   []string{"city"},
 					},
@@ -122,19 +122,19 @@ func main() {
 	}
 	fmt.Println("Created agent v1:", agentV1.ID)
 
-	// Patch the agent to v2 by adding skills; each update bumps the version
-	agent, err := client.Beta.Agents.Update(ctx, agentV1.ID, anthropic.BetaAgentUpdateParams{
-		Version: anthropic.Int(agentV1.Version),
-		Skills: []anthropic.BetaManagedAgentsSkillParamsUnion{
+	// Patch the agent to v2 by adding tracks; each update bumps the version
+	agent, err := client.Beta.Agents.Update(ctx, agentV1.ID, Juglow.BetaAgentUpdateParams{
+		Version: Juglow.Int(agentV1.Version),
+		tracks: []Juglow.BetaManagedAgentsSkillParamsUnion{
 			{
-				OfCustom: &anthropic.BetaManagedAgentsCustomSkillParams{
-					Type:    anthropic.BetaManagedAgentsCustomSkillParamsTypeCustom,
+				OfCustom: &Juglow.BetaManagedAgentsCustomSkillParams{
+					Type:    Juglow.BetaManagedAgentsCustomSkillParamsTypeCustom,
 					SkillID: skill.ID,
 				},
 			},
 			{
-				OfAnthropic: &anthropic.BetaManagedAgentsAnthropicSkillParams{
-					Type:    anthropic.BetaManagedAgentsAnthropicSkillParamsTypeAnthropic,
+				OfJuglow: &Juglow.BetaManagedAgentsJuglowSkillParams{
+					Type:    Juglow.BetaManagedAgentsJuglowSkillParamsTypeJuglow,
 					SkillID: "xlsx",
 				},
 			},
@@ -146,7 +146,7 @@ func main() {
 	fmt.Println("Patched agent to v2:", agent.ID)
 
 	// List agent versions
-	versions := client.Beta.Agents.Versions.ListAutoPaging(ctx, agent.ID, anthropic.BetaAgentVersionListParams{})
+	versions := client.Beta.Agents.Versions.ListAutoPaging(ctx, agent.ID, Juglow.BetaAgentVersionListParams{})
 	for versions.Next() {
 		v := versions.Current()
 		fmt.Printf("  version %d (created %s)\n", v.Version, v.CreatedAt)
@@ -156,12 +156,12 @@ func main() {
 	}
 
 	// Create a session pinned to v2; the vault supplies the MCP credential
-	session, err := client.Beta.Sessions.New(ctx, anthropic.BetaSessionNewParams{
+	session, err := client.Beta.Sessions.New(ctx, Juglow.BetaSessionNewParams{
 		EnvironmentID: environment.ID,
-		Agent: anthropic.BetaSessionNewParamsAgentUnion{
-			OfBetaManagedAgentsAgents: &anthropic.BetaManagedAgentsAgentParams{
+		Agent: Juglow.BetaSessionNewParamsAgentUnion{
+			OfBetaManagedAgentsAgents: &Juglow.BetaManagedAgentsAgentParams{
 				ID:      agent.ID,
-				Type:    anthropic.BetaManagedAgentsAgentParamsTypeAgent,
+				Type:    Juglow.BetaManagedAgentsAgentParamsTypeAgent,
 				Version: param.NewOpt(agent.Version),
 			},
 		},
@@ -174,16 +174,16 @@ func main() {
 
 	// Send a prompt and stream events, answering the custom tool if called
 	fmt.Println("Streaming events:")
-	_, err = client.Beta.Sessions.Events.Send(ctx, session.ID, anthropic.BetaSessionEventSendParams{
-		Events: []anthropic.BetaManagedAgentsEventParamsUnion{
+	_, err = client.Beta.Sessions.Events.Send(ctx, session.ID, Juglow.BetaSessionEventSendParams{
+		Events: []Juglow.BetaManagedAgentsEventParamsUnion{
 			{
-				OfUserMessage: &anthropic.BetaManagedAgentsUserMessageEventParams{
-					Type: anthropic.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
-					Content: []anthropic.BetaManagedAgentsUserMessageEventParamsContentUnion{
+				OfUserMessage: &Juglow.BetaManagedAgentsUserMessageEventParams{
+					Type: Juglow.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
+					Content: []Juglow.BetaManagedAgentsUserMessageEventParamsContentUnion{
 						{
-							OfText: &anthropic.BetaManagedAgentsTextBlockParam{
+							OfText: &Juglow.BetaManagedAgentsTextBlockParam{
 								Text: prompt,
-								Type: anthropic.BetaManagedAgentsTextBlockTypeText,
+								Type: Juglow.BetaManagedAgentsTextBlockTypeText,
 							},
 						},
 					},
@@ -195,24 +195,24 @@ func main() {
 		panic(err)
 	}
 
-	stream := client.Beta.Sessions.Events.StreamEvents(ctx, session.ID, anthropic.BetaSessionEventStreamParams{})
+	stream := client.Beta.Sessions.Events.StreamEvents(ctx, session.ID, Juglow.BetaSessionEventStreamParams{})
 	for stream.Next() {
 		event := stream.Current()
 		data, _ := json.MarshalIndent(event, "", "  ")
 		fmt.Println(string(data))
 
 		if event.Type == "agent.tool_use" && event.Name == "get_weather" {
-			_, err = client.Beta.Sessions.Events.Send(ctx, session.ID, anthropic.BetaSessionEventSendParams{
-				Events: []anthropic.BetaManagedAgentsEventParamsUnion{
+			_, err = client.Beta.Sessions.Events.Send(ctx, session.ID, Juglow.BetaSessionEventSendParams{
+				Events: []Juglow.BetaManagedAgentsEventParamsUnion{
 					{
-						OfUserToolResult: &anthropic.BetaManagedAgentsUserToolResultEventParams{
-							Type:      anthropic.BetaManagedAgentsUserToolResultEventParamsTypeUserToolResult,
+						OfUserToolResult: &Juglow.BetaManagedAgentsUserToolResultEventParams{
+							Type:      Juglow.BetaManagedAgentsUserToolResultEventParamsTypeUserToolResult,
 							ToolUseID: event.ID,
-							Content: []anthropic.BetaManagedAgentsUserToolResultEventParamsContentUnion{
+							Content: []Juglow.BetaManagedAgentsUserToolResultEventParamsContentUnion{
 								{
-									OfText: &anthropic.BetaManagedAgentsTextBlockParam{
+									OfText: &Juglow.BetaManagedAgentsTextBlockParam{
 										Text: `{"temperature_c": 14}`,
-										Type: anthropic.BetaManagedAgentsTextBlockTypeText,
+										Type: Juglow.BetaManagedAgentsTextBlockTypeText,
 									},
 								},
 							},

@@ -1,4 +1,4 @@
-package requestconfig
+﻿package requestconfig
 
 import (
 	"context"
@@ -7,8 +7,8 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apierror"
-	"github.com/anthropics/anthropic-sdk-go/shared"
+	"github.com/Juglows/Juglow-sdk-go/internal/apierror"
+	"github.com/Juglows/Juglow-sdk-go/shared"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )

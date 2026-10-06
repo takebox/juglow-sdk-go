@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -11,18 +11,18 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 // BetaTunnelService contains methods and other services that help with interacting
-// with the anthropic API.
+// with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -43,7 +43,7 @@ func NewBetaTunnelService(opts ...option.RequestOption) (r BetaTunnelService) {
 }
 
 // The Tunnels API is in research preview. It requires the
-// `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+// `Juglow-beta: mcp-tunnels-2026-06-22` header and may change without a
 // deprecation period. It supersedes the Admin API endpoints at
 // `/v1/organizations/tunnels`, which remain available during a migration window.
 //
@@ -52,27 +52,27 @@ func NewBetaTunnelService(opts ...option.RequestOption) (r BetaTunnelService) {
 // certificate is added.
 func (r *BetaTunnelService) New(ctx context.Context, params BetaTunnelNewParams, opts ...option.RequestOption) (res *BetaTunnel, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "mcp-tunnels-2026-06-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "mcp-tunnels-2026-06-22")}, opts...)
 	path := "v1/tunnels?beta=true"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
 }
 
 // The Tunnels API is in research preview. It requires the
-// `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+// `Juglow-beta: mcp-tunnels-2026-06-22` header and may change without a
 // deprecation period. It supersedes the Admin API endpoints at
 // `/v1/organizations/tunnels`, which remain available during a migration window.
 //
 // Fetches a tunnel by ID.
 func (r *BetaTunnelService) Get(ctx context.Context, tunnelID string, query BetaTunnelGetParams, opts ...option.RequestOption) (res *BetaTunnel, err error) {
 	for _, v := range query.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "mcp-tunnels-2026-06-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "mcp-tunnels-2026-06-22")}, opts...)
 	if tunnelID == "" {
 		err = errors.New("missing required tunnel_id parameter")
 		return nil, err
@@ -83,7 +83,7 @@ func (r *BetaTunnelService) Get(ctx context.Context, tunnelID string, query Beta
 }
 
 // The Tunnels API is in research preview. It requires the
-// `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+// `Juglow-beta: mcp-tunnels-2026-06-22` header and may change without a
 // deprecation period. It supersedes the Admin API endpoints at
 // `/v1/organizations/tunnels`, which remain available during a migration window.
 //
@@ -92,10 +92,10 @@ func (r *BetaTunnelService) Get(ctx context.Context, tunnelID string, query Beta
 func (r *BetaTunnelService) List(ctx context.Context, params BetaTunnelListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaTunnel], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "mcp-tunnels-2026-06-22"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "mcp-tunnels-2026-06-22"), option.WithResponseInto(&raw)}, opts...)
 	path := "v1/tunnels?beta=true"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
 	if err != nil {
@@ -110,7 +110,7 @@ func (r *BetaTunnelService) List(ctx context.Context, params BetaTunnelListParam
 }
 
 // The Tunnels API is in research preview. It requires the
-// `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+// `Juglow-beta: mcp-tunnels-2026-06-22` header and may change without a
 // deprecation period. It supersedes the Admin API endpoints at
 // `/v1/organizations/tunnels`, which remain available during a migration window.
 //
@@ -121,7 +121,7 @@ func (r *BetaTunnelService) ListAutoPaging(ctx context.Context, params BetaTunne
 }
 
 // The Tunnels API is in research preview. It requires the
-// `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+// `Juglow-beta: mcp-tunnels-2026-06-22` header and may change without a
 // deprecation period. It supersedes the Admin API endpoints at
 // `/v1/organizations/tunnels`, which remain available during a migration window.
 //
@@ -131,10 +131,10 @@ func (r *BetaTunnelService) ListAutoPaging(ctx context.Context, params BetaTunne
 // already-archived tunnel returns the existing record unchanged.
 func (r *BetaTunnelService) Archive(ctx context.Context, tunnelID string, body BetaTunnelArchiveParams, opts ...option.RequestOption) (res *BetaTunnel, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "mcp-tunnels-2026-06-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "mcp-tunnels-2026-06-22")}, opts...)
 	if tunnelID == "" {
 		err = errors.New("missing required tunnel_id parameter")
 		return nil, err
@@ -145,20 +145,20 @@ func (r *BetaTunnelService) Archive(ctx context.Context, tunnelID string, body B
 }
 
 // The Tunnels API is in research preview. It requires the
-// `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+// `Juglow-beta: mcp-tunnels-2026-06-22` header and may change without a
 // deprecation period. It supersedes the Admin API endpoints at
 // `/v1/organizations/tunnels`, which remain available during a migration window.
 //
 // Reveals a tunnel's connector token. The value is fetched live on each call;
-// Anthropic does not store it. Repeated calls return the same value until the
+// Juglow does not store it. Repeated calls return the same value until the
 // token is rotated. Exposed as POST so the token does not appear in intermediary
 // access logs.
 func (r *BetaTunnelService) RevealToken(ctx context.Context, tunnelID string, body BetaTunnelRevealTokenParams, opts ...option.RequestOption) (res *BetaTunnelToken, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "mcp-tunnels-2026-06-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "mcp-tunnels-2026-06-22")}, opts...)
 	if tunnelID == "" {
 		err = errors.New("missing required tunnel_id parameter")
 		return nil, err
@@ -169,7 +169,7 @@ func (r *BetaTunnelService) RevealToken(ctx context.Context, tunnelID string, bo
 }
 
 // The Tunnels API is in research preview. It requires the
-// `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+// `Juglow-beta: mcp-tunnels-2026-06-22` header and may change without a
 // deprecation period. It supersedes the Admin API endpoints at
 // `/v1/organizations/tunnels`, which remain available during a migration window.
 //
@@ -178,10 +178,10 @@ func (r *BetaTunnelService) RevealToken(ctx context.Context, tunnelID string, bo
 // severed. A connector restarted after rotation must use the new value.
 func (r *BetaTunnelService) RotateToken(ctx context.Context, tunnelID string, params BetaTunnelRotateTokenParams, opts ...option.RequestOption) (res *BetaTunnelToken, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "mcp-tunnels-2026-06-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "mcp-tunnels-2026-06-22")}, opts...)
 	if tunnelID == "" {
 		err = errors.New("missing required tunnel_id parameter")
 		return nil, err
@@ -201,7 +201,7 @@ type BetaTunnel struct {
 	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// Human-readable name for the tunnel (1-255 characters). Null if unset.
 	DisplayName string `json:"display_name" api:"required"`
-	// Anthropic-assigned hostname for the tunnel. MCP server URLs whose host is a
+	// Juglow-assigned hostname for the tunnel. MCP server URLs whose host is a
 	// subdomain of this value are routed through the tunnel. Globally unique and never
 	// reused, even after the tunnel is archived.
 	Domain string          `json:"domain" api:"required"`
@@ -253,7 +253,7 @@ type BetaTunnelNewParams struct {
 	// Optional human-readable name for the tunnel (1-255 characters).
 	DisplayName param.Opt[string] `json:"display_name,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -267,7 +267,7 @@ func (r *BetaTunnelNewParams) UnmarshalJSON(data []byte) error {
 
 type BetaTunnelGetParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -279,7 +279,7 @@ type BetaTunnelListParams struct {
 	// Opaque pagination cursor from a previous `list_tunnels` response.
 	Page param.Opt[string] `query:"page,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -293,13 +293,13 @@ func (r BetaTunnelListParams) URLQuery() (v url.Values, err error) {
 
 type BetaTunnelArchiveParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaTunnelRevealTokenParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -307,7 +307,7 @@ type BetaTunnelRotateTokenParams struct {
 	// Optional free-text reason for the rotation, recorded for audit.
 	Reason param.Opt[string] `json:"reason,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 

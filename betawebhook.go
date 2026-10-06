@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"encoding/json"
@@ -9,16 +9,16 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 	standardwebhooks "github.com/standard-webhooks/standard-webhooks/libraries/go"
 )
 
 // BetaWebhookService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -583,50 +583,50 @@ func (BetaWebhookSessionBudgetReachedEventData) implBetaWebhookEventDataUnion() 
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaWebhookEventDataUnion.AsAny().(type) {
-//	case anthropic.BetaWebhookSessionCreatedEventData:
-//	case anthropic.BetaWebhookSessionPendingEventData:
-//	case anthropic.BetaWebhookSessionRunningEventData:
-//	case anthropic.BetaWebhookSessionIdledEventData:
-//	case anthropic.BetaWebhookSessionRequiresActionEventData:
-//	case anthropic.BetaWebhookSessionArchivedEventData:
-//	case anthropic.BetaWebhookSessionDeletedEventData:
-//	case anthropic.BetaWebhookSessionStatusRescheduledEventData:
-//	case anthropic.BetaWebhookSessionStatusRunStartedEventData:
-//	case anthropic.BetaWebhookSessionStatusIdledEventData:
-//	case anthropic.BetaWebhookSessionStatusTerminatedEventData:
-//	case anthropic.BetaWebhookSessionThreadCreatedEventData:
-//	case anthropic.BetaWebhookSessionThreadIdledEventData:
-//	case anthropic.BetaWebhookSessionThreadTerminatedEventData:
-//	case anthropic.BetaWebhookSessionOutcomeEvaluationEndedEventData:
-//	case anthropic.BetaWebhookVaultCreatedEventData:
-//	case anthropic.BetaWebhookVaultArchivedEventData:
-//	case anthropic.BetaWebhookVaultDeletedEventData:
-//	case anthropic.BetaWebhookVaultCredentialCreatedEventData:
-//	case anthropic.BetaWebhookVaultCredentialArchivedEventData:
-//	case anthropic.BetaWebhookVaultCredentialDeletedEventData:
-//	case anthropic.BetaWebhookVaultCredentialRefreshFailedEventData:
-//	case anthropic.BetaWebhookSessionUpdatedEventData:
-//	case anthropic.BetaWebhookAgentCreatedEventData:
-//	case anthropic.BetaWebhookAgentArchivedEventData:
-//	case anthropic.BetaWebhookAgentDeletedEventData:
-//	case anthropic.BetaWebhookDeploymentPausedEventData:
-//	case anthropic.BetaWebhookDeploymentRunFailedEventData:
-//	case anthropic.BetaWebhookDeploymentCreatedEventData:
-//	case anthropic.BetaWebhookDeploymentUpdatedEventData:
-//	case anthropic.BetaWebhookDeploymentUnpausedEventData:
-//	case anthropic.BetaWebhookAgentUpdatedEventData:
-//	case anthropic.BetaWebhookDeploymentArchivedEventData:
-//	case anthropic.BetaWebhookDeploymentRunStartedEventData:
-//	case anthropic.BetaWebhookDeploymentDeletedEventData:
-//	case anthropic.BetaWebhookDeploymentRunSucceededEventData:
-//	case anthropic.BetaWebhookEnvironmentCreatedEventData:
-//	case anthropic.BetaWebhookEnvironmentUpdatedEventData:
-//	case anthropic.BetaWebhookEnvironmentArchivedEventData:
-//	case anthropic.BetaWebhookEnvironmentDeletedEventData:
-//	case anthropic.BetaWebhookMemoryStoreCreatedEventData:
-//	case anthropic.BetaWebhookMemoryStoreArchivedEventData:
-//	case anthropic.BetaWebhookMemoryStoreDeletedEventData:
-//	case anthropic.BetaWebhookSessionBudgetReachedEventData:
+//	case Juglow.BetaWebhookSessionCreatedEventData:
+//	case Juglow.BetaWebhookSessionPendingEventData:
+//	case Juglow.BetaWebhookSessionRunningEventData:
+//	case Juglow.BetaWebhookSessionIdledEventData:
+//	case Juglow.BetaWebhookSessionRequiresActionEventData:
+//	case Juglow.BetaWebhookSessionArchivedEventData:
+//	case Juglow.BetaWebhookSessionDeletedEventData:
+//	case Juglow.BetaWebhookSessionStatusRescheduledEventData:
+//	case Juglow.BetaWebhookSessionStatusRunStartedEventData:
+//	case Juglow.BetaWebhookSessionStatusIdledEventData:
+//	case Juglow.BetaWebhookSessionStatusTerminatedEventData:
+//	case Juglow.BetaWebhookSessionThreadCreatedEventData:
+//	case Juglow.BetaWebhookSessionThreadIdledEventData:
+//	case Juglow.BetaWebhookSessionThreadTerminatedEventData:
+//	case Juglow.BetaWebhookSessionOutcomeEvaluationEndedEventData:
+//	case Juglow.BetaWebhookVaultCreatedEventData:
+//	case Juglow.BetaWebhookVaultArchivedEventData:
+//	case Juglow.BetaWebhookVaultDeletedEventData:
+//	case Juglow.BetaWebhookVaultCredentialCreatedEventData:
+//	case Juglow.BetaWebhookVaultCredentialArchivedEventData:
+//	case Juglow.BetaWebhookVaultCredentialDeletedEventData:
+//	case Juglow.BetaWebhookVaultCredentialRefreshFailedEventData:
+//	case Juglow.BetaWebhookSessionUpdatedEventData:
+//	case Juglow.BetaWebhookAgentCreatedEventData:
+//	case Juglow.BetaWebhookAgentArchivedEventData:
+//	case Juglow.BetaWebhookAgentDeletedEventData:
+//	case Juglow.BetaWebhookDeploymentPausedEventData:
+//	case Juglow.BetaWebhookDeploymentRunFailedEventData:
+//	case Juglow.BetaWebhookDeploymentCreatedEventData:
+//	case Juglow.BetaWebhookDeploymentUpdatedEventData:
+//	case Juglow.BetaWebhookDeploymentUnpausedEventData:
+//	case Juglow.BetaWebhookAgentUpdatedEventData:
+//	case Juglow.BetaWebhookDeploymentArchivedEventData:
+//	case Juglow.BetaWebhookDeploymentRunStartedEventData:
+//	case Juglow.BetaWebhookDeploymentDeletedEventData:
+//	case Juglow.BetaWebhookDeploymentRunSucceededEventData:
+//	case Juglow.BetaWebhookEnvironmentCreatedEventData:
+//	case Juglow.BetaWebhookEnvironmentUpdatedEventData:
+//	case Juglow.BetaWebhookEnvironmentArchivedEventData:
+//	case Juglow.BetaWebhookEnvironmentDeletedEventData:
+//	case Juglow.BetaWebhookMemoryStoreCreatedEventData:
+//	case Juglow.BetaWebhookMemoryStoreArchivedEventData:
+//	case Juglow.BetaWebhookMemoryStoreDeletedEventData:
+//	case Juglow.BetaWebhookSessionBudgetReachedEventData:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}

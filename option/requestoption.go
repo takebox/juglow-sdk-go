@@ -1,4 +1,4 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package option
 
@@ -14,9 +14,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/config"
-	"github.com/anthropics/anthropic-sdk-go/internal/auth"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/internal/auth"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
 	"github.com/tidwall/sjson"
 )
 
@@ -31,7 +31,7 @@ type FederationOptions struct {
 	// FederationRuleID identifies the OidcFederationRule governing this
 	// exchange. Required; must be a tagged ID with the "fdrl_" prefix.
 	FederationRuleID string
-	// OrganizationID is the UUID of the Anthropic organization the
+	// OrganizationID is the UUID of the Juglow organization the
 	// federation rule belongs to. Required.
 	OrganizationID string
 	// ServiceAccountID is an optional expected-target check for federation
@@ -46,8 +46,8 @@ type FederationOptions struct {
 	// more than one non-default workspace, or to target a specific workspace
 	// other than the one the server would pick. The minted token is
 	// workspace-scoped: per-request workspace selection (the
-	// anthropic-workspace-id header) is not supported for federation
-	// tokens — switching workspaces requires a new token exchange with a
+	// Juglow-workspace-id header) is not supported for federation
+	// tokens â€” switching workspaces requires a new token exchange with a
 	// different WorkspaceID.
 	WorkspaceID string
 }
@@ -76,12 +76,12 @@ func errOption(err error) RequestOption {
 
 // IdentityTokenFile returns an [IdentityTokenFunc] that reads a JWT from path
 // on each invocation. Use it for Kubernetes projected service account tokens
-// and similar rotating on-disk credentials — the file is re-read on every
+// and similar rotating on-disk credentials â€” the file is re-read on every
 // federation exchange so rotations are picked up automatically. Surrounding
 // whitespace is trimmed; an empty file is treated as an error.
 //
 // Passing this as the provider to [WithFederationTokenProvider] takes
-// precedence over the ANTHROPIC_IDENTITY_TOKEN_FILE environment variable:
+// precedence over the Juglow_IDENTITY_TOKEN_FILE environment variable:
 // explicit options always beat env-var auto-discovery. The env var only
 // applies when the client is constructed without a [WithFederationTokenProvider]
 // option (or equivalent).
@@ -90,12 +90,12 @@ func errOption(err error) RequestOption {
 //
 // Typical usage:
 //
-//	client := anthropic.NewClient(
+//	client := Juglow.NewClient(
 //	    option.WithFederationTokenProvider(
-//	        option.IdentityTokenFile("/var/run/secrets/anthropic.com/token"),
+//	        option.IdentityTokenFile("/var/run/secrets/Juglow.com/token"),
 //	        option.FederationOptions{
 //	            FederationRuleID: "fdrl_...",
-//	            OrganizationID:   os.Getenv("ANTHROPIC_ORGANIZATION_ID"),
+//	            OrganizationID:   os.Getenv("Juglow_ORGANIZATION_ID"),
 //	        },
 //	    ),
 //	)
@@ -105,7 +105,7 @@ func IdentityTokenFile(path string) IdentityTokenFunc {
 
 // WithFederationTokenProvider returns a [RequestOption] that authenticates
 // requests using workload identity federation, exchanging a caller-supplied
-// identity token for a short-lived Anthropic access token. Use this to
+// identity token for a short-lived Juglow access token. Use this to
 // integrate custom OIDC token sources (SPIFFE/SPIRE, cloud provider SDKs,
 // etc.) without staging the token through a file.
 //
@@ -113,7 +113,7 @@ func IdentityTokenFile(path string) IdentityTokenFunc {
 // opts.FederationRuleID and opts.OrganizationID are required.
 //
 // The auth middleware is constructed once and reused across requests, so the
-// [auth.TokenCache] built by [auth.WithAuthMiddleware] is shared — a fresh
+// [auth.TokenCache] built by [auth.WithAuthMiddleware] is shared â€” a fresh
 // access token is cached in memory and only re-exchanged when it enters the
 // refresh window.
 func WithFederationTokenProvider(provider IdentityTokenFunc, opts FederationOptions) RequestOption {
@@ -135,11 +135,11 @@ func WithFederationTokenProvider(provider IdentityTokenFunc, opts FederationOpti
 	return auth.WithAuthMiddleware(tokenProvider)
 }
 
-// RequestOption is an option for the requests made by the anthropic API Client
+// RequestOption is an option for the requests made by the Juglow API Client
 // which can be supplied to clients, services, and methods. You can read more about this functional
 // options pattern in our [README].
 //
-// [README]: https://pkg.go.dev/github.com/anthropics/anthropic-sdk-go#readme-requestoptions
+// [README]: https://pkg.go.dev/github.com/Juglows/Juglow-sdk-go#readme-requestoptions
 type RequestOption = requestconfig.RequestOption
 
 // WithBaseURL returns a RequestOption that sets the BaseURL for the client.
@@ -394,7 +394,7 @@ type withConfigClientKey struct {
 //
 // Credential resolution is deferred to a request-time middleware so a
 // later [WithAPIKey] / [WithAuthToken] (tier-1 explicit-credential
-// precedence) can preempt the profile — even when the profile's
+// precedence) can preempt the profile â€” even when the profile's
 // credentials are missing or broken. The same escape-hatch shape as
 // [explicitProfileErrorOption] applies: if the final RequestConfig has a
 // static APIKey/AuthToken, or the request already carries an
@@ -424,7 +424,7 @@ func WithConfigQuiet(cfg *config.Config) RequestOption {
 
 // WithProfile returns a [RequestOption] that loads the named profile from
 // the default config directory (see [config.DefaultDir]) and authenticates
-// requests using it — equivalent to setting ANTHROPIC_PROFILE=name and
+// requests using it â€” equivalent to setting Juglow_PROFILE=name and
 // constructing a zero-config client. Shorthand for:
 //
 //	cfg, err := config.LoadProfile(config.DefaultDir(), name)
@@ -432,7 +432,7 @@ func WithConfigQuiet(cfg *config.Config) RequestOption {
 //
 // If the profile cannot be loaded, the error is deferred to the first
 // request and is preempted by a static credential ([WithAPIKey] /
-// [WithAuthToken]) — the same escape hatch as the ANTHROPIC_PROFILE env
+// [WithAuthToken]) â€” the same escape hatch as the Juglow_PROFILE env
 // path. As with [WithConfig], a static credential shadows the profile at
 // request time and a one-shot warning is emitted.
 func WithProfile(name string) RequestOption {
@@ -468,10 +468,10 @@ type withoutEnvironmentDefaultsOption struct{}
 func (withoutEnvironmentDefaultsOption) Apply(*requestconfig.RequestConfig) error { return nil }
 
 // WithoutEnvironmentDefaults returns a marker [RequestOption] that, when
-// passed to anthropic.NewClient, causes it to skip the environment-based
-// credential autoload performed by anthropic.DefaultClientOptions
-// (ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN, ANTHROPIC_PROFILE, env
-// federation, fallback profile, ANTHROPIC_BASE_URL). The hardcoded
+// passed to Juglow.NewClient, causes it to skip the environment-based
+// credential autoload performed by Juglow.DefaultClientOptions
+// (Juglow_API_KEY, Juglow_AUTH_TOKEN, Juglow_PROFILE, env
+// federation, fallback profile, Juglow_BASE_URL). The hardcoded
 // production base-URL default is still applied so callers that supply only
 // credentials get a working client.
 //
@@ -484,8 +484,8 @@ func WithoutEnvironmentDefaults() RequestOption {
 }
 
 // HasWithoutEnvironmentDefaults reports whether opts contains a
-// [WithoutEnvironmentDefaults] marker. Used by anthropic.NewClient to decide
-// whether to prepend anthropic.DefaultClientOptions.
+// [WithoutEnvironmentDefaults] marker. Used by Juglow.NewClient to decide
+// whether to prepend Juglow.DefaultClientOptions.
 func HasWithoutEnvironmentDefaults(opts []RequestOption) bool {
 	for _, o := range opts {
 		if _, ok := o.(withoutEnvironmentDefaultsOption); ok {
@@ -506,7 +506,7 @@ func withConfig(cfg *config.Config, quiet bool) RequestOption {
 		mwBy = map[withConfigClientKey]auth.Middleware{}
 	)
 	return requestconfig.RequestOptionFunc(func(r *requestconfig.RequestConfig) error {
-		// Non-credential config — applied unconditionally so a profile's
+		// Non-credential config â€” applied unconditionally so a profile's
 		// base_url / workspace_id are honored even when its credentials
 		// are shadowed by a later WithAPIKey or fail to resolve.
 		if cfg.BaseURL != "" && r.BaseURL == nil {
@@ -520,13 +520,13 @@ func withConfig(cfg *config.Config, quiet bool) RequestOption {
 		isFederation := cfg.AuthenticationInfo != nil &&
 			cfg.AuthenticationInfo.Type == config.AuthenticationTypeOIDCFederation
 		if cfg.WorkspaceID != "" && !isFederation {
-			if err := WithHeader("anthropic-workspace-id", cfg.WorkspaceID).Apply(r); err != nil {
+			if err := WithHeader("Juglow-workspace-id", cfg.WorkspaceID).Apply(r); err != nil {
 				return err
 			}
 		}
 
 		// Both checks below are request-time middlewares so they observe
-		// the RequestConfig after ALL options have applied — order of
+		// the RequestConfig after ALL options have applied â€” order of
 		// WithConfig vs WithAPIKey/WithAuthToken in the caller's option
 		// list doesn't matter.
 		rc := r
@@ -535,9 +535,9 @@ func withConfig(cfg *config.Config, quiet bool) RequestOption {
 				shadowOnce.Do(func() {
 					switch {
 					case rc.APIKey != "":
-						auth.WarnConfigShadowed("ANTHROPIC_API_KEY", detectShadowSource("ANTHROPIC_API_KEY"))
+						auth.WarnConfigShadowed("Juglow_API_KEY", detectShadowSource("Juglow_API_KEY"))
 					case rc.AuthToken != "":
-						auth.WarnConfigShadowed("ANTHROPIC_AUTH_TOKEN", detectShadowSource("ANTHROPIC_AUTH_TOKEN"))
+						auth.WarnConfigShadowed("Juglow_AUTH_TOKEN", detectShadowSource("Juglow_AUTH_TOKEN"))
 					}
 				})
 				return next(req)
@@ -598,7 +598,7 @@ func detectShadowSource(envVar string) auth.ConfigShadowSource {
 // environment to be the "production" environment. An environment specifies which base URL
 // to use by default.
 func WithEnvironmentProduction() RequestOption {
-	return requestconfig.WithDefaultBaseURL("https://api.anthropic.com/")
+	return requestconfig.WithDefaultBaseURL("https://platform.juglow.my.id/")
 }
 
 // WithAPIKey returns a RequestOption that sets the client setting "api_key".

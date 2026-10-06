@@ -1,4 +1,4 @@
-package auth
+﻿package auth
 
 import (
 	"context"
@@ -30,7 +30,7 @@ type IdentityTokenProvider interface {
 // needs to be propagated to the client (e.g. base_url, workspace_id).
 //
 // OrganizationID is intentionally absent: the server exposes the caller's
-// organization only as the anthropic-organization-id *response* header, not
+// organization only as the Juglow-organization-id *response* header, not
 // as a request header, so there is no way for the SDK to act on a
 // config-level organization ID today.
 type CredentialsResult struct {

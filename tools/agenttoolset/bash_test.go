@@ -1,4 +1,4 @@
-//go:build !windows
+﻿//go:build !windows
 
 package agenttoolset
 
@@ -9,11 +9,11 @@ import (
 	"testing"
 	"time"
 
-	anthropic "github.com/anthropics/anthropic-sdk-go"
+	Juglow "github.com/Juglows/Juglow-sdk-go"
 	"github.com/stretchr/testify/require"
 )
 
-func newBashTool(t *testing.T, dir string) anthropic.BetaTool {
+func newBashTool(t *testing.T, dir string) Juglow.BetaTool {
 	t.Helper()
 	tool := BetaBashTool(&AgentToolContext{Workdir: dir})
 	t.Cleanup(func() {
@@ -100,7 +100,7 @@ func TestBashTimeout(t *testing.T) {
 
 // TestBashToolRestartsAfterCtxCancel pins the guarantee that the
 // persistent shell is restarted when the per-tool ctx fires before
-// bashDefaultTO does — Exec returns ctx.Err() rather than ErrTimedOut,
+// bashDefaultTO does â€” Exec returns ctx.Err() rather than ErrTimedOut,
 // and the still-running command's stdout plus the per-call exit-code
 // sentinel would otherwise land in the next Exec's buffer (the next
 // call then sees stale output or, worse, false-matches the prior
@@ -126,7 +126,7 @@ func TestBashToolRestartsAfterCtxCancel(t *testing.T) {
 	}))
 	require.Error(t, err, "ctx cancel must surface as a tool error")
 
-	// Second call must run in a fresh session — neither the previous
+	// Second call must run in a fresh session â€” neither the previous
 	// command's stdout nor its sentinel should be visible.
 	out2, isErr2 := runTool(t, tool, mustJSON(t, map[string]any{"command": "echo after"}))
 	require.False(t, isErr2)
@@ -161,20 +161,20 @@ func TestBashMissingCommand(t *testing.T) {
 	require.True(t, isErr, "empty command without restart must be rejected")
 }
 
-// TestBashScrubsAnthropicCredentials verifies the spawned shell does not
-// inherit the runner's ANTHROPIC_* credentials (API key, auth/session tokens),
+// TestBashScrubsJuglowCredentials verifies the spawned shell does not
+// inherit the runner's Juglow_* credentials (API key, auth/session tokens),
 // while ordinary variables like PATH still pass through.
-func TestBashScrubsAnthropicCredentials(t *testing.T) {
-	t.Setenv("ANTHROPIC_API_KEY", "sk-ant-should-not-leak")
-	t.Setenv("ANTHROPIC_AUTH_TOKEN", "tok-should-not-leak")
+func TestBashScrubsJuglowCredentials(t *testing.T) {
+	t.Setenv("Juglow_API_KEY", "sk-ant-should-not-leak")
+	t.Setenv("Juglow_AUTH_TOKEN", "tok-should-not-leak")
 	tool := newBashTool(t, t.TempDir())
 
 	out, isErr := runTool(t, tool, mustJSON(t, map[string]any{
-		"command": `echo "key=[$ANTHROPIC_API_KEY] token=[$ANTHROPIC_AUTH_TOKEN] path=[${PATH:+set}]"`,
+		"command": `echo "key=[$Juglow_API_KEY] token=[$Juglow_AUTH_TOKEN] path=[${PATH:+set}]"`,
 	}))
 	require.False(t, isErr, "output=%q", out)
-	require.Contains(t, out, "key=[]", "ANTHROPIC_API_KEY must not be visible to the spawned shell")
-	require.Contains(t, out, "token=[]", "ANTHROPIC_AUTH_TOKEN must not be visible to the spawned shell")
+	require.Contains(t, out, "key=[]", "Juglow_API_KEY must not be visible to the spawned shell")
+	require.Contains(t, out, "token=[]", "Juglow_AUTH_TOKEN must not be visible to the spawned shell")
 	require.Contains(t, out, "path=[set]", "PATH must survive the credential scrub")
 }
 
@@ -183,7 +183,7 @@ func TestBashScrubsAnthropicCredentials(t *testing.T) {
 // into it: only the provided keys are visible, and an inherited variable like
 // PATH is gone.
 func TestBashEnvFullyReplaces(t *testing.T) {
-	t.Setenv("ANTHROPIC_API_KEY", "sk-ant-should-not-leak")
+	t.Setenv("Juglow_API_KEY", "sk-ant-should-not-leak")
 	t.Setenv("BASH_TEST_INHERITED", "from-process")
 
 	tool := BetaBashTool(&AgentToolContext{
@@ -196,19 +196,19 @@ func TestBashEnvFullyReplaces(t *testing.T) {
 		}
 	})
 
-	// BASH_TEST_INHERITED is a non-ANTHROPIC process var: it would survive the
+	// BASH_TEST_INHERITED is a non-Juglow process var: it would survive the
 	// credential scrub and so would be visible if Env were merged into the
 	// default instead of replacing it. Its absence proves full replacement.
-	// (PATH is not a reliable probe — bash synthesizes a compiled-in default
+	// (PATH is not a reliable probe â€” bash synthesizes a compiled-in default
 	// PATH even when started with an empty environment.)
 	out, isErr := runTool(t, tool, mustJSON(t, map[string]any{
-		"command": `echo "custom=[$CUSTOM_ONLY] inherited=[$BASH_TEST_INHERITED] key=[$ANTHROPIC_API_KEY]"`,
+		"command": `echo "custom=[$CUSTOM_ONLY] inherited=[$BASH_TEST_INHERITED] key=[$Juglow_API_KEY]"`,
 	}))
 	require.False(t, isErr, "output=%q", out)
 	require.Contains(t, out, "custom=[yes]", "the provided Env mapping must be used verbatim")
 	require.Contains(t, out, "inherited=[]",
 		"a non-nil Env FULLY REPLACES the default; inherited process vars must not leak in")
-	require.Contains(t, out, "key=[]", "ANTHROPIC_* credentials must never be visible")
+	require.Contains(t, out, "key=[]", "Juglow_* credentials must never be visible")
 }
 
 func TestBashSentinelNotSpoofable(t *testing.T) {

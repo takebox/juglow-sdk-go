@@ -1,4 +1,4 @@
-package auth_test
+﻿package auth_test
 
 import (
 	"bytes"
@@ -14,13 +14,13 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/config"
-	"github.com/anthropics/anthropic-sdk-go/internal/auth"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/internal/auth"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
-const successResponse = `{"id":"msg_1","type":"message","role":"assistant","content":[{"type":"text","text":"hi"}],"model":"claude-sonnet-4-20250514","stop_reason":"end_turn","usage":{"input_tokens":1,"output_tokens":1}}`
+const successResponse = `{"id":"msg_1","type":"message","role":"assistant","content":[{"type":"text","text":"hi"}],"model":"haijun-sonnet-4-20250514","stop_reason":"end_turn","usage":{"input_tokens":1,"output_tokens":1}}`
 
 // unsetEnv removes an env var for the duration of the test. t.Setenv
 // registers the original value for restore at test end; Unsetenv then
@@ -31,31 +31,31 @@ func unsetEnv(t *testing.T, key string) {
 	os.Unsetenv(key)
 }
 
-// isolateAuthEnv points ANTHROPIC_CONFIG_DIR at a fresh temp dir and
+// isolateAuthEnv points Juglow_CONFIG_DIR at a fresh temp dir and
 // unsets the federation env vars so a test is not affected by whatever
 // host profile or env state the developer has configured.
 func isolateAuthEnv(t *testing.T) {
 	t.Helper()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", t.TempDir())
-	unsetEnv(t, "ANTHROPIC_PROFILE")
-	unsetEnv(t, "ANTHROPIC_FEDERATION_RULE_ID")
-	unsetEnv(t, "ANTHROPIC_ORGANIZATION_ID")
-	unsetEnv(t, "ANTHROPIC_IDENTITY_TOKEN")
-	unsetEnv(t, "ANTHROPIC_IDENTITY_TOKEN_FILE")
-	unsetEnv(t, "ANTHROPIC_WORKSPACE_ID")
+	t.Setenv("Juglow_CONFIG_DIR", t.TempDir())
+	unsetEnv(t, "Juglow_PROFILE")
+	unsetEnv(t, "Juglow_FEDERATION_RULE_ID")
+	unsetEnv(t, "Juglow_ORGANIZATION_ID")
+	unsetEnv(t, "Juglow_IDENTITY_TOKEN")
+	unsetEnv(t, "Juglow_IDENTITY_TOKEN_FILE")
+	unsetEnv(t, "Juglow_WORKSPACE_ID")
 }
 
-var defaultParams = anthropic.MessageNewParams{
-	Model:     "claude-sonnet-4-20250514",
+var defaultParams = Juglow.MessageNewParams{
+	Model:     "haijun-sonnet-4-20250514",
 	MaxTokens: 10,
-	Messages: []anthropic.MessageParam{
-		anthropic.NewUserMessage(anthropic.NewTextBlock("hi")),
+	Messages: []Juglow.MessageParam{
+		Juglow.NewUserMessage(Juglow.NewTextBlock("hi")),
 	},
 }
 
 func TestIntegration_BearerTokenAndBetaHeader(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var receivedAuth string
@@ -63,7 +63,7 @@ func TestIntegration_BearerTokenAndBetaHeader(t *testing.T) {
 
 	apiServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		receivedAuth = r.Header.Get("Authorization")
-		receivedBeta = r.Header.Get("anthropic-beta")
+		receivedBeta = r.Header.Get("Juglow-beta")
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(successResponse))
 	}))
@@ -73,7 +73,7 @@ func TestIntegration_BearerTokenAndBetaHeader(t *testing.T) {
 	credPath := filepath.Join(dir, "credentials.json")
 	os.WriteFile(credPath, []byte(`{"type":"oauth_token","access_token":"my-access-tok"}`), 0600)
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(apiServer.URL),
 		option.WithConfig(&config.Config{
 			AuthenticationInfo: &config.AuthenticationInfo{
@@ -93,10 +93,10 @@ func TestIntegration_BearerTokenAndBetaHeader(t *testing.T) {
 		t.Fatalf("got Authorization %q, want %q", receivedAuth, "Bearer my-access-tok")
 	}
 	if !strings.Contains(receivedBeta, "oauth-2025-04-20") {
-		t.Fatalf("anthropic-beta %q does not contain API oauth header", receivedBeta)
+		t.Fatalf("Juglow-beta %q does not contain API oauth header", receivedBeta)
 	}
 	if strings.Contains(receivedBeta, "oidc-federation-2026-04-01") {
-		t.Fatalf("anthropic-beta %q should not contain federation header on API requests", receivedBeta)
+		t.Fatalf("Juglow-beta %q should not contain federation header on API requests", receivedBeta)
 	}
 }
 
@@ -108,7 +108,7 @@ func TestIntegration_WithFederationTokenProvider(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		if r.URL.Path == "/v1/oauth/token" {
-			tokenExchangeBeta = r.Header.Get("anthropic-beta")
+			tokenExchangeBeta = r.Header.Get("Juglow-beta")
 			var body map[string]any
 			_ = json.NewDecoder(r.Body).Decode(&body)
 			if body["assertion"] != "custom-jwt" {
@@ -120,19 +120,19 @@ func TestIntegration_WithFederationTokenProvider(t *testing.T) {
 			json.NewEncoder(w).Encode(map[string]any{"access_token": "exchanged-tok"})
 			return
 		}
-		apiBeta = r.Header.Get("anthropic-beta")
+		apiBeta = r.Header.Get("Juglow-beta")
 		apiAuth = r.Header.Get("Authorization")
 		w.Write([]byte(successResponse))
 	}))
 	defer server.Close()
 
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
-	t.Setenv("ANTHROPIC_BASE_URL", server.URL)
+	t.Setenv("Juglow_BASE_URL", server.URL)
 
 	var providerCalls int
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithFederationTokenProvider(
 			func(_ context.Context) (string, error) {
 				providerCalls++
@@ -165,8 +165,8 @@ func TestIntegration_WithFederationTokenProvider(t *testing.T) {
 }
 
 func TestIntegration_TokenCachedAcrossRequests(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var tokenCalls atomic.Int32
@@ -190,7 +190,7 @@ func TestIntegration_TokenCachedAcrossRequests(t *testing.T) {
 	tokenPath := filepath.Join(dir, "token")
 	os.WriteFile(tokenPath, []byte("my-jwt"), 0600)
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithConfig(&config.Config{
 			BaseURL:        server.URL,
 			OrganizationID: "org-1",
@@ -222,14 +222,14 @@ func TestIntegration_TokenCachedAcrossRequests(t *testing.T) {
 
 // TestIntegration_InMemoryFederationConfigSendsWorkspaceID verifies that an
 // in-memory federation config passed via option.WithConfig forwards the
-// top-level workspace_id into the jwt-bearer exchange body — and ONLY there.
-// The anthropic-workspace-id header must be suppressed on API requests for
+// top-level workspace_id into the jwt-bearer exchange body â€” and ONLY there.
+// The Juglow-workspace-id header must be suppressed on API requests for
 // federation profiles (the minted token is already workspace-scoped, so the
 // header would be ignored). This mirrors the file-loaded path in
 // loadOIDCFederationProfile, which omits WorkspaceID from CredentialsResult.
 func TestIntegration_InMemoryFederationConfigSendsWorkspaceID(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var exchangeBody map[string]any
@@ -242,8 +242,8 @@ func TestIntegration_InMemoryFederationConfigSendsWorkspaceID(t *testing.T) {
 			json.NewEncoder(w).Encode(map[string]any{"access_token": "exchanged-tok"})
 			return
 		}
-		apiWorkspaceHeader = r.Header.Get("anthropic-workspace-id")
-		_, apiWorkspaceHeaderPresent = r.Header[http.CanonicalHeaderKey("anthropic-workspace-id")]
+		apiWorkspaceHeader = r.Header.Get("Juglow-workspace-id")
+		_, apiWorkspaceHeaderPresent = r.Header[http.CanonicalHeaderKey("Juglow-workspace-id")]
 		w.Write([]byte(successResponse))
 	}))
 	defer server.Close()
@@ -252,7 +252,7 @@ func TestIntegration_InMemoryFederationConfigSendsWorkspaceID(t *testing.T) {
 	tokenPath := filepath.Join(dir, "token")
 	os.WriteFile(tokenPath, []byte("my-jwt"), 0600)
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithConfig(&config.Config{
 			BaseURL:        server.URL,
 			OrganizationID: "org-1",
@@ -277,24 +277,24 @@ func TestIntegration_InMemoryFederationConfigSendsWorkspaceID(t *testing.T) {
 		t.Fatalf("got exchange-body workspace_id %v, want %q", exchangeBody["workspace_id"], "wrkspc_x")
 	}
 	if apiWorkspaceHeaderPresent {
-		t.Fatalf("anthropic-workspace-id header should be suppressed for in-memory federation config, got %q", apiWorkspaceHeader)
+		t.Fatalf("Juglow-workspace-id header should be suppressed for in-memory federation config, got %q", apiWorkspaceHeader)
 	}
 }
 
 // TestIntegration_InMemoryNonFederationConfigSendsWorkspaceIDHeader is the
 // regression counterpart to the federation test above: a non-federation
 // in-memory config (user_oauth) with a top-level workspace_id must still
-// emit the anthropic-workspace-id header on API requests. The federation
+// emit the Juglow-workspace-id header on API requests. The federation
 // suppression is gated on AuthenticationInfo.Type, not on whether the
 // config is in-memory.
 func TestIntegration_InMemoryNonFederationConfigSendsWorkspaceIDHeader(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var apiWorkspaceHeader string
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		apiWorkspaceHeader = r.Header.Get("anthropic-workspace-id")
+		apiWorkspaceHeader = r.Header.Get("Juglow-workspace-id")
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(successResponse))
 	}))
@@ -304,7 +304,7 @@ func TestIntegration_InMemoryNonFederationConfigSendsWorkspaceIDHeader(t *testin
 	credPath := filepath.Join(dir, "credentials.json")
 	os.WriteFile(credPath, []byte(`{"type":"oauth_token","access_token":"my-access-tok"}`), 0600)
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithConfig(&config.Config{
 			BaseURL:     server.URL,
 			WorkspaceID: "wrkspc_y",
@@ -319,24 +319,24 @@ func TestIntegration_InMemoryNonFederationConfigSendsWorkspaceIDHeader(t *testin
 		t.Fatal(err)
 	}
 	if apiWorkspaceHeader != "wrkspc_y" {
-		t.Fatalf("got anthropic-workspace-id header %q, want %q", apiWorkspaceHeader, "wrkspc_y")
+		t.Fatalf("got Juglow-workspace-id header %q, want %q", apiWorkspaceHeader, "wrkspc_y")
 	}
 }
 
 // TestIntegration_EnvWorkspaceIDFillsUserOAuthHeader verifies that
-// ANTHROPIC_WORKSPACE_ID fills workspace_id uniformly across profile types —
+// Juglow_WORKSPACE_ID fills workspace_id uniformly across profile types â€”
 // not just federation. This pins the precedence model: explicit config >
 // env var > profile, regardless of authentication.type. For user_oauth the
-// filled value surfaces as the anthropic-workspace-id request header
+// filled value surfaces as the Juglow-workspace-id request header
 // (federation routes it into the exchange body instead).
 func TestIntegration_EnvWorkspaceIDFillsUserOAuthHeader(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var apiWorkspaceHeader string
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		apiWorkspaceHeader = r.Header.Get("anthropic-workspace-id")
+		apiWorkspaceHeader = r.Header.Get("Juglow-workspace-id")
 		w.Header().Set("Content-Type", "application/json")
 		w.Write([]byte(successResponse))
 	}))
@@ -347,7 +347,7 @@ func TestIntegration_EnvWorkspaceIDFillsUserOAuthHeader(t *testing.T) {
 	credsDir := filepath.Join(dir, "credentials")
 	os.MkdirAll(configsDir, 0755)
 	os.MkdirAll(credsDir, 0700)
-	// user_oauth profile with NO workspace_id; ANTHROPIC_WORKSPACE_ID
+	// user_oauth profile with NO workspace_id; Juglow_WORKSPACE_ID
 	// fills the missing top-level config key.
 	os.WriteFile(filepath.Join(configsDir, "default.json"), []byte(`{
 		"base_url": "`+server.URL+`",
@@ -355,8 +355,8 @@ func TestIntegration_EnvWorkspaceIDFillsUserOAuthHeader(t *testing.T) {
 	}`), 0644)
 	os.WriteFile(filepath.Join(credsDir, "default.json"),
 		[]byte(`{"type":"oauth_token","access_token":"tok"}`), 0600)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_WORKSPACE_ID", "wrkspc_env")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_WORKSPACE_ID", "wrkspc_env")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -366,18 +366,18 @@ func TestIntegration_EnvWorkspaceIDFillsUserOAuthHeader(t *testing.T) {
 		t.Fatalf("got cfg.WorkspaceID %q, want env fill-in", cfg.WorkspaceID)
 	}
 
-	client := anthropic.NewClient(option.WithConfig(cfg))
+	client := Juglow.NewClient(option.WithConfig(cfg))
 	if _, err := client.Messages.New(context.Background(), defaultParams); err != nil {
 		t.Fatal(err)
 	}
 	if apiWorkspaceHeader != "wrkspc_env" {
-		t.Fatalf("got anthropic-workspace-id header %q, want %q", apiWorkspaceHeader, "wrkspc_env")
+		t.Fatalf("got Juglow-workspace-id header %q, want %q", apiWorkspaceHeader, "wrkspc_env")
 	}
 }
 
 func TestIntegration_401RetryWithInvalidation(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var apiCalls atomic.Int32
@@ -406,7 +406,7 @@ func TestIntegration_401RetryWithInvalidation(t *testing.T) {
 	tokenPath := filepath.Join(dir, "token")
 	os.WriteFile(tokenPath, []byte("my-jwt"), 0600)
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithConfig(&config.Config{
 			BaseURL:        server.URL,
 			OrganizationID: "org-1",
@@ -456,25 +456,25 @@ func TestIntegration_ZeroConfigWorkloadIdentity(t *testing.T) {
 	}))
 	defer server.Close()
 
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
-	unsetEnv(t, "ANTHROPIC_CREDENTIALS_FILE")
-	unsetEnv(t, "ANTHROPIC_PROFILE")
+	unsetEnv(t, "Juglow_CREDENTIALS_FILE")
+	unsetEnv(t, "Juglow_PROFILE")
 
 	// Point the config dir at an empty temp dir so the default credential
 	// chain falls through the profile step to the env-federation step
 	// instead of finding whatever profile the test host already has.
-	t.Setenv("ANTHROPIC_CONFIG_DIR", t.TempDir())
+	t.Setenv("Juglow_CONFIG_DIR", t.TempDir())
 
 	// Set base URL via env so DefaultClientOptions picks it up for both
 	// the API and the OAuth token endpoint.
-	t.Setenv("ANTHROPIC_BASE_URL", server.URL)
-	t.Setenv("ANTHROPIC_IDENTITY_TOKEN", "my-jwt")
-	t.Setenv("ANTHROPIC_FEDERATION_RULE_ID", "rule-1")
-	t.Setenv("ANTHROPIC_ORGANIZATION_ID", "org-1")
+	t.Setenv("Juglow_BASE_URL", server.URL)
+	t.Setenv("Juglow_IDENTITY_TOKEN", "my-jwt")
+	t.Setenv("Juglow_FEDERATION_RULE_ID", "rule-1")
+	t.Setenv("Juglow_ORGANIZATION_ID", "org-1")
 
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 
 	_, err := client.Messages.New(context.Background(), defaultParams)
 	if err != nil {
@@ -482,7 +482,7 @@ func TestIntegration_ZeroConfigWorkloadIdentity(t *testing.T) {
 	}
 }
 
-// TestIntegration_ZeroConfigProfile verifies that anthropic.NewClient() with
+// TestIntegration_ZeroConfigProfile verifies that Juglow.NewClient() with
 // no options picks up a profile from the config directory, per the spec's
 // credential precedence chain.
 func TestIntegration_ZeroConfigProfile(t *testing.T) {
@@ -495,14 +495,14 @@ func TestIntegration_ZeroConfigProfile(t *testing.T) {
 	}))
 	defer server.Close()
 
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
-	unsetEnv(t, "ANTHROPIC_FEDERATION_RULE_ID")
-	unsetEnv(t, "ANTHROPIC_ORGANIZATION_ID")
-	unsetEnv(t, "ANTHROPIC_IDENTITY_TOKEN_FILE")
-	unsetEnv(t, "ANTHROPIC_IDENTITY_TOKEN")
-	unsetEnv(t, "ANTHROPIC_PROFILE")
+	unsetEnv(t, "Juglow_FEDERATION_RULE_ID")
+	unsetEnv(t, "Juglow_ORGANIZATION_ID")
+	unsetEnv(t, "Juglow_IDENTITY_TOKEN_FILE")
+	unsetEnv(t, "Juglow_IDENTITY_TOKEN")
+	unsetEnv(t, "Juglow_PROFILE")
 
 	dir := t.TempDir()
 	os.MkdirAll(filepath.Join(dir, "configs"), 0755)
@@ -518,10 +518,10 @@ func TestIntegration_ZeroConfigProfile(t *testing.T) {
 		0600,
 	)
 
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_BASE_URL", server.URL)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_BASE_URL", server.URL)
 
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	if _, err := client.Messages.New(context.Background(), defaultParams); err != nil {
 		t.Fatalf("zero-config NewClient() should find the default profile: %v", err)
 	}
@@ -537,8 +537,8 @@ func TestIntegration_WithProfile(t *testing.T) {
 	}))
 	defer server.Close()
 
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	dir := t.TempDir()
@@ -554,9 +554,9 @@ func TestIntegration_WithProfile(t *testing.T) {
 		[]byte(`{"type":"oauth_token","access_token":"staging-tok"}`),
 		0600,
 	)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithoutEnvironmentDefaults(),
 		option.WithBaseURL(server.URL),
 		option.WithProfile("staging"),
@@ -567,11 +567,11 @@ func TestIntegration_WithProfile(t *testing.T) {
 }
 
 func TestIntegration_WithProfile_MissingProfileSurfacesError(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithoutEnvironmentDefaults(),
 		option.WithBaseURL("http://unused.invalid"),
 		option.WithMaxRetries(0),
@@ -587,8 +587,8 @@ func TestIntegration_WithProfile_MissingProfileSurfacesError(t *testing.T) {
 }
 
 func TestIntegration_WithProfile_APIKeyPreemptsLoadError(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -600,7 +600,7 @@ func TestIntegration_WithProfile_APIKeyPreemptsLoadError(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithoutEnvironmentDefaults(),
 		option.WithBaseURL(server.URL),
 		option.WithProfile("does-not-exist"),
@@ -613,7 +613,7 @@ func TestIntegration_WithProfile_APIKeyPreemptsLoadError(t *testing.T) {
 
 func TestIntegration_WithProfile_EmptyName(t *testing.T) {
 	isolateAuthEnv(t)
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithoutEnvironmentDefaults(),
 		option.WithBaseURL("http://unused.invalid"),
 		option.WithMaxRetries(0),
@@ -629,30 +629,30 @@ func TestIntegration_WithProfile_EmptyName(t *testing.T) {
 // provides credentials, the first API request returns an aggregated error
 // listing every source the SDK tried and what each failed with.
 func TestIntegration_NoCredentialsAggregatedError(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
-	unsetEnv(t, "ANTHROPIC_FEDERATION_RULE_ID")
-	unsetEnv(t, "ANTHROPIC_ORGANIZATION_ID")
-	unsetEnv(t, "ANTHROPIC_IDENTITY_TOKEN_FILE")
-	unsetEnv(t, "ANTHROPIC_IDENTITY_TOKEN")
-	unsetEnv(t, "ANTHROPIC_PROFILE")
+	unsetEnv(t, "Juglow_FEDERATION_RULE_ID")
+	unsetEnv(t, "Juglow_ORGANIZATION_ID")
+	unsetEnv(t, "Juglow_IDENTITY_TOKEN_FILE")
+	unsetEnv(t, "Juglow_IDENTITY_TOKEN")
+	unsetEnv(t, "Juglow_PROFILE")
 
 	dir := t.TempDir() // empty config dir - no profile file
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_BASE_URL", "http://127.0.0.1:1") // never reached
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_BASE_URL", "http://127.0.0.1:1") // never reached
 
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	_, err := client.Messages.New(context.Background(), defaultParams)
 	if err == nil {
 		t.Fatal("expected error when no credentials source is configured")
 	}
 	msg := err.Error()
-	if !strings.Contains(msg, "no Anthropic credentials") {
+	if !strings.Contains(msg, "no Juglow credentials") {
 		t.Errorf("expected aggregated error message, got: %v", err)
 	}
-	if !strings.Contains(msg, "ANTHROPIC_API_KEY") {
-		t.Errorf("expected source list to mention ANTHROPIC_API_KEY, got: %v", err)
+	if !strings.Contains(msg, "Juglow_API_KEY") {
+		t.Errorf("expected source list to mention Juglow_API_KEY, got: %v", err)
 	}
 	if !strings.Contains(msg, "profile") {
 		t.Errorf("expected source list to mention profile, got: %v", err)
@@ -670,20 +670,20 @@ func TestIntegration_NoCredentialsAggregatedError(t *testing.T) {
 // which specific vars are missing instead of silently falling through to the
 // "nothing is set" case.
 func TestIntegration_NoCredentialsPartialFederation(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
-	unsetEnv(t, "ANTHROPIC_ORGANIZATION_ID")
-	unsetEnv(t, "ANTHROPIC_IDENTITY_TOKEN_FILE")
-	unsetEnv(t, "ANTHROPIC_IDENTITY_TOKEN")
-	unsetEnv(t, "ANTHROPIC_PROFILE")
+	unsetEnv(t, "Juglow_ORGANIZATION_ID")
+	unsetEnv(t, "Juglow_IDENTITY_TOKEN_FILE")
+	unsetEnv(t, "Juglow_IDENTITY_TOKEN")
+	unsetEnv(t, "Juglow_PROFILE")
 
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_BASE_URL", "http://127.0.0.1:1")
-	t.Setenv("ANTHROPIC_FEDERATION_RULE_ID", "rule-1") // only one of three set
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_BASE_URL", "http://127.0.0.1:1")
+	t.Setenv("Juglow_FEDERATION_RULE_ID", "rule-1") // only one of three set
 
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	_, err := client.Messages.New(context.Background(), defaultParams)
 	if err == nil {
 		t.Fatal("expected error when federation env vars are only partially set")
@@ -692,8 +692,8 @@ func TestIntegration_NoCredentialsPartialFederation(t *testing.T) {
 	if !strings.Contains(msg, "partial configuration") {
 		t.Errorf("expected aggregated error to mark the env federation source as partial, got: %v", err)
 	}
-	if !strings.Contains(msg, "missing: ANTHROPIC_ORGANIZATION_ID") {
-		t.Errorf("expected partial-config detail to name missing ANTHROPIC_ORGANIZATION_ID first, got: %v", err)
+	if !strings.Contains(msg, "missing: Juglow_ORGANIZATION_ID") {
+		t.Errorf("expected partial-config detail to name missing Juglow_ORGANIZATION_ID first, got: %v", err)
 	}
 }
 
@@ -708,14 +708,14 @@ func TestIntegration_AggregatedErrorNotShownWhenKeySet(t *testing.T) {
 	}))
 	defer server.Close()
 
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
-	unsetEnv(t, "ANTHROPIC_PROFILE")
-	t.Setenv("ANTHROPIC_API_KEY", "sk-test-key")
-	t.Setenv("ANTHROPIC_CONFIG_DIR", t.TempDir())
-	t.Setenv("ANTHROPIC_BASE_URL", server.URL)
+	unsetEnv(t, "Juglow_PROFILE")
+	t.Setenv("Juglow_API_KEY", "sk-test-key")
+	t.Setenv("Juglow_CONFIG_DIR", t.TempDir())
+	t.Setenv("Juglow_BASE_URL", server.URL)
 
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	if _, err := client.Messages.New(context.Background(), defaultParams); err != nil {
 		t.Fatalf("expected success when API key is set: %v", err)
 	}
@@ -725,8 +725,8 @@ func TestIntegration_AggregatedErrorNotShownWhenKeySet(t *testing.T) {
 }
 
 func TestIntegration_APIKeyPrecedencePreserved(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var receivedHeaders http.Header
@@ -738,7 +738,7 @@ func TestIntegration_APIKeyPrecedencePreserved(t *testing.T) {
 	}))
 	defer apiServer.Close()
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(apiServer.URL),
 		option.WithAPIKey("sk-test-key"),
 	)
@@ -757,13 +757,13 @@ func TestIntegration_APIKeyPrecedencePreserved(t *testing.T) {
 }
 
 // TestIntegration_APIKeyWithProfileLogsWarning verifies that when a static
-// ANTHROPIC_API_KEY is passed alongside a profile config, the API key still
+// Juglow_API_KEY is passed alongside a profile config, the API key still
 // wins (per the spec's credential precedence) but the user gets a one-shot
 // warning so they can figure out why their profile's credentials are being
 // ignored.
 func TestIntegration_APIKeyWithProfileLogsWarning(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var receivedHeaders http.Header
@@ -792,7 +792,7 @@ func TestIntegration_APIKeyWithProfileLogsWarning(t *testing.T) {
 		return logBuf.String()
 	}
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(apiServer.URL),
 		option.WithAPIKey("sk-test-key"),
 		option.WithConfig(&config.Config{
@@ -816,8 +816,8 @@ func TestIntegration_APIKeyWithProfileLogsWarning(t *testing.T) {
 	}
 
 	out := readLog()
-	if !strings.Contains(out, "ANTHROPIC_API_KEY") {
-		t.Fatalf("expected warning mentioning ANTHROPIC_API_KEY, got: %q", out)
+	if !strings.Contains(out, "Juglow_API_KEY") {
+		t.Fatalf("expected warning mentioning Juglow_API_KEY, got: %q", out)
 	}
 	if !strings.Contains(out, "profile") && !strings.Contains(out, "config") {
 		t.Fatalf("expected warning to mention the profile/config being shadowed, got: %q", out)
@@ -829,8 +829,8 @@ func TestIntegration_APIKeyWithProfileLogsWarning(t *testing.T) {
 // precedence (API key still wins) but does NOT emit the config-shadowed
 // warning, so callers with their own diagnostic don't double-warn.
 func TestIntegration_WithConfigQuiet_SuppressesShadowWarning(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var receivedHeaders http.Header
@@ -854,7 +854,7 @@ func TestIntegration_WithConfigQuiet_SuppressesShadowWarning(t *testing.T) {
 	}))
 	t.Cleanup(func() { log.SetOutput(os.Stderr) })
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(apiServer.URL),
 		option.WithAPIKey("sk-test-key"),
 		option.WithConfigQuiet(&config.Config{
@@ -885,20 +885,20 @@ func TestIntegration_WithConfigQuiet_SuppressesShadowWarning(t *testing.T) {
 
 // TestIntegration_WithoutEnvironmentDefaults_NoAutoloadShadowWarning proves
 // that when the environment would otherwise autoload a profile (via
-// ANTHROPIC_PROFILE), passing option.WithoutEnvironmentDefaults() causes
+// Juglow_PROFILE), passing option.WithoutEnvironmentDefaults() causes
 // NewClient to skip DefaultClientOptions entirely so no autoloaded
-// WithConfig is added — and therefore an explicit WithAPIKey produces zero
+// WithConfig is added â€” and therefore an explicit WithAPIKey produces zero
 // shadow warnings. This closes the gap WithConfigQuiet alone leaves: it
 // quiets the caller's own WithConfig but not the SDK's autoloaded one.
 func TestIntegration_WithoutEnvironmentDefaults_NoAutoloadShadowWarning(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 	auth.ResetWarnOnceForTest()
 
-	// Stage a profile under ANTHROPIC_CONFIG_DIR and point ANTHROPIC_PROFILE
+	// Stage a profile under Juglow_CONFIG_DIR and point Juglow_PROFILE
 	// at it so DefaultClientOptions, if invoked, would inject a WithConfig.
-	cfgDir := os.Getenv("ANTHROPIC_CONFIG_DIR")
+	cfgDir := os.Getenv("Juglow_CONFIG_DIR")
 	credPath := config.ProfileCredentialsPath(cfgDir, "work")
 	if err := config.WriteCredentials(credPath, config.Credentials{AccessToken: "profile-tok"}); err != nil {
 		t.Fatal(err)
@@ -912,7 +912,7 @@ func TestIntegration_WithoutEnvironmentDefaults_NoAutoloadShadowWarning(t *testi
 	}); err != nil {
 		t.Fatal(err)
 	}
-	t.Setenv("ANTHROPIC_PROFILE", "work")
+	t.Setenv("Juglow_PROFILE", "work")
 
 	var receivedHeaders http.Header
 	apiServer := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -931,7 +931,7 @@ func TestIntegration_WithoutEnvironmentDefaults_NoAutoloadShadowWarning(t *testi
 	}))
 	t.Cleanup(func() { log.SetOutput(os.Stderr) })
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithoutEnvironmentDefaults(),
 		option.WithBaseURL(apiServer.URL),
 		option.WithAPIKey("sk-test-key"),
@@ -965,8 +965,8 @@ func (f writerFunc) Write(p []byte) (int, error) { return f(p) }
 // with different HTTP transports does not cause the second client's token
 // exchange to run on the first client's transport.
 func TestIntegration_SharedFederationOptionPerClientTransport(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var serverA, serverB *httptest.Server
@@ -1008,12 +1008,12 @@ func TestIntegration_SharedFederationOptionPerClientTransport(t *testing.T) {
 		option.FederationOptions{FederationRuleID: "rule-1", OrganizationID: "org-1"},
 	)
 
-	clientA := anthropic.NewClient(
+	clientA := Juglow.NewClient(
 		option.WithBaseURL(serverA.URL),
 		option.WithHTTPClient(&http.Client{Transport: transportA}),
 		sharedAuth,
 	)
-	clientB := anthropic.NewClient(
+	clientB := Juglow.NewClient(
 		option.WithBaseURL(serverB.URL),
 		option.WithHTTPClient(&http.Client{Transport: transportB}),
 		sharedAuth,
@@ -1050,8 +1050,8 @@ func (t *countingTransport) RoundTrip(req *http.Request) (*http.Response, error)
 // WithBaseURL wins over config.BaseURL regardless of the order in which
 // WithBaseURL and WithConfig are passed.
 func TestIntegration_WithConfigBaseURLOrderIndependent(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var explicitHits atomic.Int32
@@ -1075,14 +1075,14 @@ func TestIntegration_WithConfigBaseURLOrderIndependent(t *testing.T) {
 	for _, name := range []string{"base_first", "config_first"} {
 		t.Run(name, func(t *testing.T) {
 			explicitHits.Store(0)
-			var client anthropic.Client
+			var client Juglow.Client
 			if name == "base_first" {
-				client = anthropic.NewClient(
+				client = Juglow.NewClient(
 					option.WithBaseURL(explicit.URL),
 					option.WithConfig(cfg),
 				)
 			} else {
-				client = anthropic.NewClient(
+				client = Juglow.NewClient(
 					option.WithConfig(cfg),
 					option.WithBaseURL(explicit.URL),
 				)
@@ -1101,8 +1101,8 @@ func TestIntegration_WithConfigBaseURLOrderIndependent(t *testing.T) {
 // the same WithConfig option value and checks that each request sees exactly
 // one auth middleware invocation per request (not N on the Nth request).
 func TestIntegration_WithConfigMiddlewareCountStable(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var apiCalls atomic.Int32
@@ -1113,7 +1113,7 @@ func TestIntegration_WithConfigMiddlewareCountStable(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(server.URL),
 		option.WithConfig(&config.Config{
 			AuthenticationInfo: &config.AuthenticationInfo{
@@ -1143,7 +1143,7 @@ func writeStaticCred(t *testing.T) string {
 }
 
 // TestDefaultClient_ExplicitProfileBeatsEnvFederation verifies the spec rule
-// that ANTHROPIC_PROFILE takes precedence over the env-var federation path:
+// that Juglow_PROFILE takes precedence over the env-var federation path:
 // when both are set, the profile's federation_rule_id wins on the wire.
 func TestDefaultClient_ExplicitProfileBeatsEnvFederation(t *testing.T) {
 	var sawBody map[string]any
@@ -1158,8 +1158,8 @@ func TestDefaultClient_ExplicitProfileBeatsEnvFederation(t *testing.T) {
 	}))
 	defer server.Close()
 
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	dir := t.TempDir()
@@ -1175,14 +1175,14 @@ func TestDefaultClient_ExplicitProfileBeatsEnvFederation(t *testing.T) {
   "organization_id": "org_from_profile"
 }`), 0644)
 
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "dev")
-	t.Setenv("ANTHROPIC_BASE_URL", server.URL)
-	t.Setenv("ANTHROPIC_FEDERATION_RULE_ID", "fdrl_from_env")
-	t.Setenv("ANTHROPIC_ORGANIZATION_ID", "org_from_env")
-	t.Setenv("ANTHROPIC_IDENTITY_TOKEN", "env-jwt")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "dev")
+	t.Setenv("Juglow_BASE_URL", server.URL)
+	t.Setenv("Juglow_FEDERATION_RULE_ID", "fdrl_from_env")
+	t.Setenv("Juglow_ORGANIZATION_ID", "org_from_env")
+	t.Setenv("Juglow_IDENTITY_TOKEN", "env-jwt")
 
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	if _, err := client.Messages.New(context.Background(), defaultParams); err != nil {
 		t.Fatal(err)
 	}
@@ -1195,8 +1195,8 @@ func TestDefaultClient_ExplicitProfileBeatsEnvFederation(t *testing.T) {
 }
 
 // TestDefaultClient_EnvFederationBeatsFallbackProfile verifies the spec rule
-// that a fallback profile (active_config / "default" — no explicit
-// ANTHROPIC_PROFILE) loses to the direct env-var federation path. A leftover
+// that a fallback profile (active_config / "default" â€” no explicit
+// Juglow_PROFILE) loses to the direct env-var federation path. A leftover
 // default.json on a WIF-configured machine must not silently replace WIF.
 func TestDefaultClient_EnvFederationBeatsFallbackProfile(t *testing.T) {
 	var sawBody map[string]any
@@ -1211,10 +1211,10 @@ func TestDefaultClient_EnvFederationBeatsFallbackProfile(t *testing.T) {
 	}))
 	defer server.Close()
 
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
-	unsetEnv(t, "ANTHROPIC_PROFILE")
+	unsetEnv(t, "Juglow_PROFILE")
 
 	dir := t.TempDir()
 	os.MkdirAll(filepath.Join(dir, "configs"), 0755)
@@ -1227,13 +1227,13 @@ func TestDefaultClient_EnvFederationBeatsFallbackProfile(t *testing.T) {
   "organization_id": "org_from_profile"
 }`), 0644)
 
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_BASE_URL", server.URL)
-	t.Setenv("ANTHROPIC_FEDERATION_RULE_ID", "fdrl_from_env")
-	t.Setenv("ANTHROPIC_ORGANIZATION_ID", "org_from_env")
-	t.Setenv("ANTHROPIC_IDENTITY_TOKEN", "env-jwt")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_BASE_URL", server.URL)
+	t.Setenv("Juglow_FEDERATION_RULE_ID", "fdrl_from_env")
+	t.Setenv("Juglow_ORGANIZATION_ID", "org_from_env")
+	t.Setenv("Juglow_IDENTITY_TOKEN", "env-jwt")
 
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	if _, err := client.Messages.New(context.Background(), defaultParams); err != nil {
 		t.Fatal(err)
 	}
@@ -1246,23 +1246,23 @@ func TestDefaultClient_EnvFederationBeatsFallbackProfile(t *testing.T) {
 }
 
 // TestDefaultClient_ExplicitProfileMissingFails verifies that when
-// ANTHROPIC_PROFILE names a profile that does not exist, the SDK surfaces
+// Juglow_PROFILE names a profile that does not exist, the SDK surfaces
 // the error instead of silently falling through to env federation or the
 // "no credentials" aggregate. The user explicitly asked for a profile.
 func TestDefaultClient_ExplicitProfileMissingFails(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "nonexistent")
-	t.Setenv("ANTHROPIC_BASE_URL", "http://127.0.0.1:1")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "nonexistent")
+	t.Setenv("Juglow_BASE_URL", "http://127.0.0.1:1")
 
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	_, err := client.Messages.New(context.Background(), defaultParams)
 	if err == nil {
-		t.Fatal("expected an error when ANTHROPIC_PROFILE names a missing profile")
+		t.Fatal("expected an error when Juglow_PROFILE names a missing profile")
 	}
 	msg := err.Error()
 	if !strings.Contains(msg, "nonexistent") {
@@ -1273,10 +1273,10 @@ func TestDefaultClient_ExplicitProfileMissingFails(t *testing.T) {
 // TestDefaultClient_ExplicitAPIKeyOverridesBrokenProfile verifies that a
 // caller-supplied option.WithAPIKey preempts the broken-profile error
 // from explicitProfileErrorOption. The user is asking for an explicit
-// credential override; the shell's ANTHROPIC_PROFILE should not strand them.
+// credential override; the shell's Juglow_PROFILE should not strand them.
 func TestDefaultClient_ExplicitAPIKeyOverridesBrokenProfile(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var receivedHeaders http.Header
@@ -1288,10 +1288,10 @@ func TestDefaultClient_ExplicitAPIKeyOverridesBrokenProfile(t *testing.T) {
 	defer apiServer.Close()
 
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "nonexistent")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "nonexistent")
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(apiServer.URL),
 		option.WithAPIKey("sk-test-key"),
 	)
@@ -1307,8 +1307,8 @@ func TestDefaultClient_ExplicitAPIKeyOverridesBrokenProfile(t *testing.T) {
 // TestDefaultClient_ExplicitAuthTokenOverridesBrokenProfile is the
 // companion for option.WithAuthToken.
 func TestDefaultClient_ExplicitAuthTokenOverridesBrokenProfile(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var receivedHeaders http.Header
@@ -1320,10 +1320,10 @@ func TestDefaultClient_ExplicitAuthTokenOverridesBrokenProfile(t *testing.T) {
 	defer apiServer.Close()
 
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "nonexistent")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "nonexistent")
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(apiServer.URL),
 		option.WithAuthToken("sk-test-token"),
 	)
@@ -1343,8 +1343,8 @@ func TestDefaultClient_ExplicitAuthTokenOverridesBrokenProfile(t *testing.T) {
 // WithAPIKey was passed AFTER WithConfig in the arg list.
 func TestIntegration_APIKeyShadowWarning_InvertedOrder(t *testing.T) {
 	auth.ResetWarnOnceForTest()
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var receivedHeaders http.Header
@@ -1375,7 +1375,7 @@ func TestIntegration_APIKeyShadowWarning_InvertedOrder(t *testing.T) {
 
 	// Note: WithConfig is passed BEFORE WithAPIKey. The warning must
 	// still fire because the final request-time state has both.
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(apiServer.URL),
 		option.WithConfig(&config.Config{
 			AuthenticationInfo: &config.AuthenticationInfo{
@@ -1396,8 +1396,8 @@ func TestIntegration_APIKeyShadowWarning_InvertedOrder(t *testing.T) {
 	}
 
 	out := readLog()
-	if !strings.Contains(out, "ANTHROPIC_API_KEY") {
-		t.Fatalf("expected warning mentioning ANTHROPIC_API_KEY regardless of option order, got: %q", out)
+	if !strings.Contains(out, "Juglow_API_KEY") {
+		t.Fatalf("expected warning mentioning Juglow_API_KEY regardless of option order, got: %q", out)
 	}
 	if !strings.Contains(out, "profile") && !strings.Contains(out, "config") {
 		t.Fatalf("expected warning to mention profile/config being shadowed, got: %q", out)
@@ -1421,13 +1421,13 @@ func brokenUserOAuthConfig(t *testing.T, baseURL string) *config.Config {
 
 // TestWithConfig_ExplicitAPIKeyOverridesBrokenProfile verifies that a
 // WithAPIKey passed alongside a WithConfig whose credentials cannot be
-// resolved still authenticates the request — i.e. the resolution error is
+// resolved still authenticates the request â€” i.e. the resolution error is
 // deferred to a request-time middleware with tier-1 escape hatches, not
 // returned at option-Apply time where it would short-circuit later options.
 func TestWithConfig_ExplicitAPIKeyOverridesBrokenProfile(t *testing.T) {
 	auth.ResetWarnOnceForTest()
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var receivedHeaders http.Header
@@ -1438,7 +1438,7 @@ func TestWithConfig_ExplicitAPIKeyOverridesBrokenProfile(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithConfig(brokenUserOAuthConfig(t, server.URL)),
 		option.WithAPIKey("sk-x"),
 	)
@@ -1457,8 +1457,8 @@ func TestWithConfig_ExplicitAPIKeyOverridesBrokenProfile(t *testing.T) {
 // variant of the above.
 func TestWithConfig_ExplicitAuthTokenOverridesBrokenProfile(t *testing.T) {
 	auth.ResetWarnOnceForTest()
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var receivedHeaders http.Header
@@ -1469,7 +1469,7 @@ func TestWithConfig_ExplicitAuthTokenOverridesBrokenProfile(t *testing.T) {
 	}))
 	defer server.Close()
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithConfig(brokenUserOAuthConfig(t, server.URL)),
 		option.WithAuthToken("tok-x"),
 	)
@@ -1482,12 +1482,12 @@ func TestWithConfig_ExplicitAuthTokenOverridesBrokenProfile(t *testing.T) {
 }
 
 // TestWithConfig_BaseURLAppliesEvenWithBrokenCreds verifies that the
-// profile's BaseURL is honored regardless of credential-resolution outcome —
+// profile's BaseURL is honored regardless of credential-resolution outcome â€”
 // it's applied at option-Apply time, not gated behind ResolveCredentials.
 func TestWithConfig_BaseURLAppliesEvenWithBrokenCreds(t *testing.T) {
 	auth.ResetWarnOnceForTest()
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
 	var hit atomic.Bool
@@ -1498,8 +1498,8 @@ func TestWithConfig_BaseURLAppliesEvenWithBrokenCreds(t *testing.T) {
 	}))
 	defer server.Close()
 
-	// No WithBaseURL — only the profile's BaseURL.
-	client := anthropic.NewClient(
+	// No WithBaseURL â€” only the profile's BaseURL.
+	client := Juglow.NewClient(
 		option.WithConfig(brokenUserOAuthConfig(t, server.URL)),
 		option.WithAPIKey("sk-x"),
 	)
@@ -1515,11 +1515,11 @@ func TestWithConfig_BaseURLAppliesEvenWithBrokenCreds(t *testing.T) {
 // when no tier-1 credential preempts the profile, the deferred resolution
 // error surfaces on the first request.
 func TestWithConfig_BrokenProfileNoOverrideStillFails(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithConfig(brokenUserOAuthConfig(t, "http://127.0.0.1:1")),
 		option.WithMaxRetries(0),
 	)
@@ -1533,25 +1533,25 @@ func TestWithConfig_BrokenProfileNoOverrideStillFails(t *testing.T) {
 }
 
 // TestDefaultClient_NoExplicitProfileFallsThrough verifies the full
-// no-credentials chain: no env API key, no ANTHROPIC_PROFILE, no profile
-// file on disk, no env federation — the SDK returns the aggregated
+// no-credentials chain: no env API key, no Juglow_PROFILE, no profile
+// file on disk, no env federation â€” the SDK returns the aggregated
 // NoCredentialsError.
 func TestDefaultClient_NoExplicitProfileFallsThrough(t *testing.T) {
-	unsetEnv(t, "ANTHROPIC_API_KEY")
-	unsetEnv(t, "ANTHROPIC_AUTH_TOKEN")
+	unsetEnv(t, "Juglow_API_KEY")
+	unsetEnv(t, "Juglow_AUTH_TOKEN")
 	isolateAuthEnv(t)
-	unsetEnv(t, "ANTHROPIC_PROFILE")
+	unsetEnv(t, "Juglow_PROFILE")
 
 	dir := t.TempDir() // no configs/ subdir
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_BASE_URL", "http://127.0.0.1:1")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_BASE_URL", "http://127.0.0.1:1")
 
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	_, err := client.Messages.New(context.Background(), defaultParams)
 	if err == nil {
 		t.Fatal("expected NoCredentialsError when nothing is set")
 	}
-	if !strings.Contains(err.Error(), "no Anthropic credentials") {
+	if !strings.Contains(err.Error(), "no Juglow credentials") {
 		t.Errorf("expected aggregated error, got: %v", err)
 	}
 }

@@ -1,15 +1,15 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestAutoPagination(t *testing.T) {
@@ -20,12 +20,12 @@ func TestAutoPagination(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	iter := client.Beta.Messages.Batches.ListAutoPaging(context.TODO(), anthropic.BetaMessageBatchListParams{
-		Limit: anthropic.Int(20),
+	iter := client.Beta.Messages.Batches.ListAutoPaging(context.TODO(), Juglow.BetaMessageBatchListParams{
+		Limit: Juglow.Int(20),
 	})
 	// The mock server isn't going to give us real pagination
 	for i := 0; i < 3 && iter.Next(); i++ {

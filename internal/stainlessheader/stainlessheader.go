@@ -1,5 +1,5 @@
-// Package stainlessheader is the single source of truth for the
-// x-stainless-helper telemetry header — the key, the closed set of tag
+﻿// Package stainlessheader is the single source of truth for the
+// x-stainless-helper telemetry header â€” the key, the closed set of tag
 // values shared across SDKs, and the append-don't-clobber request option.
 package stainlessheader
 
@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
 )
 
 // Header is the helper-telemetry header key. Always this lowercase form;
@@ -17,7 +17,7 @@ const Header = "x-stainless-helper"
 
 // Value is the closed set of helper-telemetry tags, shared verbatim across
 // SDKs. A typo at a call site is caught by the unused-const check rather than
-// silently mistagged. Existing values keep their original spellings — telemetry
+// silently mistagged. Existing values keep their original spellings â€” telemetry
 // consumers match on them, so renames lose history. New tags are hyphenated
 // lowercase; add them here (and to the matching set in every other SDK) before
 // using them.
@@ -33,7 +33,7 @@ const (
 )
 
 // With returns a request option (assignable to [option.RequestOption]) that
-// appends value to the x-stainless-helper header rather than replacing it —
+// appends value to the x-stainless-helper header rather than replacing it â€”
 // the backend logs the header as one opaque string, so a second header line or
 // a clobbered value loses data. Existing tags keep their position; the new tag
 // appends at the end; duplicates are dropped.

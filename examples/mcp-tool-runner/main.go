@@ -1,8 +1,8 @@
-// Example demonstrating MCPBetaTools with the GitHub hosted MCP server.
+﻿// Example demonstrating MCPBetaTools with the GitHub hosted MCP server.
 //
 // Prerequisites:
 //   - GITHUB_TOKEN: a GitHub Personal Access Token with repo read access
-//   - ANTHROPIC_API_KEY
+//   - Juglow_API_KEY
 package main
 
 import (
@@ -11,8 +11,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/mcp"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/mcp"
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
@@ -40,7 +40,7 @@ func main() {
 	ctx := context.Background()
 
 	// Connect to the GitHub hosted MCP server.
-	mcpClient := mcpsdk.NewClient(&mcpsdk.Implementation{Name: "anthropic-sdk-go-example", Version: "1.0.0"}, nil)
+	mcpClient := mcpsdk.NewClient(&mcpsdk.Implementation{Name: "Juglow-sdk-go-example", Version: "1.0.0"}, nil)
 	session, err := mcpClient.Connect(ctx, &mcpsdk.StreamableClientTransport{
 		Endpoint: githubMCPURL,
 		HTTPClient: &http.Client{
@@ -53,7 +53,7 @@ func main() {
 	}
 	defer session.Close()
 
-	// List tools and convert directly to BetaTools — no adapter code required.
+	// List tools and convert directly to BetaTools â€” no adapter code required.
 	toolsResult, err := session.ListTools(ctx, nil)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "failed to list tools: %v\n", err)
@@ -70,16 +70,16 @@ func main() {
 		os.Exit(1)
 	}
 
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	question := "List the 5 most recently opened issues in the github/github-mcp-server repository. For each, include the issue number, title, and who opened it."
 	fmt.Printf("[user]: %s\n\n", question)
 
-	runner := client.Beta.Messages.NewToolRunner(betaTools, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet5,
+	runner := client.Beta.Messages.NewToolRunner(betaTools, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet5,
 			MaxTokens: 4096,
-			Messages: []anthropic.BetaMessageParam{
-				anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock(question)),
+			Messages: []Juglow.BetaMessageParam{
+				Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock(question)),
 			},
 		},
 		MaxIterations: 10,
@@ -92,7 +92,7 @@ func main() {
 	}
 
 	for _, block := range finalMessage.Content {
-		if tb, ok := block.AsAny().(anthropic.BetaTextBlock); ok {
+		if tb, ok := block.AsAny().(Juglow.BetaTextBlock); ok {
 			fmt.Println("[assistant]:", tb.Text)
 		}
 	}

@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -10,18 +10,18 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/paramutil"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/packages/ssestream"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/paramutil"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/packages/ssestream"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 // BetaMessageService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -48,15 +48,15 @@ func NewBetaMessageService(opts ...option.RequestOption) (r BetaMessageService) 
 // conversations.
 //
 // Learn more about the Messages API in our
-// [user guide](https://platform.claude.com/docs/en/get-started)
+// [user guide](https://platform.haijun.com/docs/en/get-started)
 //
 // Note: If you choose to set a timeout for this request, we recommend 10 minutes.
 func (r *BetaMessageService) New(ctx context.Context, params BetaMessageNewParams, opts ...option.RequestOption) (res *BetaMessage, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	if !param.IsOmitted(params.UserProfileID) {
-		opts = append(opts, option.WithHeader("anthropic-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
+		opts = append(opts, option.WithHeader("Juglow-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	warnIfThinkingEnabled(params.Model, params.Thinking.OfEnabled != nil)
@@ -89,7 +89,7 @@ func (r *BetaMessageService) New(ctx context.Context, params BetaMessageNewParam
 // conversations.
 //
 // Learn more about the Messages API in our
-// [user guide](https://platform.claude.com/docs/en/get-started)
+// [user guide](https://platform.haijun.com/docs/en/get-started)
 //
 // Note: If you choose to set a timeout for this request, we recommend 10 minutes.
 func (r *BetaMessageService) NewStreaming(ctx context.Context, params BetaMessageNewParams, opts ...option.RequestOption) (stream *ssestream.Stream[BetaRawMessageStreamEventUnion]) {
@@ -98,10 +98,10 @@ func (r *BetaMessageService) NewStreaming(ctx context.Context, params BetaMessag
 		err error
 	)
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	if !param.IsOmitted(params.UserProfileID) {
-		opts = append(opts, option.WithHeader("anthropic-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
+		opts = append(opts, option.WithHeader("Juglow-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	warnIfThinkingEnabled(params.Model, params.Thinking.OfEnabled != nil)
@@ -117,13 +117,13 @@ func (r *BetaMessageService) NewStreaming(ctx context.Context, params BetaMessag
 // including tools, images, and documents, without creating it.
 //
 // Learn more about token counting in our
-// [user guide](https://platform.claude.com/docs/en/build-with-claude/token-counting)
+// [user guide](https://platform.haijun.com/docs/en/build-with-haijun/token-counting)
 func (r *BetaMessageService) CountTokens(ctx context.Context, params BetaMessageCountTokensParams, opts ...option.RequestOption) (res *BetaMessageTokensCount, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	if !param.IsOmitted(params.UserProfileID) {
-		opts = append(opts, option.WithHeader("anthropic-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
+		opts = append(opts, option.WithHeader("Juglow-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/messages/count_tokens?beta=true"
@@ -143,7 +143,7 @@ type BetaAdvisorMessageIterationUsage struct {
 	InputTokens int64 `json:"input_tokens" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// The number of output tokens which were used.
@@ -257,7 +257,7 @@ func (r *BetaAdvisorResultBlockParam) UnmarshalJSON(data []byte) error {
 type BetaAdvisorTool20260301Param struct {
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// Bounds the advisor's total output (thinking + text) per call. When the advisor
@@ -936,7 +936,7 @@ type BetaCacheControlEphemeralParam struct {
 	// - `1h`: 1 hour
 	//
 	// Defaults to `5m`. See
-	// [prompt caching pricing](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
+	// [prompt caching pricing](https://platform.haijun.com/docs/en/build-with-haijun/prompt-caching)
 	// for details.
 	//
 	// Any of "5m", "1h".
@@ -961,7 +961,7 @@ func (r *BetaCacheControlEphemeralParam) UnmarshalJSON(data []byte) error {
 // - `1h`: 1 hour
 //
 // Defaults to `5m`. See
-// [prompt caching pricing](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
+// [prompt caching pricing](https://platform.haijun.com/docs/en/build-with-haijun/prompt-caching)
 // for details.
 type BetaCacheControlEphemeralTTL string
 
@@ -1500,11 +1500,11 @@ func (BetaCitationSearchResultLocation) implBetaCitationsDeltaCitationUnion()   
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaCitationsDeltaCitationUnion.AsAny().(type) {
-//	case anthropic.BetaCitationCharLocation:
-//	case anthropic.BetaCitationPageLocation:
-//	case anthropic.BetaCitationContentBlockLocation:
-//	case anthropic.BetaCitationsWebSearchResultLocation:
-//	case anthropic.BetaCitationSearchResultLocation:
+//	case Juglow.BetaCitationCharLocation:
+//	case Juglow.BetaCitationPageLocation:
+//	case Juglow.BetaCitationContentBlockLocation:
+//	case Juglow.BetaCitationsWebSearchResultLocation:
+//	case Juglow.BetaCitationSearchResultLocation:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -2390,13 +2390,13 @@ type BetaContainer struct {
 	ID string `json:"id" api:"required"`
 	// The time at which the container will expire.
 	ExpiresAt time.Time `json:"expires_at" api:"required" format:"date-time"`
-	// Skills loaded in the container
-	Skills []BetaSkill `json:"skills" api:"required"`
+	// tracks loaded in the container
+	tracks []BetaSkill `json:"tracks" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID          respjson.Field
 		ExpiresAt   respjson.Field
-		Skills      respjson.Field
+		tracks      respjson.Field
 		ExtraFields map[string]respjson.Field
 		raw         string
 	} `json:"-"`
@@ -2408,12 +2408,12 @@ func (r *BetaContainer) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Container parameters with skills to be loaded.
+// Container parameters with tracks to be loaded.
 type BetaContainerParams struct {
 	// Container id
 	ID param.Opt[string] `json:"id,omitzero"`
-	// List of skills to load in the container
-	Skills []BetaSkillParams `json:"skills,omitzero"`
+	// List of tracks to load in the container
+	tracks []BetaSkillParams `json:"tracks,omitzero"`
 	paramObj
 }
 
@@ -2578,23 +2578,23 @@ func (BetaFallbackBlock) implBetaContentBlockUnion()                          {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaContentBlockUnion.AsAny().(type) {
-//	case anthropic.BetaTextBlock:
-//	case anthropic.BetaThinkingBlock:
-//	case anthropic.BetaRedactedThinkingBlock:
-//	case anthropic.BetaToolUseBlock:
-//	case anthropic.BetaServerToolUseBlock:
-//	case anthropic.BetaWebSearchToolResultBlock:
-//	case anthropic.BetaWebFetchToolResultBlock:
-//	case anthropic.BetaAdvisorToolResultBlock:
-//	case anthropic.BetaCodeExecutionToolResultBlock:
-//	case anthropic.BetaBashCodeExecutionToolResultBlock:
-//	case anthropic.BetaTextEditorCodeExecutionToolResultBlock:
-//	case anthropic.BetaToolSearchToolResultBlock:
-//	case anthropic.BetaMCPToolUseBlock:
-//	case anthropic.BetaMCPToolResultBlock:
-//	case anthropic.BetaContainerUploadBlock:
-//	case anthropic.BetaCompactionBlock:
-//	case anthropic.BetaFallbackBlock:
+//	case Juglow.BetaTextBlock:
+//	case Juglow.BetaThinkingBlock:
+//	case Juglow.BetaRedactedThinkingBlock:
+//	case Juglow.BetaToolUseBlock:
+//	case Juglow.BetaServerToolUseBlock:
+//	case Juglow.BetaWebSearchToolResultBlock:
+//	case Juglow.BetaWebFetchToolResultBlock:
+//	case Juglow.BetaAdvisorToolResultBlock:
+//	case Juglow.BetaCodeExecutionToolResultBlock:
+//	case Juglow.BetaBashCodeExecutionToolResultBlock:
+//	case Juglow.BetaTextEditorCodeExecutionToolResultBlock:
+//	case Juglow.BetaToolSearchToolResultBlock:
+//	case Juglow.BetaMCPToolUseBlock:
+//	case Juglow.BetaMCPToolResultBlock:
+//	case Juglow.BetaContainerUploadBlock:
+//	case Juglow.BetaCompactionBlock:
+//	case Juglow.BetaFallbackBlock:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -3536,8 +3536,8 @@ type betaContentBlockParamUnionCitations struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *[]anthropic.BetaTextCitationParamUnion:
-//	case *anthropic.BetaCitationsConfigParam:
+//	case *[]Juglow.BetaTextCitationParamUnion:
+//	case *Juglow.BetaCitationsConfigParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -3576,14 +3576,14 @@ type betaContentBlockParamUnionSource struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaBase64ImageSourceParam:
-//	case *anthropic.BetaURLImageSourceParam:
-//	case *anthropic.BetaFileImageSourceParam:
-//	case *anthropic.BetaBase64PDFSourceParam:
-//	case *anthropic.BetaPlainTextSourceParam:
-//	case *anthropic.BetaContentBlockSourceParam:
-//	case *anthropic.BetaURLPDFSourceParam:
-//	case *anthropic.BetaFileDocumentSourceParam:
+//	case *Juglow.BetaBase64ImageSourceParam:
+//	case *Juglow.BetaURLImageSourceParam:
+//	case *Juglow.BetaFileImageSourceParam:
+//	case *Juglow.BetaBase64PDFSourceParam:
+//	case *Juglow.BetaPlainTextSourceParam:
+//	case *Juglow.BetaContentBlockSourceParam:
+//	case *Juglow.BetaURLPDFSourceParam:
+//	case *Juglow.BetaFileDocumentSourceParam:
 //	case *string:
 //	default:
 //	    fmt.Errorf("not present")
@@ -3707,27 +3707,27 @@ type betaContentBlockParamUnionContent struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *[]anthropic.BetaTextBlockParam:
-//	case *[]anthropic.BetaToolResultBlockParamContentUnion:
-//	case *[]anthropic.BetaWebSearchResultBlockParam:
-//	case *anthropic.BetaWebFetchToolResultErrorBlockParam:
-//	case *anthropic.BetaWebFetchBlockParam:
-//	case *anthropic.BetaAdvisorToolResultErrorParam:
-//	case *anthropic.BetaAdvisorResultBlockParam:
-//	case *anthropic.BetaAdvisorRedactedResultBlockParam:
-//	case *anthropic.BetaCodeExecutionToolResultErrorParam:
-//	case *anthropic.BetaCodeExecutionResultBlockParam:
-//	case *anthropic.BetaEncryptedCodeExecutionResultBlockParam:
-//	case *anthropic.BetaBashCodeExecutionToolResultErrorParam:
-//	case *anthropic.BetaBashCodeExecutionResultBlockParam:
-//	case *anthropic.BetaTextEditorCodeExecutionToolResultErrorParam:
-//	case *anthropic.BetaTextEditorCodeExecutionViewResultBlockParam:
-//	case *anthropic.BetaTextEditorCodeExecutionCreateResultBlockParam:
-//	case *anthropic.BetaTextEditorCodeExecutionStrReplaceResultBlockParam:
-//	case *anthropic.BetaToolSearchToolResultErrorParam:
-//	case *anthropic.BetaToolSearchToolSearchResultBlockParam:
+//	case *[]Juglow.BetaTextBlockParam:
+//	case *[]Juglow.BetaToolResultBlockParamContentUnion:
+//	case *[]Juglow.BetaWebSearchResultBlockParam:
+//	case *Juglow.BetaWebFetchToolResultErrorBlockParam:
+//	case *Juglow.BetaWebFetchBlockParam:
+//	case *Juglow.BetaAdvisorToolResultErrorParam:
+//	case *Juglow.BetaAdvisorResultBlockParam:
+//	case *Juglow.BetaAdvisorRedactedResultBlockParam:
+//	case *Juglow.BetaCodeExecutionToolResultErrorParam:
+//	case *Juglow.BetaCodeExecutionResultBlockParam:
+//	case *Juglow.BetaEncryptedCodeExecutionResultBlockParam:
+//	case *Juglow.BetaBashCodeExecutionToolResultErrorParam:
+//	case *Juglow.BetaBashCodeExecutionResultBlockParam:
+//	case *Juglow.BetaTextEditorCodeExecutionToolResultErrorParam:
+//	case *Juglow.BetaTextEditorCodeExecutionViewResultBlockParam:
+//	case *Juglow.BetaTextEditorCodeExecutionCreateResultBlockParam:
+//	case *Juglow.BetaTextEditorCodeExecutionStrReplaceResultBlockParam:
+//	case *Juglow.BetaToolSearchToolResultErrorParam:
+//	case *Juglow.BetaToolSearchToolSearchResultBlockParam:
 //	case *string:
-//	case *[]anthropic.BetaMidConversationSystemBlockParamContentUnion:
+//	case *[]Juglow.BetaMidConversationSystemBlockParamContentUnion:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -4001,9 +4001,9 @@ type betaContentBlockParamUnionContentContent struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaRequestDocumentBlockParam:
-//	case *[]anthropic.BetaCodeExecutionOutputBlockParam:
-//	case *[]anthropic.BetaBashCodeExecutionOutputBlockParam:
+//	case *Juglow.BetaRequestDocumentBlockParam:
+//	case *[]Juglow.BetaCodeExecutionOutputBlockParam:
+//	case *[]Juglow.BetaBashCodeExecutionOutputBlockParam:
 //	case *string:
 //	default:
 //	    fmt.Errorf("not present")
@@ -4045,9 +4045,9 @@ type betaContentBlockParamUnionCaller struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaDirectCallerParam:
-//	case *anthropic.BetaServerToolCallerParam:
-//	case *anthropic.BetaServerToolCaller20260120Param:
+//	case *Juglow.BetaDirectCallerParam:
+//	case *Juglow.BetaServerToolCallerParam:
+//	case *Juglow.BetaServerToolCaller20260120Param:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -4103,9 +4103,9 @@ type betaContentBlockParamUnionTool struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaToolChangeToolReferenceParam:
-//	case *anthropic.BetaToolChangeMCPToolReferenceParam:
-//	case *anthropic.BetaToolChangeMCPToolsetReferenceParam:
+//	case *Juglow.BetaToolChangeToolReferenceParam:
+//	case *Juglow.BetaToolChangeMCPToolReferenceParam:
+//	case *Juglow.BetaToolChangeMCPToolsetReferenceParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -4327,7 +4327,7 @@ type betaContextManagementConfigEditUnionParamKeep struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaToolUsesKeepParam:
+//	case *Juglow.BetaToolUsesKeepParam:
 //	case *string:
 //	default:
 //	    fmt.Errorf("not present")
@@ -4420,8 +4420,8 @@ func (BetaClearThinking20251015EditResponse) implBetaContextManagementResponseAp
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaContextManagementResponseAppliedEditUnion.AsAny().(type) {
-//	case anthropic.BetaClearToolUses20250919EditResponse:
-//	case anthropic.BetaClearThinking20251015EditResponse:
+//	case Juglow.BetaClearToolUses20250919EditResponse:
+//	case Juglow.BetaClearThinking20251015EditResponse:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -4474,7 +4474,7 @@ func (r *BetaCountTokensContextManagementResponse) UnmarshalJSON(data []byte) er
 type BetaDiagnostics struct {
 	// Explains why the prompt cache could not fully reuse the prefix from the request
 	// identified by `diagnostics.previous_message_id`. `null` means diagnosis is still
-	// pending — the response was serialized before the background comparison
+	// pending â€” the response was serialized before the background comparison
 	// completed.
 	CacheMissReason BetaDiagnosticsCacheMissReasonUnion `json:"cache_miss_reason" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4529,12 +4529,12 @@ func (BetaCacheMissUnavailable) implBetaDiagnosticsCacheMissReasonUnion()       
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaDiagnosticsCacheMissReasonUnion.AsAny().(type) {
-//	case anthropic.BetaCacheMissModelChanged:
-//	case anthropic.BetaCacheMissSystemChanged:
-//	case anthropic.BetaCacheMissToolsChanged:
-//	case anthropic.BetaCacheMissMessagesChanged:
-//	case anthropic.BetaCacheMissPreviousMessageNotFound:
-//	case anthropic.BetaCacheMissUnavailable:
+//	case Juglow.BetaCacheMissModelChanged:
+//	case Juglow.BetaCacheMissSystemChanged:
+//	case Juglow.BetaCacheMissToolsChanged:
+//	case Juglow.BetaCacheMissMessagesChanged:
+//	case Juglow.BetaCacheMissPreviousMessageNotFound:
+//	case Juglow.BetaCacheMissUnavailable:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -4717,8 +4717,8 @@ func (BetaPlainTextSource) implBetaDocumentBlockSourceUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaDocumentBlockSourceUnion.AsAny().(type) {
-//	case anthropic.BetaBase64PDFSource:
-//	case anthropic.BetaPlainTextSource:
+//	case Juglow.BetaBase64PDFSource:
+//	case Juglow.BetaPlainTextSource:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -4800,7 +4800,7 @@ func (r *BetaEncryptedCodeExecutionResultBlockParam) UnmarshalJSON(data []byte) 
 //
 // One block appears per hop where a preceding model actually ran this turn and
 // declined. A turn where no preceding model ran and declined has no such boundary
-// and carries no block — the signal for whether a fallback model served the
+// and carries no block â€” the signal for whether a fallback model served the
 // response is the presence of a `fallback_message` entry in `usage.iterations`,
 // not this block.
 //
@@ -4808,7 +4808,7 @@ func (r *BetaEncryptedCodeExecutionResultBlockParam) UnmarshalJSON(data []byte) 
 // via the standard `content_block_start` / `content_block_stop` pair and carries
 // no deltas.
 type BetaFallbackBlock struct {
-	// The model whose output ends at this point — the model that declined at this hop.
+	// The model whose output ends at this point â€” the model that declined at this hop.
 	// When the declining hop is the requested model, its `model` echoes the top-level
 	// `model` string the caller sent (alias or canonical); when the declining hop is a
 	// fallback model, its `model` is that model's canonical id.
@@ -4886,7 +4886,7 @@ type BetaFallbackCreditNotApplied struct {
 	Type   constant.NotApplied                `json:"type" default:"not_applied"`
 	// Request fields to remove before retrying, so the retry can redeem this token.
 	//
-	// Present exactly when `reason` is `variant_fields_present` — never null, never an
+	// Present exactly when `reason` is `variant_fields_present` â€” never null, never an
 	// empty array; absent otherwise. Fields are named only from your own request, and
 	// only after the sealed variant hash matched. A served best-effort retry has
 	// already been billed at normal price; nothing redeems retroactively, but a
@@ -4949,19 +4949,19 @@ func (r *BetaFallbackCreditRedeemed) UnmarshalJSON(data []byte) error {
 
 // Object form of `fallback_credit_token`: the token plus a redemption mode.
 //
-// Requires `anthropic-beta: fallback-credit-2026-07-01`; without that header the
+// Requires `Juglow-beta: fallback-credit-2026-07-01`; without that header the
 // field accepts the bare string only. The bare string and the mode-less object are
 // equivalent (both select `strict`), so wrapping an existing token changes nothing
 // by itself.
 //
 // The property Token is required.
 type BetaFallbackCreditTokenParam struct {
-	// The opaque `fallback_credit_token` from a prior refusal's `stop_details` — the
+	// The opaque `fallback_credit_token` from a prior refusal's `stop_details` â€” the
 	// same string the bare-string form carries.
 	Token string `json:"token" api:"required"`
 	// How a failing token affects the retry. `strict` (the default, and the
 	// bare-string behavior): a failing redemption is a 400 and the retry is not
-	// served. `best_effort`: the retry is served either way — a token-layer failure no
+	// served. `best_effort`: the retry is served either way â€” a token-layer failure no
 	// longer rejects the request; the retry proceeds at normal price and the outcome
 	// is reported on the response's `usage.fallback_credit`. Two failures stay hard in
 	// both modes: a malformed token, and combining `fallback_credit_token` with
@@ -4982,7 +4982,7 @@ func (r *BetaFallbackCreditTokenParam) UnmarshalJSON(data []byte) error {
 
 // How a failing token affects the retry. `strict` (the default, and the
 // bare-string behavior): a failing redemption is a 400 and the retry is not
-// served. `best_effort`: the retry is served either way — a token-layer failure no
+// served. `best_effort`: the retry is served either way â€” a token-layer failure no
 // longer rejects the request; the retry proceeds at normal price and the outcome
 // is reported on the response's `usage.fallback_credit`. Two failures stay hard in
 // both modes: a malformed token, and combining `fallback_credit_token` with
@@ -4999,7 +4999,7 @@ type BetaFallbackCreditUsage struct {
 	// Whether the fallback-credit reprice was applied to this response's billing.
 	//
 	// A union discriminated on `type`. `redeemed`: the retry is billed as if the
-	// conversation had been on the retry model all along — including when the
+	// conversation had been on the retry model all along â€” including when the
 	// resulting shift is zero because there was nothing to move. `not_applied`: no
 	// reprice was applied; the arm's `reason` says why.
 	Status BetaFallbackCreditUsageStatusUnion `json:"status" api:"required"`
@@ -5052,8 +5052,8 @@ func (BetaFallbackCreditNotApplied) implBetaFallbackCreditUsageStatusUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaFallbackCreditUsageStatusUnion.AsAny().(type) {
-//	case anthropic.BetaFallbackCreditRedeemed:
-//	case anthropic.BetaFallbackCreditNotApplied:
+//	case Juglow.BetaFallbackCreditRedeemed:
+//	case Juglow.BetaFallbackCreditNotApplied:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -5088,7 +5088,7 @@ func (r *BetaFallbackCreditUsageStatusUnion) UnmarshalJSON(data []byte) error {
 type BetaFallbackInfo struct {
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -5111,7 +5111,7 @@ func (r *BetaFallbackInfo) UnmarshalJSON(data []byte) error {
 type BetaFallbackInfoParam struct {
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	paramObj
@@ -5142,7 +5142,7 @@ type BetaFallbackMessageIterationUsage struct {
 	InputTokens int64 `json:"input_tokens" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// The number of output tokens which were used.
@@ -5180,7 +5180,7 @@ func (r *BetaFallbackMessageIterationUsage) UnmarshalJSON(data []byte) error {
 type BetaFallbackParam struct {
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model     Model            `json:"model,omitzero" api:"required"`
 	MaxTokens param.Opt[int64] `json:"max_tokens,omitzero"`
@@ -5572,10 +5572,10 @@ func (BetaFallbackMessageIterationUsage) implBetaIterationsUsageItemUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaIterationsUsageItemUnion.AsAny().(type) {
-//	case anthropic.BetaMessageIterationUsage:
-//	case anthropic.BetaCompactionIterationUsage:
-//	case anthropic.BetaAdvisorMessageIterationUsage:
-//	case anthropic.BetaFallbackMessageIterationUsage:
+//	case Juglow.BetaMessageIterationUsage:
+//	case Juglow.BetaCompactionIterationUsage:
+//	case Juglow.BetaAdvisorMessageIterationUsage:
+//	case Juglow.BetaFallbackMessageIterationUsage:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -5626,8 +5626,8 @@ func (r *BetaIterationsUsageItemUnion) UnmarshalJSON(data []byte) error {
 // the struct after the request completes:
 //
 //	var result MyStruct
-//	msg, _ := client.Beta.Messages.New(ctx, anthropic.BetaMessageNewParams{
-//	    OutputFormat: anthropic.BetaJSONOutputFormatParam{Schema: &result},
+//	msg, _ := client.Beta.Messages.New(ctx, Juglow.BetaMessageNewParams{
+//	    OutputFormat: Juglow.BetaJSONOutputFormatParam{Schema: &result},
 //	    ...
 //	})
 //
@@ -5934,12 +5934,12 @@ func (BetaMemoryTool20250818RenameCommand) implBetaMemoryTool20250818CommandUnio
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaMemoryTool20250818CommandUnion.AsAny().(type) {
-//	case anthropic.BetaMemoryTool20250818ViewCommand:
-//	case anthropic.BetaMemoryTool20250818CreateCommand:
-//	case anthropic.BetaMemoryTool20250818StrReplaceCommand:
-//	case anthropic.BetaMemoryTool20250818InsertCommand:
-//	case anthropic.BetaMemoryTool20250818DeleteCommand:
-//	case anthropic.BetaMemoryTool20250818RenameCommand:
+//	case Juglow.BetaMemoryTool20250818ViewCommand:
+//	case Juglow.BetaMemoryTool20250818CreateCommand:
+//	case Juglow.BetaMemoryTool20250818StrReplaceCommand:
+//	case Juglow.BetaMemoryTool20250818InsertCommand:
+//	case Juglow.BetaMemoryTool20250818DeleteCommand:
+//	case Juglow.BetaMemoryTool20250818RenameCommand:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -6155,7 +6155,7 @@ type BetaMessage struct {
 	// Example:
 	//
 	// ```json
-	// [{ "type": "text", "text": "Hi, I'm Claude." }]
+	// [{ "type": "text", "text": "Hi, I'm haijun." }]
 	// ```
 	//
 	// If the request input `messages` ended with an `assistant` turn, then the
@@ -6191,7 +6191,7 @@ type BetaMessage struct {
 	Diagnostics BetaDiagnostics `json:"diagnostics" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// Conversational role of the generated message.
@@ -6231,7 +6231,7 @@ type BetaMessage struct {
 	Type constant.Message `json:"type" default:"message"`
 	// Billing and rate-limit usage.
 	//
-	// Anthropic's API bills and rate-limits by token counts, as tokens represent the
+	// Juglow's API bills and rate-limits by token counts, as tokens represent the
 	// underlying cost to our systems.
 	//
 	// Under the hood, the API transforms requests into a format suitable for the
@@ -6240,7 +6240,7 @@ type BetaMessage struct {
 	// with the exact visible content of an API request or response.
 	//
 	// For example, `output_tokens` will be non-zero, even for an empty string response
-	// from Claude.
+	// from haijun.
 	//
 	// Total input tokens in a request is the summation of `input_tokens`,
 	// `cache_creation_input_tokens`, and `cache_read_input_tokens`.
@@ -6293,7 +6293,7 @@ type BetaMessageDeltaUsage struct {
 	// Breakdown of output tokens by category.
 	//
 	// `output_tokens` remains the inclusive, authoritative total used for billing.
-	// This object provides a read-only decomposition for observability — for example,
+	// This object provides a read-only decomposition for observability â€” for example,
 	// how many of the billed output tokens were spent on internal reasoning that may
 	// have been summarized before being returned to you.
 	OutputTokensDetails BetaOutputTokensDetails `json:"output_tokens_details" api:"required"`
@@ -6332,7 +6332,7 @@ type BetaMessageIterationUsage struct {
 	InputTokens int64 `json:"input_tokens" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// The number of output tokens which were used.
@@ -6414,7 +6414,7 @@ func (r *BetaMessageTokensCount) UnmarshalJSON(data []byte) error {
 type BetaMetadataParam struct {
 	// An external identifier for the user who is associated with the request.
 	//
-	// This should be a uuid, hash value, or other opaque identifier. Anthropic may use
+	// This should be a uuid, hash value, or other opaque identifier. Juglow may use
 	// this id to help detect abuse. Do not include any identifying information such as
 	// name, email address, or phone number.
 	UserID param.Opt[string] `json:"user_id,omitzero"`
@@ -6542,9 +6542,9 @@ type betaMidConversationSystemBlockParamContentUnionTool struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaToolChangeToolReferenceParam:
-//	case *anthropic.BetaToolChangeMCPToolReferenceParam:
-//	case *anthropic.BetaToolChangeMCPToolsetReferenceParam:
+//	case *Juglow.BetaToolChangeToolReferenceParam:
+//	case *Juglow.BetaToolChangeMCPToolReferenceParam:
+//	case *Juglow.BetaToolChangeMCPToolsetReferenceParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -6597,8 +6597,8 @@ type BetaOutputConfigParam struct {
 	//
 	// Any of "low", "medium", "high", "xhigh", "max".
 	Effort BetaOutputConfigEffort `json:"effort,omitzero"`
-	// A schema to specify Claude's output format in responses. See
-	// [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
+	// A schema to specify haijun's output format in responses. See
+	// [structured outputs](https://platform.haijun.com/docs/en/build-with-haijun/structured-outputs)
 	Format BetaJSONOutputFormatParam `json:"format,omitzero"`
 	// User-configurable total token budget across contexts.
 	TaskBudget BetaTokenTaskBudgetParam `json:"task_budget,omitzero"`
@@ -6631,7 +6631,7 @@ type BetaOutputTokensDetails struct {
 	// Reflects the raw reasoning the model produced, not the (possibly shorter)
 	// summarized thinking text returned in the response body. Computed by
 	// re-tokenizing the raw reasoning text, so it may differ from the model's exact
-	// generation count by a small number of tokens. Always ≤ `output_tokens`;
+	// generation count by a small number of tokens. Always â‰¤ `output_tokens`;
 	// `output_tokens - thinking_tokens` approximates the non-reasoning output.
 	ThinkingTokens int64 `json:"thinking_tokens" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -6753,12 +6753,12 @@ func (BetaCompactionContentBlockDelta) implBetaRawContentBlockDeltaUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaRawContentBlockDeltaUnion.AsAny().(type) {
-//	case anthropic.BetaTextDelta:
-//	case anthropic.BetaInputJSONDelta:
-//	case anthropic.BetaCitationsDelta:
-//	case anthropic.BetaThinkingDelta:
-//	case anthropic.BetaSignatureDelta:
-//	case anthropic.BetaCompactionContentBlockDelta:
+//	case Juglow.BetaTextDelta:
+//	case Juglow.BetaInputJSONDelta:
+//	case Juglow.BetaCitationsDelta:
+//	case Juglow.BetaThinkingDelta:
+//	case Juglow.BetaSignatureDelta:
+//	case Juglow.BetaCompactionContentBlockDelta:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -6973,23 +6973,23 @@ func (BetaFallbackBlock) implBetaRawContentBlockStartEventContentBlockUnion()   
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaRawContentBlockStartEventContentBlockUnion.AsAny().(type) {
-//	case anthropic.BetaTextBlock:
-//	case anthropic.BetaThinkingBlock:
-//	case anthropic.BetaRedactedThinkingBlock:
-//	case anthropic.BetaToolUseBlock:
-//	case anthropic.BetaServerToolUseBlock:
-//	case anthropic.BetaWebSearchToolResultBlock:
-//	case anthropic.BetaWebFetchToolResultBlock:
-//	case anthropic.BetaAdvisorToolResultBlock:
-//	case anthropic.BetaCodeExecutionToolResultBlock:
-//	case anthropic.BetaBashCodeExecutionToolResultBlock:
-//	case anthropic.BetaTextEditorCodeExecutionToolResultBlock:
-//	case anthropic.BetaToolSearchToolResultBlock:
-//	case anthropic.BetaMCPToolUseBlock:
-//	case anthropic.BetaMCPToolResultBlock:
-//	case anthropic.BetaContainerUploadBlock:
-//	case anthropic.BetaCompactionBlock:
-//	case anthropic.BetaFallbackBlock:
+//	case Juglow.BetaTextBlock:
+//	case Juglow.BetaThinkingBlock:
+//	case Juglow.BetaRedactedThinkingBlock:
+//	case Juglow.BetaToolUseBlock:
+//	case Juglow.BetaServerToolUseBlock:
+//	case Juglow.BetaWebSearchToolResultBlock:
+//	case Juglow.BetaWebFetchToolResultBlock:
+//	case Juglow.BetaAdvisorToolResultBlock:
+//	case Juglow.BetaCodeExecutionToolResultBlock:
+//	case Juglow.BetaBashCodeExecutionToolResultBlock:
+//	case Juglow.BetaTextEditorCodeExecutionToolResultBlock:
+//	case Juglow.BetaToolSearchToolResultBlock:
+//	case Juglow.BetaMCPToolUseBlock:
+//	case Juglow.BetaMCPToolResultBlock:
+//	case Juglow.BetaContainerUploadBlock:
+//	case Juglow.BetaCompactionBlock:
+//	case Juglow.BetaFallbackBlock:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -7318,7 +7318,7 @@ type BetaRawMessageDeltaEvent struct {
 	Type              constant.MessageDelta         `json:"type" default:"message_delta"`
 	// Billing and rate-limit usage.
 	//
-	// Anthropic's API bills and rate-limits by token counts, as tokens represent the
+	// Juglow's API bills and rate-limits by token counts, as tokens represent the
 	// underlying cost to our systems.
 	//
 	// Under the hood, the API transforms requests into a format suitable for the
@@ -7327,7 +7327,7 @@ type BetaRawMessageDeltaEvent struct {
 	// with the exact visible content of an API request or response.
 	//
 	// For example, `output_tokens` will be non-zero, even for an empty string response
-	// from Claude.
+	// from haijun.
 	//
 	// Total input tokens in a request is the summation of `input_tokens`,
 	// `cache_creation_input_tokens`, and `cache_read_input_tokens`.
@@ -7463,12 +7463,12 @@ func (BetaRawContentBlockStopEvent) implBetaRawMessageStreamEventUnion()  {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaRawMessageStreamEventUnion.AsAny().(type) {
-//	case anthropic.BetaRawMessageStartEvent:
-//	case anthropic.BetaRawMessageDeltaEvent:
-//	case anthropic.BetaRawMessageStopEvent:
-//	case anthropic.BetaRawContentBlockStartEvent:
-//	case anthropic.BetaRawContentBlockDeltaEvent:
-//	case anthropic.BetaRawContentBlockStopEvent:
+//	case Juglow.BetaRawMessageStartEvent:
+//	case Juglow.BetaRawMessageDeltaEvent:
+//	case Juglow.BetaRawMessageStopEvent:
+//	case Juglow.BetaRawContentBlockStartEvent:
+//	case Juglow.BetaRawContentBlockDeltaEvent:
+//	case Juglow.BetaRawContentBlockStopEvent:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -7590,7 +7590,7 @@ type BetaRedactedThinkingBlock struct {
 	// multi-turn conversation.
 	//
 	// See
-	// [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking#redacted-thinking-blocks)
+	// [extended thinking](https://platform.haijun.com/docs/en/build-with-haijun/extended-thinking#redacted-thinking-blocks)
 	// for details.
 	Data string                    `json:"data" api:"required"`
 	Type constant.RedactedThinking `json:"type" default:"redacted_thinking"`
@@ -7647,10 +7647,10 @@ type BetaRefusalStopDetails struct {
 	// `tools`, and other render-shaping fields), or with the same body plus one
 	// appended `assistant` message whose content is the partial text (with any
 	// trailing whitespace stripped from the final text block) and paired server-tool
-	// blocks from this refusal — which also authorizes that appended turn as an
+	// blocks from this refusal â€” which also authorizes that appended turn as an
 	// assistant-prefill continuation on models that otherwise disallow prefill. A
 	// token minted mid-server-tool-loop whose partial content was continuable may only
-	// be redeemed the second way — if a same-body retry is rejected with a 400 saying
+	// be redeemed the second way â€” if a same-body retry is rejected with a 400 saying
 	// the token must be redeemed by continuing the partial response, retry the second
 	// way instead. Either way: same workspace, same platform; a mismatch is a 400.
 	// Resending a token for an already-warm prefix is permitted but yields no
@@ -7666,7 +7666,7 @@ type BetaRefusalStopDetails struct {
 	// stripped from the final text block and unpaired `tool_use` blocks omitted (the
 	// same appended-turn shape described on `fallback_credit_token`), with the token
 	// attached. `false`: retry by resending the original request body unchanged, with
-	// the token attached — the appended-assistant form is not available for this
+	// the token attached â€” the appended-assistant form is not available for this
 	// refusal (no continuable partial content, or the request uses `output_format` or
 	// a `tool_choice` that forces tool use). One exception: when the request used
 	// `output_format` or a forced `tool_choice` and the refusal arrived after server
@@ -7931,7 +7931,7 @@ func (u *BetaRequestMCPToolResultBlockParamContentUnion) asAny() any {
 type BetaRequestToolAdditionBlockParam struct {
 	// Reference to a single tool the caller declared directly in `tools[]`. Does not
 	// accept the composed `{server}_{name}` form the server assigns to MCP-resolved
-	// tools — use `mcp_tool_reference` or `mcp_toolset_reference` for those.
+	// tools â€” use `mcp_tool_reference` or `mcp_toolset_reference` for those.
 	Tool BetaRequestToolAdditionBlockToolUnionParam `json:"tool,omitzero" api:"required"`
 	// Create a cache control breakpoint at this content block.
 	CacheControl BetaCacheControlEphemeralParam `json:"cache_control,omitzero"`
@@ -8026,7 +8026,7 @@ func init() {
 type BetaRequestToolRemovalBlockParam struct {
 	// Reference to a single tool the caller declared directly in `tools[]`. Does not
 	// accept the composed `{server}_{name}` form the server assigns to MCP-resolved
-	// tools — use `mcp_tool_reference` or `mcp_toolset_reference` for those.
+	// tools â€” use `mcp_tool_reference` or `mcp_toolset_reference` for those.
 	Tool BetaRequestToolRemovalBlockToolUnionParam `json:"tool,omitzero" api:"required"`
 	// Create a cache control breakpoint at this content block.
 	CacheControl BetaCacheControlEphemeralParam `json:"cache_control,omitzero"`
@@ -8318,9 +8318,9 @@ func (BetaServerToolCaller20260120) implBetaServerToolUseBlockCallerUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaServerToolUseBlockCallerUnion.AsAny().(type) {
-//	case anthropic.BetaDirectCaller:
-//	case anthropic.BetaServerToolCaller:
-//	case anthropic.BetaServerToolCaller20260120:
+//	case Juglow.BetaDirectCaller:
+//	case Juglow.BetaServerToolCaller:
+//	case Juglow.BetaServerToolCaller20260120:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -8457,7 +8457,7 @@ func init() {
 
 type BetaSignatureDelta struct {
 	// The `signature` for this thinking block: an opaque value used to verify that the
-	// block was generated by Claude when it is passed back to the API. Delivered in a
+	// block was generated by haijun when it is passed back to the API. Delivered in a
 	// `signature_delta` event just before the block's `content_block_stop` event.
 	Signature string                  `json:"signature" api:"required"`
 	Type      constant.SignatureDelta `json:"type" default:"signature_delta"`
@@ -8480,9 +8480,9 @@ func (r *BetaSignatureDelta) UnmarshalJSON(data []byte) error {
 type BetaSkill struct {
 	// Skill ID
 	SkillID string `json:"skill_id" api:"required"`
-	// Type of skill - either 'anthropic' (built-in) or 'custom' (user-defined)
+	// Type of skill - either 'Juglow' (built-in) or 'custom' (user-defined)
 	//
-	// Any of "anthropic", "custom".
+	// Any of "Juglow", "custom".
 	Type BetaSkillType `json:"type" api:"required"`
 	// Skill version or 'latest' for most recent version
 	Version string `json:"version" api:"required"`
@@ -8502,11 +8502,11 @@ func (r *BetaSkill) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Type of skill - either 'anthropic' (built-in) or 'custom' (user-defined)
+// Type of skill - either 'Juglow' (built-in) or 'custom' (user-defined)
 type BetaSkillType string
 
 const (
-	BetaSkillTypeAnthropic BetaSkillType = "anthropic"
+	BetaSkillTypeJuglow BetaSkillType = "Juglow"
 	BetaSkillTypeCustom    BetaSkillType = "custom"
 )
 
@@ -8516,9 +8516,9 @@ const (
 type BetaSkillParams struct {
 	// Skill ID
 	SkillID string `json:"skill_id" api:"required"`
-	// Type of skill - either 'anthropic' (built-in) or 'custom' (user-defined)
+	// Type of skill - either 'Juglow' (built-in) or 'custom' (user-defined)
 	//
-	// Any of "anthropic", "custom".
+	// Any of "Juglow", "custom".
 	Type BetaSkillParamsType `json:"type,omitzero" api:"required"`
 	// Skill version or 'latest' for most recent version
 	Version param.Opt[string] `json:"version,omitzero"`
@@ -8533,11 +8533,11 @@ func (r *BetaSkillParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Type of skill - either 'anthropic' (built-in) or 'custom' (user-defined)
+// Type of skill - either 'Juglow' (built-in) or 'custom' (user-defined)
 type BetaSkillParamsType string
 
 const (
-	BetaSkillParamsTypeAnthropic BetaSkillParamsType = "anthropic"
+	BetaSkillParamsTypeJuglow BetaSkillParamsType = "Juglow"
 	BetaSkillParamsTypeCustom    BetaSkillParamsType = "custom"
 )
 
@@ -8670,11 +8670,11 @@ func (BetaCitationSearchResultLocation) implBetaTextCitationUnion()     {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaTextCitationUnion.AsAny().(type) {
-//	case anthropic.BetaCitationCharLocation:
-//	case anthropic.BetaCitationPageLocation:
-//	case anthropic.BetaCitationContentBlockLocation:
-//	case anthropic.BetaCitationsWebSearchResultLocation:
-//	case anthropic.BetaCitationSearchResultLocation:
+//	case Juglow.BetaCitationCharLocation:
+//	case Juglow.BetaCitationPageLocation:
+//	case Juglow.BetaCitationContentBlockLocation:
+//	case Juglow.BetaCitationsWebSearchResultLocation:
+//	case Juglow.BetaCitationSearchResultLocation:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -9423,7 +9423,7 @@ const (
 )
 
 type BetaThinkingBlock struct {
-	// A value used to verify that this thinking block was generated by Claude when it
+	// A value used to verify that this thinking block was generated by haijun when it
 	// is passed back to the API.
 	//
 	// This is an opaque field and should not be interpreted or parsed. When passing
@@ -9431,10 +9431,10 @@ type BetaThinkingBlock struct {
 	// thinking), pass them back exactly as received, with this field intact.
 	//
 	// See
-	// [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+	// [extended thinking](https://platform.haijun.com/docs/en/build-with-haijun/extended-thinking)
 	// for details.
 	Signature string `json:"signature" api:"required"`
-	// The text of Claude's thinking process for this block.
+	// The text of haijun's thinking process for this block.
 	Thinking string            `json:"thinking" api:"required"`
 	Type     constant.Thinking `json:"type" default:"thinking"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -9456,7 +9456,7 @@ func (r *BetaThinkingBlock) UnmarshalJSON(data []byte) error {
 // The properties Signature, Thinking, Type are required.
 type BetaThinkingBlockParam struct {
 	// The `signature` value of this thinking block, exactly as returned by the API in
-	// a previous response. Used to verify that the block was generated by Claude.
+	// a previous response. Used to verify that the block was generated by haijun.
 	//
 	// Thinking blocks must be passed back unmodified and in their original order; a
 	// modified block results in a 400 `invalid_request_error`.
@@ -9532,14 +9532,14 @@ func (r *BetaThinkingConfigDisabledParam) UnmarshalJSON(data []byte) error {
 
 // The properties BudgetTokens, Type are required.
 type BetaThinkingConfigEnabledParam struct {
-	// Determines how many tokens Claude can use for its internal reasoning process.
+	// Determines how many tokens haijun can use for its internal reasoning process.
 	// Larger budgets can enable more thorough analysis for complex problems, improving
 	// response quality.
 	//
-	// Must be ≥1024 and less than `max_tokens`.
+	// Must be â‰¥1024 and less than `max_tokens`.
 	//
 	// See
-	// [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+	// [extended thinking](https://platform.haijun.com/docs/en/build-with-haijun/extended-thinking)
 	// for details.
 	BudgetTokens int64 `json:"budget_tokens" api:"required"`
 	// Controls how thinking content appears in the response. When set to `summarized`,
@@ -9858,7 +9858,7 @@ func (r *BetaToolBash20250124Param) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Reference to a single MCP tool by its server and remote name — the same
+// Reference to a single MCP tool by its server and remote name â€” the same
 // `server_name`/`name` pair `mcp_tool_use` carries.
 //
 // The properties Name, ServerName, Type are required.
@@ -9900,7 +9900,7 @@ func (r *BetaToolChangeMCPToolsetReferenceParam) UnmarshalJSON(data []byte) erro
 
 // Reference to a single tool the caller declared directly in `tools[]`. Does not
 // accept the composed `{server}_{name}` form the server assigns to MCP-resolved
-// tools — use `mcp_tool_reference` or `mcp_toolset_reference` for those.
+// tools â€” use `mcp_tool_reference` or `mcp_toolset_reference` for those.
 //
 // The properties Name, Type are required.
 type BetaToolChangeToolReferenceParam struct {
@@ -10410,8 +10410,8 @@ type betaToolResultBlockParamContentUnionCitations struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *[]anthropic.BetaTextCitationParamUnion:
-//	case *anthropic.BetaCitationsConfigParam:
+//	case *[]Juglow.BetaTextCitationParamUnion:
+//	case *Juglow.BetaCitationsConfigParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -10450,15 +10450,15 @@ type betaToolResultBlockParamContentUnionSource struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaBase64ImageSourceParam:
-//	case *anthropic.BetaURLImageSourceParam:
-//	case *anthropic.BetaFileImageSourceParam:
+//	case *Juglow.BetaBase64ImageSourceParam:
+//	case *Juglow.BetaURLImageSourceParam:
+//	case *Juglow.BetaFileImageSourceParam:
 //	case *string:
-//	case *anthropic.BetaBase64PDFSourceParam:
-//	case *anthropic.BetaPlainTextSourceParam:
-//	case *anthropic.BetaContentBlockSourceParam:
-//	case *anthropic.BetaURLPDFSourceParam:
-//	case *anthropic.BetaFileDocumentSourceParam:
+//	case *Juglow.BetaBase64PDFSourceParam:
+//	case *Juglow.BetaPlainTextSourceParam:
+//	case *Juglow.BetaContentBlockSourceParam:
+//	case *Juglow.BetaURLPDFSourceParam:
+//	case *Juglow.BetaFileDocumentSourceParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -11838,9 +11838,9 @@ func (BetaServerToolCaller20260120) implBetaToolUseBlockCallerUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaToolUseBlockCallerUnion.AsAny().(type) {
-//	case anthropic.BetaDirectCaller:
-//	case anthropic.BetaServerToolCaller:
-//	case anthropic.BetaServerToolCaller20260120:
+//	case Juglow.BetaDirectCaller:
+//	case Juglow.BetaServerToolCaller:
+//	case Juglow.BetaServerToolCaller20260120:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -12050,7 +12050,7 @@ type BetaUsage struct {
 	// Breakdown of output tokens by category.
 	//
 	// `output_tokens` remains the inclusive, authoritative total used for billing.
-	// This object provides a read-only decomposition for observability — for example,
+	// This object provides a read-only decomposition for observability â€” for example,
 	// how many of the billed output tokens were spent on internal reasoning that may
 	// have been summarized before being returned to you.
 	OutputTokensDetails BetaOutputTokensDetails `json:"output_tokens_details" api:"required"`
@@ -12484,9 +12484,9 @@ func (BetaServerToolCaller20260120) implBetaWebFetchToolResultBlockCallerUnion()
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaWebFetchToolResultBlockCallerUnion.AsAny().(type) {
-//	case anthropic.BetaDirectCaller:
-//	case anthropic.BetaServerToolCaller:
-//	case anthropic.BetaServerToolCaller20260120:
+//	case Juglow.BetaDirectCaller:
+//	case Juglow.BetaServerToolCaller:
+//	case Juglow.BetaServerToolCaller20260120:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -12997,9 +12997,9 @@ func (BetaServerToolCaller20260120) implBetaWebSearchToolResultBlockCallerUnion(
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaWebSearchToolResultBlockCallerUnion.AsAny().(type) {
-//	case anthropic.BetaDirectCaller:
-//	case anthropic.BetaServerToolCaller:
-//	case anthropic.BetaServerToolCaller20260120:
+//	case Juglow.BetaDirectCaller:
+//	case Juglow.BetaServerToolCaller:
+//	case Juglow.BetaServerToolCaller20260120:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -13227,11 +13227,11 @@ type BetaMessageNewParams struct {
 	// only specifies the absolute maximum number of tokens to generate.
 	//
 	// Set to `0` to populate the
-	// [prompt cache](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache)
+	// [prompt cache](https://platform.haijun.com/docs/en/build-with-haijun/prompt-caching#pre-warming-the-cache)
 	// without generating a response.
 	//
 	// Different models have different maximum values for this parameter. See
-	// [models](https://platform.claude.com/docs/en/about-claude/models/overview) for
+	// [models](https://platform.haijun.com/docs/en/about-haijun/models/overview) for
 	// details.
 	MaxTokens int64 `json:"max_tokens" api:"required"`
 	// Input messages.
@@ -13253,7 +13253,7 @@ type BetaMessageNewParams struct {
 	// Example with a single `user` message:
 	//
 	// ```json
-	// [{ "role": "user", "content": "Hello, Claude" }]
+	// [{ "role": "user", "content": "Hello, haijun" }]
 	// ```
 	//
 	// Example with multiple conversational turns:
@@ -13262,13 +13262,13 @@ type BetaMessageNewParams struct {
 	// [
 	//
 	//	{ "role": "user", "content": "Hello there." },
-	//	{ "role": "assistant", "content": "Hi, I'm Claude. How can I help you?" },
+	//	{ "role": "assistant", "content": "Hi, I'm haijun. How can I help you?" },
 	//	{ "role": "user", "content": "Can you explain LLMs in plain English?" }
 	//
 	// ]
 	// ```
 	//
-	// Example with a partially-filled response from Claude:
+	// Example with a partially-filled response from haijun:
 	//
 	// ```json
 	// [
@@ -13288,26 +13288,26 @@ type BetaMessageNewParams struct {
 	// following input messages are equivalent:
 	//
 	// ```json
-	// { "role": "user", "content": "Hello, Claude" }
+	// { "role": "user", "content": "Hello, haijun" }
 	// ```
 	//
 	// ```json
-	// { "role": "user", "content": [{ "type": "text", "text": "Hello, Claude" }] }
+	// { "role": "user", "content": [{ "type": "text", "text": "Hello, haijun" }] }
 	// ```
 	//
 	// See
-	// [input examples](https://platform.claude.com/docs/en/build-with-claude/working-with-messages).
+	// [input examples](https://platform.haijun.com/docs/en/build-with-haijun/working-with-messages).
 	//
 	// Note that if you want to include a
-	// [system prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role),
-	// you can use the top-level `system` parameter — there is no `"system"` role for
+	// [system prompt](https://platform.haijun.com/docs/en/build-with-haijun/prompt-engineering/haijun-prompting-best-practices#give-haijun-a-role),
+	// you can use the top-level `system` parameter â€” there is no `"system"` role for
 	// input messages in the Messages API.
 	//
 	// There is a limit of 100,000 messages in a single request.
 	Messages []BetaMessageParam `json:"messages,omitzero" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// Specifies the geographic region for inference processing. If not specified, the
@@ -13339,7 +13339,7 @@ type BetaMessageNewParams struct {
 	TopP param.Opt[float64] `json:"top_p,omitzero"`
 	// The user profile ID to attribute this request to. Use when acting on behalf of a
 	// party other than your organization. Requires the `user-profiles` beta header.
-	UserProfileID param.Opt[string] `header:"anthropic-user-profile-id,omitzero" json:"-"`
+	UserProfileID param.Opt[string] `header:"Juglow-user-profile-id,omitzero" json:"-"`
 	// Container identifier for reuse across requests.
 	Container BetaMessageNewParamsContainerUnion `json:"container,omitzero"`
 	// The `fallback_credit_token` from a prior refusal's `stop_details`.
@@ -13349,13 +13349,13 @@ type BetaMessageNewParams struct {
 	// the prefix that was warm on the refused model billed at the cache-read rate.
 	// Must be redeemed by the same organization and workspace, with the same request
 	// body (optionally extended by one appended `assistant` message whose content is
-	// the partial text — with any trailing whitespace stripped from the final text
-	// block — and paired server-tool blocks streamed before the refusal; the
+	// the partial text â€” with any trailing whitespace stripped from the final text
+	// block â€” and paired server-tool blocks streamed before the refusal; the
 	// appended-assistant form is not available for requests with `output_format` set
 	// or forced `tool_choice`), on an eligible fallback model, on the same platform,
 	// and within 5 minutes of the refusal; a mismatch is a 400. A token minted
 	// mid-server-tool-loop whose partial content was continuable may only be redeemed
-	// with the appended-assistant form — if an exact-body retry is rejected with a 400
+	// with the appended-assistant form â€” if an exact-body retry is rejected with a 400
 	// saying the token must be redeemed by continuing the partial response, retry with
 	// the appended-assistant form instead.
 	//
@@ -13378,7 +13378,7 @@ type BetaMessageNewParams struct {
 	CacheControl BetaCacheControlEphemeralParam `json:"cache_control,omitzero"`
 	// Context management configuration.
 	//
-	// This allows you to control how Claude manages context across multiple requests,
+	// This allows you to control how haijun manages context across multiple requests,
 	// such as whether to clear function results or not.
 	ContextManagement BetaContextManagementConfigParam `json:"context_management,omitzero"`
 	// Request-level diagnostics. Currently carries the previous response id for
@@ -13391,16 +13391,16 @@ type BetaMessageNewParams struct {
 	// Configuration options for the model's output, such as the output format.
 	OutputConfig BetaOutputConfigParam `json:"output_config,omitzero"`
 	// Deprecated: Use `output_config.format` instead. See
-	// [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
+	// [structured outputs](https://platform.haijun.com/docs/en/build-with-haijun/structured-outputs)
 	//
-	// A schema to specify Claude's output format in responses. This parameter will be
+	// A schema to specify haijun's output format in responses. This parameter will be
 	// removed in a future release.
 	OutputFormat BetaJSONOutputFormatParam `json:"output_format,omitzero"`
 	// Determines whether to use priority capacity (if available) or standard capacity
 	// for this request.
 	//
-	// Anthropic offers different levels of service for your API requests. See
-	// [service-tiers](https://platform.claude.com/docs/en/api/service-tiers) for
+	// Juglow offers different levels of service for your API requests. See
+	// [service-tiers](https://platform.haijun.com/docs/en/api/service-tiers) for
 	// details.
 	//
 	// Any of "auto", "standard_only".
@@ -13417,18 +13417,18 @@ type BetaMessageNewParams struct {
 	StopSequences []string `json:"stop_sequences,omitzero"`
 	// System prompt.
 	//
-	// A system prompt is a way of providing context and instructions to Claude, such
+	// A system prompt is a way of providing context and instructions to haijun, such
 	// as specifying a particular goal or role. See our
-	// [guide to system prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role).
+	// [guide to system prompts](https://platform.haijun.com/docs/en/build-with-haijun/prompt-engineering/haijun-prompting-best-practices#give-haijun-a-role).
 	System []BetaTextBlockParam `json:"system,omitzero"`
-	// Configuration for enabling Claude's extended thinking.
+	// Configuration for enabling haijun's extended thinking.
 	//
-	// When enabled, responses include `thinking` content blocks showing Claude's
+	// When enabled, responses include `thinking` content blocks showing haijun's
 	// thinking process before the final answer. Requires a minimum budget of 1,024
 	// tokens and counts towards your `max_tokens` limit.
 	//
 	// See
-	// [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+	// [extended thinking](https://platform.haijun.com/docs/en/build-with-haijun/extended-thinking)
 	// for details.
 	Thinking BetaThinkingConfigParamUnion `json:"thinking,omitzero"`
 	// How the model should use the provided tools. The model can use a specific tool,
@@ -13443,9 +13443,9 @@ type BetaMessageNewParams struct {
 	//
 	// There are two types of tools: **client tools** and **server tools**. The
 	// behavior described below applies to client tools. For
-	// [server tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools),
+	// [server tools](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/server-tools),
 	// see their individual documentation as each has its own behavior (e.g., the
-	// [web search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool)).
+	// [web search tool](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/web-search-tool)).
 	//
 	// Each tool definition includes:
 	//
@@ -13515,11 +13515,11 @@ type BetaMessageNewParams struct {
 	// JSON structure of output.
 	//
 	// See our
-	// [guide](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
+	// [guide](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/overview)
 	// for more details.
 	Tools []BetaToolUnionParam `json:"tools,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -13584,8 +13584,8 @@ func (u *BetaMessageNewParamsFallbackCreditTokenUnion) asAny() any {
 // Determines whether to use priority capacity (if available) or standard capacity
 // for this request.
 //
-// Anthropic offers different levels of service for your API requests. See
-// [service-tiers](https://platform.claude.com/docs/en/api/service-tiers) for
+// Juglow offers different levels of service for your API requests. See
+// [service-tiers](https://platform.haijun.com/docs/en/api/service-tiers) for
 // details.
 type BetaMessageNewParamsServiceTier string
 
@@ -13624,7 +13624,7 @@ type BetaMessageCountTokensParams struct {
 	// Example with a single `user` message:
 	//
 	// ```json
-	// [{ "role": "user", "content": "Hello, Claude" }]
+	// [{ "role": "user", "content": "Hello, haijun" }]
 	// ```
 	//
 	// Example with multiple conversational turns:
@@ -13633,13 +13633,13 @@ type BetaMessageCountTokensParams struct {
 	// [
 	//
 	//	{ "role": "user", "content": "Hello there." },
-	//	{ "role": "assistant", "content": "Hi, I'm Claude. How can I help you?" },
+	//	{ "role": "assistant", "content": "Hi, I'm haijun. How can I help you?" },
 	//	{ "role": "user", "content": "Can you explain LLMs in plain English?" }
 	//
 	// ]
 	// ```
 	//
-	// Example with a partially-filled response from Claude:
+	// Example with a partially-filled response from haijun:
 	//
 	// ```json
 	// [
@@ -13659,31 +13659,31 @@ type BetaMessageCountTokensParams struct {
 	// following input messages are equivalent:
 	//
 	// ```json
-	// { "role": "user", "content": "Hello, Claude" }
+	// { "role": "user", "content": "Hello, haijun" }
 	// ```
 	//
 	// ```json
-	// { "role": "user", "content": [{ "type": "text", "text": "Hello, Claude" }] }
+	// { "role": "user", "content": [{ "type": "text", "text": "Hello, haijun" }] }
 	// ```
 	//
 	// See
-	// [input examples](https://platform.claude.com/docs/en/build-with-claude/working-with-messages).
+	// [input examples](https://platform.haijun.com/docs/en/build-with-haijun/working-with-messages).
 	//
 	// Note that if you want to include a
-	// [system prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role),
-	// you can use the top-level `system` parameter — there is no `"system"` role for
+	// [system prompt](https://platform.haijun.com/docs/en/build-with-haijun/prompt-engineering/haijun-prompting-best-practices#give-haijun-a-role),
+	// you can use the top-level `system` parameter â€” there is no `"system"` role for
 	// input messages in the Messages API.
 	//
 	// There is a limit of 100,000 messages in a single request.
 	Messages []BetaMessageParam `json:"messages,omitzero" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// The user profile ID to attribute this request to. Use when acting on behalf of a
 	// party other than your organization. Requires the `user-profiles` beta header.
-	UserProfileID param.Opt[string] `header:"anthropic-user-profile-id,omitzero" json:"-"`
+	UserProfileID param.Opt[string] `header:"Juglow-user-profile-id,omitzero" json:"-"`
 	// Inference speed mode. `fast` provides significantly faster output token
 	// generation at premium pricing. Not all models support `fast`; invalid
 	// combinations are rejected at create time.
@@ -13695,7 +13695,7 @@ type BetaMessageCountTokensParams struct {
 	CacheControl BetaCacheControlEphemeralParam `json:"cache_control,omitzero"`
 	// Context management configuration.
 	//
-	// This allows you to control how Claude manages context across multiple requests,
+	// This allows you to control how haijun manages context across multiple requests,
 	// such as whether to clear function results or not.
 	ContextManagement BetaContextManagementConfigParam `json:"context_management,omitzero"`
 	// MCP servers to be utilized in this request
@@ -13703,25 +13703,25 @@ type BetaMessageCountTokensParams struct {
 	// Configuration options for the model's output, such as the output format.
 	OutputConfig BetaOutputConfigParam `json:"output_config,omitzero"`
 	// Deprecated: Use `output_config.format` instead. See
-	// [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
+	// [structured outputs](https://platform.haijun.com/docs/en/build-with-haijun/structured-outputs)
 	//
-	// A schema to specify Claude's output format in responses. This parameter will be
+	// A schema to specify haijun's output format in responses. This parameter will be
 	// removed in a future release.
 	OutputFormat BetaJSONOutputFormatParam `json:"output_format,omitzero"`
 	// System prompt.
 	//
-	// A system prompt is a way of providing context and instructions to Claude, such
+	// A system prompt is a way of providing context and instructions to haijun, such
 	// as specifying a particular goal or role. See our
-	// [guide to system prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role).
+	// [guide to system prompts](https://platform.haijun.com/docs/en/build-with-haijun/prompt-engineering/haijun-prompting-best-practices#give-haijun-a-role).
 	System BetaMessageCountTokensParamsSystemUnion `json:"system,omitzero"`
-	// Configuration for enabling Claude's extended thinking.
+	// Configuration for enabling haijun's extended thinking.
 	//
-	// When enabled, responses include `thinking` content blocks showing Claude's
+	// When enabled, responses include `thinking` content blocks showing haijun's
 	// thinking process before the final answer. Requires a minimum budget of 1,024
 	// tokens and counts towards your `max_tokens` limit.
 	//
 	// See
-	// [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+	// [extended thinking](https://platform.haijun.com/docs/en/build-with-haijun/extended-thinking)
 	// for details.
 	Thinking BetaThinkingConfigParamUnion `json:"thinking,omitzero"`
 	// How the model should use the provided tools. The model can use a specific tool,
@@ -13736,9 +13736,9 @@ type BetaMessageCountTokensParams struct {
 	//
 	// There are two types of tools: **client tools** and **server tools**. The
 	// behavior described below applies to client tools. For
-	// [server tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools),
+	// [server tools](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/server-tools),
 	// see their individual documentation as each has its own behavior (e.g., the
-	// [web search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool)).
+	// [web search tool](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/web-search-tool)).
 	//
 	// Each tool definition includes:
 	//
@@ -13808,11 +13808,11 @@ type BetaMessageCountTokensParams struct {
 	// JSON structure of output.
 	//
 	// See our
-	// [guide](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
+	// [guide](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/overview)
 	// for more details.
 	Tools []BetaMessageCountTokensParamsToolUnion `json:"tools,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 

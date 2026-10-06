@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBetaSessionThreadEventListWithOptionalParams(t *testing.T) {
@@ -22,22 +22,22 @@ func TestBetaSessionThreadEventListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Sessions.Threads.Events.List(
 		context.TODO(),
 		"sthr_011CZkZVWa6oIjw0rgXZpnBt",
-		anthropic.BetaSessionThreadEventListParams{
+		Juglow.BetaSessionThreadEventListParams{
 			SessionID: "sesn_011CZkZAtmR3yMPDzynEDxu7",
-			Limit:     anthropic.Int(0),
-			Page:      anthropic.String("page"),
-			Betas:     []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Limit:     Juglow.Int(0),
+			Page:      Juglow.String("page"),
+			Betas:     []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

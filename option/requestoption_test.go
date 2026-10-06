@@ -1,4 +1,4 @@
-package option_test
+﻿package option_test
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestIdentityTokenFile_ReadsAndTrims(t *testing.T) {

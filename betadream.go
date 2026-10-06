@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -12,17 +12,17 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
 )
 
 // BetaDreamService contains methods and other services that help with interacting
-// with the anthropic API.
+// with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -43,10 +43,10 @@ func NewBetaDreamService(opts ...option.RequestOption) (r BetaDreamService) {
 // Create a Dream
 func (r *BetaDreamService) New(ctx context.Context, params BetaDreamNewParams, opts ...option.RequestOption) (res *BetaDream, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "dreaming-2026-04-21")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "dreaming-2026-04-21")}, opts...)
 	path := "v1/dreams?beta=true"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
@@ -55,10 +55,10 @@ func (r *BetaDreamService) New(ctx context.Context, params BetaDreamNewParams, o
 // Get a Dream
 func (r *BetaDreamService) Get(ctx context.Context, dreamID string, query BetaDreamGetParams, opts ...option.RequestOption) (res *BetaDream, err error) {
 	for _, v := range query.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "dreaming-2026-04-21")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "dreaming-2026-04-21")}, opts...)
 	if dreamID == "" {
 		err = errors.New("missing required dream_id parameter")
 		return nil, err
@@ -72,10 +72,10 @@ func (r *BetaDreamService) Get(ctx context.Context, dreamID string, query BetaDr
 func (r *BetaDreamService) List(ctx context.Context, params BetaDreamListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaDream], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "dreaming-2026-04-21"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "dreaming-2026-04-21"), option.WithResponseInto(&raw)}, opts...)
 	path := "v1/dreams?beta=true"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
 	if err != nil {
@@ -97,10 +97,10 @@ func (r *BetaDreamService) ListAutoPaging(ctx context.Context, params BetaDreamL
 // Archive a Dream
 func (r *BetaDreamService) Archive(ctx context.Context, dreamID string, body BetaDreamArchiveParams, opts ...option.RequestOption) (res *BetaDream, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "dreaming-2026-04-21")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "dreaming-2026-04-21")}, opts...)
 	if dreamID == "" {
 		err = errors.New("missing required dream_id parameter")
 		return nil, err
@@ -113,10 +113,10 @@ func (r *BetaDreamService) Archive(ctx context.Context, dreamID string, body Bet
 // Cancel a Dream
 func (r *BetaDreamService) Cancel(ctx context.Context, dreamID string, body BetaDreamCancelParams, opts ...option.RequestOption) (res *BetaDream, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "dreaming-2026-04-21")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "dreaming-2026-04-21")}, opts...)
 	if dreamID == "" {
 		err = errors.New("missing required dream_id parameter")
 		return nil, err
@@ -240,8 +240,8 @@ func (BetaDreamSessionsInput) implBetaDreamInputUnion()    {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaDreamInputUnion.AsAny().(type) {
-//	case anthropic.BetaDreamMemoryStoreInput:
-//	case anthropic.BetaDreamSessionsInput:
+//	case Juglow.BetaDreamMemoryStoreInput:
+//	case Juglow.BetaDreamSessionsInput:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -409,7 +409,7 @@ func (r *BetaDreamMemoryStoreInputParam) UnmarshalJSON(data []byte) error {
 // Model identifier and configuration applied to every pipeline stage. Same wire
 // shape as the Agents API ModelConfig.
 type BetaDreamModelConfig struct {
-	// Model identifier, e.g. "claude-opus-4-7". 1-256 characters.
+	// Model identifier, e.g. "haijun-opus-4-7". 1-256 characters.
 	ID string `json:"id" api:"required"`
 	// Inference speed mode. `fast` provides significantly faster output token
 	// generation at premium pricing. Not all models support `fast`; invalid
@@ -446,7 +446,7 @@ const (
 //
 // The property ID is required.
 type BetaDreamModelConfigParam struct {
-	// Model identifier, e.g. "claude-opus-4-7". 1-256 characters.
+	// Model identifier, e.g. "haijun-opus-4-7". 1-256 characters.
 	ID string `json:"id" api:"required"`
 	// Inference speed mode. `fast` provides significantly faster output token
 	// generation at premium pricing. Not all models support `fast`; invalid
@@ -598,7 +598,7 @@ type BetaDreamNewParams struct {
 	Model        BetaDreamNewParamsModelUnion `json:"model,omitzero" api:"required"`
 	Instructions param.Opt[string]            `json:"instructions,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -637,7 +637,7 @@ func (u *BetaDreamNewParamsModelUnion) asAny() any {
 
 type BetaDreamGetParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -658,7 +658,7 @@ type BetaDreamListParams struct {
 	// statuses. Empty applies no status filter.
 	Statuses []BetaDreamStatus `query:"statuses,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -672,12 +672,12 @@ func (r BetaDreamListParams) URLQuery() (v url.Values, err error) {
 
 type BetaDreamArchiveParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaDreamCancelParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }

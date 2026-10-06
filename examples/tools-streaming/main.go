@@ -1,29 +1,29 @@
-package main
+﻿package main
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
 
-	"github.com/anthropics/anthropic-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go"
 )
 
 func main() {
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 
 	content := "What is the weather in San Francisco, CA?"
 
 	println(color("[user]: ") + content)
 
-	messages := []anthropic.MessageParam{
-		anthropic.NewUserMessage(anthropic.NewTextBlock(content)),
+	messages := []Juglow.MessageParam{
+		Juglow.NewUserMessage(Juglow.NewTextBlock(content)),
 	}
 
-	toolParams := []anthropic.ToolParam{
+	toolParams := []Juglow.ToolParam{
 		{
 			Name:        "get_coordinates",
-			Description: anthropic.String("Accepts a place as an address, then returns the latitude and longitude coordinates."),
-			InputSchema: anthropic.ToolInputSchemaParam{
+			Description: Juglow.String("Accepts a place as an address, then returns the latitude and longitude coordinates."),
+			InputSchema: Juglow.ToolInputSchemaParam{
 				Properties: map[string]any{
 					"location": map[string]any{
 						"type":        "string",
@@ -34,7 +34,7 @@ func main() {
 		},
 		{
 			Name: "get_temperature_unit",
-			InputSchema: anthropic.ToolInputSchemaParam{
+			InputSchema: Juglow.ToolInputSchemaParam{
 				Properties: map[string]any{
 					"country": map[string]any{
 						"type":        "string",
@@ -45,8 +45,8 @@ func main() {
 		},
 		{
 			Name:        "get_weather",
-			Description: anthropic.String("Get the weather at a specific location"),
-			InputSchema: anthropic.ToolInputSchemaParam{
+			Description: Juglow.String("Get the weather at a specific location"),
+			InputSchema: Juglow.ToolInputSchemaParam{
 				Properties: map[string]any{
 					"lat": map[string]any{
 						"type":        "number",
@@ -65,14 +65,14 @@ func main() {
 			},
 		},
 	}
-	tools := make([]anthropic.ToolUnionParam, len(toolParams))
+	tools := make([]Juglow.ToolUnionParam, len(toolParams))
 	for i, toolParam := range toolParams {
-		tools[i] = anthropic.ToolUnionParam{OfTool: &toolParam}
+		tools[i] = Juglow.ToolUnionParam{OfTool: &toolParam}
 	}
 
 	for {
-		stream := client.Messages.NewStreaming(context.TODO(), anthropic.MessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet5,
+		stream := client.Messages.NewStreaming(context.TODO(), Juglow.MessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet5,
 			MaxTokens: 1024,
 			Messages:  messages,
 			Tools:     tools,
@@ -80,7 +80,7 @@ func main() {
 
 		print(color("[assistant]: "))
 
-		message := anthropic.Message{}
+		message := Juglow.Message{}
 		for stream.Next() {
 			event := stream.Current()
 			err := message.Accumulate(event)
@@ -89,17 +89,17 @@ func main() {
 			}
 
 			switch event := event.AsAny().(type) {
-			case anthropic.ContentBlockStartEvent:
+			case Juglow.ContentBlockStartEvent:
 				if event.ContentBlock.Name != "" {
 					print(event.ContentBlock.Name + ": ")
 				}
-			case anthropic.ContentBlockDeltaEvent:
+			case Juglow.ContentBlockDeltaEvent:
 				print(event.Delta.Text)
 				print(event.Delta.PartialJSON)
-			case anthropic.ContentBlockStopEvent:
+			case Juglow.ContentBlockStopEvent:
 				println()
 				println()
-			case anthropic.MessageStopEvent:
+			case Juglow.MessageStopEvent:
 				println()
 			}
 		}
@@ -109,11 +109,11 @@ func main() {
 		}
 
 		messages = append(messages, message.ToParam())
-		toolResults := []anthropic.ContentBlockParamUnion{}
+		toolResults := []Juglow.ContentBlockParamUnion{}
 
 		for _, block := range message.Content {
 			switch variant := block.AsAny().(type) {
-			case anthropic.ToolUseBlock:
+			case Juglow.ToolUseBlock:
 				print(color("[user (" + block.Name + ")]: "))
 
 				var response any
@@ -156,7 +156,7 @@ func main() {
 
 				println(string(b))
 
-				toolResults = append(toolResults, anthropic.NewToolResultBlock(block.ID, string(b), false))
+				toolResults = append(toolResults, Juglow.NewToolResultBlock(block.ID, string(b), false))
 			}
 		}
 
@@ -164,7 +164,7 @@ func main() {
 			break
 		}
 
-		messages = append(messages, anthropic.NewUserMessage(toolResults...))
+		messages = append(messages, Juglow.NewUserMessage(toolResults...))
 	}
 }
 

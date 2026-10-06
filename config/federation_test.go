@@ -1,4 +1,4 @@
-package config_test
+﻿package config_test
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/config"
 )
 
 func TestExchangeFederationAssertion_Success(t *testing.T) {
@@ -57,13 +57,13 @@ func TestExchangeFederationAssertion_Success(t *testing.T) {
 	if ct := gotReq.Header.Get("Content-Type"); ct != "application/json" {
 		t.Errorf("Content-Type: %q", ct)
 	}
-	beta := gotReq.Header.Get("anthropic-beta")
+	beta := gotReq.Header.Get("Juglow-beta")
 	if !strings.Contains(beta, "oauth-2025-04-20") || !strings.Contains(beta, "oidc-federation-2026-04-01") {
-		t.Errorf("anthropic-beta header missing required values: %q", beta)
+		t.Errorf("Juglow-beta header missing required values: %q", beta)
 	}
 
 	// The JSON body's field names must match the REST gateway's alias
-	// transformation exactly — grant_type, assertion, federation_rule_id,
+	// transformation exactly â€” grant_type, assertion, federation_rule_id,
 	// organization_id, service_account_id, workspace_id. Anything else is
 	// silently dropped by the gateway and produces an empty-field error
 	// downstream.
@@ -107,8 +107,8 @@ func TestExchangeFederationAssertion_SendsDefaultUserAgent(t *testing.T) {
 	}); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.HasPrefix(gotUA, "anthropic-sdk-go/") {
-		t.Errorf("default UA should start with anthropic-sdk-go/, got %q", gotUA)
+	if !strings.HasPrefix(gotUA, "Juglow-sdk-go/") {
+		t.Errorf("default UA should start with Juglow-sdk-go/, got %q", gotUA)
 	}
 	if !strings.Contains(gotUA, "ExchangeFederationAssertion") {
 		t.Errorf("default UA should name the helper, got %q", gotUA)
@@ -207,7 +207,7 @@ func TestFederationExchangeError_RedactsSensitiveBody(t *testing.T) {
 		Body:       `{"error":"invalid_request","error_description":"bad","assertion":"eyJhbGciOi...SECRET","refresh_token":"rt-secret","weird_new_field":"also-secret"}`,
 	}
 	msg := err.Error()
-	// Allowlist redaction (RFC 6749 §5.2): drop everything except error,
+	// Allowlist redaction (RFC 6749 Â§5.2): drop everything except error,
 	// error_description, error_uri. Future fields the server adds are
 	// dropped by default rather than relying on a denylist update.
 	for _, secret := range []string{"eyJhbGciOi", "SECRET", "rt-secret", "weird_new_field", "also-secret", "assertion", "refresh_token"} {

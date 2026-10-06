@@ -1,4 +1,4 @@
-package main
+﻿package main
 
 import (
 	"context"
@@ -6,16 +6,16 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 )
 
 func main() {
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	ctx := context.TODO()
 
 	// Create an environment
-	environment, err := client.Beta.Environments.New(ctx, anthropic.BetaEnvironmentNewParams{
+	environment, err := client.Beta.Environments.New(ctx, Juglow.BetaEnvironmentNewParams{
 		Name: "files-example-environment",
 	})
 	if err != nil {
@@ -24,20 +24,20 @@ func main() {
 	fmt.Println("Created environment:", environment.ID)
 
 	// Create an agent with the built-in toolset and an always-allow permission policy
-	agent, err := client.Beta.Agents.New(ctx, anthropic.BetaAgentNewParams{
+	agent, err := client.Beta.Agents.New(ctx, Juglow.BetaAgentNewParams{
 		Name: "files-example-agent",
-		Model: anthropic.BetaManagedAgentsModelConfigParams{
-			ID: anthropic.BetaManagedAgentsModelClaudeSonnet5,
+		Model: Juglow.BetaManagedAgentsModelConfigParams{
+			ID: Juglow.BetaManagedAgentsModelHaijunSonnet5,
 		},
-		Tools: []anthropic.BetaAgentNewParamsToolUnion{
+		Tools: []Juglow.BetaAgentNewParamsToolUnion{
 			{
-				OfAgentToolset20260401: &anthropic.BetaManagedAgentsAgentToolset20260401Params{
-					Type: anthropic.BetaManagedAgentsAgentToolset20260401ParamsTypeAgentToolset20260401,
-					DefaultConfig: anthropic.BetaManagedAgentsAgentToolsetDefaultConfigParams{
+				OfAgentToolset20260401: &Juglow.BetaManagedAgentsAgentToolset20260401Params{
+					Type: Juglow.BetaManagedAgentsAgentToolset20260401ParamsTypeAgentToolset20260401,
+					DefaultConfig: Juglow.BetaManagedAgentsAgentToolsetDefaultConfigParams{
 						Enabled: param.NewOpt(true),
-						PermissionPolicy: anthropic.BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyUnion{
-							OfAlwaysAllow: &anthropic.BetaManagedAgentsAlwaysAllowPolicyParam{
-								Type: anthropic.BetaManagedAgentsAlwaysAllowPolicyTypeAlwaysAllow,
+						PermissionPolicy: Juglow.BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyUnion{
+							OfAlwaysAllow: &Juglow.BetaManagedAgentsAlwaysAllowPolicyParam{
+								Type: Juglow.BetaManagedAgentsAlwaysAllowPolicyTypeAlwaysAllow,
 							},
 						},
 					},
@@ -57,7 +57,7 @@ func main() {
 	}
 	defer csvFile.Close()
 
-	file, err := client.Beta.Files.Upload(ctx, anthropic.BetaFileUploadParams{
+	file, err := client.Beta.Files.Upload(ctx, Juglow.BetaFileUploadParams{
 		File: csvFile,
 	})
 	if err != nil {
@@ -66,19 +66,19 @@ func main() {
 	fmt.Println("Uploaded file:", file.ID)
 
 	// Create a session with the file mounted as a resource
-	session, err := client.Beta.Sessions.New(ctx, anthropic.BetaSessionNewParams{
+	session, err := client.Beta.Sessions.New(ctx, Juglow.BetaSessionNewParams{
 		EnvironmentID: environment.ID,
-		Agent: anthropic.BetaSessionNewParamsAgentUnion{
-			OfBetaManagedAgentsAgents: &anthropic.BetaManagedAgentsAgentParams{
+		Agent: Juglow.BetaSessionNewParamsAgentUnion{
+			OfBetaManagedAgentsAgents: &Juglow.BetaManagedAgentsAgentParams{
 				ID:      agent.ID,
-				Type:    anthropic.BetaManagedAgentsAgentParamsTypeAgent,
+				Type:    Juglow.BetaManagedAgentsAgentParamsTypeAgent,
 				Version: param.NewOpt(agent.Version),
 			},
 		},
-		Resources: []anthropic.BetaSessionNewParamsResourceUnion{
+		Resources: []Juglow.BetaSessionNewParamsResourceUnion{
 			{
-				OfFile: &anthropic.BetaManagedAgentsFileResourceParams{
-					Type:      anthropic.BetaManagedAgentsFileResourceParamsTypeFile,
+				OfFile: &Juglow.BetaManagedAgentsFileResourceParams{
+					Type:      Juglow.BetaManagedAgentsFileResourceParamsTypeFile,
 					FileID:    file.ID,
 					MountPath: param.NewOpt("data.csv"),
 				},
@@ -92,16 +92,16 @@ func main() {
 
 	// Send a prompt asking the agent to read the mounted file
 	fmt.Println("Streaming events:")
-	_, err = client.Beta.Sessions.Events.Send(ctx, session.ID, anthropic.BetaSessionEventSendParams{
-		Events: []anthropic.BetaManagedAgentsEventParamsUnion{
+	_, err = client.Beta.Sessions.Events.Send(ctx, session.ID, Juglow.BetaSessionEventSendParams{
+		Events: []Juglow.BetaManagedAgentsEventParamsUnion{
 			{
-				OfUserMessage: &anthropic.BetaManagedAgentsUserMessageEventParams{
-					Type: anthropic.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
-					Content: []anthropic.BetaManagedAgentsUserMessageEventParamsContentUnion{
+				OfUserMessage: &Juglow.BetaManagedAgentsUserMessageEventParams{
+					Type: Juglow.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
+					Content: []Juglow.BetaManagedAgentsUserMessageEventParamsContentUnion{
 						{
-							OfText: &anthropic.BetaManagedAgentsTextBlockParam{
+							OfText: &Juglow.BetaManagedAgentsTextBlockParam{
 								Text: "Read /uploads/data.csv and tell me the column names.",
-								Type: anthropic.BetaManagedAgentsTextBlockTypeText,
+								Type: Juglow.BetaManagedAgentsTextBlockTypeText,
 							},
 						},
 					},
@@ -114,7 +114,7 @@ func main() {
 	}
 
 	// Stream events until the session goes idle
-	stream := client.Beta.Sessions.Events.StreamEvents(ctx, session.ID, anthropic.BetaSessionEventStreamParams{})
+	stream := client.Beta.Sessions.Events.StreamEvents(ctx, session.ID, Juglow.BetaSessionEventStreamParams{})
 	for stream.Next() {
 		event := stream.Current()
 		data, _ := json.MarshalIndent(event, "", "  ")

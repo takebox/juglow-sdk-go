@@ -1,4 +1,4 @@
-package auth
+﻿package auth
 
 import (
 	"fmt"
@@ -6,19 +6,19 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
 )
 
-// applyBearerAuth sets the Authorization and anthropic-beta headers for
+// applyBearerAuth sets the Authorization and Juglow-beta headers for
 // OAuth/bearer-based credentials on outgoing API requests.
 func applyBearerAuth(req *http.Request, token string) {
 	req.Header.Set("Authorization", "Bearer "+token)
-	existing := req.Header.Get("anthropic-beta")
+	existing := req.Header.Get("Juglow-beta")
 	switch {
 	case existing == "":
-		req.Header.Set("anthropic-beta", OAuthAPIBetaHeader)
+		req.Header.Set("Juglow-beta", OAuthAPIBetaHeader)
 	case !strings.Contains(existing, OAuthAPIBetaHeader):
-		req.Header.Set("anthropic-beta", existing+","+OAuthAPIBetaHeader)
+		req.Header.Set("Juglow-beta", existing+","+OAuthAPIBetaHeader)
 	}
 }
 

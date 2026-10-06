@@ -1,4 +1,4 @@
-package anthropic
+﻿package Juglow
 
 import (
 	"encoding/json"

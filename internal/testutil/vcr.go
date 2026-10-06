@@ -1,4 +1,4 @@
-package testutil
+﻿package testutil
 
 import (
 	"net/http"
@@ -11,12 +11,12 @@ import (
 
 // NewVCRHTTPClient creates an *http.Client wired to a go-vcr recorder.
 // Cassette files are stored under testdata/cassettes.
-// If ANTHROPIC_LIVE=1, the recorder runs in recording mode; otherwise replay-only.
+// If Juglow_LIVE=1, the recorder runs in recording mode; otherwise replay-only.
 func NewVCRHTTPClient(t *testing.T, cassetteName string) (*http.Client, *recorder.Recorder) {
 	t.Helper()
 
 	mode := recorder.ModeReplaying
-	if os.Getenv("ANTHROPIC_LIVE") == "1" {
+	if os.Getenv("Juglow_LIVE") == "1" {
 		mode = recorder.ModeRecording
 	}
 

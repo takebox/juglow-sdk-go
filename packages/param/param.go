@@ -1,8 +1,8 @@
-package param
+﻿package param
 
 import (
 	"encoding/json"
-	"github.com/anthropics/anthropic-sdk-go/internal/encoding/json/sentinel"
+	"github.com/Juglows/Juglow-sdk-go/internal/encoding/json/sentinel"
 	"reflect"
 )
 

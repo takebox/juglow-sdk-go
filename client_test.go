@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -11,9 +11,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 type closureTransport struct {
@@ -26,8 +26,8 @@ func (t *closureTransport) RoundTrip(req *http.Request) (*http.Response, error) 
 
 func TestUserAgentHeader(t *testing.T) {
 	var userAgent string
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -39,27 +39,27 @@ func TestUserAgentHeader(t *testing.T) {
 			},
 		}),
 	)
-	_, _ = client.Messages.New(context.Background(), anthropic.MessageNewParams{
+	_, _ = client.Messages.New(context.Background(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{{
-			Content: []anthropic.ContentBlockParamUnion{{
-				OfText: &anthropic.TextBlockParam{
+		Messages: []Juglow.MessageParam{{
+			Content: []Juglow.ContentBlockParamUnion{{
+				OfText: &Juglow.TextBlockParam{
 					Text: "x",
 				},
 			}},
-			Role: anthropic.MessageParamRoleUser,
+			Role: Juglow.MessageParamRoleUser,
 		}},
-		Model: anthropic.ModelClaudeSonnet5,
+		Model: Juglow.ModelHaijunSonnet5,
 	})
-	if userAgent != fmt.Sprintf("Anthropic/Go %s", internal.PackageVersion) {
+	if userAgent != fmt.Sprintf("Juglow/Go %s", internal.PackageVersion) {
 		t.Errorf("Expected User-Agent to be correct, but got: %#v", userAgent)
 	}
 }
 
 func TestRetryAfter(t *testing.T) {
 	retryCountHeaders := make([]string, 0)
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -74,17 +74,17 @@ func TestRetryAfter(t *testing.T) {
 			},
 		}),
 	)
-	_, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+	_, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{{
-			Content: []anthropic.ContentBlockParamUnion{{
-				OfText: &anthropic.TextBlockParam{
+		Messages: []Juglow.MessageParam{{
+			Content: []Juglow.ContentBlockParamUnion{{
+				OfText: &Juglow.TextBlockParam{
 					Text: "x",
 				},
 			}},
-			Role: anthropic.MessageParamRoleUser,
+			Role: Juglow.MessageParamRoleUser,
 		}},
-		Model: anthropic.ModelClaudeSonnet5,
+		Model: Juglow.ModelHaijunSonnet5,
 	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
@@ -103,8 +103,8 @@ func TestRetryAfter(t *testing.T) {
 
 func TestDeleteRetryCountHeader(t *testing.T) {
 	retryCountHeaders := make([]string, 0)
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -120,17 +120,17 @@ func TestDeleteRetryCountHeader(t *testing.T) {
 		}),
 		option.WithHeaderDel("X-Stainless-Retry-Count"),
 	)
-	_, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+	_, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{{
-			Content: []anthropic.ContentBlockParamUnion{{
-				OfText: &anthropic.TextBlockParam{
+		Messages: []Juglow.MessageParam{{
+			Content: []Juglow.ContentBlockParamUnion{{
+				OfText: &Juglow.TextBlockParam{
 					Text: "x",
 				},
 			}},
-			Role: anthropic.MessageParamRoleUser,
+			Role: Juglow.MessageParamRoleUser,
 		}},
-		Model: anthropic.ModelClaudeSonnet5,
+		Model: Juglow.ModelHaijunSonnet5,
 	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
@@ -144,8 +144,8 @@ func TestDeleteRetryCountHeader(t *testing.T) {
 
 func TestOverwriteRetryCountHeader(t *testing.T) {
 	retryCountHeaders := make([]string, 0)
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -161,17 +161,17 @@ func TestOverwriteRetryCountHeader(t *testing.T) {
 		}),
 		option.WithHeader("X-Stainless-Retry-Count", "42"),
 	)
-	_, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+	_, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{{
-			Content: []anthropic.ContentBlockParamUnion{{
-				OfText: &anthropic.TextBlockParam{
+		Messages: []Juglow.MessageParam{{
+			Content: []Juglow.ContentBlockParamUnion{{
+				OfText: &Juglow.TextBlockParam{
 					Text: "x",
 				},
 			}},
-			Role: anthropic.MessageParamRoleUser,
+			Role: Juglow.MessageParamRoleUser,
 		}},
-		Model: anthropic.ModelClaudeSonnet5,
+		Model: Juglow.ModelHaijunSonnet5,
 	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
@@ -185,8 +185,8 @@ func TestOverwriteRetryCountHeader(t *testing.T) {
 
 func TestRetryAfterMs(t *testing.T) {
 	attempts := 0
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -201,17 +201,17 @@ func TestRetryAfterMs(t *testing.T) {
 			},
 		}),
 	)
-	_, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+	_, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{{
-			Content: []anthropic.ContentBlockParamUnion{{
-				OfText: &anthropic.TextBlockParam{
+		Messages: []Juglow.MessageParam{{
+			Content: []Juglow.ContentBlockParamUnion{{
+				OfText: &Juglow.TextBlockParam{
 					Text: "x",
 				},
 			}},
-			Role: anthropic.MessageParamRoleUser,
+			Role: Juglow.MessageParamRoleUser,
 		}},
-		Model: anthropic.ModelClaudeSonnet5,
+		Model: Juglow.ModelHaijunSonnet5,
 	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
@@ -222,8 +222,8 @@ func TestRetryAfterMs(t *testing.T) {
 }
 
 func TestContextCancel(t *testing.T) {
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -235,17 +235,17 @@ func TestContextCancel(t *testing.T) {
 	)
 	cancelCtx, cancel := context.WithCancel(context.Background())
 	cancel()
-	_, err := client.Messages.New(cancelCtx, anthropic.MessageNewParams{
+	_, err := client.Messages.New(cancelCtx, Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{{
-			Content: []anthropic.ContentBlockParamUnion{{
-				OfText: &anthropic.TextBlockParam{
+		Messages: []Juglow.MessageParam{{
+			Content: []Juglow.ContentBlockParamUnion{{
+				OfText: &Juglow.TextBlockParam{
 					Text: "x",
 				},
 			}},
-			Role: anthropic.MessageParamRoleUser,
+			Role: Juglow.MessageParamRoleUser,
 		}},
-		Model: anthropic.ModelClaudeSonnet5,
+		Model: Juglow.ModelHaijunSonnet5,
 	})
 	if err == nil {
 		t.Error("Expected there to be a cancel error")
@@ -253,8 +253,8 @@ func TestContextCancel(t *testing.T) {
 }
 
 func TestContextCancelDelay(t *testing.T) {
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{
 			Transport: &closureTransport{
 				fn: func(req *http.Request) (*http.Response, error) {
@@ -266,17 +266,17 @@ func TestContextCancelDelay(t *testing.T) {
 	)
 	cancelCtx, cancel := context.WithTimeout(context.Background(), 2*time.Millisecond)
 	defer cancel()
-	_, err := client.Messages.New(cancelCtx, anthropic.MessageNewParams{
+	_, err := client.Messages.New(cancelCtx, Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{{
-			Content: []anthropic.ContentBlockParamUnion{{
-				OfText: &anthropic.TextBlockParam{
+		Messages: []Juglow.MessageParam{{
+			Content: []Juglow.ContentBlockParamUnion{{
+				OfText: &Juglow.TextBlockParam{
 					Text: "x",
 				},
 			}},
-			Role: anthropic.MessageParamRoleUser,
+			Role: Juglow.MessageParamRoleUser,
 		}},
-		Model: anthropic.ModelClaudeSonnet5,
+		Model: Juglow.ModelHaijunSonnet5,
 	})
 	if err == nil {
 		t.Error("expected there to be a cancel error")
@@ -292,8 +292,8 @@ func TestContextDeadline(t *testing.T) {
 	defer cancel()
 
 	go func() {
-		client := anthropic.NewClient(
-			option.WithAPIKey("my-anthropic-api-key"),
+		client := Juglow.NewClient(
+			option.WithAPIKey("my-Juglow-api-key"),
 			option.WithHTTPClient(&http.Client{
 				Transport: &closureTransport{
 					fn: func(req *http.Request) (*http.Response, error) {
@@ -303,17 +303,17 @@ func TestContextDeadline(t *testing.T) {
 				},
 			}),
 		)
-		_, err := client.Messages.New(deadlineCtx, anthropic.MessageNewParams{
+		_, err := client.Messages.New(deadlineCtx, Juglow.MessageNewParams{
 			MaxTokens: 1024,
-			Messages: []anthropic.MessageParam{{
-				Content: []anthropic.ContentBlockParamUnion{{
-					OfText: &anthropic.TextBlockParam{
+			Messages: []Juglow.MessageParam{{
+				Content: []Juglow.ContentBlockParamUnion{{
+					OfText: &Juglow.TextBlockParam{
 						Text: "x",
 					},
 				}},
-				Role: anthropic.MessageParamRoleUser,
+				Role: Juglow.MessageParamRoleUser,
 			}},
-			Model: anthropic.ModelClaudeSonnet5,
+			Model: Juglow.ModelHaijunSonnet5,
 		})
 		if err == nil {
 			t.Error("expected there to be a deadline error")
@@ -340,8 +340,8 @@ func TestContextDeadlineStreaming(t *testing.T) {
 	defer cancel()
 
 	go func() {
-		client := anthropic.NewClient(
-			option.WithAPIKey("my-anthropic-api-key"),
+		client := Juglow.NewClient(
+			option.WithAPIKey("my-Juglow-api-key"),
 			option.WithHTTPClient(&http.Client{
 				Transport: &closureTransport{
 					fn: func(req *http.Request) (*http.Response, error) {
@@ -359,17 +359,17 @@ func TestContextDeadlineStreaming(t *testing.T) {
 				},
 			}),
 		)
-		stream := client.Messages.NewStreaming(deadlineCtx, anthropic.MessageNewParams{
+		stream := client.Messages.NewStreaming(deadlineCtx, Juglow.MessageNewParams{
 			MaxTokens: 1024,
-			Messages: []anthropic.MessageParam{{
-				Content: []anthropic.ContentBlockParamUnion{{
-					OfText: &anthropic.TextBlockParam{
+			Messages: []Juglow.MessageParam{{
+				Content: []Juglow.ContentBlockParamUnion{{
+					OfText: &Juglow.TextBlockParam{
 						Text: "x",
 					},
 				}},
-				Role: anthropic.MessageParamRoleUser,
+				Role: Juglow.MessageParamRoleUser,
 			}},
-			Model: anthropic.ModelClaudeOpus4_6,
+			Model: Juglow.ModelHaijunOpus4_6,
 		})
 		for stream.Next() {
 			_ = stream.Current()
@@ -396,8 +396,8 @@ func TestContextDeadlineStreamingWithRequestTimeout(t *testing.T) {
 	deadline := time.Now().Add(100 * time.Millisecond)
 
 	go func() {
-		client := anthropic.NewClient(
-			option.WithAPIKey("my-anthropic-api-key"),
+		client := Juglow.NewClient(
+			option.WithAPIKey("my-Juglow-api-key"),
 			option.WithHTTPClient(&http.Client{
 				Transport: &closureTransport{
 					fn: func(req *http.Request) (*http.Response, error) {
@@ -417,17 +417,17 @@ func TestContextDeadlineStreamingWithRequestTimeout(t *testing.T) {
 		)
 		stream := client.Messages.NewStreaming(
 			context.Background(),
-			anthropic.MessageNewParams{
+			Juglow.MessageNewParams{
 				MaxTokens: 1024,
-				Messages: []anthropic.MessageParam{{
-					Content: []anthropic.ContentBlockParamUnion{{
-						OfText: &anthropic.TextBlockParam{
+				Messages: []Juglow.MessageParam{{
+					Content: []Juglow.ContentBlockParamUnion{{
+						OfText: &Juglow.TextBlockParam{
 							Text: "x",
 						},
 					}},
-					Role: anthropic.MessageParamRoleUser,
+					Role: Juglow.MessageParamRoleUser,
 				}},
-				Model: anthropic.ModelClaudeOpus4_6,
+				Model: Juglow.ModelHaijunOpus4_6,
 			},
 			option.WithRequestTimeout((100 * time.Millisecond)),
 		)

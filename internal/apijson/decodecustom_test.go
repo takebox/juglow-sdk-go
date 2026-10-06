@@ -1,10 +1,10 @@
-package apijson_test
+﻿package apijson_test
 
 import (
 	"encoding/json"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
 )
 
 // A type that looks apijson-native but opts out via UnmarshalAPIJSON,

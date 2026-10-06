@@ -1,4 +1,4 @@
-package auth
+﻿package auth
 
 import (
 	"bytes"
@@ -13,11 +13,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/config"
-	"github.com/anthropics/anthropic-sdk-go/internal"
+	"github.com/Juglows/Juglow-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/internal"
 )
 
-// Credentials file schema — credentials/<name>.json. Reads only; all writes
+// Credentials file schema â€” credentials/<name>.json. Reads only; all writes
 // go through config.WriteCredentials for a single-source-of-truth on the
 // atomic + fsync + Chmod guarantees.
 type credentialsTokenData struct {
@@ -52,7 +52,7 @@ func checkCredentialsFileSafety(path string) error {
 		return err
 	}
 	if info.Mode().Type()&fs.ModeSymlink != 0 {
-		return fmt.Errorf("credentials file %q is a symlink; refusing to read (set ANTHROPIC_CREDENTIALS_PATH to the real file)", path)
+		return fmt.Errorf("credentials file %q is a symlink; refusing to read (set Juglow_CREDENTIALS_PATH to the real file)", path)
 	}
 	if runtime.GOOS == "windows" {
 		return nil
@@ -292,7 +292,7 @@ func loadUserOAuthProfile(cfg *config.Config) (*CredentialsResult, error) {
 			return nil, fmt.Errorf("failed to create refresh request: %w", err)
 		}
 		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("User-Agent", "anthropic-sdk-go/"+internal.PackageVersion+" (user-oauth-refresh)")
+		req.Header.Set("User-Agent", "Juglow-sdk-go/"+internal.PackageVersion+" (user-oauth-refresh)")
 		// The oauth-2025-04-20 beta is required by the Python oauth-server
 		// to accept refresh-token grants for user_oauth credentials.
 		//
@@ -301,7 +301,7 @@ func loadUserOAuthProfile(cfg *config.Config) (*CredentialsResult, error) {
 		// to the Go userauth service, which only handles the jwt-bearer
 		// grant. Refresh-token grants must fall through to the Python
 		// oauth-server, where the federation beta must be absent.
-		req.Header.Set("anthropic-beta", OAuthAPIBetaHeader)
+		req.Header.Set("Juglow-beta", OAuthAPIBetaHeader)
 
 		resp, err := handler(req)
 		if err != nil {

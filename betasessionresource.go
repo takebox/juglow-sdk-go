@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -12,18 +12,18 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	shimjson "github.com/anthropics/anthropic-sdk-go/internal/encoding/json"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	shimjson "github.com/Juglows/Juglow-sdk-go/internal/encoding/json"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
 )
 
 // BetaSessionResourceService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -44,10 +44,10 @@ func NewBetaSessionResourceService(opts ...option.RequestOption) (r BetaSessionR
 // Get Session Resource
 func (r *BetaSessionResourceService) Get(ctx context.Context, resourceID string, params BetaSessionResourceGetParams, opts ...option.RequestOption) (res *BetaSessionResourceGetResponseUnion, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.SessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return nil, err
@@ -64,10 +64,10 @@ func (r *BetaSessionResourceService) Get(ctx context.Context, resourceID string,
 // Update Session Resource
 func (r *BetaSessionResourceService) Update(ctx context.Context, resourceID string, params BetaSessionResourceUpdateParams, opts ...option.RequestOption) (res *BetaSessionResourceUpdateResponseUnion, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.SessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return nil, err
@@ -85,10 +85,10 @@ func (r *BetaSessionResourceService) Update(ctx context.Context, resourceID stri
 func (r *BetaSessionResourceService) List(ctx context.Context, sessionID string, params BetaSessionResourceListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaManagedAgentsSessionResourceUnion], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
 	if sessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return nil, err
@@ -114,10 +114,10 @@ func (r *BetaSessionResourceService) ListAutoPaging(ctx context.Context, session
 // Delete Session Resource
 func (r *BetaSessionResourceService) Delete(ctx context.Context, resourceID string, params BetaSessionResourceDeleteParams, opts ...option.RequestOption) (res *BetaManagedAgentsDeleteSessionResource, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.SessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return nil, err
@@ -134,10 +134,10 @@ func (r *BetaSessionResourceService) Delete(ctx context.Context, resourceID stri
 // Add Session Resource
 func (r *BetaSessionResourceService) Add(ctx context.Context, sessionID string, params BetaSessionResourceAddParams, opts ...option.RequestOption) (res *BetaManagedAgentsFileResource, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if sessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return nil, err
@@ -282,8 +282,8 @@ func (BetaManagedAgentsCommitCheckout) implBetaManagedAgentsGitHubRepositoryReso
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsGitHubRepositoryResourceCheckoutUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsBranchCheckout:
-//	case anthropic.BetaManagedAgentsCommitCheckout:
+//	case Juglow.BetaManagedAgentsBranchCheckout:
+//	case Juglow.BetaManagedAgentsCommitCheckout:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -434,9 +434,9 @@ func (BetaManagedAgentsMemoryStoreResource) implBetaManagedAgentsSessionResource
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsSessionResourceUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsGitHubRepositoryResource:
-//	case anthropic.BetaManagedAgentsFileResource:
-//	case anthropic.BetaManagedAgentsMemoryStoreResource:
+//	case Juglow.BetaManagedAgentsGitHubRepositoryResource:
+//	case Juglow.BetaManagedAgentsFileResource:
+//	case Juglow.BetaManagedAgentsMemoryStoreResource:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -537,9 +537,9 @@ func (BetaManagedAgentsMemoryStoreResource) implBetaSessionResourceGetResponseUn
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaSessionResourceGetResponseUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsGitHubRepositoryResource:
-//	case anthropic.BetaManagedAgentsFileResource:
-//	case anthropic.BetaManagedAgentsMemoryStoreResource:
+//	case Juglow.BetaManagedAgentsGitHubRepositoryResource:
+//	case Juglow.BetaManagedAgentsFileResource:
+//	case Juglow.BetaManagedAgentsMemoryStoreResource:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -640,9 +640,9 @@ func (BetaManagedAgentsMemoryStoreResource) implBetaSessionResourceUpdateRespons
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaSessionResourceUpdateResponseUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsGitHubRepositoryResource:
-//	case anthropic.BetaManagedAgentsFileResource:
-//	case anthropic.BetaManagedAgentsMemoryStoreResource:
+//	case Juglow.BetaManagedAgentsGitHubRepositoryResource:
+//	case Juglow.BetaManagedAgentsFileResource:
+//	case Juglow.BetaManagedAgentsMemoryStoreResource:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -683,7 +683,7 @@ func (r *BetaSessionResourceUpdateResponseUnion) UnmarshalJSON(data []byte) erro
 type BetaSessionResourceGetParams struct {
 	SessionID string `path:"session_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -693,7 +693,7 @@ type BetaSessionResourceUpdateParams struct {
 	// resources support token rotation.
 	AuthorizationToken string `json:"authorization_token" api:"required"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -712,7 +712,7 @@ type BetaSessionResourceListParams struct {
 	// Opaque cursor from a previous response's next_page field.
 	Page param.Opt[string] `query:"page,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -728,7 +728,7 @@ func (r BetaSessionResourceListParams) URLQuery() (v url.Values, err error) {
 type BetaSessionResourceDeleteParams struct {
 	SessionID string `path:"session_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -736,7 +736,7 @@ type BetaSessionResourceAddParams struct {
 	// Mount a file uploaded via the Files API into the session.
 	BetaManagedAgentsFileResourceParams BetaManagedAgentsFileResourceParams
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 

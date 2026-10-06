@@ -1,4 +1,4 @@
-package auth
+﻿package auth
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/config"
 )
 
 // unsetEnv removes an environment variable for the duration of a test.
@@ -56,7 +56,7 @@ func TestLoadConfig_ProfileSystem(t *testing.T) {
 		"type":         "oauth_token",
 		"access_token": "profile-tok",
 	})
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -80,8 +80,8 @@ func TestLoadConfig_ProfileEnv(t *testing.T) {
 		"type":         "oauth_token",
 		"access_token": "work-tok",
 	})
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "work")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "work")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -106,7 +106,7 @@ func TestLoadConfig_ActiveConfigFile(t *testing.T) {
 		"access_token": "staging-tok",
 	})
 	os.WriteFile(filepath.Join(dir, "active_config"), []byte("staging"), 0644)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -127,7 +127,7 @@ func TestLoadConfig_ActiveConfigFile(t *testing.T) {
 
 func TestLoadConfig_NothingSetReturnsError(t *testing.T) {
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
 
 	_, err := config.LoadConfig()
 	if err == nil {
@@ -135,7 +135,7 @@ func TestLoadConfig_NothingSetReturnsError(t *testing.T) {
 	}
 }
 
-// TestLoadConfig_EnvFillsMissingWorkspaceID verifies that ANTHROPIC_WORKSPACE_ID
+// TestLoadConfig_EnvFillsMissingWorkspaceID verifies that Juglow_WORKSPACE_ID
 // fills the top-level workspace_id config key when the profile omits it, and
 // that the fill propagates through ResolveCredentials into the jwt-bearer
 // exchange body.
@@ -161,7 +161,7 @@ func TestLoadConfig_EnvFillsMissingWorkspaceID(t *testing.T) {
 			"federation_rule_id": "fdrl_01abc",
 		},
 	}, nil)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
 	t.Setenv(EnvIdentityTokenFile, tokenPath)
 	t.Setenv(EnvWorkspaceID, "wrkspc_from_env")
 
@@ -195,7 +195,7 @@ func TestEnvCredentials_WorkloadIdentity(t *testing.T) {
 	os.WriteFile(tokenPath, []byte("my-jwt"), 0600)
 
 	// Set config dir to empty dir so no profile config exists.
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
 	t.Setenv(EnvIdentityTokenFile, tokenPath)
 	t.Setenv(EnvFederationRuleID, "rule-1")
 	t.Setenv(EnvOrganizationID, "org-1")
@@ -220,7 +220,7 @@ func TestEnvCredentials_LiteralToken(t *testing.T) {
 	defer server.Close()
 
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
 	t.Setenv(EnvIdentityToken, "literal-jwt")
 	t.Setenv(EnvFederationRuleID, "rule-1")
 	t.Setenv(EnvOrganizationID, "org-1")
@@ -238,7 +238,7 @@ func TestEnvCredentials_LiteralToken(t *testing.T) {
 	}
 }
 
-// TestEnvCredentials_WorkspaceID verifies that ANTHROPIC_WORKSPACE_ID is
+// TestEnvCredentials_WorkspaceID verifies that Juglow_WORKSPACE_ID is
 // read in the env-var federation chain and forwarded as workspace_id in
 // the jwt-bearer exchange body.
 func TestEnvCredentials_WorkspaceID(t *testing.T) {
@@ -252,7 +252,7 @@ func TestEnvCredentials_WorkspaceID(t *testing.T) {
 	defer server.Close()
 
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
 	t.Setenv(EnvIdentityToken, "literal-jwt")
 	t.Setenv(EnvFederationRuleID, "fdrl_01abc")
 	t.Setenv(EnvOrganizationID, "org-uuid")
@@ -271,8 +271,8 @@ func TestEnvCredentials_WorkspaceID(t *testing.T) {
 }
 
 // TestEnvCredentials_WorkspaceIDEmptyTreatedUnset pins the empty-string
-// behavior: ANTHROPIC_WORKSPACE_ID="" (a defaulted-but-empty CI variable)
-// must be treated as unset — never put `"workspace_id": ""` on the wire.
+// behavior: Juglow_WORKSPACE_ID="" (a defaulted-but-empty CI variable)
+// must be treated as unset â€” never put `"workspace_id": ""` on the wire.
 // In Go this falls out of os.Getenv returning "" plus the
 // json:"workspace_id,omitempty" tag on tokenExchangeRequest, but the test
 // exists as a regression pin so neither side of that pair regresses
@@ -288,7 +288,7 @@ func TestEnvCredentials_WorkspaceIDEmptyTreatedUnset(t *testing.T) {
 	defer server.Close()
 
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
 	t.Setenv(EnvIdentityToken, "literal-jwt")
 	t.Setenv(EnvFederationRuleID, "fdrl_01abc")
 	t.Setenv(EnvOrganizationID, "org-uuid")
@@ -302,13 +302,13 @@ func TestEnvCredentials_WorkspaceIDEmptyTreatedUnset(t *testing.T) {
 		t.Fatal(err)
 	}
 	if _, present := receivedRaw["workspace_id"]; present {
-		t.Fatalf("workspace_id must be omitted when ANTHROPIC_WORKSPACE_ID is empty, body=%v", receivedRaw)
+		t.Fatalf("workspace_id must be omitted when Juglow_WORKSPACE_ID is empty, body=%v", receivedRaw)
 	}
 }
 
 func TestEnvCredentials_RequiresAllThree(t *testing.T) {
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
 	// Only federation rule, missing org ID and token.
 	t.Setenv(EnvFederationRuleID, "rule-1")
 
@@ -320,7 +320,7 @@ func TestEnvCredentials_RequiresAllThree(t *testing.T) {
 
 func TestEnvCredentials_NothingSetReturnsNil(t *testing.T) {
 	dir := t.TempDir()
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
+	t.Setenv("Juglow_CONFIG_DIR", dir)
 	unsetEnv(t, EnvIdentityTokenFile)
 	unsetEnv(t, EnvIdentityToken)
 	unsetEnv(t, EnvFederationRuleID)

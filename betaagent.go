@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -12,19 +12,19 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/paramutil"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/paramutil"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 // BetaAgentService contains methods and other services that help with interacting
-// with the anthropic API.
+// with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -47,10 +47,10 @@ func NewBetaAgentService(opts ...option.RequestOption) (r BetaAgentService) {
 // Create Agent
 func (r *BetaAgentService) New(ctx context.Context, params BetaAgentNewParams, opts ...option.RequestOption) (res *BetaManagedAgentsAgent, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	path := "v1/agents?beta=true"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
@@ -59,10 +59,10 @@ func (r *BetaAgentService) New(ctx context.Context, params BetaAgentNewParams, o
 // Get Agent
 func (r *BetaAgentService) Get(ctx context.Context, agentID string, params BetaAgentGetParams, opts ...option.RequestOption) (res *BetaManagedAgentsAgent, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if agentID == "" {
 		err = errors.New("missing required agent_id parameter")
 		return nil, err
@@ -75,10 +75,10 @@ func (r *BetaAgentService) Get(ctx context.Context, agentID string, params BetaA
 // Update Agent
 func (r *BetaAgentService) Update(ctx context.Context, agentID string, params BetaAgentUpdateParams, opts ...option.RequestOption) (res *BetaManagedAgentsAgent, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if agentID == "" {
 		err = errors.New("missing required agent_id parameter")
 		return nil, err
@@ -92,10 +92,10 @@ func (r *BetaAgentService) Update(ctx context.Context, agentID string, params Be
 func (r *BetaAgentService) List(ctx context.Context, params BetaAgentListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaManagedAgentsAgent], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
 	path := "v1/agents?beta=true"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
 	if err != nil {
@@ -117,10 +117,10 @@ func (r *BetaAgentService) ListAutoPaging(ctx context.Context, params BetaAgentL
 // Archive Agent
 func (r *BetaAgentService) Archive(ctx context.Context, agentID string, body BetaAgentArchiveParams, opts ...option.RequestOption) (res *BetaManagedAgentsAgent, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if agentID == "" {
 		err = errors.New("missing required agent_id parameter")
 		return nil, err
@@ -173,7 +173,7 @@ type BetaManagedAgentsAgent struct {
 	// Resolved coordinator topology with a concrete agent roster.
 	Multiagent BetaManagedAgentsMultiagent        `json:"multiagent" api:"required"`
 	Name       string                             `json:"name" api:"required"`
-	Skills     []BetaManagedAgentsAgentSkillUnion `json:"skills" api:"required"`
+	tracks     []BetaManagedAgentsAgentSkillUnion `json:"tracks" api:"required"`
 	System     string                             `json:"system" api:"required"`
 	Tools      []BetaManagedAgentsAgentToolUnion  `json:"tools" api:"required"`
 	// Any of "agent".
@@ -194,7 +194,7 @@ type BetaManagedAgentsAgent struct {
 		Model       respjson.Field
 		Multiagent  respjson.Field
 		Name        respjson.Field
-		Skills      respjson.Field
+		tracks      respjson.Field
 		System      respjson.Field
 		Tools       respjson.Field
 		Type        respjson.Field
@@ -212,7 +212,7 @@ func (r *BetaManagedAgentsAgent) UnmarshalJSON(data []byte) error {
 }
 
 // BetaManagedAgentsAgentSkillUnion contains all possible properties and values
-// from [BetaManagedAgentsAnthropicSkill], [BetaManagedAgentsCustomSkill].
+// from [BetaManagedAgentsJuglowSkill], [BetaManagedAgentsCustomSkill].
 //
 // Use the [BetaManagedAgentsAgentSkillUnion.AsAny] method to switch on the
 // variant.
@@ -220,7 +220,7 @@ func (r *BetaManagedAgentsAgent) UnmarshalJSON(data []byte) error {
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type BetaManagedAgentsAgentSkillUnion struct {
 	SkillID string `json:"skill_id"`
-	// Any of "anthropic", "custom".
+	// Any of "Juglow", "custom".
 	Type    string `json:"type"`
 	Version string `json:"version"`
 	JSON    struct {
@@ -238,28 +238,28 @@ type anyBetaManagedAgentsAgentSkill interface {
 	implBetaManagedAgentsAgentSkillUnion()
 }
 
-func (BetaManagedAgentsAnthropicSkill) implBetaManagedAgentsAgentSkillUnion() {}
+func (BetaManagedAgentsJuglowSkill) implBetaManagedAgentsAgentSkillUnion() {}
 func (BetaManagedAgentsCustomSkill) implBetaManagedAgentsAgentSkillUnion()    {}
 
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsAgentSkillUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsAnthropicSkill:
-//	case anthropic.BetaManagedAgentsCustomSkill:
+//	case Juglow.BetaManagedAgentsJuglowSkill:
+//	case Juglow.BetaManagedAgentsCustomSkill:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
 func (u BetaManagedAgentsAgentSkillUnion) AsAny() anyBetaManagedAgentsAgentSkill {
 	switch u.Type {
-	case "anthropic":
-		return u.AsAnthropic()
+	case "Juglow":
+		return u.AsJuglow()
 	case "custom":
 		return u.AsCustom()
 	}
 	return nil
 }
 
-func (u BetaManagedAgentsAgentSkillUnion) AsAnthropic() (v BetaManagedAgentsAnthropicSkill) {
+func (u BetaManagedAgentsAgentSkillUnion) AsJuglow() (v BetaManagedAgentsJuglowSkill) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -326,9 +326,9 @@ func (BetaManagedAgentsCustomTool) implBetaManagedAgentsAgentToolUnion()        
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsAgentToolUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsAgentToolset20260401:
-//	case anthropic.BetaManagedAgentsMCPToolset:
-//	case anthropic.BetaManagedAgentsCustomTool:
+//	case Juglow.BetaManagedAgentsAgentToolset20260401:
+//	case Juglow.BetaManagedAgentsMCPToolset:
+//	case Juglow.BetaManagedAgentsCustomTool:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -542,8 +542,8 @@ func (BetaManagedAgentsAlwaysAskPolicy) implBetaManagedAgentsAgentToolConfigPerm
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsAgentToolConfigPermissionPolicyUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsAlwaysAllowPolicy:
-//	case anthropic.BetaManagedAgentsAlwaysAskPolicy:
+//	case Juglow.BetaManagedAgentsAlwaysAllowPolicy:
+//	case Juglow.BetaManagedAgentsAlwaysAskPolicy:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -583,7 +583,7 @@ type BetaManagedAgentsAgentToolConfigParams struct {
 	// Any of "bash", "edit", "read", "write", "glob", "grep", "web_fetch",
 	// "web_search".
 	Name BetaManagedAgentsAgentToolConfigParamsName `json:"name,omitzero" api:"required"`
-	// Whether this tool is enabled and available to Claude. Overrides the
+	// Whether this tool is enabled and available to haijun. Overrides the
 	// default_config setting.
 	Enabled param.Opt[bool] `json:"enabled,omitzero"`
 	// Permission policy for tool execution.
@@ -710,8 +710,8 @@ func (BetaManagedAgentsAlwaysAskPolicy) implBetaManagedAgentsAgentToolsetDefault
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicyUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsAlwaysAllowPolicy:
-//	case anthropic.BetaManagedAgentsAlwaysAskPolicy:
+//	case Juglow.BetaManagedAgentsAlwaysAllowPolicy:
+//	case Juglow.BetaManagedAgentsAlwaysAskPolicy:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -746,7 +746,7 @@ func (r *BetaManagedAgentsAgentToolsetDefaultConfigPermissionPolicyUnion) Unmars
 
 // Default configuration for all tools in a toolset.
 type BetaManagedAgentsAgentToolsetDefaultConfigParams struct {
-	// Whether tools are enabled and available to Claude by default. Defaults to true
+	// Whether tools are enabled and available to haijun by default. Defaults to true
 	// if not specified.
 	Enabled param.Opt[bool] `json:"enabled,omitzero"`
 	// Permission policy for tool execution.
@@ -1112,11 +1112,11 @@ func (r *BetaManagedAgentsAlwaysAskPolicyParam) UnmarshalJSON(data []byte) error
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// A resolved Anthropic-managed skill.
-type BetaManagedAgentsAnthropicSkill struct {
+// A resolved Juglow-managed skill.
+type BetaManagedAgentsJuglowSkill struct {
 	SkillID string `json:"skill_id" api:"required"`
-	// Any of "anthropic".
-	Type    BetaManagedAgentsAnthropicSkillType `json:"type" api:"required"`
+	// Any of "Juglow".
+	Type    BetaManagedAgentsJuglowSkillType `json:"type" api:"required"`
 	Version string                              `json:"version" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
@@ -1129,42 +1129,42 @@ type BetaManagedAgentsAnthropicSkill struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BetaManagedAgentsAnthropicSkill) RawJSON() string { return r.JSON.raw }
-func (r *BetaManagedAgentsAnthropicSkill) UnmarshalJSON(data []byte) error {
+func (r BetaManagedAgentsJuglowSkill) RawJSON() string { return r.JSON.raw }
+func (r *BetaManagedAgentsJuglowSkill) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BetaManagedAgentsAnthropicSkillType string
+type BetaManagedAgentsJuglowSkillType string
 
 const (
-	BetaManagedAgentsAnthropicSkillTypeAnthropic BetaManagedAgentsAnthropicSkillType = "anthropic"
+	BetaManagedAgentsJuglowSkillTypeJuglow BetaManagedAgentsJuglowSkillType = "Juglow"
 )
 
-// An Anthropic-managed skill.
+// An Juglow-managed skill.
 //
 // The properties SkillID, Type are required.
-type BetaManagedAgentsAnthropicSkillParams struct {
-	// Identifier of the Anthropic skill (e.g., "xlsx").
+type BetaManagedAgentsJuglowSkillParams struct {
+	// Identifier of the Juglow skill (e.g., "xlsx").
 	SkillID string `json:"skill_id" api:"required"`
-	// Any of "anthropic".
-	Type BetaManagedAgentsAnthropicSkillParamsType `json:"type,omitzero" api:"required"`
+	// Any of "Juglow".
+	Type BetaManagedAgentsJuglowSkillParamsType `json:"type,omitzero" api:"required"`
 	// Version to pin. Defaults to latest if omitted.
 	Version param.Opt[string] `json:"version,omitzero"`
 	paramObj
 }
 
-func (r BetaManagedAgentsAnthropicSkillParams) MarshalJSON() (data []byte, err error) {
-	type shadow BetaManagedAgentsAnthropicSkillParams
+func (r BetaManagedAgentsJuglowSkillParams) MarshalJSON() (data []byte, err error) {
+	type shadow BetaManagedAgentsJuglowSkillParams
 	return param.MarshalObject(r, (*shadow)(&r))
 }
-func (r *BetaManagedAgentsAnthropicSkillParams) UnmarshalJSON(data []byte) error {
+func (r *BetaManagedAgentsJuglowSkillParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BetaManagedAgentsAnthropicSkillParamsType string
+type BetaManagedAgentsJuglowSkillParamsType string
 
 const (
-	BetaManagedAgentsAnthropicSkillParamsTypeAnthropic BetaManagedAgentsAnthropicSkillParamsType = "anthropic"
+	BetaManagedAgentsJuglowSkillParamsTypeJuglow BetaManagedAgentsJuglowSkillParamsType = "Juglow"
 )
 
 // A resolved user-created custom skill.
@@ -1674,8 +1674,8 @@ func (BetaManagedAgentsAlwaysAskPolicy) implBetaManagedAgentsMCPToolConfigPermis
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsMCPToolConfigPermissionPolicyUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsAlwaysAllowPolicy:
-//	case anthropic.BetaManagedAgentsAlwaysAskPolicy:
+//	case Juglow.BetaManagedAgentsAlwaysAllowPolicy:
+//	case Juglow.BetaManagedAgentsAlwaysAskPolicy:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1853,8 +1853,8 @@ func (BetaManagedAgentsAlwaysAskPolicy) implBetaManagedAgentsMCPToolsetDefaultCo
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsMCPToolsetDefaultConfigPermissionPolicyUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsAlwaysAllowPolicy:
-//	case anthropic.BetaManagedAgentsAlwaysAskPolicy:
+//	case Juglow.BetaManagedAgentsAlwaysAllowPolicy:
+//	case Juglow.BetaManagedAgentsAlwaysAskPolicy:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1979,34 +1979,34 @@ const (
 
 // The model that will power your agent.
 //
-// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 // details and options.
 type BetaManagedAgentsModel = string
 
 const (
-	BetaManagedAgentsModelClaudeSonnet5            BetaManagedAgentsModel = "claude-sonnet-5"
-	BetaManagedAgentsModelClaudeFable5             BetaManagedAgentsModel = "claude-fable-5"
-	BetaManagedAgentsModelClaudeOpus5              BetaManagedAgentsModel = "claude-opus-5"
-	BetaManagedAgentsModelClaudeOpus4_8            BetaManagedAgentsModel = "claude-opus-4-8"
-	BetaManagedAgentsModelClaudeOpus4_7            BetaManagedAgentsModel = "claude-opus-4-7"
-	BetaManagedAgentsModelClaudeOpus4_6            BetaManagedAgentsModel = "claude-opus-4-6"
-	BetaManagedAgentsModelClaudeSonnet4_6          BetaManagedAgentsModel = "claude-sonnet-4-6"
-	BetaManagedAgentsModelClaudeHaiku4_5           BetaManagedAgentsModel = "claude-haiku-4-5"
-	BetaManagedAgentsModelClaudeHaiku4_5_20251001  BetaManagedAgentsModel = "claude-haiku-4-5-20251001"
-	BetaManagedAgentsModelClaudeOpus4_5            BetaManagedAgentsModel = "claude-opus-4-5"
-	BetaManagedAgentsModelClaudeOpus4_5_20251101   BetaManagedAgentsModel = "claude-opus-4-5-20251101"
-	BetaManagedAgentsModelClaudeSonnet4_5          BetaManagedAgentsModel = "claude-sonnet-4-5"
-	BetaManagedAgentsModelClaudeSonnet4_5_20250929 BetaManagedAgentsModel = "claude-sonnet-4-5-20250929"
+	BetaManagedAgentsModelHaijunSonnet5            BetaManagedAgentsModel = "haijun-sonnet-5"
+	BetaManagedAgentsModelHaijunFable5             BetaManagedAgentsModel = "haijun-fable-5"
+	BetaManagedAgentsModelHaijunOpus5              BetaManagedAgentsModel = "haijun-opus-5"
+	BetaManagedAgentsModelHaijunOpus4_8            BetaManagedAgentsModel = "haijun-opus-4-8"
+	BetaManagedAgentsModelHaijunOpus4_7            BetaManagedAgentsModel = "haijun-opus-4-7"
+	BetaManagedAgentsModelHaijunOpus4_6            BetaManagedAgentsModel = "haijun-opus-4-6"
+	BetaManagedAgentsModelHaijunSonnet4_6          BetaManagedAgentsModel = "haijun-sonnet-4-6"
+	BetaManagedAgentsModelHaijunHaiku4_5           BetaManagedAgentsModel = "haijun-haiku-4-5"
+	BetaManagedAgentsModelHaijunHaiku4_5_20251001  BetaManagedAgentsModel = "haijun-haiku-4-5-20251001"
+	BetaManagedAgentsModelHaijunOpus4_5            BetaManagedAgentsModel = "haijun-opus-4-5"
+	BetaManagedAgentsModelHaijunOpus4_5_20251101   BetaManagedAgentsModel = "haijun-opus-4-5-20251101"
+	BetaManagedAgentsModelHaijunSonnet4_5          BetaManagedAgentsModel = "haijun-sonnet-4-5"
+	BetaManagedAgentsModelHaijunSonnet4_5_20250929 BetaManagedAgentsModel = "haijun-sonnet-4-5-20250929"
 )
 
 // Model identifier and configuration.
 type BetaManagedAgentsModelConfig struct {
 	// The model that will power your agent.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	ID BetaManagedAgentsModel `json:"id" api:"required"`
-	// How hard Claude works on each turn. Sets `output_config.effort` on every
+	// How hard haijun works on each turn. Sets `output_config.effort` on every
 	// Messages call the session makes.
 	Effort BetaManagedAgentsModelConfigEffortUnion `json:"effort"`
 	// Geographic region for model inference. When unset, requests fall through to the
@@ -2069,11 +2069,11 @@ func (BetaManagedAgentsEffortMax) implBetaManagedAgentsModelConfigEffortUnion() 
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsModelConfigEffortUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsEffortLow:
-//	case anthropic.BetaManagedAgentsEffortMedium:
-//	case anthropic.BetaManagedAgentsEffortHigh:
-//	case anthropic.BetaManagedAgentsEffortXhigh:
-//	case anthropic.BetaManagedAgentsEffortMax:
+//	case Juglow.BetaManagedAgentsEffortLow:
+//	case Juglow.BetaManagedAgentsEffortMedium:
+//	case Juglow.BetaManagedAgentsEffortHigh:
+//	case Juglow.BetaManagedAgentsEffortXhigh:
+//	case Juglow.BetaManagedAgentsEffortMax:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -2141,14 +2141,14 @@ const (
 type BetaManagedAgentsModelConfigParams struct {
 	// The model that will power your agent.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	ID BetaManagedAgentsModel `json:"id,omitzero" api:"required"`
 	// Geographic region for model inference. When unset, requests fall through to the
 	// workspace's default_inference_geo. On update, `model` is whole-object
-	// replacement — omitting inference_geo clears it.
+	// replacement â€” omitting inference_geo clears it.
 	InferenceGeo param.Opt[string] `json:"inference_geo,omitzero"`
-	// How hard Claude works on each inference call. Accepts a bare level string
+	// How hard haijun works on each inference call. Accepts a bare level string
 	// (`"high"`) or `{"type": "high"}`. On create, omitting it resolves the per-model
 	// default; on update, omitting it leaves the stored value unchanged.
 	Effort BetaManagedAgentsModelConfigParamsEffortUnion `json:"effort,omitzero"`
@@ -2229,7 +2229,7 @@ func (u BetaManagedAgentsModelConfigParamsEffortUnion) GetType() *string {
 	return nil
 }
 
-// How hard Claude works on each turn. Higher levels favor reasoning depth over
+// How hard haijun works on each turn. Higher levels favor reasoning depth over
 // latency. Not all models accept every level; invalid combinations are rejected at
 // create time.
 type BetaManagedAgentsModelConfigParamsEffortBetaManagedAgentsEffortLevel string
@@ -2286,7 +2286,7 @@ type BetaManagedAgentsSessionThreadAgent struct {
 	// Model identifier and configuration.
 	Model  BetaManagedAgentsModelConfig                    `json:"model" api:"required"`
 	Name   string                                          `json:"name" api:"required"`
-	Skills []BetaManagedAgentsSessionThreadAgentSkillUnion `json:"skills" api:"required"`
+	tracks []BetaManagedAgentsSessionThreadAgentSkillUnion `json:"tracks" api:"required"`
 	System string                                          `json:"system" api:"required"`
 	Tools  []BetaManagedAgentsSessionThreadAgentToolUnion  `json:"tools" api:"required"`
 	// Any of "agent".
@@ -2299,7 +2299,7 @@ type BetaManagedAgentsSessionThreadAgent struct {
 		MCPServers  respjson.Field
 		Model       respjson.Field
 		Name        respjson.Field
-		Skills      respjson.Field
+		tracks      respjson.Field
 		System      respjson.Field
 		Tools       respjson.Field
 		Type        respjson.Field
@@ -2316,7 +2316,7 @@ func (r *BetaManagedAgentsSessionThreadAgent) UnmarshalJSON(data []byte) error {
 }
 
 // BetaManagedAgentsSessionThreadAgentSkillUnion contains all possible properties
-// and values from [BetaManagedAgentsAnthropicSkill],
+// and values from [BetaManagedAgentsJuglowSkill],
 // [BetaManagedAgentsCustomSkill].
 //
 // Use the [BetaManagedAgentsSessionThreadAgentSkillUnion.AsAny] method to switch
@@ -2325,7 +2325,7 @@ func (r *BetaManagedAgentsSessionThreadAgent) UnmarshalJSON(data []byte) error {
 // Use the methods beginning with 'As' to cast the union to one of its variants.
 type BetaManagedAgentsSessionThreadAgentSkillUnion struct {
 	SkillID string `json:"skill_id"`
-	// Any of "anthropic", "custom".
+	// Any of "Juglow", "custom".
 	Type    string `json:"type"`
 	Version string `json:"version"`
 	JSON    struct {
@@ -2343,28 +2343,28 @@ type anyBetaManagedAgentsSessionThreadAgentSkill interface {
 	implBetaManagedAgentsSessionThreadAgentSkillUnion()
 }
 
-func (BetaManagedAgentsAnthropicSkill) implBetaManagedAgentsSessionThreadAgentSkillUnion() {}
+func (BetaManagedAgentsJuglowSkill) implBetaManagedAgentsSessionThreadAgentSkillUnion() {}
 func (BetaManagedAgentsCustomSkill) implBetaManagedAgentsSessionThreadAgentSkillUnion()    {}
 
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsSessionThreadAgentSkillUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsAnthropicSkill:
-//	case anthropic.BetaManagedAgentsCustomSkill:
+//	case Juglow.BetaManagedAgentsJuglowSkill:
+//	case Juglow.BetaManagedAgentsCustomSkill:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
 func (u BetaManagedAgentsSessionThreadAgentSkillUnion) AsAny() anyBetaManagedAgentsSessionThreadAgentSkill {
 	switch u.Type {
-	case "anthropic":
-		return u.AsAnthropic()
+	case "Juglow":
+		return u.AsJuglow()
 	case "custom":
 		return u.AsCustom()
 	}
 	return nil
 }
 
-func (u BetaManagedAgentsSessionThreadAgentSkillUnion) AsAnthropic() (v BetaManagedAgentsAnthropicSkill) {
+func (u BetaManagedAgentsSessionThreadAgentSkillUnion) AsJuglow() (v BetaManagedAgentsJuglowSkill) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -2432,9 +2432,9 @@ func (BetaManagedAgentsCustomTool) implBetaManagedAgentsSessionThreadAgentToolUn
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsSessionThreadAgentToolUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsAgentToolset20260401:
-//	case anthropic.BetaManagedAgentsMCPToolset:
-//	case anthropic.BetaManagedAgentsCustomTool:
+//	case Juglow.BetaManagedAgentsAgentToolset20260401:
+//	case Juglow.BetaManagedAgentsMCPToolset:
+//	case Juglow.BetaManagedAgentsCustomTool:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -2550,10 +2550,10 @@ const (
 	BetaManagedAgentsSessionThreadAgentTypeAgent BetaManagedAgentsSessionThreadAgentType = "agent"
 )
 
-func BetaManagedAgentsSkillParamsOfAnthropic(skillID string) BetaManagedAgentsSkillParamsUnion {
-	var anthropic BetaManagedAgentsAnthropicSkillParams
-	anthropic.SkillID = skillID
-	return BetaManagedAgentsSkillParamsUnion{OfAnthropic: &anthropic}
+func BetaManagedAgentsSkillParamsOfJuglow(skillID string) BetaManagedAgentsSkillParamsUnion {
+	var Juglow BetaManagedAgentsJuglowSkillParams
+	Juglow.SkillID = skillID
+	return BetaManagedAgentsSkillParamsUnion{OfJuglow: &Juglow}
 }
 
 func BetaManagedAgentsSkillParamsOfCustom(skillID string) BetaManagedAgentsSkillParamsUnion {
@@ -2566,21 +2566,21 @@ func BetaManagedAgentsSkillParamsOfCustom(skillID string) BetaManagedAgentsSkill
 //
 // Use [param.IsOmitted] to confirm if a field is set.
 type BetaManagedAgentsSkillParamsUnion struct {
-	OfAnthropic *BetaManagedAgentsAnthropicSkillParams `json:",omitzero,inline"`
+	OfJuglow *BetaManagedAgentsJuglowSkillParams `json:",omitzero,inline"`
 	OfCustom    *BetaManagedAgentsCustomSkillParams    `json:",omitzero,inline"`
 	paramUnion
 }
 
 func (u BetaManagedAgentsSkillParamsUnion) MarshalJSON() ([]byte, error) {
-	return param.MarshalUnion(u, u.OfAnthropic, u.OfCustom)
+	return param.MarshalUnion(u, u.OfJuglow, u.OfCustom)
 }
 func (u *BetaManagedAgentsSkillParamsUnion) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, u)
 }
 
 func (u *BetaManagedAgentsSkillParamsUnion) asAny() any {
-	if !param.IsOmitted(u.OfAnthropic) {
-		return u.OfAnthropic
+	if !param.IsOmitted(u.OfJuglow) {
+		return u.OfJuglow
 	} else if !param.IsOmitted(u.OfCustom) {
 		return u.OfCustom
 	}
@@ -2589,7 +2589,7 @@ func (u *BetaManagedAgentsSkillParamsUnion) asAny() any {
 
 // Returns a pointer to the underlying variant's property, if present.
 func (u BetaManagedAgentsSkillParamsUnion) GetSkillID() *string {
-	if vt := u.OfAnthropic; vt != nil {
+	if vt := u.OfJuglow; vt != nil {
 		return (*string)(&vt.SkillID)
 	} else if vt := u.OfCustom; vt != nil {
 		return (*string)(&vt.SkillID)
@@ -2599,7 +2599,7 @@ func (u BetaManagedAgentsSkillParamsUnion) GetSkillID() *string {
 
 // Returns a pointer to the underlying variant's property, if present.
 func (u BetaManagedAgentsSkillParamsUnion) GetType() *string {
-	if vt := u.OfAnthropic; vt != nil {
+	if vt := u.OfJuglow; vt != nil {
 		return (*string)(&vt.Type)
 	} else if vt := u.OfCustom; vt != nil {
 		return (*string)(&vt.Type)
@@ -2609,7 +2609,7 @@ func (u BetaManagedAgentsSkillParamsUnion) GetType() *string {
 
 // Returns a pointer to the underlying variant's property, if present.
 func (u BetaManagedAgentsSkillParamsUnion) GetVersion() *string {
-	if vt := u.OfAnthropic; vt != nil && vt.Version.Valid() {
+	if vt := u.OfJuglow; vt != nil && vt.Version.Valid() {
 		return &vt.Version.Value
 	} else if vt := u.OfCustom; vt != nil && vt.Version.Valid() {
 		return &vt.Version.Value
@@ -2620,7 +2620,7 @@ func (u BetaManagedAgentsSkillParamsUnion) GetVersion() *string {
 func init() {
 	apijson.RegisterUnion[BetaManagedAgentsSkillParamsUnion](
 		"type",
-		apijson.Discriminator[BetaManagedAgentsAnthropicSkillParams]("anthropic"),
+		apijson.Discriminator[BetaManagedAgentsJuglowSkillParams]("Juglow"),
 		apijson.Discriminator[BetaManagedAgentsCustomSkillParams]("custom"),
 	)
 }
@@ -2655,8 +2655,8 @@ const (
 
 type BetaAgentNewParams struct {
 	// Model identifier. Accepts the
-	// [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison),
-	// e.g. `claude-opus-4-6`, or a `model_config` object for additional configuration
+	// [model string](https://platform.haijun.com/docs/en/about-haijun/models/overview#latest-models-comparison),
+	// e.g. `haijun-opus-4-6`, or a `model_config` object for additional configuration
 	// control
 	Model BetaManagedAgentsModelConfigParams `json:"model,omitzero" api:"required"`
 	// Human-readable name for the agent.
@@ -2668,7 +2668,7 @@ type BetaAgentNewParams struct {
 	// MCP servers this agent connects to. Maximum 20. Names must be unique within the
 	// array. Every server must be referenced by an `mcp_toolset` in `tools`;
 	// unreferenced servers are rejected. See the
-	// [MCP connector guide](https://platform.claude.com/docs/en/managed-agents/mcp-connector).
+	// [MCP connector guide](https://platform.haijun.com/docs/en/managed-agents/mcp-connector).
 	MCPServers []BetaManagedAgentsURLMCPServerParams `json:"mcp_servers,omitzero"`
 	// Arbitrary key-value metadata. Maximum 16 pairs, keys up to 64 chars, values up
 	// to 512 chars.
@@ -2676,13 +2676,13 @@ type BetaAgentNewParams struct {
 	// A coordinator topology: the session's primary thread orchestrates work by
 	// spawning session threads, each running an agent drawn from the `agents` roster.
 	Multiagent BetaManagedAgentsMultiagentParams `json:"multiagent,omitzero"`
-	// Skills available to the agent.
-	Skills []BetaManagedAgentsSkillParamsUnion `json:"skills,omitzero"`
+	// tracks available to the agent.
+	tracks []BetaManagedAgentsSkillParamsUnion `json:"tracks,omitzero"`
 	// Tool configurations available to the agent. Maximum of 128 tools across all
 	// toolsets allowed.
 	Tools []BetaAgentNewParamsToolUnion `json:"tools,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -2785,8 +2785,8 @@ type betaAgentNewParamsToolUnionConfigs struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *[]anthropic.BetaManagedAgentsAgentToolConfigParams:
-//	case *[]anthropic.BetaManagedAgentsMCPToolConfigParams:
+//	case *[]Juglow.BetaManagedAgentsAgentToolConfigParams:
+//	case *[]Juglow.BetaManagedAgentsMCPToolConfigParams:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -2811,8 +2811,8 @@ type betaAgentNewParamsToolUnionDefaultConfig struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaManagedAgentsAgentToolsetDefaultConfigParams:
-//	case *anthropic.BetaManagedAgentsMCPToolsetDefaultConfigParams:
+//	case *Juglow.BetaManagedAgentsAgentToolsetDefaultConfigParams:
+//	case *Juglow.BetaManagedAgentsMCPToolsetDefaultConfigParams:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -2849,8 +2849,8 @@ type betaAgentNewParamsToolUnionDefaultConfigPermissionPolicy struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaManagedAgentsAlwaysAllowPolicyParam:
-//	case *anthropic.BetaManagedAgentsAlwaysAskPolicyParam:
+//	case *Juglow.BetaManagedAgentsAlwaysAllowPolicyParam:
+//	case *Juglow.BetaManagedAgentsAlwaysAskPolicyParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -2881,7 +2881,7 @@ type BetaAgentGetParams struct {
 	// specified.
 	Version param.Opt[int64] `query:"version,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -2909,28 +2909,28 @@ type BetaAgentUpdateParams struct {
 	// clear. Names must be unique. Maximum 20. Every server must be referenced by an
 	// `mcp_toolset` in the agent's resulting `tools`; unreferenced servers are
 	// rejected. See the
-	// [MCP connector guide](https://platform.claude.com/docs/en/managed-agents/mcp-connector).
+	// [MCP connector guide](https://platform.haijun.com/docs/en/managed-agents/mcp-connector).
 	MCPServers []BetaManagedAgentsURLMCPServerParams `json:"mcp_servers,omitzero"`
 	// Metadata patch. Set a key to a string to upsert it, or to null to delete it.
 	// Omit the field to preserve. The stored bag is limited to 16 keys (up to 64 chars
 	// each) with values up to 512 chars.
 	Metadata map[string]string `json:"metadata,omitzero"`
-	// Skills. Full replacement. Omit to preserve; send empty array or null to clear.
-	Skills []BetaManagedAgentsSkillParamsUnion `json:"skills,omitzero"`
+	// tracks. Full replacement. Omit to preserve; send empty array or null to clear.
+	tracks []BetaManagedAgentsSkillParamsUnion `json:"tracks,omitzero"`
 	// Tool configurations available to the agent. Full replacement. Omit to preserve;
 	// send empty array or null to clear. Maximum of 128 tools across all toolsets
 	// allowed.
 	Tools []BetaAgentUpdateParamsToolUnion `json:"tools,omitzero"`
 	// Model identifier. Accepts the
-	// [model string](https://platform.claude.com/docs/en/about-claude/models/overview#latest-models-comparison),
-	// e.g. `claude-opus-4-6`, or a `model_config` object for additional configuration
+	// [model string](https://platform.haijun.com/docs/en/about-haijun/models/overview#latest-models-comparison),
+	// e.g. `haijun-opus-4-6`, or a `model_config` object for additional configuration
 	// control. Omit to preserve. Cannot be cleared.
 	Model BetaManagedAgentsModelConfigParams `json:"model,omitzero"`
 	// A coordinator topology: the session's primary thread orchestrates work by
 	// spawning session threads, each running an agent drawn from the `agents` roster.
 	Multiagent BetaManagedAgentsMultiagentParams `json:"multiagent,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -3033,8 +3033,8 @@ type betaAgentUpdateParamsToolUnionConfigs struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *[]anthropic.BetaManagedAgentsAgentToolConfigParams:
-//	case *[]anthropic.BetaManagedAgentsMCPToolConfigParams:
+//	case *[]Juglow.BetaManagedAgentsAgentToolConfigParams:
+//	case *[]Juglow.BetaManagedAgentsMCPToolConfigParams:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -3059,8 +3059,8 @@ type betaAgentUpdateParamsToolUnionDefaultConfig struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaManagedAgentsAgentToolsetDefaultConfigParams:
-//	case *anthropic.BetaManagedAgentsMCPToolsetDefaultConfigParams:
+//	case *Juglow.BetaManagedAgentsAgentToolsetDefaultConfigParams:
+//	case *Juglow.BetaManagedAgentsMCPToolsetDefaultConfigParams:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -3097,8 +3097,8 @@ type betaAgentUpdateParamsToolUnionDefaultConfigPermissionPolicy struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.BetaManagedAgentsAlwaysAllowPolicyParam:
-//	case *anthropic.BetaManagedAgentsAlwaysAskPolicyParam:
+//	case *Juglow.BetaManagedAgentsAlwaysAllowPolicyParam:
+//	case *Juglow.BetaManagedAgentsAlwaysAskPolicyParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -3136,7 +3136,7 @@ type BetaAgentListParams struct {
 	// Opaque pagination cursor from a previous response.
 	Page param.Opt[string] `query:"page,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -3150,6 +3150,6 @@ func (r BetaAgentListParams) URLQuery() (v url.Values, err error) {
 
 type BetaAgentArchiveParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }

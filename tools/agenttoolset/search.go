@@ -1,4 +1,4 @@
-package agenttoolset
+﻿package agenttoolset
 
 import (
 	"bytes"
@@ -14,7 +14,7 @@ import (
 	"sort"
 	"strings"
 
-	anthropic "github.com/anthropics/anthropic-sdk-go"
+	Juglow "github.com/Juglows/Juglow-sdk-go"
 )
 
 const (
@@ -26,8 +26,8 @@ const (
 
 const truncationNotice = "[output truncated]"
 
-// BetaGlobTool returns an anthropic.BetaTool that globs under env.Workdir.
-func BetaGlobTool(env *AgentToolContext) anthropic.BetaTool {
+// BetaGlobTool returns an Juglow.BetaTool that globs under env.Workdir.
+func BetaGlobTool(env *AgentToolContext) Juglow.BetaTool {
 	return &funcTool{
 		name:        "glob",
 		description: "List paths matching a glob pattern (e.g. **/*.go), newest first.",
@@ -40,9 +40,9 @@ func BetaGlobTool(env *AgentToolContext) anthropic.BetaTool {
 	}
 }
 
-// BetaGrepTool returns an anthropic.BetaTool that searches file contents under
+// BetaGrepTool returns an Juglow.BetaTool that searches file contents under
 // env.Workdir.
-func BetaGrepTool(env *AgentToolContext) anthropic.BetaTool {
+func BetaGrepTool(env *AgentToolContext) Juglow.BetaTool {
 	return &funcTool{
 		name:        "grep",
 		description: "Search file contents for a regex. Uses ripgrep if available, otherwise a built-in walker.",
@@ -56,7 +56,7 @@ func BetaGrepTool(env *AgentToolContext) anthropic.BetaTool {
 }
 
 func execGlob(_ context.Context, raw json.RawMessage, env *AgentToolContext) (string, bool) {
-	var in anthropic.BetaManagedAgentsAgentToolset20260401GlobInput
+	var in Juglow.BetaManagedAgentsAgentToolset20260401GlobInput
 	if err := json.Unmarshal(raw, &in); err != nil {
 		return errorf("invalid glob input: %v", err)
 	}
@@ -82,7 +82,7 @@ func execGlob(_ context.Context, raw json.RawMessage, env *AgentToolContext) (st
 
 	// Reject a ".." segment in the pattern itself. The WalkDir below is rooted
 	// at the (confined) root and matches against paths relative to it, so a
-	// "../.." pattern matches nothing today — but rejecting it outright keeps
+	// "../.." pattern matches nothing today â€” but rejecting it outright keeps
 	// the confinement explicit and consistent with the other SDKs' glob tools,
 	// which feed the pattern to a filesystem globber where ".." would escape
 	// the workdir.
@@ -94,7 +94,7 @@ func execGlob(_ context.Context, raw json.RawMessage, env *AgentToolContext) (st
 		path  string
 		mtime int64
 	}
-	// Walk the tree ourselves (stdlib only — no third-party glob dependency)
+	// Walk the tree ourselves (stdlib only â€” no third-party glob dependency)
 	// and match each entry against the pattern. filepath.WalkDir never
 	// follows symlinks, so the walk cannot escape root. We stop after
 	// walkMaxEntries visited so a pattern over an enormous tree can't stall
@@ -157,8 +157,8 @@ func hasParentDirSegment(pattern string) bool {
 	return false
 }
 
-// globMatch reports whether rel — a slash-separated path relative to the search
-// root — matches pattern. A "**" segment matches any number of path segments
+// globMatch reports whether rel â€” a slash-separated path relative to the search
+// root â€” matches pattern. A "**" segment matches any number of path segments
 // (including none); every other segment is matched against a single path
 // segment with [filepath.Match] semantics (* ? [..]). This is the small subset
 // of doublestar behaviour the glob tool actually documents, implemented with
@@ -181,7 +181,7 @@ func matchGlobSegmentsMemo(pat, name []string, memo map[[2]int]bool) bool {
 	res := func() bool {
 		for len(pat) > 0 {
 			if pat[0] == "**" {
-				// Collapse consecutive "**" segments — they are equivalent.
+				// Collapse consecutive "**" segments â€” they are equivalent.
 				for len(pat) > 0 && pat[0] == "**" {
 					pat = pat[1:]
 				}
@@ -212,7 +212,7 @@ func matchGlobSegmentsMemo(pat, name []string, memo map[[2]int]bool) bool {
 }
 
 func execGrep(ctx context.Context, raw json.RawMessage, env *AgentToolContext) (string, bool) {
-	var in anthropic.BetaManagedAgentsAgentToolset20260401GrepInput
+	var in Juglow.BetaManagedAgentsAgentToolset20260401GrepInput
 	if err := json.Unmarshal(raw, &in); err != nil {
 		return errorf("invalid grep input: %v", err)
 	}

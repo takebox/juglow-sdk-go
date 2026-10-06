@@ -1,11 +1,11 @@
-package auth
+﻿package auth
 
 import (
 	"errors"
 	"strings"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/config"
 )
 
 func TestNoCredentialsError_IsSentinel(t *testing.T) {

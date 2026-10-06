@@ -1,10 +1,10 @@
-package apijson_test
+﻿package apijson_test
 
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 	"reflect"
 	"testing"
 )

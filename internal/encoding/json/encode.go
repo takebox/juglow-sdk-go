@@ -1,4 +1,4 @@
-// Vendored from Go 1.24.0-pre-release
+﻿// Vendored from Go 1.24.0-pre-release
 // To find alterations, check package shims, and comments beginning in SHIM().
 //
 // Copyright 2010 The Go Authors. All rights reserved.
@@ -19,8 +19,8 @@ import (
 	"encoding"
 	"encoding/base64"
 	"fmt"
-	"github.com/anthropics/anthropic-sdk-go/internal/encoding/json/sentinel"
-	"github.com/anthropics/anthropic-sdk-go/internal/encoding/json/shims"
+	"github.com/Juglows/Juglow-sdk-go/internal/encoding/json/sentinel"
+	"github.com/Juglows/Juglow-sdk-go/internal/encoding/json/shims"
 	"math"
 	"reflect"
 	"slices"

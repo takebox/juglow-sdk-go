@@ -1,15 +1,15 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestUsage(t *testing.T) {
@@ -20,21 +20,21 @@ func TestUsage(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
+	message, err := client.Messages.New(context.TODO(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{{
-			Content: []anthropic.ContentBlockParamUnion{{
-				OfText: &anthropic.TextBlockParam{
+		Messages: []Juglow.MessageParam{{
+			Content: []Juglow.ContentBlockParamUnion{{
+				OfText: &Juglow.TextBlockParam{
 					Text: "x",
 				},
 			}},
-			Role: anthropic.MessageParamRoleUser,
+			Role: Juglow.MessageParamRoleUser,
 		}},
-		Model: anthropic.ModelClaudeSonnet5,
+		Model: Juglow.ModelHaijunSonnet5,
 	})
 	if err != nil {
 		t.Fatalf("err should be nil: %s", err.Error())

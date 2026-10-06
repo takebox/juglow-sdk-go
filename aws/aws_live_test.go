@@ -1,29 +1,29 @@
-package aws_test
+﻿package aws_test
 
 import (
 	"context"
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/aws"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/aws"
 )
 
-// Live integration tests for the AWS gateway client. Skipped unless ANTHROPIC_LIVE=1.
+// Live integration tests for the AWS gateway client. Skipped unless Juglow_LIVE=1.
 //
 // Required env vars vary by auth mode:
 //
-//	API key mode:  ANTHROPIC_AWS_API_KEY, ANTHROPIC_AWS_WORKSPACE_ID, AWS_REGION
+//	API key mode:  Juglow_AWS_API_KEY, Juglow_AWS_WORKSPACE_ID, AWS_REGION
 //
 //	SigV4 mode:    AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION,
-//	               ANTHROPIC_AWS_WORKSPACE_ID
+//	               Juglow_AWS_WORKSPACE_ID
 //
-// Run: ANTHROPIC_LIVE=1 go test ./aws/... -run TestLiveAWS -v
+// Run: Juglow_LIVE=1 go test ./aws/... -run TestLiveAWS -v
 
 func skipUnlessLive(t *testing.T) {
 	t.Helper()
-	if os.Getenv("ANTHROPIC_LIVE") != "1" {
-		t.Skip("set ANTHROPIC_LIVE=1 to run live integration tests")
+	if os.Getenv("Juglow_LIVE") != "1" {
+		t.Skip("set Juglow_LIVE=1 to run live integration tests")
 	}
 }
 
@@ -37,20 +37,20 @@ func requireEnv(t *testing.T, names ...string) {
 }
 
 func liveModel() string {
-	if m := os.Getenv("ANTHROPIC_LIVE_MODEL"); m != "" {
+	if m := os.Getenv("Juglow_LIVE_MODEL"); m != "" {
 		return m
 	}
-	return "claude-sonnet-4-6"
+	return "haijun-sonnet-4-6"
 }
 
 func sendAWSMessage(t *testing.T, client *aws.Client) {
 	t.Helper()
 
-	message, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+	message, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
 		Model:     liveModel(),
 		MaxTokens: 32,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock("Say exactly: hello")),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock("Say exactly: hello")),
 		},
 	})
 	if err != nil {
@@ -64,7 +64,7 @@ func sendAWSMessage(t *testing.T, client *aws.Client) {
 
 func TestLiveAWSAPIKey(t *testing.T) {
 	skipUnlessLive(t)
-	requireEnv(t, "ANTHROPIC_AWS_API_KEY", "ANTHROPIC_AWS_WORKSPACE_ID", "AWS_REGION")
+	requireEnv(t, "Juglow_AWS_API_KEY", "Juglow_AWS_WORKSPACE_ID", "AWS_REGION")
 
 	client, err := aws.NewClient(context.Background(), aws.ClientConfig{})
 	if err != nil {
@@ -76,10 +76,10 @@ func TestLiveAWSAPIKey(t *testing.T) {
 
 func TestLiveAWSSigV4ExplicitCreds(t *testing.T) {
 	skipUnlessLive(t)
-	requireEnv(t, "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_REGION", "ANTHROPIC_AWS_WORKSPACE_ID")
+	requireEnv(t, "AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_REGION", "Juglow_AWS_WORKSPACE_ID")
 
 	// Clear API key so SigV4 is used
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	client, err := aws.NewClient(context.Background(), aws.ClientConfig{
 		AWSAccessKey:       os.Getenv("AWS_ACCESS_KEY_ID"),
@@ -95,10 +95,10 @@ func TestLiveAWSSigV4ExplicitCreds(t *testing.T) {
 
 func TestLiveAWSSigV4DefaultChain(t *testing.T) {
 	skipUnlessLive(t)
-	requireEnv(t, "AWS_REGION", "ANTHROPIC_AWS_WORKSPACE_ID")
+	requireEnv(t, "AWS_REGION", "Juglow_AWS_WORKSPACE_ID")
 
 	// Clear all API key env vars so the default AWS credential chain is used
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	client, err := aws.NewClient(context.Background(), aws.ClientConfig{})
 	if err != nil {
@@ -110,10 +110,10 @@ func TestLiveAWSSigV4DefaultChain(t *testing.T) {
 
 func TestLiveAWSSigV4ProfileFromCredentialsFile(t *testing.T) {
 	skipUnlessLive(t)
-	requireEnv(t, "AWS_REGION", "ANTHROPIC_AWS_WORKSPACE_ID", "AWS_PROFILE")
+	requireEnv(t, "AWS_REGION", "Juglow_AWS_WORKSPACE_ID", "AWS_PROFILE")
 
 	// Clear explicit creds and API keys so the SDK must resolve from ~/.aws/credentials
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 	t.Setenv("AWS_ACCESS_KEY_ID", "")
 	t.Setenv("AWS_SECRET_ACCESS_KEY", "")
 	t.Setenv("AWS_SESSION_TOKEN", "")

@@ -1,4 +1,4 @@
-package agenttoolset
+﻿package agenttoolset
 
 import (
 	"context"
@@ -6,12 +6,12 @@ import (
 	"strings"
 	"testing"
 
-	anthropic "github.com/anthropics/anthropic-sdk-go"
+	Juglow "github.com/Juglows/Juglow-sdk-go"
 )
 
 // runTool executes a BetaTool the way a session/Messages tool runner would and
-// flattens the outcome to (text, isError) — the shape the tests assert on.
-func runTool(t *testing.T, tool anthropic.BetaTool, raw json.RawMessage) (string, bool) {
+// flattens the outcome to (text, isError) â€” the shape the tests assert on.
+func runTool(t *testing.T, tool Juglow.BetaTool, raw json.RawMessage) (string, bool) {
 	t.Helper()
 	out, err := tool.Execute(context.Background(), raw)
 	if err != nil {

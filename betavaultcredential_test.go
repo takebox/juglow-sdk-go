@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBetaVaultCredentialNewWithOptionalParams(t *testing.T) {
@@ -22,30 +22,30 @@ func TestBetaVaultCredentialNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Vaults.Credentials.New(
 		context.TODO(),
 		"vlt_011CZkZDLs7fYzm1hXNPeRjv",
-		anthropic.BetaVaultCredentialNewParams{
-			Auth: anthropic.BetaVaultCredentialNewParamsAuthUnion{
-				OfStaticBearer: &anthropic.BetaManagedAgentsStaticBearerCreateParams{
+		Juglow.BetaVaultCredentialNewParams{
+			Auth: Juglow.BetaVaultCredentialNewParamsAuthUnion{
+				OfStaticBearer: &Juglow.BetaManagedAgentsStaticBearerCreateParams{
 					Token:        "bearer_exampletoken",
 					MCPServerURL: "https://example-server.modelcontextprotocol.io/sse",
-					Type:         anthropic.BetaManagedAgentsStaticBearerCreateParamsTypeStaticBearer,
+					Type:         Juglow.BetaManagedAgentsStaticBearerCreateParamsTypeStaticBearer,
 				},
 			},
-			DisplayName: anthropic.String("Example credential"),
+			DisplayName: Juglow.String("Example credential"),
 			Metadata: map[string]string{
 				"environment": "production",
 			},
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -61,20 +61,20 @@ func TestBetaVaultCredentialGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Vaults.Credentials.Get(
 		context.TODO(),
 		"vcrd_011CZkZEMt8gZan2iYOQfSkw",
-		anthropic.BetaVaultCredentialGetParams{
+		Juglow.BetaVaultCredentialGetParams{
 			VaultID: "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-			Betas:   []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -90,41 +90,41 @@ func TestBetaVaultCredentialUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Vaults.Credentials.Update(
 		context.TODO(),
 		"vcrd_011CZkZEMt8gZan2iYOQfSkw",
-		anthropic.BetaVaultCredentialUpdateParams{
+		Juglow.BetaVaultCredentialUpdateParams{
 			VaultID: "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-			Auth: anthropic.BetaVaultCredentialUpdateParamsAuthUnion{
-				OfMCPOAuth: &anthropic.BetaManagedAgentsMCPOAuthUpdateParams{
-					Type:        anthropic.BetaManagedAgentsMCPOAuthUpdateParamsTypeMCPOAuth,
-					AccessToken: anthropic.String("x"),
-					ExpiresAt:   anthropic.Time(time.Now()),
-					Refresh: anthropic.BetaManagedAgentsMCPOAuthRefreshUpdateParams{
-						RefreshToken: anthropic.String("x"),
-						Scope:        anthropic.String("scope"),
-						TokenEndpointAuth: anthropic.BetaManagedAgentsMCPOAuthRefreshUpdateParamsTokenEndpointAuthUnion{
-							OfClientSecretBasic: &anthropic.BetaManagedAgentsTokenEndpointAuthBasicUpdateParam{
-								Type:         anthropic.BetaManagedAgentsTokenEndpointAuthBasicUpdateParamTypeClientSecretBasic,
-								ClientSecret: anthropic.String("x"),
+			Auth: Juglow.BetaVaultCredentialUpdateParamsAuthUnion{
+				OfMCPOAuth: &Juglow.BetaManagedAgentsMCPOAuthUpdateParams{
+					Type:        Juglow.BetaManagedAgentsMCPOAuthUpdateParamsTypeMCPOAuth,
+					AccessToken: Juglow.String("x"),
+					ExpiresAt:   Juglow.Time(time.Now()),
+					Refresh: Juglow.BetaManagedAgentsMCPOAuthRefreshUpdateParams{
+						RefreshToken: Juglow.String("x"),
+						Scope:        Juglow.String("scope"),
+						TokenEndpointAuth: Juglow.BetaManagedAgentsMCPOAuthRefreshUpdateParamsTokenEndpointAuthUnion{
+							OfClientSecretBasic: &Juglow.BetaManagedAgentsTokenEndpointAuthBasicUpdateParam{
+								Type:         Juglow.BetaManagedAgentsTokenEndpointAuthBasicUpdateParamTypeClientSecretBasic,
+								ClientSecret: Juglow.String("x"),
 							},
 						},
 					},
 				},
 			},
-			DisplayName: anthropic.String("Example credential"),
+			DisplayName: Juglow.String("Example credential"),
 			Metadata: map[string]string{
 				"environment": "production",
 			},
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -141,22 +141,22 @@ func TestBetaVaultCredentialListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Vaults.Credentials.List(
 		context.TODO(),
 		"vlt_011CZkZDLs7fYzm1hXNPeRjv",
-		anthropic.BetaVaultCredentialListParams{
-			IncludeArchived: anthropic.Bool(true),
-			Limit:           anthropic.Int(0),
-			Page:            anthropic.String("page"),
-			Betas:           []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaVaultCredentialListParams{
+			IncludeArchived: Juglow.Bool(true),
+			Limit:           Juglow.Int(0),
+			Page:            Juglow.String("page"),
+			Betas:           []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -172,20 +172,20 @@ func TestBetaVaultCredentialDeleteWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Vaults.Credentials.Delete(
 		context.TODO(),
 		"vcrd_011CZkZEMt8gZan2iYOQfSkw",
-		anthropic.BetaVaultCredentialDeleteParams{
+		Juglow.BetaVaultCredentialDeleteParams{
 			VaultID: "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-			Betas:   []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -201,20 +201,20 @@ func TestBetaVaultCredentialArchiveWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Vaults.Credentials.Archive(
 		context.TODO(),
 		"vcrd_011CZkZEMt8gZan2iYOQfSkw",
-		anthropic.BetaVaultCredentialArchiveParams{
+		Juglow.BetaVaultCredentialArchiveParams{
 			VaultID: "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-			Betas:   []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -231,20 +231,20 @@ func TestBetaVaultCredentialMCPOAuthValidateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Vaults.Credentials.MCPOAuthValidate(
 		context.TODO(),
 		"vcrd_011CZkZEMt8gZan2iYOQfSkw",
-		anthropic.BetaVaultCredentialMCPOAuthValidateParams{
+		Juglow.BetaVaultCredentialMCPOAuthValidateParams{
 			VaultID: "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-			Betas:   []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -8,10 +8,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 func TestBetaMessageBatchNewWithOptionalParams(t *testing.T) {
@@ -22,105 +22,105 @@ func TestBetaMessageBatchNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Messages.Batches.New(context.TODO(), anthropic.BetaMessageBatchNewParams{
-		Requests: []anthropic.BetaMessageBatchNewParamsRequest{{
+	_, err := client.Beta.Messages.Batches.New(context.TODO(), Juglow.BetaMessageBatchNewParams{
+		Requests: []Juglow.BetaMessageBatchNewParamsRequest{{
 			CustomID: "my-custom-id-1",
-			Params: anthropic.BetaMessageBatchNewParamsRequestParams{
+			Params: Juglow.BetaMessageBatchNewParamsRequestParams{
 				MaxTokens: 1024,
-				Messages: []anthropic.BetaMessageParam{{
-					Content: []anthropic.BetaContentBlockParamUnion{{
-						OfText: &anthropic.BetaTextBlockParam{
+				Messages: []Juglow.BetaMessageParam{{
+					Content: []Juglow.BetaContentBlockParamUnion{{
+						OfText: &Juglow.BetaTextBlockParam{
 							Text: "x",
-							CacheControl: anthropic.BetaCacheControlEphemeralParam{
-								TTL: anthropic.BetaCacheControlEphemeralTTLTTL5m,
+							CacheControl: Juglow.BetaCacheControlEphemeralParam{
+								TTL: Juglow.BetaCacheControlEphemeralTTLTTL5m,
 							},
-							Citations: []anthropic.BetaTextCitationParamUnion{{
-								OfCharLocation: &anthropic.BetaCitationCharLocationParam{
+							Citations: []Juglow.BetaTextCitationParamUnion{{
+								OfCharLocation: &Juglow.BetaCitationCharLocationParam{
 									CitedText:      "The grass is green. The sky is blue.",
 									DocumentIndex:  0,
-									DocumentTitle:  anthropic.String("x"),
+									DocumentTitle:  Juglow.String("x"),
 									EndCharIndex:   0,
 									StartCharIndex: 0,
 								},
 							}},
 						},
 					}},
-					Role: anthropic.BetaMessageParamRoleUser,
+					Role: Juglow.BetaMessageParamRoleUser,
 				}},
-				Model: anthropic.ModelClaudeOpus4_6,
-				CacheControl: anthropic.BetaCacheControlEphemeralParam{
-					TTL: anthropic.BetaCacheControlEphemeralTTLTTL5m,
+				Model: Juglow.ModelHaijunOpus4_6,
+				CacheControl: Juglow.BetaCacheControlEphemeralParam{
+					TTL: Juglow.BetaCacheControlEphemeralTTLTTL5m,
 				},
-				Container: anthropic.BetaMessageBatchNewParamsRequestParamsContainerUnion{
-					OfContainers: &anthropic.BetaContainerParams{
-						ID: anthropic.String("id"),
-						Skills: []anthropic.BetaSkillParams{{
+				Container: Juglow.BetaMessageBatchNewParamsRequestParamsContainerUnion{
+					OfContainers: &Juglow.BetaContainerParams{
+						ID: Juglow.String("id"),
+						tracks: []Juglow.BetaSkillParams{{
 							SkillID: "pdf",
-							Type:    anthropic.BetaSkillParamsTypeAnthropic,
-							Version: anthropic.String("latest"),
+							Type:    Juglow.BetaSkillParamsTypeJuglow,
+							Version: Juglow.String("latest"),
 						}},
 					},
 				},
-				ContextManagement: anthropic.BetaContextManagementConfigParam{
-					Edits: []anthropic.BetaContextManagementConfigEditUnionParam{{
-						OfClearToolUses20250919: &anthropic.BetaClearToolUses20250919EditParam{
-							ClearAtLeast: anthropic.BetaInputTokensClearAtLeastParam{
+				ContextManagement: Juglow.BetaContextManagementConfigParam{
+					Edits: []Juglow.BetaContextManagementConfigEditUnionParam{{
+						OfClearToolUses20250919: &Juglow.BetaClearToolUses20250919EditParam{
+							ClearAtLeast: Juglow.BetaInputTokensClearAtLeastParam{
 								Value: 0,
 							},
-							ClearToolInputs: anthropic.BetaClearToolUses20250919EditClearToolInputsUnionParam{
-								OfBool: anthropic.Bool(true),
+							ClearToolInputs: Juglow.BetaClearToolUses20250919EditClearToolInputsUnionParam{
+								OfBool: Juglow.Bool(true),
 							},
 							ExcludeTools: []string{"string"},
-							Keep: anthropic.BetaToolUsesKeepParam{
+							Keep: Juglow.BetaToolUsesKeepParam{
 								Value: 0,
 							},
-							Trigger: anthropic.BetaClearToolUses20250919EditTriggerUnionParam{
-								OfInputTokens: &anthropic.BetaInputTokensTriggerParam{
+							Trigger: Juglow.BetaClearToolUses20250919EditTriggerUnionParam{
+								OfInputTokens: &Juglow.BetaInputTokensTriggerParam{
 									Value: 1,
 								},
 							},
 						},
 					}},
 				},
-				Diagnostics: anthropic.BetaDiagnosticsParam{
-					PreviousMessageID: anthropic.String("previous_message_id"),
+				Diagnostics: Juglow.BetaDiagnosticsParam{
+					PreviousMessageID: Juglow.String("previous_message_id"),
 				},
-				FallbackCreditToken: anthropic.BetaMessageBatchNewParamsRequestParamsFallbackCreditTokenUnion{
-					OfString: anthropic.String("x"),
+				FallbackCreditToken: Juglow.BetaMessageBatchNewParamsRequestParamsFallbackCreditTokenUnion{
+					OfString: Juglow.String("x"),
 				},
-				Fallbacks: anthropic.BetaFallbacksParamUnion{
+				Fallbacks: Juglow.BetaFallbacksParamUnion{
 					OfDefault: constant.ValueOf[constant.Default](),
 				},
-				InferenceGeo: anthropic.String("inference_geo"),
-				MCPServers: []anthropic.BetaRequestMCPServerURLDefinitionParam{{
+				InferenceGeo: Juglow.String("inference_geo"),
+				MCPServers: []Juglow.BetaRequestMCPServerURLDefinitionParam{{
 					Name:               "name",
 					URL:                "url",
-					AuthorizationToken: anthropic.String("authorization_token"),
-					ToolConfiguration: anthropic.BetaRequestMCPServerToolConfigurationParam{
+					AuthorizationToken: Juglow.String("authorization_token"),
+					ToolConfiguration: Juglow.BetaRequestMCPServerToolConfigurationParam{
 						AllowedTools: []string{"string"},
-						Enabled:      anthropic.Bool(true),
+						Enabled:      Juglow.Bool(true),
 					},
 				}},
-				Metadata: anthropic.BetaMetadataParam{
-					UserID: anthropic.String("13803d75-b4b5-4c3e-b2a2-6f21399b021b"),
+				Metadata: Juglow.BetaMetadataParam{
+					UserID: Juglow.String("13803d75-b4b5-4c3e-b2a2-6f21399b021b"),
 				},
-				OutputConfig: anthropic.BetaOutputConfigParam{
-					Effort: anthropic.BetaOutputConfigEffortLow,
-					Format: anthropic.BetaJSONOutputFormatParam{
+				OutputConfig: Juglow.BetaOutputConfigParam{
+					Effort: Juglow.BetaOutputConfigEffortLow,
+					Format: Juglow.BetaJSONOutputFormatParam{
 						Schema: map[string]any{
 							"foo": "bar",
 						},
 					},
-					TaskBudget: anthropic.BetaTokenTaskBudgetParam{
+					TaskBudget: Juglow.BetaTokenTaskBudgetParam{
 						Total:     1024,
-						Remaining: anthropic.Int(0),
+						Remaining: Juglow.Int(0),
 					},
 				},
-				OutputFormat: anthropic.BetaJSONOutputFormatParam{
+				OutputFormat: Juglow.BetaJSONOutputFormatParam{
 					Schema: map[string]any{
 						"foo": "bar",
 					},
@@ -128,36 +128,36 @@ func TestBetaMessageBatchNewWithOptionalParams(t *testing.T) {
 				ServiceTier:   "auto",
 				Speed:         "standard",
 				StopSequences: []string{"string"},
-				Stream:        anthropic.Bool(false),
-				System: []anthropic.BetaTextBlockParam{{
+				Stream:        Juglow.Bool(false),
+				System: []Juglow.BetaTextBlockParam{{
 					Text: "Today's date is 2024-06-01.",
-					CacheControl: anthropic.BetaCacheControlEphemeralParam{
-						TTL: anthropic.BetaCacheControlEphemeralTTLTTL5m,
+					CacheControl: Juglow.BetaCacheControlEphemeralParam{
+						TTL: Juglow.BetaCacheControlEphemeralTTLTTL5m,
 					},
-					Citations: []anthropic.BetaTextCitationParamUnion{{
-						OfCharLocation: &anthropic.BetaCitationCharLocationParam{
+					Citations: []Juglow.BetaTextCitationParamUnion{{
+						OfCharLocation: &Juglow.BetaCitationCharLocationParam{
 							CitedText:      "The grass is green. The sky is blue.",
 							DocumentIndex:  0,
-							DocumentTitle:  anthropic.String("x"),
+							DocumentTitle:  Juglow.String("x"),
 							EndCharIndex:   0,
 							StartCharIndex: 0,
 						},
 					}},
 				}},
-				Temperature: anthropic.Float(1),
-				Thinking: anthropic.BetaThinkingConfigParamUnion{
-					OfAdaptive: &anthropic.BetaThinkingConfigAdaptiveParam{
-						Display: anthropic.BetaThinkingConfigAdaptiveDisplaySummarized,
+				Temperature: Juglow.Float(1),
+				Thinking: Juglow.BetaThinkingConfigParamUnion{
+					OfAdaptive: &Juglow.BetaThinkingConfigAdaptiveParam{
+						Display: Juglow.BetaThinkingConfigAdaptiveDisplaySummarized,
 					},
 				},
-				ToolChoice: anthropic.BetaToolChoiceUnionParam{
-					OfAuto: &anthropic.BetaToolChoiceAutoParam{
-						DisableParallelToolUse: anthropic.Bool(true),
+				ToolChoice: Juglow.BetaToolChoiceUnionParam{
+					OfAuto: &Juglow.BetaToolChoiceAutoParam{
+						DisableParallelToolUse: Juglow.Bool(true),
 					},
 				},
-				Tools: []anthropic.BetaToolUnionParam{{
-					OfTool: &anthropic.BetaToolParam{
-						InputSchema: anthropic.BetaToolInputSchemaParam{
+				Tools: []Juglow.BetaToolUnionParam{{
+					OfTool: &Juglow.BetaToolParam{
+						InputSchema: Juglow.BetaToolInputSchemaParam{
 							Properties: map[string]any{
 								"location": "bar",
 								"unit":     "bar",
@@ -166,28 +166,28 @@ func TestBetaMessageBatchNewWithOptionalParams(t *testing.T) {
 						},
 						Name:           "name",
 						AllowedCallers: []string{"direct"},
-						CacheControl: anthropic.BetaCacheControlEphemeralParam{
-							TTL: anthropic.BetaCacheControlEphemeralTTLTTL5m,
+						CacheControl: Juglow.BetaCacheControlEphemeralParam{
+							TTL: Juglow.BetaCacheControlEphemeralTTLTTL5m,
 						},
-						DeferLoading:        anthropic.Bool(true),
-						Description:         anthropic.String("Get the current weather in a given location"),
-						EagerInputStreaming: anthropic.Bool(true),
+						DeferLoading:        Juglow.Bool(true),
+						Description:         Juglow.String("Get the current weather in a given location"),
+						EagerInputStreaming: Juglow.Bool(true),
 						InputExamples: []map[string]any{{
 							"foo": "bar",
 						}},
-						Strict: anthropic.Bool(true),
-						Type:   anthropic.BetaToolTypeCustom,
+						Strict: Juglow.Bool(true),
+						Type:   Juglow.BetaToolTypeCustom,
 					},
 				}},
-				TopK: anthropic.Int(5),
-				TopP: anthropic.Float(0.7),
+				TopK: Juglow.Int(5),
+				TopP: Juglow.Float(0.7),
 			},
 		}},
-		Betas:         []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
-		UserProfileID: anthropic.String("anthropic-user-profile-id"),
+		Betas:         []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
+		UserProfileID: Juglow.String("Juglow-user-profile-id"),
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -203,19 +203,19 @@ func TestBetaMessageBatchGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Messages.Batches.Get(
 		context.TODO(),
 		"message_batch_id",
-		anthropic.BetaMessageBatchGetParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaMessageBatchGetParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -231,18 +231,18 @@ func TestBetaMessageBatchListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Messages.Batches.List(context.TODO(), anthropic.BetaMessageBatchListParams{
-		AfterID:  anthropic.String("after_id"),
-		BeforeID: anthropic.String("before_id"),
-		Limit:    anthropic.Int(1),
-		Betas:    []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+	_, err := client.Beta.Messages.Batches.List(context.TODO(), Juglow.BetaMessageBatchListParams{
+		AfterID:  Juglow.String("after_id"),
+		BeforeID: Juglow.String("before_id"),
+		Limit:    Juglow.Int(1),
+		Betas:    []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -258,19 +258,19 @@ func TestBetaMessageBatchDeleteWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Messages.Batches.Delete(
 		context.TODO(),
 		"message_batch_id",
-		anthropic.BetaMessageBatchDeleteParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaMessageBatchDeleteParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -286,19 +286,19 @@ func TestBetaMessageBatchCancelWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Messages.Batches.Cancel(
 		context.TODO(),
 		"message_batch_id",
-		anthropic.BetaMessageBatchCancelParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaMessageBatchCancelParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

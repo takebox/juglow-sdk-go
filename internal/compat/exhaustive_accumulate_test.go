@@ -1,11 +1,11 @@
-package compat
+﻿package compat
 
 import (
 	"reflect"
 	"sort"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go"
 )
 
 // TestAccumulateExhaustive fails when the generated code gains a stream-event or
@@ -26,10 +26,10 @@ func TestAccumulateExhaustive(t *testing.T) {
 		union   any
 		handled []string
 	}{
-		{"events", anthropic.MessageStreamEventUnion{}, events},
-		{"deltas", anthropic.RawContentBlockDeltaUnion{}, deltas},
-		{"beta events", anthropic.BetaRawMessageStreamEventUnion{}, events},
-		{"beta deltas", anthropic.BetaRawContentBlockDeltaUnion{}, append([]string{"compaction_delta"}, deltas...)},
+		{"events", Juglow.MessageStreamEventUnion{}, events},
+		{"deltas", Juglow.RawContentBlockDeltaUnion{}, deltas},
+		{"beta events", Juglow.BetaRawMessageStreamEventUnion{}, events},
+		{"beta deltas", Juglow.BetaRawContentBlockDeltaUnion{}, append([]string{"compaction_delta"}, deltas...)},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			generated := variants(t, tt.union)

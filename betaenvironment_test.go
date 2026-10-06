@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBetaEnvironmentNewWithOptionalParams(t *testing.T) {
@@ -21,41 +21,41 @@ func TestBetaEnvironmentNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Environments.New(context.TODO(), anthropic.BetaEnvironmentNewParams{
+	_, err := client.Beta.Environments.New(context.TODO(), Juglow.BetaEnvironmentNewParams{
 		Name: "python-data-analysis",
-		Config: anthropic.BetaEnvironmentNewParamsConfigUnion{
-			OfCloud: &anthropic.BetaCloudConfigParams{
-				Networking: anthropic.BetaCloudConfigParamsNetworkingUnion{
-					OfLimited: &anthropic.BetaLimitedNetworkParams{
-						AllowMCPServers:      anthropic.Bool(true),
-						AllowPackageManagers: anthropic.Bool(true),
+		Config: Juglow.BetaEnvironmentNewParamsConfigUnion{
+			OfCloud: &Juglow.BetaCloudConfigParams{
+				Networking: Juglow.BetaCloudConfigParamsNetworkingUnion{
+					OfLimited: &Juglow.BetaLimitedNetworkParams{
+						AllowMCPServers:      Juglow.Bool(true),
+						AllowPackageManagers: Juglow.Bool(true),
 						AllowedHosts:         []string{"api.example.com"},
 					},
 				},
-				Packages: anthropic.BetaPackagesParams{
+				Packages: Juglow.BetaPackagesParams{
 					Apt:   []string{"string"},
 					Cargo: []string{"string"},
 					Gem:   []string{"string"},
 					Go:    []string{"string"},
 					Npm:   []string{"string"},
 					Pip:   []string{"pandas", "numpy"},
-					Type:  anthropic.BetaPackagesParamsTypePackages,
+					Type:  Juglow.BetaPackagesParamsTypePackages,
 				},
 			},
 		},
-		Description: anthropic.String("Python environment with data-analysis packages."),
+		Description: Juglow.String("Python environment with data-analysis packages."),
 		Metadata: map[string]string{
 			"foo": "string",
 		},
-		Scope: anthropic.BetaEnvironmentNewParamsScopeOrganization,
-		Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Scope: Juglow.BetaEnvironmentNewParamsScopeOrganization,
+		Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -71,19 +71,19 @@ func TestBetaEnvironmentGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Environments.Get(
 		context.TODO(),
 		"env_011CZkZ9X2dpNyB7HsEFoRfW",
-		anthropic.BetaEnvironmentGetParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaEnvironmentGetParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -99,45 +99,45 @@ func TestBetaEnvironmentUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Environments.Update(
 		context.TODO(),
 		"env_011CZkZ9X2dpNyB7HsEFoRfW",
-		anthropic.BetaEnvironmentUpdateParams{
-			Config: anthropic.BetaEnvironmentUpdateParamsConfigUnion{
-				OfCloud: &anthropic.BetaCloudConfigParams{
-					Networking: anthropic.BetaCloudConfigParamsNetworkingUnion{
-						OfLimited: &anthropic.BetaLimitedNetworkParams{
-							AllowMCPServers:      anthropic.Bool(true),
-							AllowPackageManagers: anthropic.Bool(true),
+		Juglow.BetaEnvironmentUpdateParams{
+			Config: Juglow.BetaEnvironmentUpdateParamsConfigUnion{
+				OfCloud: &Juglow.BetaCloudConfigParams{
+					Networking: Juglow.BetaCloudConfigParamsNetworkingUnion{
+						OfLimited: &Juglow.BetaLimitedNetworkParams{
+							AllowMCPServers:      Juglow.Bool(true),
+							AllowPackageManagers: Juglow.Bool(true),
 							AllowedHosts:         []string{"api.example.com"},
 						},
 					},
-					Packages: anthropic.BetaPackagesParams{
+					Packages: Juglow.BetaPackagesParams{
 						Apt:   []string{"string"},
 						Cargo: []string{"string"},
 						Gem:   []string{"string"},
 						Go:    []string{"string"},
 						Npm:   []string{"string"},
 						Pip:   []string{"pandas", "numpy"},
-						Type:  anthropic.BetaPackagesParamsTypePackages,
+						Type:  Juglow.BetaPackagesParamsTypePackages,
 					},
 				},
 			},
-			Description: anthropic.String("Python environment with data-analysis packages."),
+			Description: Juglow.String("Python environment with data-analysis packages."),
 			Metadata: map[string]string{
 				"foo": "string",
 			},
-			Name:  anthropic.String("x"),
-			Scope: anthropic.BetaEnvironmentUpdateParamsScopeOrganization,
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Name:  Juglow.String("x"),
+			Scope: Juglow.BetaEnvironmentUpdateParamsScopeOrganization,
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -153,18 +153,18 @@ func TestBetaEnvironmentListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Environments.List(context.TODO(), anthropic.BetaEnvironmentListParams{
-		IncludeArchived: anthropic.Bool(true),
-		Limit:           anthropic.Int(1),
-		Page:            anthropic.String("page"),
-		Betas:           []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+	_, err := client.Beta.Environments.List(context.TODO(), Juglow.BetaEnvironmentListParams{
+		IncludeArchived: Juglow.Bool(true),
+		Limit:           Juglow.Int(1),
+		Page:            Juglow.String("page"),
+		Betas:           []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -180,19 +180,19 @@ func TestBetaEnvironmentDeleteWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Environments.Delete(
 		context.TODO(),
 		"env_011CZkZ9X2dpNyB7HsEFoRfW",
-		anthropic.BetaEnvironmentDeleteParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaEnvironmentDeleteParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -208,19 +208,19 @@ func TestBetaEnvironmentArchiveWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Environments.Archive(
 		context.TODO(),
 		"env_011CZkZ9X2dpNyB7HsEFoRfW",
-		anthropic.BetaEnvironmentArchiveParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaEnvironmentArchiveParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

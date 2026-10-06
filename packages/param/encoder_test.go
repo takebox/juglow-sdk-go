@@ -1,4 +1,4 @@
-package param_test
+﻿package param_test
 
 import (
 	"bytes"
@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	shimjson "github.com/anthropics/anthropic-sdk-go/internal/encoding/json"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	shimjson "github.com/Juglows/Juglow-sdk-go/internal/encoding/json"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 )
 
 type Struct struct {

@@ -1,8 +1,8 @@
-// EDIT(begin): custom time marshaler
+﻿// EDIT(begin): custom time marshaler
 package json
 
 import (
-	"github.com/anthropics/anthropic-sdk-go/internal/encoding/json/shims"
+	"github.com/Juglows/Juglow-sdk-go/internal/encoding/json/shims"
 	"reflect"
 	"time"
 )

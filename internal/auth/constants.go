@@ -1,9 +1,9 @@
-package auth
+﻿package auth
 
 import (
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/config"
 )
 
 // OAuth wire-contract constants live in the public config package so the
@@ -29,10 +29,10 @@ const (
 	AdvisoryRefreshThreshold  = 120 * time.Second
 	MandatoryRefreshThreshold = 30 * time.Second
 
-	EnvIdentityToken     = "ANTHROPIC_IDENTITY_TOKEN"
-	EnvIdentityTokenFile = "ANTHROPIC_IDENTITY_TOKEN_FILE"
-	EnvFederationRuleID  = "ANTHROPIC_FEDERATION_RULE_ID"
-	EnvOrganizationID    = "ANTHROPIC_ORGANIZATION_ID"
-	EnvServiceAccountID  = "ANTHROPIC_SERVICE_ACCOUNT_ID"
-	EnvWorkspaceID       = "ANTHROPIC_WORKSPACE_ID"
+	EnvIdentityToken     = "Juglow_IDENTITY_TOKEN"
+	EnvIdentityTokenFile = "Juglow_IDENTITY_TOKEN_FILE"
+	EnvFederationRuleID  = "Juglow_FEDERATION_RULE_ID"
+	EnvOrganizationID    = "Juglow_ORGANIZATION_ID"
+	EnvServiceAccountID  = "Juglow_SERVICE_ACCOUNT_ID"
+	EnvWorkspaceID       = "Juglow_WORKSPACE_ID"
 )

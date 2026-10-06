@@ -1,4 +1,4 @@
-package betafallback_test
+﻿package betafallback_test
 
 import (
 	"context"
@@ -8,39 +8,39 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/lib/betafallback"
-	"github.com/anthropics/anthropic-sdk-go/toolrunner"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/lib/betafallback"
+	"github.com/Juglows/Juglow-sdk-go/toolrunner"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
 // Composition tests: the tool runner drives the conversation loop while the
 // fallback middleware handles refusals underneath it. The runner must never
-// see a refusal — only the served (possibly spliced) message — and the turns
+// see a refusal â€” only the served (possibly spliced) message â€” and the turns
 // it echoes back must be valid on the wire.
 
 type echoInput struct {
 	Text string `json:"text" jsonschema:"required,description=Text to echo"`
 }
 
-func echoTool(t *testing.T) anthropic.BetaTool {
+func echoTool(t *testing.T) Juglow.BetaTool {
 	tool, err := toolrunner.NewBetaToolFromJSONSchema("echo", "Echoes text",
-		func(ctx context.Context, in echoInput) (anthropic.BetaToolResultBlockParamContentUnion, error) {
-			return anthropic.BetaToolResultBlockParamContentUnion{
-				OfText: &anthropic.BetaTextBlockParam{Text: in.Text},
+		func(ctx context.Context, in echoInput) (Juglow.BetaToolResultBlockParamContentUnion, error) {
+			return Juglow.BetaToolResultBlockParamContentUnion{
+				OfText: &Juglow.BetaTextBlockParam{Text: in.Text},
 			}, nil
 		})
 	require.NoError(t, err)
 	return tool
 }
 
-func recordingEchoTool(t *testing.T, calls *[]string) anthropic.BetaTool {
+func recordingEchoTool(t *testing.T, calls *[]string) Juglow.BetaTool {
 	tool, err := toolrunner.NewBetaToolFromJSONSchema("echo", "Echoes text",
-		func(ctx context.Context, in echoInput) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+		func(ctx context.Context, in echoInput) (Juglow.BetaToolResultBlockParamContentUnion, error) {
 			*calls = append(*calls, in.Text)
-			return anthropic.BetaToolResultBlockParamContentUnion{
-				OfText: &anthropic.BetaTextBlockParam{Text: in.Text},
+			return Juglow.BetaToolResultBlockParamContentUnion{
+				OfText: &Juglow.BetaTextBlockParam{Text: in.Text},
 			}, nil
 		})
 	require.NoError(t, err)
@@ -83,26 +83,26 @@ func TestToolRunnerWithFallbackMiddlewareMidLoopRefusal(t *testing.T) {
 			messageResponse("fallback-model"),
 		},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
 	state := &betafallback.BetaFallbackState{}
 	runner := client.Beta.Messages.NewToolRunner(
-		[]anthropic.BetaTool{echoTool(t)},
-		anthropic.BetaToolRunnerParams{BetaMessageNewParams: fallbackTestParams},
+		[]Juglow.BetaTool{echoTool(t)},
+		Juglow.BetaToolRunnerParams{BetaMessageNewParams: fallbackTestParams},
 		betafallback.WithBetaFallbackState(state),
 	)
 	final, err := runner.RunToCompletion(context.Background())
 	require.NoError(t, err)
 	require.NotNil(t, final)
-	assert.Equal(t, anthropic.Model("fallback-model"), final.Model)
+	assert.Equal(t, Juglow.Model("fallback-model"), final.Model)
 
 	// Three wire requests: opening turn, tool-result turn (refused), retry.
 	require.Len(t, transport.bodies, 3)
 	refusedTurn, _ := json.Marshal(transport.bodies[1]["messages"])
 	retryTurn, _ := json.Marshal(transport.bodies[2]["messages"])
-	assert.JSONEq(t, string(refusedTurn), string(retryTurn), "the retry resends the refused turn's messages — tool results included")
+	assert.JSONEq(t, string(refusedTurn), string(retryTurn), "the retry resends the refused turn's messages â€” tool results included")
 	assert.Equal(t, creditTokenBody("credit-token"), transport.bodies[2]["fallback_credit_token"], "the retry redeems the refusal's token")
 	assert.Equal(t, "fallback-model", transport.bodies[2]["model"])
 	assert.Equal(t, 0, state.Index(), "the pin carries across runner turns")
@@ -116,11 +116,11 @@ func TestStreamingToolRunnerEchoesTheSplicedTurn(t *testing.T) {
 		fixtureSSE(t, "fallback-tooluse.sse"),
 		fixtureSSE(t, "fallback-end.sse"),
 	}}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	runner := client.Beta.Messages.NewToolRunnerStreaming(
-		[]anthropic.BetaTool{echoTool(t)},
-		anthropic.BetaToolRunnerParams{BetaMessageNewParams: fallbackTestParams},
+		[]Juglow.BetaTool{echoTool(t)},
+		Juglow.BetaToolRunnerParams{BetaMessageNewParams: fallbackTestParams},
 	)
 	for events, err := range runner.AllStreaming(context.Background()) {
 		require.NoError(t, err)
@@ -147,7 +147,7 @@ func TestStreamingToolRunnerEchoesTheSplicedTurn(t *testing.T) {
 
 func TestNextTurnEchoStripsARefusalCutToolUse(t *testing.T) {
 	// A refusal that fires after a completed tool_use leaves it orphaned in
-	// the spliced turn — stop_reason is not tool_use, so no result follows.
+	// the spliced turn â€” stop_reason is not tool_use, so no result follows.
 	// ToParam keeps the orphan, but echoing the seam-bearing turn back must
 	// strip it before the wire (conformance: multiturn-echo-orphan-tooluse).
 	cut := event("message_start", `{"type":"message_start","message":{"type":"message","id":"msg_primary","role":"assistant","content":[],"model":"primary-model","stop_reason":null,"stop_sequence":null,"stop_details":null,"usage":{"input_tokens":9,"output_tokens":1,"cache_creation_input_tokens":0,"cache_read_input_tokens":0}}}`) +
@@ -158,18 +158,18 @@ func TestNextTurnEchoStripsARefusalCutToolUse(t *testing.T) {
 	transport := &sseTransport{responses: []string{
 		cut, servedStream("fallback-model"), servedStream("fallback-model"),
 	}}
-	client := streamingFallbackClient(t, transport, []anthropic.BetaFallbackParam{{Model: "fallback-model"}})
+	client := streamingFallbackClient(t, transport, []Juglow.BetaFallbackParam{{Model: "fallback-model"}})
 
 	msg, _, _ := collectStream(t, client, context.Background(), fallbackTestParams)
-	assert.Equal(t, anthropic.BetaStopReasonEndTurn, msg.StopReason)
+	assert.Equal(t, Juglow.BetaStopReasonEndTurn, msg.StopReason)
 	spliced, err := json.Marshal(msg.ToParam())
 	require.NoError(t, err)
 	assert.Contains(t, string(spliced), `"id":"toolu_orphan"`, "the spliced turn itself still carries the cut tool_use")
 
 	// Echo the turn into the next request: the orphan must not reach the wire.
 	params := fallbackTestParams
-	params.Messages = append(append([]anthropic.BetaMessageParam{}, params.Messages...),
-		msg.ToParam(), anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("continue")))
+	params.Messages = append(append([]Juglow.BetaMessageParam{}, params.Messages...),
+		msg.ToParam(), Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("continue")))
 	_, _, _ = collectStream(t, client, context.Background(), params)
 
 	require.Len(t, transport.bodies, 3)
@@ -193,14 +193,14 @@ func TestToolRunnerSkipsTheRefusedAttemptsPreSeamToolUse(t *testing.T) {
 			messageResponse("fallback-model"),
 		},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
 	var calls []string
 	runner := client.Beta.Messages.NewToolRunner(
-		[]anthropic.BetaTool{recordingEchoTool(t, &calls)},
-		anthropic.BetaToolRunnerParams{BetaMessageNewParams: fallbackTestParams},
+		[]Juglow.BetaTool{recordingEchoTool(t, &calls)},
+		Juglow.BetaToolRunnerParams{BetaMessageNewParams: fallbackTestParams},
 	)
 	final, err := runner.RunToCompletion(context.Background())
 	require.NoError(t, err)
@@ -211,7 +211,7 @@ func TestToolRunnerSkipsTheRefusedAttemptsPreSeamToolUse(t *testing.T) {
 }
 
 func TestToolRunnerAnswersThePostSeamToolUse(t *testing.T) {
-	// Control: the serving model's own tool call — after the seam — is
+	// Control: the serving model's own tool call â€” after the seam â€” is
 	// executed and answered as usual; the pre-seam orphan never reaches
 	// the wire in any form.
 	client, transport := fallbackTestClient(t,
@@ -223,14 +223,14 @@ func TestToolRunnerAnswersThePostSeamToolUse(t *testing.T) {
 			messageResponse("fallback-model"),
 		},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
 	var calls []string
 	runner := client.Beta.Messages.NewToolRunner(
-		[]anthropic.BetaTool{recordingEchoTool(t, &calls)},
-		anthropic.BetaToolRunnerParams{BetaMessageNewParams: fallbackTestParams},
+		[]Juglow.BetaTool{recordingEchoTool(t, &calls)},
+		Juglow.BetaToolRunnerParams{BetaMessageNewParams: fallbackTestParams},
 	)
 	_, err := runner.RunToCompletion(context.Background())
 	require.NoError(t, err)
@@ -245,7 +245,7 @@ func TestToolRunnerAnswersThePostSeamToolUse(t *testing.T) {
 }
 
 // refusalToolUseResponse is a refusal that fired after the model emitted a
-// complete tool_use — e.g. the last hop of an exhausted fallback chain.
+// complete tool_use â€” e.g. the last hop of an exhausted fallback chain.
 func refusalToolUseResponse(model string) string {
 	return fmt.Sprintf(`{
 		"id": "msg_r", "type": "message", "role": "assistant", "model": %q,
@@ -268,20 +268,20 @@ func TestToolRunnerEndsTheLoopOnARefusalTerminatedTurn(t *testing.T) {
 			refusalToolUseResponse("fallback-model"),
 		},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
 	var calls []string
 	runner := client.Beta.Messages.NewToolRunner(
-		[]anthropic.BetaTool{recordingEchoTool(t, &calls)},
-		anthropic.BetaToolRunnerParams{BetaMessageNewParams: fallbackTestParams},
+		[]Juglow.BetaTool{recordingEchoTool(t, &calls)},
+		Juglow.BetaToolRunnerParams{BetaMessageNewParams: fallbackTestParams},
 	)
 	final, err := runner.RunToCompletion(context.Background())
 	require.NoError(t, err)
 	require.NotNil(t, final)
 
-	assert.Equal(t, anthropic.BetaStopReasonRefusal, final.StopReason, "the refusal is the final message")
+	assert.Equal(t, Juglow.BetaStopReasonRefusal, final.StopReason, "the refusal is the final message")
 	assert.Empty(t, calls, "tool calls on a refusal-terminated turn are not executed")
 	assert.Len(t, transport.bodies, 2, "no wire request follows the surfaced refusal (both bodies are the middleware's own hops)")
 }

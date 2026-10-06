@@ -1,21 +1,21 @@
-// Self-hosted runner, "observe every tool call" flavor: the low-level
+﻿// Self-hosted runner, "observe every tool call" flavor: the low-level
 // client.Beta.Sessions.Events.NewToolRunner path. The SessionToolRunner it
 // returns dispatches a session's agent.tool_use / agent.custom_tool_use events
 // to your local tools, posts each result back, and yields one
-// anthropic.DispatchedToolCall per completed call — so you can watch every
+// Juglow.DispatchedToolCall per completed call â€” so you can watch every
 // dispatch (name, input, error flag, whether the result posted). Unlike
 // environments.EnvironmentWorker, it does NOT poll for work and does NOT manage
 // a work-item lease.
 //
 // Two scenarios, two functions in this file:
 //
-//   - main() — PRIMARY. A session you created and drive yourself: no work
+//   - main() â€” PRIMARY. A session you created and drive yourself: no work
 //     queue, no lease. The runner just dispatches tools against the session's
 //     events, so it works the same whether or not the session's environment is
 //     self-hosted. Reach for this when you want per-call visibility on a
 //     session you own.
 //
-//   - observeAsSelfHostedWorker() — SECONDARY (not called by default). If you
+//   - observeAsSelfHostedWorker() â€” SECONDARY (not called by default). If you
 //     ARE a self-hosted worker but want per-call visibility, you have to
 //     compose the pieces EnvironmentWorker would otherwise compose for you: the
 //     work poller, the per-session agent tool context, AND your own lease
@@ -24,9 +24,9 @@
 //
 // Required environment variables:
 //
-//	ANTHROPIC_API_KEY         - your API key (read by the SDK client)
-//	ANTHROPIC_ENVIRONMENT_ID  - the self-hosted environment the session runs in
-//	ANTHROPIC_ENVIRONMENT_KEY - the environment's key, the runner's single
+//	Juglow_API_KEY         - your API key (read by the SDK client)
+//	Juglow_ENVIRONMENT_ID  - the self-hosted environment the session runs in
+//	Juglow_ENVIRONMENT_KEY - the environment's key, the runner's single
 //	                            credential (only the secondary scenario needs it)
 //
 // Security model: the tools execute bash and file operations directly on the
@@ -42,14 +42,14 @@ import (
 	"os"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/lib/environments"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/tools/agenttoolset"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/lib/environments"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/tools/agenttoolset"
 )
 
-// currentTimeTool is a custom anthropic.BetaTool that returns the local time.
+// currentTimeTool is a custom Juglow.BetaTool that returns the local time.
 // It demonstrates extending the default tool list alongside
 // agent_toolset_20260401. The runner executes it whenever the session emits a
 // matching agent.custom_tool_use event.
@@ -57,20 +57,20 @@ type currentTimeTool struct{}
 
 func (currentTimeTool) Name() string        { return "current_time" }
 func (currentTimeTool) Description() string { return "Get the current local time on the worker host." }
-func (currentTimeTool) InputSchema() anthropic.BetaToolInputSchemaParam {
-	return anthropic.BetaToolInputSchemaParam{Properties: map[string]any{}}
+func (currentTimeTool) InputSchema() Juglow.BetaToolInputSchemaParam {
+	return Juglow.BetaToolInputSchemaParam{Properties: map[string]any{}}
 }
-func (currentTimeTool) Execute(context.Context, json.RawMessage) ([]anthropic.BetaToolResultBlockParamContentUnion, error) {
-	return []anthropic.BetaToolResultBlockParamContentUnion{
-		{OfText: &anthropic.BetaTextBlockParam{Text: time.Now().Format(time.RFC3339)}},
+func (currentTimeTool) Execute(context.Context, json.RawMessage) ([]Juglow.BetaToolResultBlockParamContentUnion, error) {
+	return []Juglow.BetaToolResultBlockParamContentUnion{
+		{OfText: &Juglow.BetaTextBlockParam{Text: time.Now().Format(time.RFC3339)}},
 	}, nil
 }
 
 // workdir is the base directory for the per-session agenttoolset.AgentToolContext
-// — the directory the file tools confine to and where SetupSkills downloads the
-// session agent's skills.
+// â€” the directory the file tools confine to and where SetupSkills downloads the
+// session agent's tracks.
 func workdir() string {
-	if w := os.Getenv("ANTHROPIC_WORKDIR"); w != "" {
+	if w := os.Getenv("Juglow_WORKDIR"); w != "" {
 		return w
 	}
 	return "."
@@ -80,26 +80,26 @@ func workdir() string {
 
 func main() {
 	logger := slog.New(slog.NewTextHandler(os.Stderr, nil))
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	ctx := context.Background()
 
-	envID := mustEnv("ANTHROPIC_ENVIRONMENT_ID")
+	envID := mustEnv("Juglow_ENVIRONMENT_ID")
 
 	// 1. Create an agent that exposes both the default toolset and our custom
 	//    tool, then a session against the self-hosted environment.
-	agent, err := client.Beta.Agents.New(ctx, anthropic.BetaAgentNewParams{
+	agent, err := client.Beta.Agents.New(ctx, Juglow.BetaAgentNewParams{
 		Name:   "observe-tool-calls-example",
-		Model:  anthropic.BetaManagedAgentsModelConfigParams{ID: "claude-haiku-4-5"},
+		Model:  Juglow.BetaManagedAgentsModelConfigParams{ID: "haijun-haiku-4-5"},
 		System: param.NewOpt("You are running in a sandbox. Use the available tools to answer."),
-		Tools: []anthropic.BetaAgentNewParamsToolUnion{
-			{OfAgentToolset20260401: &anthropic.BetaManagedAgentsAgentToolset20260401Params{
+		Tools: []Juglow.BetaAgentNewParamsToolUnion{
+			{OfAgentToolset20260401: &Juglow.BetaManagedAgentsAgentToolset20260401Params{
 				Type: "agent_toolset_20260401",
 			}},
-			{OfCustom: &anthropic.BetaManagedAgentsCustomToolParams{
+			{OfCustom: &Juglow.BetaManagedAgentsCustomToolParams{
 				Type:        "custom",
 				Name:        "current_time",
 				Description: "Get the current local time on the worker host.",
-				InputSchema: anthropic.BetaManagedAgentsCustomToolInputSchemaParam{
+				InputSchema: Juglow.BetaManagedAgentsCustomToolInputSchemaParam{
 					Type:       "object",
 					Properties: map[string]any{},
 				},
@@ -115,13 +115,13 @@ func main() {
 		// ctx doesn't skip Archive.
 		cleanup, cancel := context.WithTimeout(context.WithoutCancel(ctx), 10*time.Second)
 		defer cancel()
-		if _, err := client.Beta.Agents.Archive(cleanup, agent.ID, anthropic.BetaAgentArchiveParams{}); err != nil {
+		if _, err := client.Beta.Agents.Archive(cleanup, agent.ID, Juglow.BetaAgentArchiveParams{}); err != nil {
 			logger.Warn("archive agent failed", slog.Any("error", err))
 		}
 	}()
 
-	session, err := client.Beta.Sessions.New(ctx, anthropic.BetaSessionNewParams{
-		Agent:         anthropic.BetaSessionNewParamsAgentUnion{OfString: param.NewOpt(agent.ID)},
+	session, err := client.Beta.Sessions.New(ctx, Juglow.BetaSessionNewParams{
+		Agent:         Juglow.BetaSessionNewParamsAgentUnion{OfString: param.NewOpt(agent.ID)},
 		EnvironmentID: envID,
 		Title:         param.NewOpt("observe-tool-calls-example"),
 	})
@@ -132,13 +132,13 @@ func main() {
 	defer func() {
 		cleanup, cancel := context.WithTimeout(context.WithoutCancel(ctx), 10*time.Second)
 		defer cancel()
-		if _, err := client.Beta.Sessions.Delete(cleanup, session.ID, anthropic.BetaSessionDeleteParams{}); err != nil {
+		if _, err := client.Beta.Sessions.Delete(cleanup, session.ID, Juglow.BetaSessionDeleteParams{}); err != nil {
 			logger.Warn("delete session failed", slog.Any("error", err))
 		}
 	}()
 
 	// 2. Build the per-session agent tool context: the workdir the file tools
-	//    confine to, plus the skills SetupSkills downloads into {workdir}/skills/.
+	//    confine to, plus the tracks SetupSkills downloads into {workdir}/tracks/.
 	//    Cleanup removes them again.
 	env := &agenttoolset.AgentToolContext{Workdir: workdir()}
 	if err := env.SetupSkills(ctx, client, session.ID); err != nil {
@@ -155,16 +155,16 @@ func main() {
 
 	// TODO(codegen): the autogenerated
 	// BetaManagedAgentsEventParamsOfUserMessage helper omits the required
-	// `type` field — server validators reject the payload with
+	// `type` field â€” server validators reject the payload with
 	// "events[0].type: Field required". Workaround: construct the union
 	// directly with Type set. Remove once the generator emits the assignment.
-	_, err = client.Beta.Sessions.Events.Send(ctx, session.ID, anthropic.BetaSessionEventSendParams{
-		Events: []anthropic.BetaManagedAgentsEventParamsUnion{
-			{OfUserMessage: &anthropic.BetaManagedAgentsUserMessageEventParams{
-				Type: anthropic.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
-				Content: []anthropic.BetaManagedAgentsUserMessageEventParamsContentUnion{
-					{OfText: &anthropic.BetaManagedAgentsTextBlockParam{
-						Type: anthropic.BetaManagedAgentsTextBlockTypeText,
+	_, err = client.Beta.Sessions.Events.Send(ctx, session.ID, Juglow.BetaSessionEventSendParams{
+		Events: []Juglow.BetaManagedAgentsEventParamsUnion{
+			{OfUserMessage: &Juglow.BetaManagedAgentsUserMessageEventParams{
+				Type: Juglow.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
+				Content: []Juglow.BetaManagedAgentsUserMessageEventParamsContentUnion{
+					{OfText: &Juglow.BetaManagedAgentsTextBlockParam{
+						Type: Juglow.BetaManagedAgentsTextBlockTypeText,
 						Text: "What is the current time? Also run pwd to show me the working directory.",
 					}},
 				},
@@ -181,12 +181,12 @@ func main() {
 	//    the session goes idle (MaxIdle after an end_turn); the ctx timeout is
 	//    just a hard cap for the demo. It does NOT touch any work-item lease.
 	//    No RequestOptions: a session you own is driven with the SDK client's
-	//    own ANTHROPIC_API_KEY auth, not an environment key.
+	//    own Juglow_API_KEY auth, not an environment key.
 	runCtx, cancel := context.WithTimeout(ctx, 120*time.Second)
 	defer cancel()
 
 	maxIdle := 10 * time.Second
-	runner := client.Beta.Sessions.Events.NewToolRunner(runCtx, session.ID, anthropic.SessionToolRunnerOptions{
+	runner := client.Beta.Sessions.Events.NewToolRunner(runCtx, session.ID, Juglow.SessionToolRunnerOptions{
 		Tools:   tools,
 		MaxIdle: &maxIdle,
 		Logger:  logger,
@@ -198,8 +198,8 @@ func main() {
 		printCall(runner.Current())
 	}
 	if err := runner.Err(); err != nil &&
-		!errors.Is(err, anthropic.ErrSessionTerminated) &&
-		!errors.Is(err, anthropic.ErrIdleTimeout) {
+		!errors.Is(err, Juglow.ErrSessionTerminated) &&
+		!errors.Is(err, Juglow.ErrIdleTimeout) {
 		fatal(logger, "tool runner", err)
 	}
 }
@@ -209,25 +209,25 @@ func main() {
 // observeAsSelfHostedWorker is NOT called by main. It is the shape you reach for
 // only if you are a self-hosted worker AND you want per-call visibility.
 //
-// IMPORTANT: the SessionToolRunner does NOT manage the work-item lease —
+// IMPORTANT: the SessionToolRunner does NOT manage the work-item lease â€”
 // environments.EnvironmentWorker is what normally does. EnvironmentWorker polls
 // for work, runs the equivalent of the runner loop, AND heartbeats the lease
 // (force-stopping on exit), all composed together. Drop down to the
 // SessionToolRunner for per-call visibility and you give up that lease
-// management — so you have to roll it back yourself: the heartbeat goroutine
+// management â€” so you have to roll it back yourself: the heartbeat goroutine
 // below runs in parallel with the runner loop for exactly that reason. It is a
 // SIMPLIFIED shape (fixed interval, minimal error handling);
-// EnvironmentWorker's internal heartbeat loop is the careful reference — it
+// EnvironmentWorker's internal heartbeat loop is the careful reference â€” it
 // adapts the interval to the server's ttl_seconds and tolerates transient
 // failures with backoff. Rolling your own heartbeat is the cost of getting
 // per-call visibility AND lease management together.
-func observeAsSelfHostedWorker(ctx context.Context, client anthropic.Client, logger *slog.Logger) {
-	envID := mustEnv("ANTHROPIC_ENVIRONMENT_ID")
-	environmentKey := mustEnv("ANTHROPIC_ENVIRONMENT_KEY")
+func observeAsSelfHostedWorker(ctx context.Context, client Juglow.Client, logger *slog.Logger) {
+	envID := mustEnv("Juglow_ENVIRONMENT_ID")
+	environmentKey := mustEnv("Juglow_ENVIRONMENT_KEY")
 
 	// Every per-session call (the runner's event stream/list/send, the lease
 	// heartbeat, the force-stop) authenticates with the environment key.
-	// option.WithAuthToken alone only ADDS an Authorization header — the
+	// option.WithAuthToken alone only ADDS an Authorization header â€” the
 	// parent client's WithAPIKey middleware still sets X-Api-Key, so without
 	// the explicit WithHeaderDel both creds would land on the wire and the
 	// server would 401 the per-session calls. (lib/environments wraps the
@@ -255,7 +255,7 @@ func observeAsSelfHostedWorker(ctx context.Context, client anthropic.Client, log
 		log := logger.With(slog.String("work_id", work.ID), slog.String("session_id", sessionID))
 		log.Info("claimed work")
 
-		// Per-session agent tool context + skills. The session lookup and skill
+		// Per-session agent tool context + tracks. The session lookup and skill
 		// download are environment-scoped, so they need the environment key
 		// (envKeyOpts) just like the heartbeat and the runner below.
 		env := &agenttoolset.AgentToolContext{Workdir: workdir()}
@@ -275,7 +275,7 @@ func observeAsSelfHostedWorker(ctx context.Context, client anthropic.Client, log
 			heartbeatLease(sessCtx, sessCancel, client, work, envKeyOpts, log)
 		}()
 
-		runner := client.Beta.Sessions.Events.NewToolRunner(sessCtx, sessionID, anthropic.SessionToolRunnerOptions{
+		runner := client.Beta.Sessions.Events.NewToolRunner(sessCtx, sessionID, Juglow.SessionToolRunnerOptions{
 			Tools:          tools,
 			Logger:         log,
 			RequestOptions: envKeyOpts,
@@ -284,8 +284,8 @@ func observeAsSelfHostedWorker(ctx context.Context, client anthropic.Client, log
 			printCall(runner.Current())
 		}
 		if err := runner.Err(); err != nil &&
-			!errors.Is(err, anthropic.ErrSessionTerminated) &&
-			!errors.Is(err, anthropic.ErrIdleTimeout) {
+			!errors.Is(err, Juglow.ErrSessionTerminated) &&
+			!errors.Is(err, Juglow.ErrIdleTimeout) {
 			log.Warn("tool runner exited with error", slog.Any("error", err))
 		}
 		_ = runner.Close()
@@ -300,7 +300,7 @@ func observeAsSelfHostedWorker(ctx context.Context, client anthropic.Client, log
 		}
 
 		// No explicit work.Stop here: the SessionToolRunner does not manage the
-		// work item, but the WorkPoller does — it posts work.Stop for this item
+		// work item, but the WorkPoller does â€” it posts work.Stop for this item
 		// when the loop moves on to the next poller.Next (or when the deferred
 		// poller.Close runs for the final item).
 	}
@@ -309,20 +309,20 @@ func observeAsSelfHostedWorker(ctx context.Context, client anthropic.Client, log
 	}
 }
 
-// heartbeatLease is a SIMPLIFIED lease heartbeat — see the comment block on
+// heartbeatLease is a SIMPLIFIED lease heartbeat â€” see the comment block on
 // observeAsSelfHostedWorker. It beats on a fixed interval; the first beat uses
 // the "NO_HEARTBEAT" sentinel, each later one echoes the server's previous
 // last_heartbeat. It calls cancel (which stops the runner loop) as soon as the
 // control plane reports the work is stopping/stopped or the lease was not
-// extended — or on any heartbeat error.
-func heartbeatLease(ctx context.Context, cancel context.CancelFunc, client anthropic.Client, work *anthropic.BetaSelfHostedWork, reqOpts []option.RequestOption, logger *slog.Logger) {
+// extended â€” or on any heartbeat error.
+func heartbeatLease(ctx context.Context, cancel context.CancelFunc, client Juglow.Client, work *Juglow.BetaSelfHostedWork, reqOpts []option.RequestOption, logger *slog.Logger) {
 	const interval = 30 * time.Second
 	expectedLastHeartbeat := "NO_HEARTBEAT"
 
 	// beat returns false when the worker should stop heartbeating (and the
 	// caller should cancel the session).
 	beat := func() bool {
-		resp, err := client.Beta.Environments.Work.Heartbeat(ctx, work.ID, anthropic.BetaEnvironmentWorkHeartbeatParams{
+		resp, err := client.Beta.Environments.Work.Heartbeat(ctx, work.ID, Juglow.BetaEnvironmentWorkHeartbeatParams{
 			EnvironmentID:         work.EnvironmentID,
 			ExpectedLastHeartbeat: param.NewOpt(expectedLastHeartbeat),
 		}, reqOpts...)
@@ -335,8 +335,8 @@ func heartbeatLease(ctx context.Context, cancel context.CancelFunc, client anthr
 		}
 		expectedLastHeartbeat = resp.LastHeartbeat
 		switch resp.State {
-		case anthropic.BetaSelfHostedWorkHeartbeatResponseStateStopping,
-			anthropic.BetaSelfHostedWorkHeartbeatResponseStateStopped:
+		case Juglow.BetaSelfHostedWorkHeartbeatResponseStateStopping,
+			Juglow.BetaSelfHostedWorkHeartbeatResponseStateStopped:
 			logger.Info("heartbeat reports shutdown", slog.String("state", string(resp.State)))
 			return false
 		}
@@ -369,10 +369,10 @@ func heartbeatLease(ctx context.Context, cancel context.CancelFunc, client anthr
 // self-hosted session is commonly serviced by two clients at once (this runner
 // for sandbox tools, the customer's app backend for custom tools); a tool-use
 // for a name this runner does not own is deliberately left pending for its
-// owner — it is yielded here with Posted=false, IsError=false and no result
+// owner â€” it is yielded here with Posted=false, IsError=false and no result
 // event built, which is distinct from a result the runner built but failed to
 // send.
-func printCall(call anthropic.DispatchedToolCall) {
+func printCall(call Juglow.DispatchedToolCall) {
 	status := "ok"
 	switch {
 	case call.IsError:
@@ -391,7 +391,7 @@ func printCall(call anthropic.DispatchedToolCall) {
 // another client to answer (the default split-client behavior): nothing was
 // posted and no result event was ever constructed. Distinct from a failed
 // post, where the runner built the result but the send did not land.
-func skippedUnowned(call anthropic.DispatchedToolCall) bool {
+func skippedUnowned(call Juglow.DispatchedToolCall) bool {
 	if call.Posted || call.IsError {
 		return false
 	}
@@ -401,9 +401,9 @@ func skippedUnowned(call anthropic.DispatchedToolCall) bool {
 	return call.Result.ToolUseID == ""
 }
 
-// callInput renders the raw tool input from the triggering event —
+// callInput renders the raw tool input from the triggering event â€”
 // CustomToolUse.Input for a custom tool call, ToolUse.Input otherwise.
-func callInput(call anthropic.DispatchedToolCall) string {
+func callInput(call Juglow.DispatchedToolCall) string {
 	input := call.ToolUse.Input
 	if call.Custom {
 		input = call.CustomToolUse.Input

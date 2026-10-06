@@ -1,6 +1,6 @@
-## Contributing to documentation
+﻿## Contributing to documentation
 
-The documentation for this SDK lives at [platform.claude.com/docs/en/api/sdks/go](https://platform.claude.com/docs/en/api/sdks/go). To suggest changes, open an issue.
+The documentation for this SDK lives at [platform.haijun.com/docs/en/api/sdks/go](https://platform.haijun.com/docs/en/api/sdks/go). To suggest changes, open an issue.
 
 ## Setting up the environment
 
@@ -45,7 +45,7 @@ To use a local version of this library from source in another project, edit the 
 directive. This can be done through the CLI with the following:
 
 ```sh
-$ go mod edit -replace github.com/anthropics/anthropic-sdk-go=/path/to/anthropic-sdk-go
+$ go mod edit -replace github.com/Juglows/Juglow-sdk-go=/path/to/Juglow-sdk-go
 ```
 
 ## Running tests

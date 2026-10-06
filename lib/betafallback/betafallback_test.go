@@ -1,4 +1,4 @@
-package betafallback_test
+﻿package betafallback_test
 
 import (
 	"context"
@@ -12,10 +12,10 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/lib/betafallback"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/lib/betafallback"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -39,7 +39,7 @@ func (s *scriptedTransport) RoundTrip(req *http.Request) (*http.Response, error)
 	var body map[string]any
 	require.NoError(s.t, json.Unmarshal(buf, &body))
 	s.bodies = append(s.bodies, body)
-	s.betas = append(s.betas, req.Header.Values("anthropic-beta"))
+	s.betas = append(s.betas, req.Header.Values("Juglow-beta"))
 	s.helpers = append(s.helpers, req.Header.Values("x-stainless-helper"))
 	require.NotEmpty(s.t, s.responses, "more requests than scripted responses")
 	next := s.responses[0]
@@ -95,10 +95,10 @@ func refusalResponse(model string, creditToken any) string {
 	}`, model, token)
 }
 
-func fallbackTestClient(t *testing.T, responses []string, middleware option.Middleware) (anthropic.Client, *scriptedTransport) {
+func fallbackTestClient(t *testing.T, responses []string, middleware option.Middleware) (Juglow.Client, *scriptedTransport) {
 	transport := &scriptedTransport{t: t, responses: responses}
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{Transport: transport}),
 		option.WithMaxRetries(0),
 		option.WithMiddleware(middleware),
@@ -106,24 +106,24 @@ func fallbackTestClient(t *testing.T, responses []string, middleware option.Midd
 	return client, transport
 }
 
-var fallbackTestParams = anthropic.BetaMessageNewParams{
+var fallbackTestParams = Juglow.BetaMessageNewParams{
 	Model:     "primary-model",
 	MaxTokens: 1024,
-	Messages:  []anthropic.BetaMessageParam{anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("hi"))},
+	Messages:  []Juglow.BetaMessageParam{Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("hi"))},
 }
 
 func TestRefusalFallbackMiddlewareRetriesWithFallbackParamsAndCreditToken(t *testing.T) {
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", "credit-token"), messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
 	message, err := client.Beta.Messages.New(context.Background(), fallbackTestParams)
 	require.NoError(t, err)
-	assert.Equal(t, anthropic.Model("fallback-model"), message.Model)
-	assert.Equal(t, anthropic.BetaStopReasonEndTurn, message.StopReason)
+	assert.Equal(t, Juglow.Model("fallback-model"), message.Model)
+	assert.Equal(t, Juglow.BetaStopReasonEndTurn, message.StopReason)
 	assert.Equal(t, []string{"primary-model", "fallback-model"}, transport.models())
 	assert.Equal(t, creditTokenBody("credit-token"), transport.bodies[1]["fallback_credit_token"])
 	_, hasToken := transport.bodies[0]["fallback_credit_token"]
@@ -134,7 +134,7 @@ func TestRefusalFallbackMiddlewareTagsTheOriginalAndFallbackRequests(t *testing.
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", "credit-token"), messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
@@ -150,7 +150,7 @@ func TestRefusalFallbackMiddlewareAppendsToAnExistingHelperTag(t *testing.T) {
 	client, transport := fallbackTestClient(t,
 		[]string{messageResponse("primary-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
@@ -164,15 +164,15 @@ func TestRefusalFallbackMiddlewareDoesNotTagRequestsItPassesThrough(t *testing.T
 	client, transport := fallbackTestClient(t,
 		[]string{messageResponse("primary-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
 	// the GA surface is not applicable to this middleware
-	_, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+	_, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
 		Model:     "primary-model",
 		MaxTokens: 1024,
-		Messages:  []anthropic.MessageParam{anthropic.NewUserMessage(anthropic.NewTextBlock("hi"))},
+		Messages:  []Juglow.MessageParam{Juglow.NewUserMessage(Juglow.NewTextBlock("hi"))},
 	})
 	require.NoError(t, err)
 	assert.Equal(t, [][]string{nil}, transport.helpers)
@@ -182,7 +182,7 @@ func TestRefusalFallbackMiddlewarePinsTheConversationToTheAcceptedFallback(t *te
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", nil), messageResponse("fallback-model"), messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
@@ -200,7 +200,7 @@ func TestRefusalFallbackMiddlewareKeepsSeparateConversationsIndependent(t *testi
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", nil), messageResponse("fallback-model"), messageResponse("primary-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
@@ -218,14 +218,14 @@ func TestRefusalFallbackMiddlewareLeavesAcceptedRequestsUntouched(t *testing.T) 
 	client, transport := fallbackTestClient(t,
 		[]string{messageResponse("primary-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
 	message, err := client.Beta.Messages.New(context.Background(), fallbackTestParams,
 		betafallback.WithBetaFallbackState(&betafallback.BetaFallbackState{}))
 	require.NoError(t, err)
-	assert.Equal(t, anthropic.Model("primary-model"), message.Model)
+	assert.Equal(t, Juglow.Model("primary-model"), message.Model)
 	require.Len(t, transport.bodies, 1)
 	_, hasToken := transport.bodies[0]["fallback_credit_token"]
 	assert.False(t, hasToken)
@@ -239,13 +239,13 @@ func TestRefusalFallbackMiddlewareReportsEachHopThroughTheChain(t *testing.T) {
 			messageResponse("fallback-2"),
 		},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-1"}, {Model: "fallback-2"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-1"}, {Model: "fallback-2"}},
 		),
 	)
 
 	message, err := client.Beta.Messages.New(context.Background(), fallbackTestParams)
 	require.NoError(t, err)
-	assert.Equal(t, anthropic.Model("fallback-2"), message.Model)
+	assert.Equal(t, Juglow.Model("fallback-2"), message.Model)
 	assert.Equal(t, []string{"primary-model", "fallback-1", "fallback-2"}, transport.models())
 	assert.Equal(t, creditTokenBody("token-1"), transport.bodies[1]["fallback_credit_token"])
 	assert.Equal(t, creditTokenBody("token-2"), transport.bodies[2]["fallback_credit_token"])
@@ -255,14 +255,14 @@ func TestRefusalFallbackMiddlewareReturnsTheLastRefusalWhenTheChainIsExhausted(t
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", nil), refusalResponse("fallback-model", nil)},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
 	message, err := client.Beta.Messages.New(context.Background(), fallbackTestParams)
 	require.NoError(t, err)
-	assert.Equal(t, anthropic.BetaStopReasonRefusal, message.StopReason)
-	assert.Equal(t, anthropic.Model("fallback-model"), message.Model)
+	assert.Equal(t, Juglow.BetaStopReasonRefusal, message.StopReason)
+	assert.Equal(t, Juglow.Model("fallback-model"), message.Model)
 	assert.Len(t, transport.bodies, 2)
 }
 
@@ -270,18 +270,18 @@ func TestRefusalFallbackMiddlewareAppliesFallbackOverridesAndPreservesOtherField
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", nil), messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{
+			[]Juglow.BetaFallbackParam{{
 				Model:     "fallback-model",
-				MaxTokens: anthropic.Int(2048),
-				Thinking: anthropic.BetaFallbackParamThinkingUnion{
-					OfDisabled: &anthropic.BetaThinkingConfigDisabledParam{},
+				MaxTokens: Juglow.Int(2048),
+				Thinking: Juglow.BetaFallbackParamThinkingUnion{
+					OfDisabled: &Juglow.BetaThinkingConfigDisabledParam{},
 				},
 			}},
 		),
 	)
 
 	params := fallbackTestParams
-	params.Temperature = anthropic.Float(0.5)
+	params.Temperature = Juglow.Float(0.5)
 	_, err := client.Beta.Messages.New(context.Background(), params)
 	require.NoError(t, err)
 
@@ -298,7 +298,7 @@ func TestRefusalFallbackMiddlewareNullOverrideUnsetsTheOriginalField(t *testing.
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", nil), messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{
+			[]Juglow.BetaFallbackParam{{
 				Model:     "fallback-model",    // set: overrides the original
 				MaxTokens: param.Null[int64](), // null: unsets the original
 				// temperature absent: the original value is kept
@@ -307,7 +307,7 @@ func TestRefusalFallbackMiddlewareNullOverrideUnsetsTheOriginalField(t *testing.
 	)
 
 	params := fallbackTestParams
-	params.Temperature = anthropic.Float(0.5)
+	params.Temperature = Juglow.Float(0.5)
 	_, err := client.Beta.Messages.New(context.Background(), params)
 	require.NoError(t, err)
 
@@ -328,8 +328,8 @@ func TestRefusalFallbackMiddlewareEachHopPatchesTheOriginalParams(t *testing.T) 
 			messageResponse("fallback-2"),
 		},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{
-				{Model: "fallback-1", MaxTokens: anthropic.Int(2048), Speed: anthropic.BetaFallbackParamSpeedFast},
+			[]Juglow.BetaFallbackParam{
+				{Model: "fallback-1", MaxTokens: Juglow.Int(2048), Speed: Juglow.BetaFallbackParamSpeedFast},
 				{Model: "fallback-2"},
 			},
 		),
@@ -352,8 +352,8 @@ func TestRefusalFallbackMiddlewareEachHopPatchesTheOriginalParams(t *testing.T) 
 
 // outputConfigOverride builds an output_config overlay from raw subfields,
 // since the typed effort field cannot spell an explicit null.
-func outputConfigOverride(fields map[string]any) anthropic.BetaOutputConfigParam {
-	var config anthropic.BetaOutputConfigParam
+func outputConfigOverride(fields map[string]any) Juglow.BetaOutputConfigParam {
+	var config Juglow.BetaOutputConfigParam
 	config.SetExtraFields(fields)
 	return config
 }
@@ -362,7 +362,7 @@ func TestRefusalFallbackMiddlewareOutputConfigSubfieldsMergeOneLevelDeep(t *test
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", nil), messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{
+			[]Juglow.BetaFallbackParam{{
 				Model: "fallback-model",
 				// effort set: overrides; task_budget null: unset; format
 				// absent: kept from the original.
@@ -372,10 +372,10 @@ func TestRefusalFallbackMiddlewareOutputConfigSubfieldsMergeOneLevelDeep(t *test
 	)
 
 	params := fallbackTestParams
-	params.OutputConfig = anthropic.BetaOutputConfigParam{
-		Effort:     anthropic.BetaOutputConfigEffortLow,
-		Format:     anthropic.BetaJSONOutputFormatParam{Schema: map[string]any{"type": "object"}},
-		TaskBudget: anthropic.BetaTokenTaskBudgetParam{Total: 4096},
+	params.OutputConfig = Juglow.BetaOutputConfigParam{
+		Effort:     Juglow.BetaOutputConfigEffortLow,
+		Format:     Juglow.BetaJSONOutputFormatParam{Schema: map[string]any{"type": "object"}},
+		TaskBudget: Juglow.BetaTokenTaskBudgetParam{Total: 4096},
 	}
 	_, err := client.Beta.Messages.New(context.Background(), params)
 	require.NoError(t, err)
@@ -393,15 +393,15 @@ func TestRefusalFallbackMiddlewareNullOutputConfigUnsetsTheWholeObject(t *testin
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", nil), messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{
+			[]Juglow.BetaFallbackParam{{
 				Model:        "fallback-model",
-				OutputConfig: param.NullStruct[anthropic.BetaOutputConfigParam](),
+				OutputConfig: param.NullStruct[Juglow.BetaOutputConfigParam](),
 			}},
 		),
 	)
 
 	params := fallbackTestParams
-	params.OutputConfig = anthropic.BetaOutputConfigParam{Effort: anthropic.BetaOutputConfigEffortLow}
+	params.OutputConfig = Juglow.BetaOutputConfigParam{Effort: Juglow.BetaOutputConfigEffortLow}
 	_, err := client.Beta.Messages.New(context.Background(), params)
 	require.NoError(t, err)
 
@@ -414,7 +414,7 @@ func TestRefusalFallbackMiddlewareOutputConfigCreatedWhenTheOriginalHasNone(t *t
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", nil), messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{
+			[]Juglow.BetaFallbackParam{{
 				Model:        "fallback-model",
 				OutputConfig: outputConfigOverride(map[string]any{"effort": "high", "task_budget": nil}),
 			}},
@@ -433,11 +433,11 @@ func TestRefusalFallbackMiddlewareOutputConfigCreatedWhenTheOriginalHasNone(t *t
 func TestRefusalFallbackMiddlewareDropsOutputConfigWhenNoSubfieldsRemain(t *testing.T) {
 	for _, test := range []struct {
 		name     string
-		original *anthropic.BetaOutputConfigParam
+		original *Juglow.BetaOutputConfigParam
 	}{
 		// The original object's only subfield is unset by the overlay: the
 		// key must be dropped, never sent as {}.
-		{"UnsetsEveryOriginalSubfield", &anthropic.BetaOutputConfigParam{Effort: anthropic.BetaOutputConfigEffortLow}},
+		{"UnsetsEveryOriginalSubfield", &Juglow.BetaOutputConfigParam{Effort: Juglow.BetaOutputConfigEffortLow}},
 		// No original object and the overlay's only subfield is null: no
 		// key is added.
 		{"OverlayOnAnAbsentOriginal", nil},
@@ -446,7 +446,7 @@ func TestRefusalFallbackMiddlewareDropsOutputConfigWhenNoSubfieldsRemain(t *test
 			client, transport := fallbackTestClient(t,
 				[]string{refusalResponse("primary-model", nil), messageResponse("fallback-model")},
 				betafallback.BetaRefusalFallbackMiddleware(
-					[]anthropic.BetaFallbackParam{{
+					[]Juglow.BetaFallbackParam{{
 						Model:        "fallback-model",
 						OutputConfig: outputConfigOverride(map[string]any{"effort": nil}),
 					}},
@@ -475,7 +475,7 @@ func TestRefusalFallbackMiddlewareEachHopPatchesTheOriginalOutputConfig(t *testi
 			messageResponse("fallback-2"),
 		},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{
+			[]Juglow.BetaFallbackParam{
 				{Model: "fallback-1", OutputConfig: outputConfigOverride(map[string]any{"effort": "max", "task_budget": nil})},
 				{Model: "fallback-2", OutputConfig: outputConfigOverride(map[string]any{"effort": "high"})},
 			},
@@ -483,9 +483,9 @@ func TestRefusalFallbackMiddlewareEachHopPatchesTheOriginalOutputConfig(t *testi
 	)
 
 	params := fallbackTestParams
-	params.OutputConfig = anthropic.BetaOutputConfigParam{
-		Effort:     anthropic.BetaOutputConfigEffortLow,
-		TaskBudget: anthropic.BetaTokenTaskBudgetParam{Total: 4096},
+	params.OutputConfig = Juglow.BetaOutputConfigParam{
+		Effort:     Juglow.BetaOutputConfigEffortLow,
+		TaskBudget: Juglow.BetaTokenTaskBudgetParam{Total: 4096},
 	}
 	_, err := client.Beta.Messages.New(context.Background(), params)
 	require.NoError(t, err)
@@ -522,7 +522,7 @@ func TestRefusalFallbackMiddlewareErrorsOnAPinPastTheConfiguredChain(t *testing.
 	client, _ := fallbackTestClient(t,
 		[]string{messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
@@ -535,7 +535,7 @@ func TestRefusalFallbackMiddlewareErrorsOnAPinPastTheConfiguredChain(t *testing.
 
 func TestRefusalFallbackMiddlewareSkipsRequestsItDoesNotApplyTo(t *testing.T) {
 	middleware := betafallback.BetaRefusalFallbackMiddleware(
-		[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+		[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 	)
 
 	for _, test := range []struct {
@@ -551,7 +551,7 @@ func TestRefusalFallbackMiddlewareSkipsRequestsItDoesNotApplyTo(t *testing.T) {
 	} {
 		t.Run(test.name, func(t *testing.T) {
 			calls := 0
-			req, err := http.NewRequest(test.method, "https://api.anthropic.com"+test.path, strings.NewReader(test.body))
+			req, err := http.NewRequest(test.method, "https://platform.juglow.my.id"+test.path, strings.NewReader(test.body))
 			require.NoError(t, err)
 			req.Header.Set("Content-Type", "application/json")
 			res, err := middleware(req, func(req *http.Request) (*http.Response, error) {
@@ -575,10 +575,10 @@ func TestRefusalFallbackMiddlewareErrorsWhenAFallbackHasNoModel(t *testing.T) {
 	// A zero-model fallback merges to a no-op that silently re-sends the
 	// refused request.
 	middleware := betafallback.BetaRefusalFallbackMiddleware(
-		[]anthropic.BetaFallbackParam{{MaxTokens: anthropic.Int(2048)}},
+		[]Juglow.BetaFallbackParam{{MaxTokens: Juglow.Int(2048)}},
 	)
 
-	req, err := http.NewRequest(http.MethodPost, "https://api.anthropic.com/v1/messages?beta=true",
+	req, err := http.NewRequest(http.MethodPost, "https://platform.juglow.my.id/v1/messages?beta=true",
 		strings.NewReader(`{"model": "primary-model", "messages": [], "max_tokens": 16}`))
 	require.NoError(t, err)
 	req.Header.Set("Content-Type", "application/json")
@@ -589,7 +589,7 @@ func TestRefusalFallbackMiddlewareErrorsWhenAFallbackHasNoModel(t *testing.T) {
 	require.ErrorContains(t, err, "fallbacks[0] has no model")
 
 	// Requests the middleware would not handle are unaffected by the bad config.
-	other, err := http.NewRequest(http.MethodGet, "https://api.anthropic.com/v1/models", nil)
+	other, err := http.NewRequest(http.MethodGet, "https://platform.juglow.my.id/v1/models", nil)
 	require.NoError(t, err)
 	res, err := middleware(other, func(*http.Request) (*http.Response, error) {
 		return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader("{}"))}, nil
@@ -599,7 +599,7 @@ func TestRefusalFallbackMiddlewareErrorsWhenAFallbackHasNoModel(t *testing.T) {
 
 	// Streaming requests are handled too; the bad chain fails them just as
 	// loudly.
-	streaming, err := http.NewRequest(http.MethodPost, "https://api.anthropic.com/v1/messages?beta=true",
+	streaming, err := http.NewRequest(http.MethodPost, "https://platform.juglow.my.id/v1/messages?beta=true",
 		strings.NewReader(`{"model": "primary-model", "messages": [], "max_tokens": 16, "stream": true}`))
 	require.NoError(t, err)
 	streaming.Header.Set("Content-Type", "application/json")
@@ -621,7 +621,7 @@ func TestRefusalFallbackMiddlewareWithAnEmptyChainDoesNotOptIntoTheBeta(t *testi
 	_, err := client.Beta.Messages.New(context.Background(), fallbackTestParams)
 	require.NoError(t, err)
 	require.Len(t, transport.betas, 1)
-	assert.NotContains(t, transport.betas[0], string(anthropic.AnthropicBetaFallbackCredit2026_07_01))
+	assert.NotContains(t, transport.betas[0], string(Juglow.JuglowBetaFallbackCredit2026_07_01))
 }
 
 func TestRefusalFallbackMiddlewareDropsAStaleCreditToken(t *testing.T) {
@@ -630,13 +630,13 @@ func TestRefusalFallbackMiddlewareDropsAStaleCreditToken(t *testing.T) {
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", nil), messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
 	params := fallbackTestParams
-	params.FallbackCreditToken = anthropic.BetaMessageNewParamsFallbackCreditTokenUnion{
-		OfString: anthropic.String("stale-token"),
+	params.FallbackCreditToken = Juglow.BetaMessageNewParamsFallbackCreditTokenUnion{
+		OfString: Juglow.String("stale-token"),
 	}
 	_, err := client.Beta.Messages.New(context.Background(), params)
 	require.NoError(t, err)
@@ -653,7 +653,7 @@ func TestRefusalFallbackMiddlewareRehydratesAPersistedPin(t *testing.T) {
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", nil), messageResponse("fallback-model"), messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
@@ -686,11 +686,11 @@ func TestRefusalFallbackMiddlewareSendsTheTokenWithAllOverrides(t *testing.T) {
 			messageResponse("fallback-2"),
 		},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{
-				{Model: "fallback-1", Thinking: anthropic.BetaFallbackParamThinkingUnion{
-					OfDisabled: &anthropic.BetaThinkingConfigDisabledParam{},
+			[]Juglow.BetaFallbackParam{
+				{Model: "fallback-1", Thinking: Juglow.BetaFallbackParamThinkingUnion{
+					OfDisabled: &Juglow.BetaThinkingConfigDisabledParam{},
 				}},
-				{Model: "fallback-2", MaxTokens: anthropic.Int(2048)},
+				{Model: "fallback-2", MaxTokens: Juglow.Int(2048)},
 			},
 		),
 	)
@@ -708,13 +708,13 @@ func TestRefusalFallbackMiddlewareErrorsWhenServerSideFallbacksAreRequested(t *t
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", "credit-token")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
 	params := fallbackTestParams
-	params.Fallbacks = anthropic.BetaFallbacksParamUnion{
-		OfBetaFallbackArray: []anthropic.BetaFallbackParam{{Model: "server-side-fallback"}},
+	params.Fallbacks = Juglow.BetaFallbacksParamUnion{
+		OfBetaFallbackArray: []Juglow.BetaFallbackParam{{Model: "server-side-fallback"}},
 	}
 	_, err := client.Beta.Messages.New(context.Background(), params)
 	require.ErrorContains(t, err, "Sending the `fallbacks:` request param is not supported when using the `BetaRefusalFallbackMiddleware` middleware. You should either remove the middleware and send `fallbacks:` with the `server-side-fallback-2026-07-01` beta header to let the API handle refusal fallbacks, or omit the `fallbacks:` param if you'd like the `BetaRefusalFallbackMiddleware` middleware to handle fallbacks on the client side.")
@@ -725,12 +725,12 @@ func TestRefusalFallbackMiddlewareRetriesARejectedTokenOnceWithoutIt(t *testing.
 	// is to retry without the token.
 	rejection := `{"type": "error", "error": {"type": "invalid_request_error", "message": "fallback_credit_token: does not match"}}`
 	transport := &scriptedTransport{t: t}
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{Transport: transport}),
 		option.WithMaxRetries(0),
 		option.WithMiddleware(betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		)),
 	)
 	transport.statuses = []int{http.StatusOK, http.StatusBadRequest, http.StatusOK}
@@ -742,7 +742,7 @@ func TestRefusalFallbackMiddlewareRetriesARejectedTokenOnceWithoutIt(t *testing.
 
 	message, err := client.Beta.Messages.New(context.Background(), fallbackTestParams)
 	require.NoError(t, err)
-	assert.Equal(t, anthropic.Model("fallback-model"), message.Model)
+	assert.Equal(t, Juglow.Model("fallback-model"), message.Model)
 	require.Len(t, transport.bodies, 3)
 	assert.Equal(t, creditTokenBody("credit-token"), transport.bodies[1]["fallback_credit_token"])
 	_, hasToken := transport.bodies[2]["fallback_credit_token"]
@@ -758,17 +758,17 @@ func TestRefusalFallbackMiddlewareSurfacesAnUnrelatedRejectionAfterOneResend(t *
 		responses: []string{refusalResponse("primary-model", "credit-token"), rejection, rejection},
 		statuses:  []int{http.StatusOK, http.StatusBadRequest, http.StatusBadRequest},
 	}
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{Transport: transport}),
 		option.WithMaxRetries(0),
 		option.WithMiddleware(betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		)),
 	)
 
 	_, err := client.Beta.Messages.New(context.Background(), fallbackTestParams)
-	var apierr *anthropic.Error
+	var apierr *Juglow.Error
 	require.ErrorAs(t, err, &apierr)
 	assert.Equal(t, http.StatusBadRequest, apierr.StatusCode)
 	require.Len(t, transport.bodies, 3)
@@ -789,18 +789,18 @@ func TestRefusalFallbackMiddlewareReentersTheChainWhenTheClientRetries(t *testin
 		statuses: []int{http.StatusOK, 529, http.StatusOK, http.StatusOK},
 		headers:  []http.Header{nil, {"Retry-After": []string{"0"}}},
 	}
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{Transport: transport}),
 		option.WithMaxRetries(1),
 		option.WithMiddleware(betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		)),
 	)
 
 	message, err := client.Beta.Messages.New(context.Background(), fallbackTestParams)
 	require.NoError(t, err)
-	assert.Equal(t, anthropic.Model("fallback-model"), message.Model)
+	assert.Equal(t, Juglow.Model("fallback-model"), message.Model)
 	assert.Equal(t, []string{"primary-model", "fallback-model", "primary-model", "fallback-model"}, transport.models())
 	assert.Equal(t, creditTokenBody("token-1"), transport.bodies[1]["fallback_credit_token"])
 	assert.Equal(t, creditTokenBody("token-2"), transport.bodies[3]["fallback_credit_token"], "the re-entered chain redeems the fresh token")
@@ -818,19 +818,19 @@ func TestRefusalFallbackMiddlewareReentersAtThePinWhenTheClientRetries(t *testin
 		statuses: []int{http.StatusOK, 529, http.StatusOK},
 		headers:  []http.Header{nil, {"Retry-After": []string{"0"}}},
 	}
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{Transport: transport}),
 		option.WithMaxRetries(1),
 		option.WithMiddleware(betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		)),
 	)
 
 	message, err := client.Beta.Messages.New(context.Background(), fallbackTestParams,
 		betafallback.WithBetaFallbackState(&betafallback.BetaFallbackState{}))
 	require.NoError(t, err)
-	assert.Equal(t, anthropic.Model("fallback-model"), message.Model)
+	assert.Equal(t, Juglow.Model("fallback-model"), message.Model)
 	assert.Equal(t, []string{"primary-model", "fallback-model", "fallback-model"}, transport.models())
 	_, hasToken := transport.bodies[2]["fallback_credit_token"]
 	assert.False(t, hasToken, "the pinned re-entry has no refusal to redeem")
@@ -840,11 +840,11 @@ func TestRefusalFallbackMiddlewareSkipsEncodedResponseBodies(t *testing.T) {
 	// A still-encoded body (caller-set Accept-Encoding) can't be inspected;
 	// pass it through.
 	middleware := betafallback.BetaRefusalFallbackMiddleware(
-		[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+		[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 	)
 
 	calls := 0
-	req, err := http.NewRequest(http.MethodPost, "https://api.anthropic.com/v1/messages?beta=true", strings.NewReader(`{"model": "primary-model"}`))
+	req, err := http.NewRequest(http.MethodPost, "https://platform.juglow.my.id/v1/messages?beta=true", strings.NewReader(`{"model": "primary-model"}`))
 	require.NoError(t, err)
 	req.Header.Set("Content-Type", "application/json")
 	res, err := middleware(req, func(*http.Request) (*http.Response, error) {
@@ -866,7 +866,7 @@ func TestRefusalFallbackMiddlewareOptsEveryAttemptIntoTheCreditBeta(t *testing.T
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", "credit-token"), messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
@@ -874,7 +874,7 @@ func TestRefusalFallbackMiddlewareOptsEveryAttemptIntoTheCreditBeta(t *testing.T
 	require.NoError(t, err)
 	require.Len(t, transport.betas, 2)
 	for i, betas := range transport.betas {
-		assert.Contains(t, betas, string(anthropic.AnthropicBetaFallbackCredit2026_07_01), "request %d", i)
+		assert.Contains(t, betas, string(Juglow.JuglowBetaFallbackCredit2026_07_01), "request %d", i)
 	}
 }
 
@@ -882,28 +882,28 @@ func TestRefusalFallbackMiddlewareKeepsACallerSuppliedCreditBeta(t *testing.T) {
 	client, transport := fallbackTestClient(t,
 		[]string{messageResponse("primary-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
 	_, err := client.Beta.Messages.New(context.Background(), fallbackTestParams,
-		option.WithHeaderAdd("anthropic-beta", string(anthropic.AnthropicBetaFallbackCredit2026_07_01)))
+		option.WithHeaderAdd("Juglow-beta", string(Juglow.JuglowBetaFallbackCredit2026_07_01)))
 	require.NoError(t, err)
 	require.Len(t, transport.betas, 1)
-	assert.Equal(t, []string{string(anthropic.AnthropicBetaFallbackCredit2026_07_01)}, transport.betas[0])
+	assert.Equal(t, []string{string(Juglow.JuglowBetaFallbackCredit2026_07_01)}, transport.betas[0])
 }
 
 func TestRefusalFallbackMiddlewareDoesNotAddTheBetaToPassthroughRequests(t *testing.T) {
 	middleware := betafallback.BetaRefusalFallbackMiddleware(
-		[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+		[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 	)
 
-	req, err := http.NewRequest(http.MethodPost, "https://api.anthropic.com/v1/messages?beta=true",
+	req, err := http.NewRequest(http.MethodPost, "https://platform.juglow.my.id/v1/messages?beta=true",
 		strings.NewReader(`{"model": "primary-model", "stream": true}`))
 	require.NoError(t, err)
 	req.Header.Set("Content-Type", "application/json")
 	_, err = middleware(req, func(seen *http.Request) (*http.Response, error) {
-		assert.Empty(t, seen.Header.Values("anthropic-beta"))
+		assert.Empty(t, seen.Header.Values("Juglow-beta"))
 		return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader("{}"))}, nil
 	})
 	require.NoError(t, err)
@@ -911,11 +911,11 @@ func TestRefusalFallbackMiddlewareDoesNotAddTheBetaToPassthroughRequests(t *test
 
 func TestRefusalFallbackMiddlewarePassesErrorResponsesThrough(t *testing.T) {
 	middleware := betafallback.BetaRefusalFallbackMiddleware(
-		[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+		[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 	)
 
 	calls := 0
-	req, err := http.NewRequest(http.MethodPost, "https://api.anthropic.com/v1/messages?beta=true", strings.NewReader(`{"model": "primary-model", "messages": [], "max_tokens": 16}`))
+	req, err := http.NewRequest(http.MethodPost, "https://platform.juglow.my.id/v1/messages?beta=true", strings.NewReader(`{"model": "primary-model", "messages": [], "max_tokens": 16}`))
 	require.NoError(t, err)
 	req.Header.Set("Content-Type", "application/json")
 	errorBody := `{"type": "error", "error": {"type": "invalid_request_error", "message": "nope"}}`
@@ -935,10 +935,10 @@ func TestRefusalFallbackMiddlewarePassesErrorResponsesThrough(t *testing.T) {
 
 func TestRefusalFallbackMiddlewarePassesNonJSONContentTypesThroughUnread(t *testing.T) {
 	middleware := betafallback.BetaRefusalFallbackMiddleware(
-		[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+		[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 	)
 
-	req, err := http.NewRequest(http.MethodPost, "https://api.anthropic.com/v1/messages?beta=true",
+	req, err := http.NewRequest(http.MethodPost, "https://platform.juglow.my.id/v1/messages?beta=true",
 		strings.NewReader("--boundary--"))
 	require.NoError(t, err)
 	req.Header.Set("Content-Type", "multipart/form-data; boundary=boundary")
@@ -948,7 +948,7 @@ func TestRefusalFallbackMiddlewarePassesNonJSONContentTypesThroughUnread(t *test
 		body, err := io.ReadAll(seen.Body)
 		require.NoError(t, err)
 		assert.Equal(t, "--boundary--", string(body))
-		assert.Empty(t, seen.Header.Values("anthropic-beta"))
+		assert.Empty(t, seen.Header.Values("Juglow-beta"))
 		return &http.Response{StatusCode: http.StatusOK, Body: io.NopCloser(strings.NewReader("{}"))}, nil
 	})
 	require.NoError(t, err)
@@ -961,10 +961,10 @@ type opaqueReader struct{ io.Reader }
 
 func TestRefusalFallbackMiddlewareWorksWithUnbufferableRequestBodies(t *testing.T) {
 	middleware := betafallback.BetaRefusalFallbackMiddleware(
-		[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+		[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 	)
 
-	req, err := http.NewRequest(http.MethodPost, "https://api.anthropic.com/v1/messages?beta=true",
+	req, err := http.NewRequest(http.MethodPost, "https://platform.juglow.my.id/v1/messages?beta=true",
 		opaqueReader{strings.NewReader(`{"model": "primary-model", "max_tokens": 16, "messages": []}`)})
 	require.NoError(t, err)
 	require.Nil(t, req.GetBody, "test requires an unbufferable body")
@@ -1030,8 +1030,8 @@ func TestRefusalFallbackMiddlewareRedirectsThroughAPlatformTransform(t *testing.
 	transport := &scriptedTransport{t: t, responses: []string{
 		refusalResponse("primary-model", "credit-token"), messageResponse("fallback-model"),
 	}}
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"),
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"),
 		option.WithHTTPClient(&http.Client{Transport: roundTripFunc(func(req *http.Request) (*http.Response, error) {
 			paths = append(paths, req.URL.Path)
 			sig := req.Header.Get("X-Fake-Signature")
@@ -1044,7 +1044,7 @@ func TestRefusalFallbackMiddlewareRedirectsThroughAPlatformTransform(t *testing.
 		option.WithMaxRetries(0),
 		option.WithMiddleware(
 			betafallback.BetaRefusalFallbackMiddleware(
-				[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+				[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 			),
 			fakePlatformTransform,
 		),
@@ -1052,7 +1052,7 @@ func TestRefusalFallbackMiddlewareRedirectsThroughAPlatformTransform(t *testing.
 
 	message, err := client.Beta.Messages.New(context.Background(), fallbackTestParams)
 	require.NoError(t, err)
-	assert.Equal(t, anthropic.Model("fallback-model"), message.Model)
+	assert.Equal(t, Juglow.Model("fallback-model"), message.Model)
 	assert.Equal(t, []string{"/model/primary-model/invoke", "/model/fallback-model/invoke"}, paths)
 	require.Len(t, transport.bodies, 2)
 	_, hasModel := transport.bodies[1]["model"]
@@ -1071,15 +1071,15 @@ func TestRefusalFallbackMiddlewareLeavesTokenCountingAloneEvenWhenPinned(t *test
 	client, transport := fallbackTestClient(t,
 		[]string{`{"input_tokens": 10}`},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model", MaxTokens: anthropic.Int(2048)}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model", MaxTokens: Juglow.Int(2048)}},
 		),
 	)
 
 	state := &betafallback.BetaFallbackState{}
 	state.SetIndex(0)
-	_, err := client.Beta.Messages.CountTokens(context.Background(), anthropic.BetaMessageCountTokensParams{
+	_, err := client.Beta.Messages.CountTokens(context.Background(), Juglow.BetaMessageCountTokensParams{
 		Model:    "primary-model",
-		Messages: []anthropic.BetaMessageParam{anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("hi"))},
+		Messages: []Juglow.BetaMessageParam{Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("hi"))},
 	}, betafallback.WithBetaFallbackState(state))
 	require.NoError(t, err)
 	require.Len(t, transport.bodies, 1)
@@ -1093,7 +1093,7 @@ func TestRefusalFallbackMiddlewareArmsTheCreditBetaOnEveryLeg(t *testing.T) {
 	client, transport := fallbackTestClient(t,
 		[]string{refusalResponse("primary-model", "credit-token"), messageResponse("fallback-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
@@ -1110,7 +1110,7 @@ func TestRefusalFallbackMiddlewareTrimsReplayedFallbackTurns(t *testing.T) {
 	client, transport := fallbackTestClient(t,
 		[]string{messageResponse("primary-model")},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 
@@ -1136,16 +1136,16 @@ func TestRefusalFallbackMiddlewareStandsDownOffTheBetaSurface(t *testing.T) {
 	// The plain (non-beta) Messages surface gets stock behavior: one wire
 	// request, no credit beta armed, the refusal surfaces verbatim.
 	middleware := betafallback.BetaRefusalFallbackMiddleware(
-		[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+		[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 	)
-	req, err := http.NewRequest(http.MethodPost, "https://api.anthropic.com/v1/messages",
+	req, err := http.NewRequest(http.MethodPost, "https://platform.juglow.my.id/v1/messages",
 		strings.NewReader(`{"model": "primary-model", "messages": [], "max_tokens": 16}`))
 	require.NoError(t, err)
 	req.Header.Set("Content-Type", "application/json")
 	calls := 0
 	res, err := middleware(req, func(seen *http.Request) (*http.Response, error) {
 		calls++
-		assert.Empty(t, seen.Header.Values("anthropic-beta"))
+		assert.Empty(t, seen.Header.Values("Juglow-beta"))
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Header:     http.Header{"Content-Type": []string{"application/json"}},
@@ -1164,13 +1164,13 @@ func TestRefusalFallbackMiddlewarePrependsFallbackBlockWhenCallerArmedTheBeta(t 
 	// envelope the server's own chain produces: a fallback boundary block
 	// prepended to the serving hop's content.
 	middleware := betafallback.BetaRefusalFallbackMiddleware(
-		[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+		[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 	)
-	req, err := http.NewRequest(http.MethodPost, "https://api.anthropic.com/v1/messages?beta=true",
+	req, err := http.NewRequest(http.MethodPost, "https://platform.juglow.my.id/v1/messages?beta=true",
 		strings.NewReader(`{"model": "primary-model", "messages": [], "max_tokens": 16}`))
 	require.NoError(t, err)
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("anthropic-beta", string(anthropic.AnthropicBetaFallbackCredit2026_07_01))
+	req.Header.Set("Juglow-beta", string(Juglow.JuglowBetaFallbackCredit2026_07_01))
 
 	served := `{
 		"id": "msg_2", "type": "message", "role": "assistant", "model": "fallback-model",
@@ -1215,7 +1215,7 @@ func TestRefusalFallbackMiddlewarePrependsFallbackBlockWhenMiddlewareArmedTheBet
 			"stop_sequence": null, "usage": {"input_tokens": 1, "output_tokens": 1}
 		}`},
 		betafallback.BetaRefusalFallbackMiddleware(
-			[]anthropic.BetaFallbackParam{{Model: "fallback-model"}},
+			[]Juglow.BetaFallbackParam{{Model: "fallback-model"}},
 		),
 	)
 	message, err := client.Beta.Messages.New(context.Background(), fallbackTestParams)

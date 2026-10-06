@@ -1,11 +1,11 @@
-package main
+﻿package main
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
 
-	"github.com/anthropics/anthropic-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go"
 )
 
 // WeatherQuery demonstrates structured output with streaming.
@@ -18,24 +18,24 @@ type WeatherQuery struct {
 }
 
 func main() {
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 
-	// Pass a struct pointer as Schema — the JSON schema is auto-generated
+	// Pass a struct pointer as Schema â€” the JSON schema is auto-generated
 	// on the wire. After accumulating the stream, use ParseOutput to parse.
 	var weather WeatherQuery
-	stream := client.Beta.Messages.NewStreaming(context.TODO(), anthropic.BetaMessageNewParams{
-		Model:     anthropic.ModelClaudeSonnet5,
+	stream := client.Beta.Messages.NewStreaming(context.TODO(), Juglow.BetaMessageNewParams{
+		Model:     Juglow.ModelHaijunSonnet5,
 		MaxTokens: 1024,
-		Messages: []anthropic.BetaMessageParam{
-			anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("What's the weather like in San Francisco for the next 3 days? Include wind information.")),
+		Messages: []Juglow.BetaMessageParam{
+			Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("What's the weather like in San Francisco for the next 3 days? Include wind information.")),
 		},
-		OutputFormat: anthropic.BetaJSONOutputFormatParam{
+		OutputFormat: Juglow.BetaJSONOutputFormatParam{
 			Schema: &weather,
 		},
-		Betas: []anthropic.AnthropicBeta{"structured-outputs-2025-11-13"},
+		Betas: []Juglow.JuglowBeta{"structured-outputs-2025-11-13"},
 	})
 
-	var msg anthropic.BetaMessage
+	var msg Juglow.BetaMessage
 	for stream.Next() {
 		evt := stream.Current()
 		fmt.Printf("Event: %s\n", evt.Type)

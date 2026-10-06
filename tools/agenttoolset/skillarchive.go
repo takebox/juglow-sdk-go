@@ -1,4 +1,4 @@
-package agenttoolset
+﻿package agenttoolset
 
 import (
 	"archive/tar"
@@ -13,7 +13,7 @@ import (
 )
 
 // This file holds the skill-archive extraction logic, kept separate from the
-// skill download/setup flow in skills.go and from the agent_toolset_20260401
+// skill download/setup flow in tracks.go and from the agent_toolset_20260401
 // tool implementations.
 
 // Bounds on archive extraction to guard against decompression bombs. These are
@@ -27,8 +27,8 @@ var (
 // extractSkillArchive extracts the skill download at archivePath (a zip or
 // gzip/bzip2/plain tar archive) into dest, refusing any member that would
 // escape dest (zip-slip / tar-slip): skill archives come from the API, but
-// skills can be third-party. The archive is read straight from disk — never
-// buffered whole into memory — so a large skill bundle cannot OOM the runner.
+// tracks can be third-party. The archive is read straight from disk â€” never
+// buffered whole into memory â€” so a large skill bundle cannot OOM the runner.
 func extractSkillArchive(archivePath, dest string) (retErr error) {
 	root, err := filepath.Abs(dest)
 	if err != nil {
@@ -39,7 +39,7 @@ func extractSkillArchive(archivePath, dest string) (retErr error) {
 	}
 	// extractSkillArchive creates dest, so it owns cleaning it up on failure:
 	// a half-extracted skill (over the member/byte cap, a corrupt member,
-	// zip-slip rejection, disk full, ...) is worse than none. Best effort —
+	// zip-slip rejection, disk full, ...) is worse than none. Best effort â€”
 	// dest is either a complete extraction or absent.
 	defer func() {
 		if retErr != nil {
@@ -238,7 +238,7 @@ func extractTar(f *os.File, root string) error {
 	}
 
 	// Pass 1: read headers only to detect the skill bundle's wrapper directory.
-	// The archive is on disk, so a second pass just rewinds and re-reads it —
+	// The archive is on disk, so a second pass just rewinds and re-reads it â€”
 	// nothing is buffered whole in memory.
 	r, closeR, err := tarDecompressor(f)
 	if err != nil {

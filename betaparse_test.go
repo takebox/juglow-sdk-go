@@ -1,4 +1,4 @@
-package anthropic
+﻿package Juglow
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 type testOrder struct {
@@ -316,7 +316,7 @@ func TestNewAutoParseWithMockServer(t *testing.T) {
 		"id": "msg_123",
 		"type": "message",
 		"role": "assistant",
-		"model": "claude-sonnet-4-5-20250514",
+		"model": "haijun-sonnet-4-5-20250514",
 		"stop_reason": "end_turn",
 		"stop_sequence": null,
 		"usage": {"input_tokens": 100, "output_tokens": 50},
@@ -362,7 +362,7 @@ func TestNewAutoParseWithMockServer(t *testing.T) {
 
 	var order testOrder
 	msg, err := client.Beta.Messages.New(context.Background(), BetaMessageNewParams{
-		Model:     ModelClaudeSonnet4_5,
+		Model:     ModelHaijunSonnet4_5,
 		MaxTokens: 1024,
 		Messages: []BetaMessageParam{
 			NewBetaUserMessage(NewBetaTextBlock("Order a laptop")),
@@ -391,7 +391,7 @@ func TestNewAutoParseWithMockServer(t *testing.T) {
 func TestStreamingWithParseOutput(t *testing.T) {
 	events := []string{
 		`event: message_start`,
-		`data: {"type":"message_start","message":{"id":"msg_456","type":"message","role":"assistant","model":"claude-sonnet-4-5-20250514","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":100,"output_tokens":0}}}`,
+		`data: {"type":"message_start","message":{"id":"msg_456","type":"message","role":"assistant","model":"haijun-sonnet-4-5-20250514","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":100,"output_tokens":0}}}`,
 		``,
 		`event: content_block_start`,
 		`data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}`,
@@ -437,7 +437,7 @@ func TestStreamingWithParseOutput(t *testing.T) {
 
 	var order testOrder
 	stream := client.Beta.Messages.NewStreaming(context.Background(), BetaMessageNewParams{
-		Model:     ModelClaudeSonnet4_5,
+		Model:     ModelHaijunSonnet4_5,
 		MaxTokens: 1024,
 		Messages: []BetaMessageParam{
 			NewBetaUserMessage(NewBetaTextBlock("Order a phone")),

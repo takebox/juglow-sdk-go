@@ -1,4 +1,4 @@
-package environments
+﻿package environments
 
 import (
 	"cmp"
@@ -9,11 +9,11 @@ import (
 	"os"
 	"time"
 
-	anthropic "github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/stainlessheader"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/tools/agenttoolset"
+	Juglow "github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/stainlessheader"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/tools/agenttoolset"
 )
 
 const (
@@ -38,7 +38,7 @@ type EnvironmentWorkerOptions struct {
 	EnvironmentKey string
 
 	// WorkerID is a stable identifier reported back to the server for
-	// observability. Defaults to "<os.Hostname()>-<random hex>" — forwarded
+	// observability. Defaults to "<os.Hostname()>-<random hex>" â€” forwarded
 	// to [WorkPoller].
 	WorkerID string
 
@@ -60,21 +60,21 @@ type EnvironmentWorkerOptions struct {
 
 	// Tools, if non-nil, is exposed to every claimed session as-is. Ignored
 	// when ToolsFunc is set. When both Tools and ToolsFunc are nil the worker
-	// uses agenttoolset.BetaAgentToolset20260401(env) — the standard
+	// uses agenttoolset.BetaAgentToolset20260401(env) â€” the standard
 	// agent_toolset_20260401 set bound to the per-session AgentToolContext. Tool
 	// lifetime is the caller's responsibility; the worker never closes tools it
 	// was given via Tools.
-	Tools []anthropic.BetaTool
+	Tools []Juglow.BetaTool
 
 	// ToolsFunc, if non-nil, is invoked once per claimed session with that
-	// session's [agenttoolset.AgentToolContext] — use it to bind
+	// session's [agenttoolset.AgentToolContext] â€” use it to bind
 	// agenttoolset.BetaAgentToolset20260401 (or any tool that needs the workdir) to the
 	// right session. The worker calls [agenttoolset.CloseAll] on the result
 	// after the session finishes.
-	ToolsFunc func(env *agenttoolset.AgentToolContext) []anthropic.BetaTool
+	ToolsFunc func(env *agenttoolset.AgentToolContext) []Juglow.BetaTool
 
 	// MaxIdle is forwarded to the per-session
-	// [github.com/anthropics/anthropic-sdk-go.SessionToolRunner].
+	// [github.com/Juglows/Juglow-sdk-go.SessionToolRunner].
 	MaxIdle *time.Duration
 
 	// RequestOptions are applied to every request the worker issues, on top
@@ -93,10 +93,10 @@ type EnvironmentWorkerOptions struct {
 
 // EnvironmentWorker is the self-hosted environment runner, composed from the
 // control-plane [WorkPoller] and the per-session
-// [github.com/anthropics/anthropic-sdk-go.SessionToolRunner].
+// [github.com/Juglows/Juglow-sdk-go.SessionToolRunner].
 //
 // For each claimed `session` work item it builds the per-session
-// [agenttoolset.AgentToolContext], downloads the session agent's skills
+// [agenttoolset.AgentToolContext], downloads the session agent's tracks
 // ([agenttoolset.AgentToolContext.SetupSkills]), then runs a SessionToolRunner for the
 // session WHILE heartbeating the work-item lease in parallel; on exit it
 // force-stops the work item and loops to the next one. The lease heartbeat
@@ -108,13 +108,13 @@ type EnvironmentWorkerOptions struct {
 // (for example a `worker poll --on-work` hook) and only need the
 // run/heartbeat/force-stop machinery.
 type EnvironmentWorker struct {
-	client anthropic.Client
+	client Juglow.Client
 	opts   EnvironmentWorkerOptions
 }
 
 // NewEnvironmentWorker returns an [EnvironmentWorker] bound to client. Call
 // [EnvironmentWorker.Run] to start polling.
-func NewEnvironmentWorker(client anthropic.Client, opts EnvironmentWorkerOptions) *EnvironmentWorker {
+func NewEnvironmentWorker(client Juglow.Client, opts EnvironmentWorkerOptions) *EnvironmentWorker {
 	if opts.Workdir == "" {
 		// Snapshot the cwd at construction so a later os.Chdir cannot move the
 		// per-session workdir out from under the worker. Mirrors the TS/Python
@@ -170,76 +170,76 @@ func (w *EnvironmentWorker) Run(ctx context.Context) error {
 
 // HandleItemOptions selects the already-claimed work item that
 // [EnvironmentWorker.HandleItem] services. Each empty field falls back to the
-// matching ANTHROPIC_* environment variable — the same variables the
+// matching Juglow_* environment variable â€” the same variables the
 // `ant worker poll --on-work` hook exports into the child process:
 //
-//	WorkID          ← ANTHROPIC_WORK_ID
-//	EnvironmentID   ← ANTHROPIC_ENVIRONMENT_ID
-//	SessionID       ← ANTHROPIC_SESSION_ID
-//	EnvironmentKey  ← ANTHROPIC_ENVIRONMENT_KEY
+//	WorkID          â† Juglow_WORK_ID
+//	EnvironmentID   â† Juglow_ENVIRONMENT_ID
+//	SessionID       â† Juglow_SESSION_ID
+//	EnvironmentKey  â† Juglow_ENVIRONMENT_KEY
 //
 // WorkID, EnvironmentID and SessionID are required (after the env-var
 // fallback). EnvironmentKey resolves in order: this field, then the
 // [EnvironmentWorker]'s own EnvironmentKey option, then
-// ANTHROPIC_ENVIRONMENT_KEY — and is also required.
+// Juglow_ENVIRONMENT_KEY â€” and is also required.
 type HandleItemOptions struct {
 	// WorkID identifies the already-claimed work item; falls back to
-	// ANTHROPIC_WORK_ID when empty.
+	// Juglow_WORK_ID when empty.
 	WorkID string
 	// EnvironmentID is the self-hosted environment the work item belongs to;
-	// falls back to ANTHROPIC_ENVIRONMENT_ID when empty.
+	// falls back to Juglow_ENVIRONMENT_ID when empty.
 	EnvironmentID string
 	// SessionID is the managed-agents session the work item refers to; falls
-	// back to ANTHROPIC_SESSION_ID when empty.
+	// back to Juglow_SESSION_ID when empty.
 	SessionID string
 	// EnvironmentKey authorizes the per-session calls; falls back to the
-	// [EnvironmentWorker]'s own EnvironmentKey, then ANTHROPIC_ENVIRONMENT_KEY.
+	// [EnvironmentWorker]'s own EnvironmentKey, then Juglow_ENVIRONMENT_KEY.
 	EnvironmentKey string
 }
 
-// HandleItem services a single already-claimed session work item — the per-item
+// HandleItem services a single already-claimed session work item â€” the per-item
 // flow [EnvironmentWorker.Run] runs for each claimed item: it builds the
 // per-session [agenttoolset.AgentToolContext] (workdir/UnrestrictedPaths/
-// MaxFileBytes from the worker's options), downloads the session agent's skills
+// MaxFileBytes from the worker's options), downloads the session agent's tracks
 // ([agenttoolset.AgentToolContext.SetupSkills]), then runs a SessionToolRunner for the
-// session WHILE heartbeating the work-item lease in parallel; on exit — success
-// or error — it force-stops the work item. Use it from a `worker poll
+// session WHILE heartbeating the work-item lease in parallel; on exit â€” success
+// or error â€” it force-stops the work item. Use it from a `worker poll
 // --on-work` hook (or any caller that has already claimed a work item itself).
 //
-// Each empty field of opts is read from the matching ANTHROPIC_* environment
+// Each empty field of opts is read from the matching Juglow_* environment
 // variable (see [HandleItemOptions]); inside a `worker poll --on-work` child
 // process every value is already exported, so HandleItem(ctx, HandleItemOptions{})
 // just works. After the env-var fallback, WorkID/EnvironmentID/SessionID must
 // all be non-empty or HandleItem returns an error naming the missing one.
-// EnvironmentKey resolves in order — the opts field, the [EnvironmentWorker]'s
-// own EnvironmentKey option, then ANTHROPIC_ENVIRONMENT_KEY — and must also
+// EnvironmentKey resolves in order â€” the opts field, the [EnvironmentWorker]'s
+// own EnvironmentKey option, then Juglow_ENVIRONMENT_KEY â€” and must also
 // resolve to a non-empty value.
 //
 // It returns the SessionToolRunner's terminal error unless that error is a
 // benign session termination or idle timeout, in which case it returns nil.
 func (w *EnvironmentWorker) HandleItem(ctx context.Context, opts HandleItemOptions) error {
-	workID := cmp.Or(opts.WorkID, os.Getenv("ANTHROPIC_WORK_ID"))
-	environmentID := cmp.Or(opts.EnvironmentID, os.Getenv("ANTHROPIC_ENVIRONMENT_ID"))
-	sessionID := cmp.Or(opts.SessionID, os.Getenv("ANTHROPIC_SESSION_ID"))
-	environmentKey := cmp.Or(opts.EnvironmentKey, w.opts.EnvironmentKey, os.Getenv("ANTHROPIC_ENVIRONMENT_KEY"))
+	workID := cmp.Or(opts.WorkID, os.Getenv("Juglow_WORK_ID"))
+	environmentID := cmp.Or(opts.EnvironmentID, os.Getenv("Juglow_ENVIRONMENT_ID"))
+	sessionID := cmp.Or(opts.SessionID, os.Getenv("Juglow_SESSION_ID"))
+	environmentKey := cmp.Or(opts.EnvironmentKey, w.opts.EnvironmentKey, os.Getenv("Juglow_ENVIRONMENT_KEY"))
 
 	for _, req := range []struct{ name, val, env string }{
-		{"work_id", workID, "ANTHROPIC_WORK_ID"},
-		{"environment_id", environmentID, "ANTHROPIC_ENVIRONMENT_ID"},
-		{"session_id", sessionID, "ANTHROPIC_SESSION_ID"},
-		{"environment_key", environmentKey, "ANTHROPIC_ENVIRONMENT_KEY"},
+		{"work_id", workID, "Juglow_WORK_ID"},
+		{"environment_id", environmentID, "Juglow_ENVIRONMENT_ID"},
+		{"session_id", sessionID, "Juglow_SESSION_ID"},
+		{"environment_key", environmentKey, "Juglow_ENVIRONMENT_KEY"},
 	} {
 		if req.val == "" {
-			return fmt.Errorf("EnvironmentWorker.HandleItem: %s is required — pass it in HandleItemOptions or set %s", req.name, req.env)
+			return fmt.Errorf("EnvironmentWorker.HandleItem: %s is required â€” pass it in HandleItemOptions or set %s", req.name, req.env)
 		}
 	}
 
 	// The per-item code only reads work.ID / work.EnvironmentID /
 	// work.Data.Type / work.Data.ID, so minimal struct literals are enough.
-	work := &anthropic.BetaSelfHostedWork{
+	work := &Juglow.BetaSelfHostedWork{
 		ID:            workID,
 		EnvironmentID: environmentID,
-		Data: anthropic.BetaSessionWorkData{
+		Data: Juglow.BetaSessionWorkData{
 			ID: sessionID,
 		},
 	}
@@ -248,11 +248,11 @@ func (w *EnvironmentWorker) HandleItem(ctx context.Context, opts HandleItemOptio
 
 // handleItem is the per-item flow shared by [EnvironmentWorker.Run]'s poll loop
 // and [EnvironmentWorker.HandleItem]: build the per-session [agenttoolset.AgentToolContext],
-// download the session agent's skills, run a SessionToolRunner WHILE
+// download the session agent's tracks, run a SessionToolRunner WHILE
 // heartbeating the work-item lease in parallel, and force-stop the work item on
 // exit. environmentKey authorizes the per-session heartbeat/stop calls and the
 // SessionToolRunner's stream/list/send; work must be a `session` work item.
-func (w *EnvironmentWorker) handleItem(ctx context.Context, work *anthropic.BetaSelfHostedWork, environmentKey string) error {
+func (w *EnvironmentWorker) handleItem(ctx context.Context, work *Juglow.BetaSelfHostedWork, environmentKey string) error {
 	log := w.opts.Logger
 	if log == nil {
 		log = slog.Default()
@@ -290,7 +290,7 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *anthropic.Beta
 	defer sessCancel()
 
 	// Start the lease heartbeat BEFORE skill setup. The poller already acked
-	// this work item when it yielded — every second between the ack and the
+	// this work item when it yielded â€” every second between the ack and the
 	// first heartbeat is a window during which the control plane sees no
 	// liveness signal and may reclaim the lease. SetupSkills below can be
 	// slow (it issues a session lookup plus a per-skill download/extract that
@@ -309,7 +309,7 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *anthropic.Beta
 		MaxFileBytes:      w.opts.MaxFileBytes,
 	}
 	// The session lookup and skill download are environment-scoped, so they
-	// need the environment key like the heartbeat/stop and the runner do —
+	// need the environment key like the heartbeat/stop and the runner do â€”
 	// without it they fall back to the client's default credentials and fail.
 	// Use sessCtx so a heartbeat-driven lease loss (the heartbeat goroutine
 	// cancels sessCtx on a permanent failure / stopping state / 412 reclaim)
@@ -318,7 +318,7 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *anthropic.Beta
 	if err := env.SetupSkills(sessCtx, w.client, sessionID, hbStopOpts...); err != nil {
 		log.Warn("skill setup failed", slog.Any("error", err))
 	}
-	// Clean up the skills this work item downloaded so one session's skills
+	// Clean up the tracks this work item downloaded so one session's tracks
 	// don't leak into the next item served by the same worker.
 	defer func() {
 		if err := env.Cleanup(); err != nil {
@@ -327,7 +327,7 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *anthropic.Beta
 	}()
 
 	var (
-		tools      []anthropic.BetaTool
+		tools      []Juglow.BetaTool
 		closeTools bool
 	)
 	switch {
@@ -345,7 +345,7 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *anthropic.Beta
 	}
 
 	// Authorize the runner's stream/list/send calls with the environment key
-	// (via bearerReqOpts — the runner stamps its own x-stainless-helper
+	// (via bearerReqOpts â€” the runner stamps its own x-stainless-helper
 	// header "session-tool-runner" internally *after* these options, so we
 	// just need the auth bits here; any helper tag we passed in would be
 	// overwritten). bearerReqOpts also clears the parent client's default
@@ -355,14 +355,14 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *anthropic.Beta
 	// auth (appended last) still win.
 	runnerBearerOpts, err := bearerReqOpts(environmentKey)
 	if err != nil {
-		// Same validation invariant as the hbStopOpts construction above —
+		// Same validation invariant as the hbStopOpts construction above â€”
 		// surface rather than send with the parent client's credentials.
 		return err
 	}
 	runnerReqOpts := make([]option.RequestOption, 0, len(w.opts.RequestOptions)+len(runnerBearerOpts))
 	runnerReqOpts = append(runnerReqOpts, w.opts.RequestOptions...)
 	runnerReqOpts = append(runnerReqOpts, runnerBearerOpts...)
-	runner := w.client.Beta.Sessions.Events.NewToolRunner(sessCtx, sessionID, anthropic.SessionToolRunnerOptions{
+	runner := w.client.Beta.Sessions.Events.NewToolRunner(sessCtx, sessionID, Juglow.SessionToolRunnerOptions{
 		Tools:          tools,
 		MaxIdle:        w.opts.MaxIdle,
 		Logger:         log,
@@ -377,8 +377,8 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *anthropic.Beta
 	}
 	var runErr error
 	if err := runner.Err(); err != nil &&
-		!errors.Is(err, anthropic.ErrSessionTerminated) &&
-		!errors.Is(err, anthropic.ErrIdleTimeout) {
+		!errors.Is(err, Juglow.ErrSessionTerminated) &&
+		!errors.Is(err, Juglow.ErrIdleTimeout) {
 		log.Warn("session tool runner exited with error", slog.Any("error", err))
 		runErr = err
 	}
@@ -392,9 +392,9 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *anthropic.Beta
 	stopCtx, cancel := context.WithTimeout(context.Background(), stopTimeout)
 	defer cancel()
 	if err := stopWork(stopCtx, w.client, work.ID,
-		anthropic.BetaEnvironmentWorkStopParams{
+		Juglow.BetaEnvironmentWorkStopParams{
 			EnvironmentID: work.EnvironmentID,
-			BetaSelfHostedWorkStopRequest: anthropic.BetaSelfHostedWorkStopRequestParam{
+			BetaSelfHostedWorkStopRequest: Juglow.BetaSelfHostedWorkStopRequestParam{
 				Force: param.NewOpt(true),
 			},
 		},
@@ -417,7 +417,7 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *anthropic.Beta
 // since the most recent successful beat, the lease is presumed expired
 // server-side and the session is cancelled rather than executing tools
 // against a session another worker may also have claimed.
-func runHeartbeat(ctx context.Context, cancel context.CancelFunc, client anthropic.Client, work *anthropic.BetaSelfHostedWork, reqOpts []option.RequestOption, log *slog.Logger) {
+func runHeartbeat(ctx context.Context, cancel context.CancelFunc, client Juglow.Client, work *Juglow.BetaSelfHostedWork, reqOpts []option.RequestOption, log *slog.Logger) {
 	interval := heartbeatDefault
 	// ttl tracks the last server-reported TTL. It bounds the staleness
 	// ceiling: a run of transient errors lasting longer than this means the
@@ -437,7 +437,7 @@ func runHeartbeat(ctx context.Context, cancel context.CancelFunc, client anthrop
 	beat := func() bool {
 		// Per-request timeout: cap at the current wait-between-beats interval
 		// (which tracks ttl/2). A single Heartbeat call must never outlive
-		// the lease window — without this, the call inherits the SDK default
+		// the lease window â€” without this, the call inherits the SDK default
 		// (~10 minutes) and one hung request can let the lease expire while
 		// we sit on the connection. The full slice expression caps capacity
 		// so append cannot mutate the caller's reqOpts backing array.
@@ -445,7 +445,7 @@ func runHeartbeat(ctx context.Context, cancel context.CancelFunc, client anthrop
 		resp, err := client.Beta.Environments.Work.Heartbeat(
 			ctx,
 			work.ID,
-			anthropic.BetaEnvironmentWorkHeartbeatParams{
+			Juglow.BetaEnvironmentWorkHeartbeatParams{
 				EnvironmentID:         work.EnvironmentID,
 				ExpectedLastHeartbeat: param.NewOpt(last),
 			},
@@ -458,7 +458,7 @@ func runHeartbeat(ctx context.Context, cancel context.CancelFunc, client anthrop
 			// 412 means our expected_last_heartbeat no longer matches the
 			// server's: another worker reclaimed the lease (or won the
 			// first-heartbeat race against our "NO_HEARTBEAT" claim). Call it
-			// out distinctly from an auth/spec 4xx — the operational response
+			// out distinctly from an auth/spec 4xx â€” the operational response
 			// is "someone else owns this work now", not "the client is broken".
 			if isStatus(err, 412) {
 				log.Warn("heartbeat precondition failed; lease reclaimed by another worker",
@@ -471,7 +471,7 @@ func runHeartbeat(ctx context.Context, cancel context.CancelFunc, client anthrop
 			}
 			// Bound the transient-retry window. The control plane lets the
 			// lease lapse silently after ttl elapsed without a successful
-			// heartbeat — without this check we'd keep executing tools
+			// heartbeat â€” without this check we'd keep executing tools
 			// against a reclaimed session.
 			if stale := time.Since(lastSuccess); stale > ttl {
 				log.Error("heartbeat staleness ceiling exceeded; lease presumed expired",
@@ -490,8 +490,8 @@ func runHeartbeat(ctx context.Context, cancel context.CancelFunc, client anthrop
 			interval = clampDur(ttl/2, heartbeatFloor, heartbeatDefault)
 		}
 		switch resp.State {
-		case anthropic.BetaSelfHostedWorkHeartbeatResponseStateStopping,
-			anthropic.BetaSelfHostedWorkHeartbeatResponseStateStopped:
+		case Juglow.BetaSelfHostedWorkHeartbeatResponseStateStopping,
+			Juglow.BetaSelfHostedWorkHeartbeatResponseStateStopped:
 			log.Info("heartbeat reports shutdown", slog.String("state", string(resp.State)))
 			return false
 		}

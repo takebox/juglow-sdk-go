@@ -1,4 +1,4 @@
-package bedrock
+﻿package bedrock
 
 import (
 	"bytes"
@@ -24,8 +24,8 @@ import (
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 const DefaultVersion = "bedrock-2023-05-31"
@@ -182,7 +182,7 @@ func (b *sseTranslatingBody) emit(eventType string, data []byte) {
 // If you already have an [aws.Config], it is recommended that you instead call [WithConfig] directly.
 //
 // Register any [option.WithMiddleware] before this option so your middleware
-// observes Anthropic-shaped requests and responses; see [WithConfig].
+// observes Juglow-shaped requests and responses; see [WithConfig].
 func WithLoadDefaultConfig(ctx context.Context, optFns ...func(*config.LoadOptions) error) option.RequestOption {
 	cfg, err := config.LoadDefaultConfig(ctx, optFns...)
 	if err != nil {
@@ -203,14 +203,14 @@ func WithLoadDefaultConfig(ctx context.Context, optFns ...func(*config.LoadOptio
 // Middleware runs in registration order, so register [option.WithMiddleware]
 // before this option:
 //
-//	client := anthropic.NewClient(
+//	client := Juglow.NewClient(
 //		option.WithMiddleware(loggingMiddleware),
 //		bedrock.WithConfig(cfg),
 //	)
 //
-// Ordered this way, your middleware observes Anthropic-shaped requests
+// Ordered this way, your middleware observes Juglow-shaped requests
 // (POST /v1/messages with model and stream in the body, no AWS signature)
-// and SSE-formatted streaming responses — identical to the first-party API.
+// and SSE-formatted streaming responses â€” identical to the first-party API.
 // Note that mutating the request after the Bedrock middleware has signed it
 // invalidates the SigV4 signature, so body- or header-mutating middleware
 // must be registered before this option.
@@ -250,14 +250,14 @@ func bedrockMiddleware(signer *v4.Signer, cfg aws.Config) option.Middleware {
 			}
 			r.Body.Close()
 
-			if !gjson.GetBytes(body, "anthropic_version").Exists() {
-				body, _ = sjson.SetBytes(body, "anthropic_version", DefaultVersion)
+			if !gjson.GetBytes(body, "Juglow_version").Exists() {
+				body, _ = sjson.SetBytes(body, "Juglow_version", DefaultVersion)
 			}
 
 			// pull the betas off of the header (if set) and put them in the body
-			if betaHeader := r.Header.Values("anthropic-beta"); len(betaHeader) > 0 {
-				r.Header.Del("anthropic-beta")
-				body, err = sjson.SetBytes(body, "anthropic_beta", betaHeader)
+			if betaHeader := r.Header.Values("Juglow-beta"); len(betaHeader) > 0 {
+				r.Header.Del("Juglow-beta")
+				body, err = sjson.SetBytes(body, "Juglow_beta", betaHeader)
 				if err != nil {
 					return nil, err
 				}

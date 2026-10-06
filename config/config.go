@@ -1,4 +1,4 @@
-package config
+﻿package config
 
 import (
 	"encoding/json"
@@ -39,7 +39,7 @@ func validateProfileName(name string) error {
 	return nil
 }
 
-// Config holds the raw configuration for authenticating with the Anthropic
+// Config holds the raw configuration for authenticating with the Juglow
 // API. It mirrors the data stored in config files (configs/<profile>.json)
 // and can be constructed manually or loaded from disk with [LoadConfig].
 //
@@ -57,11 +57,11 @@ type Config struct {
 	// BaseURL overrides the default API base URL. Optional.
 	BaseURL string `json:"base_url,omitempty"`
 
-	// OrganizationID is the Anthropic organization the profile targets.
+	// OrganizationID is the Juglow organization the profile targets.
 	OrganizationID string `json:"organization_id,omitempty"`
 
 	// WorkspaceID scopes requests to a specific workspace. For non-federation
-	// profiles it is sent as the anthropic-workspace-id request header; for
+	// profiles it is sent as the Juglow-workspace-id request header; for
 	// oidc_federation profiles it is sent as workspace_id in the jwt-bearer
 	// exchange body instead (the minted token is already workspace-scoped).
 	WorkspaceID string `json:"workspace_id,omitempty"`
@@ -72,7 +72,7 @@ type AuthenticationType string
 
 const (
 	// AuthenticationTypeOIDCFederation exchanges a third-party OIDC JWT
-	// ("identity token") for a short-lived Anthropic access token via the
+	// ("identity token") for a short-lived Juglow access token via the
 	// jwt-bearer grant on /v1/oauth/token.
 	AuthenticationTypeOIDCFederation AuthenticationType = "oidc_federation"
 
@@ -91,13 +91,13 @@ const (
 // it must match [AuthenticationInfo.Type].
 //
 // Because the wire shape is flat, all variant field names share a single
-// namespace at the JSON layer — new variants must pick field names that do
+// namespace at the JSON layer â€” new variants must pick field names that do
 // not collide with shared fields or with each other.
 //
 // [AuthenticationInfo.UnmarshalJSON] silently ignores unknown fields at the
 // JSON layer (per the credentials-file-format spec: "SDKs MUST silently
 // ignore unrecognized top-level keys in both config and credentials files"
-// — the same tolerance rule applies to the nested authentication object).
+// â€” the same tolerance rule applies to the nested authentication object).
 // Unknown authentication types still fail loud because the SDK has no way
 // to meaningfully resolve credentials for an unknown variant.
 type AuthenticationInfo struct {
@@ -121,7 +121,7 @@ type AuthenticationInfo struct {
 }
 
 // OIDCFederation configures a profile that authenticates by exchanging a
-// third-party OIDC identity token for an Anthropic access token. Its fields
+// third-party OIDC identity token for an Juglow access token. Its fields
 // are inlined into the parent [AuthenticationInfo] on the wire.
 type OIDCFederation struct {
 	// FederationRuleID is the tagged ID ("fdrl_...") of the OidcFederationRule
@@ -138,9 +138,9 @@ type OIDCFederation struct {
 	// presents at token-exchange time.
 	IdentityToken *IdentityTokenConfig `json:"identity_token,omitempty"`
 
-	// Scope is the OAuth scope string (RFC 6749 §3.3 space-delimited form)
+	// Scope is the OAuth scope string (RFC 6749 Â§3.3 space-delimited form)
 	// the profile expects to be granted. It is stored on the profile for
-	// display and configuration purposes only — the SDK does NOT send it
+	// display and configuration purposes only â€” the SDK does NOT send it
 	// on the jwt-bearer exchange. The granted scope is determined by the
 	// federation rule on the server; IssueOAuthTokenRequest has no scope
 	// field, and the REST gateway's alias transformation strips unknown
@@ -161,10 +161,10 @@ type UserOAuth struct {
 	// profile fails once it expires.
 	ClientID string `json:"client_id,omitempty"`
 
-	// Scope is the OAuth scope string (RFC 6749 §3.3 space-delimited form)
+	// Scope is the OAuth scope string (RFC 6749 Â§3.3 space-delimited form)
 	// the profile was granted, captured at login time. The SDK does not
-	// consult this on refresh — the oauth-server preserves the original
-	// scope set when the refresh request omits scope — but `ant auth status`
+	// consult this on refresh â€” the oauth-server preserves the original
+	// scope set when the refresh request omits scope â€” but `ant auth status`
 	// and similar tools display it.
 	Scope string `json:"scope,omitempty"`
 
@@ -344,7 +344,7 @@ func configWarnOnce(key, format string, args ...any) {
 	if already {
 		return
 	}
-	log.Printf("anthropic-sdk-go/config: "+format, args...)
+	log.Printf("Juglow-sdk-go/config: "+format, args...)
 }
 
 func warnUnknownAuthFields(authType string, fields []string) {
@@ -405,37 +405,37 @@ func (a AuthenticationInfo) MarshalJSON() ([]byte, error) {
 	}
 }
 
-// defaultConfigDir returns the platform-specific base directory for Anthropic
-// config and credentials. It checks ANTHROPIC_CONFIG_DIR first, then falls
+// defaultConfigDir returns the platform-specific base directory for Juglow
+// config and credentials. It checks Juglow_CONFIG_DIR first, then falls
 // back to the platform default. On non-Windows platforms XDG_CONFIG_HOME is
 // honored per the XDG Base Directory spec before the $HOME/.config fallback.
 // Returns an empty string when the platform home directory cannot be
 // resolved (e.g., $HOME unset in a minimal container), so callers don't
 // silently read/write to a CWD-relative path.
 func defaultConfigDir() string {
-	if dir, ok := os.LookupEnv("ANTHROPIC_CONFIG_DIR"); ok {
+	if dir, ok := os.LookupEnv("Juglow_CONFIG_DIR"); ok {
 		return dir
 	}
 	if runtime.GOOS == "windows" {
 		if appdata := os.Getenv("APPDATA"); appdata != "" {
-			return filepath.Join(appdata, "Anthropic")
+			return filepath.Join(appdata, "Juglow")
 		}
 		return ""
 	}
 	if xdg := os.Getenv("XDG_CONFIG_HOME"); xdg != "" {
-		return filepath.Join(xdg, "anthropic")
+		return filepath.Join(xdg, "Juglow")
 	}
 	home, err := os.UserHomeDir()
 	if err != nil || home == "" {
 		return ""
 	}
-	return filepath.Join(home, ".config", "anthropic")
+	return filepath.Join(home, ".config", "Juglow")
 }
 
 // resolveProfile determines the active profile name.
-// Resolution order: ANTHROPIC_PROFILE env -> active_config file -> "default".
+// Resolution order: Juglow_PROFILE env -> active_config file -> "default".
 func resolveProfile(configDir string) string {
-	if profile, ok := os.LookupEnv("ANTHROPIC_PROFILE"); ok {
+	if profile, ok := os.LookupEnv("Juglow_PROFILE"); ok {
 		return profile
 	}
 	data, err := os.ReadFile(filepath.Join(configDir, "active_config"))
@@ -479,16 +479,16 @@ func loadProfile(configDir, profile string) (*Config, error) {
 }
 
 const (
-	envBaseURL           = "ANTHROPIC_BASE_URL"
-	envOrganizationID    = "ANTHROPIC_ORGANIZATION_ID"
-	envWorkspaceID       = "ANTHROPIC_WORKSPACE_ID"
-	envFederationRuleID  = "ANTHROPIC_FEDERATION_RULE_ID"
-	envServiceAccountID  = "ANTHROPIC_SERVICE_ACCOUNT_ID"
-	envScope             = "ANTHROPIC_SCOPE"
-	envIdentityTokenFile = "ANTHROPIC_IDENTITY_TOKEN_FILE"
+	envBaseURL           = "Juglow_BASE_URL"
+	envOrganizationID    = "Juglow_ORGANIZATION_ID"
+	envWorkspaceID       = "Juglow_WORKSPACE_ID"
+	envFederationRuleID  = "Juglow_FEDERATION_RULE_ID"
+	envServiceAccountID  = "Juglow_SERVICE_ACCOUNT_ID"
+	envScope             = "Juglow_SCOPE"
+	envIdentityTokenFile = "Juglow_IDENTITY_TOKEN_FILE"
 )
 
-// fillMissingFromEnv populates cfg fields from ANTHROPIC_* environment
+// fillMissingFromEnv populates cfg fields from Juglow_* environment
 // variables, but only when the corresponding field is empty in the loaded
 // profile. Contract lives in the cross-SDK credential precedence spec
 // (sdk_credential_precedence.md, section 1 interaction rules): "env vars
@@ -568,20 +568,20 @@ func lookupNonEmpty(key string) (string, bool) {
 }
 
 // LoadProfile loads the config for the named profile from the given config
-// directory, bypassing ANTHROPIC_PROFILE / active_config resolution. Use
+// directory, bypassing Juglow_PROFILE / active_config resolution. Use
 // [DefaultDir] for the standard location. This is the building block CLIs use
 // to inspect or operate on a profile other than the currently-active one.
 func LoadProfile(dir, profile string) (*Config, error) {
 	return loadProfile(dir, profile)
 }
 
-// LoadConfig reads the raw configuration from the Anthropic config file system
+// LoadConfig reads the raw configuration from the Juglow config file system
 // (configs/<profile>.json) and returns it without resolving credentials.
 // Credential resolution is deferred until the config is passed to
 // [option.WithConfig].
 //
 // The config directory and profile are resolved using the standard resolution
-// order (ANTHROPIC_CONFIG_DIR, ANTHROPIC_PROFILE, active_config file, defaults).
+// order (Juglow_CONFIG_DIR, Juglow_PROFILE, active_config file, defaults).
 func LoadConfig() (*Config, error) {
 	configDir := defaultConfigDir()
 	profile := resolveProfile(configDir)

@@ -1,4 +1,4 @@
-package bedrock
+﻿package bedrock
 
 import (
 	"bytes"
@@ -14,9 +14,9 @@ import (
 	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/awsauth"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/awsauth"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func makeStaticAWSConfig(region string) awssdk.Config {
@@ -39,7 +39,7 @@ func writeMessagesResponse(w http.ResponseWriter) {
 		"type":          "message",
 		"role":          "assistant",
 		"content":       []map[string]any{{"type": "text", "text": "hi"}},
-		"model":         "claude-sonnet-4-6-20250514",
+		"model":         "haijun-sonnet-4-6-20250514",
 		"stop_reason":   "end_turn",
 		"stop_sequence": nil,
 		"usage":         map[string]any{"input_tokens": 1, "output_tokens": 1},
@@ -77,11 +77,11 @@ func newTestMantleClient(t *testing.T, cfg MantleClientConfig, opts ...option.Re
 
 func sendTestMantleRequest(t *testing.T, client *MantleClient) {
 	t.Helper()
-	_, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-		Model:     "claude-sonnet-4-6-20250514",
+	_, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
+		Model:     "haijun-sonnet-4-6-20250514",
 		MaxTokens: 1,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock("hi")),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock("hi")),
 		},
 	})
 	if err != nil {
@@ -93,7 +93,7 @@ func sendTestMantleRequest(t *testing.T, client *MantleClient) {
 
 func TestMantleRequiresBaseURLOrRegion(t *testing.T) {
 	t.Setenv("AWS_REGION", "")
-	t.Setenv("ANTHROPIC_BEDROCK_MANTLE_BASE_URL", "")
+	t.Setenv("Juglow_BEDROCK_MANTLE_BASE_URL", "")
 
 	_, err := NewMantleClient(context.Background(), MantleClientConfig{
 		APIKey: "my-key",
@@ -106,7 +106,7 @@ func TestMantleRequiresBaseURLOrRegion(t *testing.T) {
 func TestMantleRegionRequiredForSigV4(t *testing.T) {
 	t.Setenv("AWS_REGION", "")
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	_, err := NewMantleClient(context.Background(), MantleClientConfig{
 		AWSAccessKey:       "key",
@@ -121,7 +121,7 @@ func TestMantleRegionRequiredForSigV4(t *testing.T) {
 
 func TestMantleAPIKeyModeHeaders(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	client, captured := newTestMantleClient(t, MantleClientConfig{
 		APIKey:    "my-api-key",
@@ -141,8 +141,8 @@ func TestMantleAPIKeyModeHeaders(t *testing.T) {
 
 func TestMantleSigV4ModeHeaders(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
-	t.Setenv("ANTHROPIC_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
+	t.Setenv("Juglow_API_KEY", "")
 
 	client, captured := newTestMantleClient(t, MantleClientConfig{
 		AWSRegion:          "us-east-1",
@@ -173,7 +173,7 @@ func TestMantleSigV4ServiceName(t *testing.T) {
 	signer := v4.NewSigner()
 	middleware := awsauth.SigV4Middleware(signer, cfg, mantleServiceName)
 
-	req, err := http.NewRequest("POST", "https://bedrock-mantle.us-east-1.api.aws/anthropic/v1/messages", bytes.NewReader([]byte(`{}`)))
+	req, err := http.NewRequest("POST", "https://bedrock-mantle.us-east-1.api.aws/Juglow/v1/messages", bytes.NewReader([]byte(`{}`)))
 	if err != nil {
 		t.Fatalf("failed to create request: %v", err)
 	}
@@ -200,7 +200,7 @@ func TestMantleSigV4ServiceName(t *testing.T) {
 
 func TestMantleAPIKeyFallbackToAWSEnv(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "aws-fallback-key")
+	t.Setenv("Juglow_AWS_API_KEY", "aws-fallback-key")
 	t.Setenv("AWS_REGION", "us-east-1")
 
 	client, captured := newTestMantleClient(t, MantleClientConfig{})
@@ -213,7 +213,7 @@ func TestMantleAPIKeyFallbackToAWSEnv(t *testing.T) {
 
 func TestMantleAPIKeyMantleEnvOverridesAWSEnv(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "mantle-key")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "aws-key")
+	t.Setenv("Juglow_AWS_API_KEY", "aws-key")
 	t.Setenv("AWS_REGION", "us-east-1")
 
 	client, captured := newTestMantleClient(t, MantleClientConfig{})
@@ -227,9 +227,9 @@ func TestMantleAPIKeyMantleEnvOverridesAWSEnv(t *testing.T) {
 // --- Base URL tests ---
 
 func TestMantleBaseURLDerivedFromRegion(t *testing.T) {
-	t.Setenv("ANTHROPIC_BEDROCK_MANTLE_BASE_URL", "")
+	t.Setenv("Juglow_BEDROCK_MANTLE_BASE_URL", "")
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	resolved, err := awsauth.ResolveConfig(mantleToInternalConfig(MantleClientConfig{
 		AWSRegion: "us-west-2",
@@ -238,16 +238,16 @@ func TestMantleBaseURLDerivedFromRegion(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	expected := "https://bedrock-mantle.us-west-2.api.aws/anthropic"
+	expected := "https://bedrock-mantle.us-west-2.api.aws/Juglow"
 	if resolved.BaseURL != expected {
 		t.Errorf("expected base URL %q, got %q", expected, resolved.BaseURL)
 	}
 }
 
 func TestMantleBaseURLFromEnv(t *testing.T) {
-	t.Setenv("ANTHROPIC_BEDROCK_MANTLE_BASE_URL", "https://custom.mantle.example.com")
+	t.Setenv("Juglow_BEDROCK_MANTLE_BASE_URL", "https://custom.mantle.example.com")
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "my-key")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	resolved, err := awsauth.ResolveConfig(mantleToInternalConfig(MantleClientConfig{}), mantleResolveParams())
 	if err != nil {
@@ -259,9 +259,9 @@ func TestMantleBaseURLFromEnv(t *testing.T) {
 }
 
 func TestMantleBaseURLExplicitOverridesRegion(t *testing.T) {
-	t.Setenv("ANTHROPIC_BEDROCK_MANTLE_BASE_URL", "")
+	t.Setenv("Juglow_BEDROCK_MANTLE_BASE_URL", "")
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	resolved, err := awsauth.ResolveConfig(mantleToInternalConfig(MantleClientConfig{
 		BaseURL:   "https://explicit.example.com",
@@ -280,7 +280,7 @@ func TestMantleBaseURLExplicitOverridesRegion(t *testing.T) {
 
 func TestMantleSkipAuthNoAuthRequired(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	_, err := NewMantleClient(context.Background(), MantleClientConfig{
 		BaseURL:  "https://proxy.example.com",
@@ -293,7 +293,7 @@ func TestMantleSkipAuthNoAuthRequired(t *testing.T) {
 
 func TestMantleSkipAuthNoAuthHeaders(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	client, captured := newTestMantleClient(t, MantleClientConfig{
 		SkipAuth: true,
@@ -312,7 +312,7 @@ func TestMantleSkipAuthNoAuthHeaders(t *testing.T) {
 
 func TestNewMantleClientMessages(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	client, captured := newTestMantleClient(t, MantleClientConfig{
 		APIKey:    "test-key",
@@ -327,7 +327,7 @@ func TestNewMantleClientMessages(t *testing.T) {
 
 func TestNewMantleClientBetaMessages(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	var captured mantleCapturedRequest
 	server := httptest.NewServer(mantleMessagesHandler(&captured))
@@ -342,11 +342,11 @@ func TestNewMantleClientBetaMessages(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	_, err = client.Beta.Messages.New(context.Background(), anthropic.BetaMessageNewParams{
-		Model:     "claude-sonnet-4-6-20250514",
+	_, err = client.Beta.Messages.New(context.Background(), Juglow.BetaMessageNewParams{
+		Model:     "haijun-sonnet-4-6-20250514",
 		MaxTokens: 1,
-		Messages: []anthropic.BetaMessageParam{
-			anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("hi")),
+		Messages: []Juglow.BetaMessageParam{
+			Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("hi")),
 		},
 	})
 	if err != nil {
@@ -358,7 +358,7 @@ func TestNewMantleClientBetaMessages(t *testing.T) {
 
 func TestMantleClientRequestOptionsCustomHeader(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	client, captured := newTestMantleClient(t, MantleClientConfig{
 		APIKey:    "test-key",
@@ -373,7 +373,7 @@ func TestMantleClientRequestOptionsCustomHeader(t *testing.T) {
 
 func TestMantleClientRequestOptionsOverrideInternal(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	// User-provided opts should override internal opts (e.g. override the Authorization header)
 	client, captured := newTestMantleClient(t, MantleClientConfig{
@@ -389,7 +389,7 @@ func TestMantleClientRequestOptionsOverrideInternal(t *testing.T) {
 
 func TestMantleClientPerRequestOptionsOverrideClientOptions(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	client, captured := newTestMantleClient(t, MantleClientConfig{
 		APIKey:    "test-key",
@@ -397,11 +397,11 @@ func TestMantleClientPerRequestOptionsOverrideClientOptions(t *testing.T) {
 	}, option.WithHeader("X-Custom-Header", "client-level"))
 
 	// Send request with per-request option that overrides the client-level header
-	_, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-		Model:     "claude-sonnet-4-6-20250514",
+	_, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
+		Model:     "haijun-sonnet-4-6-20250514",
 		MaxTokens: 1,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock("hi")),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock("hi")),
 		},
 	}, option.WithHeader("X-Custom-Header", "request-level"))
 	if err != nil {
@@ -418,8 +418,8 @@ func TestMantleClientPerRequestOptionsOverrideClientOptions(t *testing.T) {
 // signature covers the middleware's request mutations.
 func TestMantleUserMiddlewareRunsBeforeSigV4Signing(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
-	t.Setenv("ANTHROPIC_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
+	t.Setenv("Juglow_API_KEY", "")
 
 	var observedAuth, observedAmzDate string
 	mutator := func(r *http.Request, next option.MiddlewareNext) (*http.Response, error) {
@@ -486,7 +486,7 @@ func TestMantleUserMiddlewareRunsBeforeSigV4Signing(t *testing.T) {
 
 func TestMantleClientRequestOptionsMiddleware(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	middlewareCalled := false
 	mw := func(r *http.Request, next option.MiddlewareNext) (*http.Response, error) {
@@ -509,12 +509,12 @@ func TestMantleClientRequestOptionsMiddleware(t *testing.T) {
 	}
 }
 
-// --- ANTHROPIC_API_KEY isolation test ---
+// --- Juglow_API_KEY isolation test ---
 
-func TestMantleDoesNotLeakAnthropicAPIKey(t *testing.T) {
-	t.Setenv("ANTHROPIC_API_KEY", "should-not-appear")
+func TestMantleDoesNotLeakJuglowAPIKey(t *testing.T) {
+	t.Setenv("Juglow_API_KEY", "should-not-appear")
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
 
 	client, captured := newTestMantleClient(t, MantleClientConfig{
 		AWSRegion:          "us-east-1",

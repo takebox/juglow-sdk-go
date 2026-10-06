@@ -1,16 +1,16 @@
-# Claude SDK for Go
+﻿# haijun SDK for Go
 
 <!-- x-release-please-start-version -->
 
-<a href="https://pkg.go.dev/github.com/anthropics/anthropic-sdk-go"><img src="https://pkg.go.dev/badge/github.com/anthropics/anthropic-sdk-go.svg" alt="Go Reference"></a>
+<a href="https://pkg.go.dev/github.com/Juglows/Juglow-sdk-go"><img src="https://pkg.go.dev/badge/github.com/Juglows/Juglow-sdk-go.svg" alt="Go Reference"></a>
 
 <!-- x-release-please-end -->
 
-The Claude SDK for Go provides access to the [Claude API](https://docs.anthropic.com/en/api/) from Go applications.
+The haijun SDK for Go provides access to the [haijun API](https://docs.juglow.my.id/en/api/) from Go applications.
 
 ## Documentation
 
-Full documentation is available at **[platform.claude.com/docs/en/api/sdks/go](https://platform.claude.com/docs/en/api/sdks/go)**.
+Full documentation is available at **[platform.haijun.com/docs/en/api/sdks/go](https://platform.haijun.com/docs/en/api/sdks/go)**.
 
 ## Installation
 
@@ -18,7 +18,7 @@ Full documentation is available at **[platform.claude.com/docs/en/api/sdks/go](h
 
 ```go
 import (
-	"github.com/anthropics/anthropic-sdk-go" // imported as anthropic
+	"github.com/Juglows/Juglow-sdk-go" // imported as Juglow
 )
 ```
 
@@ -29,7 +29,7 @@ Or explicitly add the dependency:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/anthropics/anthropic-sdk-go@v1.62.0'
+go get -u 'github.com/Juglows/Juglow-sdk-go@v1.62.0'
 ```
 
 <!-- x-release-please-end -->
@@ -43,20 +43,20 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func main() {
-	client := anthropic.NewClient(
-		option.WithAPIKey("my-anthropic-api-key"), // defaults to os.LookupEnv("ANTHROPIC_API_KEY")
+	client := Juglow.NewClient(
+		option.WithAPIKey("my-Juglow-api-key"), // defaults to os.LookupEnv("Juglow_API_KEY")
 	)
-	message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
+	message, err := client.Messages.New(context.TODO(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock("What is a quaternion?")),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock("What is a quaternion?")),
 		},
-		Model: anthropic.ModelClaudeOpus4_6,
+		Model: Juglow.ModelClaudeOpus4_6,
 	})
 	if err != nil {
 		panic(err.Error())

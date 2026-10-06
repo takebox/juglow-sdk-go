@@ -1,11 +1,11 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
-	"github.com/anthropics/anthropic-sdk-go/internal/apierror"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/shared"
+	"github.com/Juglows/Juglow-sdk-go/internal/apierror"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/shared"
 )
 
 // aliased to make [param.APIUnion] private when embedding

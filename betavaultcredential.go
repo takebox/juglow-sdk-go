@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -12,17 +12,17 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
 )
 
 // BetaVaultCredentialService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -43,10 +43,10 @@ func NewBetaVaultCredentialService(opts ...option.RequestOption) (r BetaVaultCre
 // Create Credential
 func (r *BetaVaultCredentialService) New(ctx context.Context, vaultID string, params BetaVaultCredentialNewParams, opts ...option.RequestOption) (res *BetaManagedAgentsCredential, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if vaultID == "" {
 		err = errors.New("missing required vault_id parameter")
 		return nil, err
@@ -59,10 +59,10 @@ func (r *BetaVaultCredentialService) New(ctx context.Context, vaultID string, pa
 // Get Credential
 func (r *BetaVaultCredentialService) Get(ctx context.Context, credentialID string, params BetaVaultCredentialGetParams, opts ...option.RequestOption) (res *BetaManagedAgentsCredential, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.VaultID == "" {
 		err = errors.New("missing required vault_id parameter")
 		return nil, err
@@ -79,10 +79,10 @@ func (r *BetaVaultCredentialService) Get(ctx context.Context, credentialID strin
 // Update Credential
 func (r *BetaVaultCredentialService) Update(ctx context.Context, credentialID string, params BetaVaultCredentialUpdateParams, opts ...option.RequestOption) (res *BetaManagedAgentsCredential, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.VaultID == "" {
 		err = errors.New("missing required vault_id parameter")
 		return nil, err
@@ -100,10 +100,10 @@ func (r *BetaVaultCredentialService) Update(ctx context.Context, credentialID st
 func (r *BetaVaultCredentialService) List(ctx context.Context, vaultID string, params BetaVaultCredentialListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaManagedAgentsCredential], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
 	if vaultID == "" {
 		err = errors.New("missing required vault_id parameter")
 		return nil, err
@@ -129,10 +129,10 @@ func (r *BetaVaultCredentialService) ListAutoPaging(ctx context.Context, vaultID
 // Delete Credential
 func (r *BetaVaultCredentialService) Delete(ctx context.Context, credentialID string, params BetaVaultCredentialDeleteParams, opts ...option.RequestOption) (res *BetaManagedAgentsDeletedCredential, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.VaultID == "" {
 		err = errors.New("missing required vault_id parameter")
 		return nil, err
@@ -149,10 +149,10 @@ func (r *BetaVaultCredentialService) Delete(ctx context.Context, credentialID st
 // Archive Credential
 func (r *BetaVaultCredentialService) Archive(ctx context.Context, credentialID string, params BetaVaultCredentialArchiveParams, opts ...option.RequestOption) (res *BetaManagedAgentsCredential, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.VaultID == "" {
 		err = errors.New("missing required vault_id parameter")
 		return nil, err
@@ -169,10 +169,10 @@ func (r *BetaVaultCredentialService) Archive(ctx context.Context, credentialID s
 // Validate Credential
 func (r *BetaVaultCredentialService) MCPOAuthValidate(ctx context.Context, credentialID string, params BetaVaultCredentialMCPOAuthValidateParams, opts ...option.RequestOption) (res *BetaManagedAgentsCredentialValidation, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.VaultID == "" {
 		err = errors.New("missing required vault_id parameter")
 		return nil, err
@@ -278,9 +278,9 @@ func (BetaManagedAgentsEnvironmentVariableAuthResponse) implBetaManagedAgentsCre
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsCredentialAuthUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsMCPOAuthAuthResponse:
-//	case anthropic.BetaManagedAgentsStaticBearerAuthResponse:
-//	case anthropic.BetaManagedAgentsEnvironmentVariableAuthResponse:
+//	case Juglow.BetaManagedAgentsMCPOAuthAuthResponse:
+//	case Juglow.BetaManagedAgentsStaticBearerAuthResponse:
+//	case Juglow.BetaManagedAgentsEnvironmentVariableAuthResponse:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -536,8 +536,8 @@ func (BetaManagedAgentsLimitedCredentialNetworkingResponse) implBetaManagedAgent
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsEnvironmentVariableAuthResponseNetworkingUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsUnrestrictedCredentialNetworkingResponse:
-//	case anthropic.BetaManagedAgentsLimitedCredentialNetworkingResponse:
+//	case Juglow.BetaManagedAgentsUnrestrictedCredentialNetworkingResponse:
+//	case Juglow.BetaManagedAgentsLimitedCredentialNetworkingResponse:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -967,9 +967,9 @@ func (BetaManagedAgentsTokenEndpointAuthPostResponse) implBetaManagedAgentsMcpoA
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsMCPOAuthRefreshResponseTokenEndpointAuthUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsTokenEndpointAuthNoneResponse:
-//	case anthropic.BetaManagedAgentsTokenEndpointAuthBasicResponse:
-//	case anthropic.BetaManagedAgentsTokenEndpointAuthPostResponse:
+//	case Juglow.BetaManagedAgentsTokenEndpointAuthNoneResponse:
+//	case Juglow.BetaManagedAgentsTokenEndpointAuthBasicResponse:
+//	case Juglow.BetaManagedAgentsTokenEndpointAuthPostResponse:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1528,7 +1528,7 @@ type BetaVaultCredentialNewParams struct {
 	// up to 64 chars, values up to 512 chars.
 	Metadata map[string]string `json:"metadata,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -1666,7 +1666,7 @@ func init() {
 type BetaVaultCredentialGetParams struct {
 	VaultID string `path:"vault_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -1680,7 +1680,7 @@ type BetaVaultCredentialUpdateParams struct {
 	// Updated authentication details for a credential.
 	Auth BetaVaultCredentialUpdateParamsAuthUnion `json:"auth,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -1805,7 +1805,7 @@ type BetaVaultCredentialListParams struct {
 	// Opaque pagination token from a previous `list_credentials` response.
 	Page param.Opt[string] `query:"page,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -1821,20 +1821,20 @@ func (r BetaVaultCredentialListParams) URLQuery() (v url.Values, err error) {
 type BetaVaultCredentialDeleteParams struct {
 	VaultID string `path:"vault_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaVaultCredentialArchiveParams struct {
 	VaultID string `path:"vault_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaVaultCredentialMCPOAuthValidateParams struct {
 	VaultID string `path:"vault_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }

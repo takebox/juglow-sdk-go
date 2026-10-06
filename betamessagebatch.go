@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -12,19 +12,19 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/jsonl"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/jsonl"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 // BetaMessageBatchService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -49,16 +49,16 @@ func NewBetaMessageBatchService(opts ...option.RequestOption) (r BetaMessageBatc
 // can take up to 24 hours to complete.
 //
 // Learn more about the Message Batches API in our
-// [user guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)
+// [user guide](https://platform.haijun.com/docs/en/build-with-haijun/batch-processing)
 func (r *BetaMessageBatchService) New(ctx context.Context, params BetaMessageBatchNewParams, opts ...option.RequestOption) (res *BetaMessageBatch, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	if !param.IsOmitted(params.UserProfileID) {
-		opts = append(opts, option.WithHeader("anthropic-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
+		opts = append(opts, option.WithHeader("Juglow-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "message-batches-2024-09-24")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "message-batches-2024-09-24")}, opts...)
 	path := "v1/messages/batches?beta=true"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
@@ -69,13 +69,13 @@ func (r *BetaMessageBatchService) New(ctx context.Context, params BetaMessageBat
 // `results_url` field in the response.
 //
 // Learn more about the Message Batches API in our
-// [user guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)
+// [user guide](https://platform.haijun.com/docs/en/build-with-haijun/batch-processing)
 func (r *BetaMessageBatchService) Get(ctx context.Context, messageBatchID string, query BetaMessageBatchGetParams, opts ...option.RequestOption) (res *BetaMessageBatch, err error) {
 	for _, v := range query.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "message-batches-2024-09-24")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "message-batches-2024-09-24")}, opts...)
 	if messageBatchID == "" {
 		err = errors.New("missing required message_batch_id parameter")
 		return nil, err
@@ -89,14 +89,14 @@ func (r *BetaMessageBatchService) Get(ctx context.Context, messageBatchID string
 // returned first.
 //
 // Learn more about the Message Batches API in our
-// [user guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)
+// [user guide](https://platform.haijun.com/docs/en/build-with-haijun/batch-processing)
 func (r *BetaMessageBatchService) List(ctx context.Context, params BetaMessageBatchListParams, opts ...option.RequestOption) (res *pagination.Page[BetaMessageBatch], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "message-batches-2024-09-24"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "message-batches-2024-09-24"), option.WithResponseInto(&raw)}, opts...)
 	path := "v1/messages/batches?beta=true"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
 	if err != nil {
@@ -114,7 +114,7 @@ func (r *BetaMessageBatchService) List(ctx context.Context, params BetaMessageBa
 // returned first.
 //
 // Learn more about the Message Batches API in our
-// [user guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)
+// [user guide](https://platform.haijun.com/docs/en/build-with-haijun/batch-processing)
 func (r *BetaMessageBatchService) ListAutoPaging(ctx context.Context, params BetaMessageBatchListParams, opts ...option.RequestOption) *pagination.PageAutoPager[BetaMessageBatch] {
 	return pagination.NewPageAutoPager(r.List(ctx, params, opts...))
 }
@@ -125,13 +125,13 @@ func (r *BetaMessageBatchService) ListAutoPaging(ctx context.Context, params Bet
 // like to delete an in-progress batch, you must first cancel it.
 //
 // Learn more about the Message Batches API in our
-// [user guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)
+// [user guide](https://platform.haijun.com/docs/en/build-with-haijun/batch-processing)
 func (r *BetaMessageBatchService) Delete(ctx context.Context, messageBatchID string, body BetaMessageBatchDeleteParams, opts ...option.RequestOption) (res *BetaDeletedMessageBatch, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "message-batches-2024-09-24")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "message-batches-2024-09-24")}, opts...)
 	if messageBatchID == "" {
 		err = errors.New("missing required message_batch_id parameter")
 		return nil, err
@@ -152,13 +152,13 @@ func (r *BetaMessageBatchService) Delete(ctx context.Context, messageBatchID str
 // non-interruptible.
 //
 // Learn more about the Message Batches API in our
-// [user guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)
+// [user guide](https://platform.haijun.com/docs/en/build-with-haijun/batch-processing)
 func (r *BetaMessageBatchService) Cancel(ctx context.Context, messageBatchID string, body BetaMessageBatchCancelParams, opts ...option.RequestOption) (res *BetaMessageBatch, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "message-batches-2024-09-24")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "message-batches-2024-09-24")}, opts...)
 	if messageBatchID == "" {
 		err = errors.New("missing required message_batch_id parameter")
 		return nil, err
@@ -175,17 +175,17 @@ func (r *BetaMessageBatchService) Cancel(ctx context.Context, messageBatchID str
 // requests. Use the `custom_id` field to match results to requests.
 //
 // Learn more about the Message Batches API in our
-// [user guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)
+// [user guide](https://platform.haijun.com/docs/en/build-with-haijun/batch-processing)
 func (r *BetaMessageBatchService) ResultsStreaming(ctx context.Context, messageBatchID string, query BetaMessageBatchResultsParams, opts ...option.RequestOption) (stream *jsonl.Stream[BetaMessageBatchIndividualResponse]) {
 	var (
 		raw *http.Response
 		err error
 	)
 	for _, v := range query.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "message-batches-2024-09-24"), option.WithHeader("Accept", "application/x-jsonl")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "message-batches-2024-09-24"), option.WithHeader("Accept", "application/x-jsonl")}, opts...)
 	if messageBatchID == "" {
 		err = errors.New("missing required message_batch_id parameter")
 		return jsonl.NewStream[BetaMessageBatchIndividualResponse](nil, err)
@@ -445,10 +445,10 @@ func (BetaMessageBatchExpiredResult) implBetaMessageBatchResultUnion()   {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaMessageBatchResultUnion.AsAny().(type) {
-//	case anthropic.BetaMessageBatchSucceededResult:
-//	case anthropic.BetaMessageBatchErroredResult:
-//	case anthropic.BetaMessageBatchCanceledResult:
-//	case anthropic.BetaMessageBatchExpiredResult:
+//	case Juglow.BetaMessageBatchSucceededResult:
+//	case Juglow.BetaMessageBatchErroredResult:
+//	case Juglow.BetaMessageBatchCanceledResult:
+//	case Juglow.BetaMessageBatchExpiredResult:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -519,9 +519,9 @@ type BetaMessageBatchNewParams struct {
 	// on behalf of a party other than your organization. Requires the `user-profiles`
 	// beta header. Applies to every request in the batch; an individual request whose
 	// `user_profile_id` body field conflicts with this header is errored.
-	UserProfileID param.Opt[string] `header:"anthropic-user-profile-id,omitzero" json:"-"`
+	UserProfileID param.Opt[string] `header:"Juglow-user-profile-id,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -543,7 +543,7 @@ type BetaMessageBatchNewParamsRequest struct {
 	// Messages API creation parameters for the individual request.
 	//
 	// See the
-	// [Messages API reference](https://platform.claude.com/docs/en/api/messages) for
+	// [Messages API reference](https://platform.haijun.com/docs/en/api/messages) for
 	// full documentation on available parameters.
 	Params BetaMessageBatchNewParamsRequestParams `json:"params,omitzero" api:"required"`
 	paramObj
@@ -560,7 +560,7 @@ func (r *BetaMessageBatchNewParamsRequest) UnmarshalJSON(data []byte) error {
 // Messages API creation parameters for the individual request.
 //
 // See the
-// [Messages API reference](https://platform.claude.com/docs/en/api/messages) for
+// [Messages API reference](https://platform.haijun.com/docs/en/api/messages) for
 // full documentation on available parameters.
 //
 // The properties MaxTokens, Messages, Model are required.
@@ -571,11 +571,11 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	// only specifies the absolute maximum number of tokens to generate.
 	//
 	// Set to `0` to populate the
-	// [prompt cache](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache)
+	// [prompt cache](https://platform.haijun.com/docs/en/build-with-haijun/prompt-caching#pre-warming-the-cache)
 	// without generating a response.
 	//
 	// Different models have different maximum values for this parameter. See
-	// [models](https://platform.claude.com/docs/en/about-claude/models/overview) for
+	// [models](https://platform.haijun.com/docs/en/about-haijun/models/overview) for
 	// details.
 	MaxTokens int64 `json:"max_tokens" api:"required"`
 	// Input messages.
@@ -597,7 +597,7 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	// Example with a single `user` message:
 	//
 	// ```json
-	// [{ "role": "user", "content": "Hello, Claude" }]
+	// [{ "role": "user", "content": "Hello, haijun" }]
 	// ```
 	//
 	// Example with multiple conversational turns:
@@ -606,13 +606,13 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	// [
 	//
 	//	{ "role": "user", "content": "Hello there." },
-	//	{ "role": "assistant", "content": "Hi, I'm Claude. How can I help you?" },
+	//	{ "role": "assistant", "content": "Hi, I'm haijun. How can I help you?" },
 	//	{ "role": "user", "content": "Can you explain LLMs in plain English?" }
 	//
 	// ]
 	// ```
 	//
-	// Example with a partially-filled response from Claude:
+	// Example with a partially-filled response from haijun:
 	//
 	// ```json
 	// [
@@ -632,26 +632,26 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	// following input messages are equivalent:
 	//
 	// ```json
-	// { "role": "user", "content": "Hello, Claude" }
+	// { "role": "user", "content": "Hello, haijun" }
 	// ```
 	//
 	// ```json
-	// { "role": "user", "content": [{ "type": "text", "text": "Hello, Claude" }] }
+	// { "role": "user", "content": [{ "type": "text", "text": "Hello, haijun" }] }
 	// ```
 	//
 	// See
-	// [input examples](https://platform.claude.com/docs/en/build-with-claude/working-with-messages).
+	// [input examples](https://platform.haijun.com/docs/en/build-with-haijun/working-with-messages).
 	//
 	// Note that if you want to include a
-	// [system prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role),
-	// you can use the top-level `system` parameter — there is no `"system"` role for
+	// [system prompt](https://platform.haijun.com/docs/en/build-with-haijun/prompt-engineering/haijun-prompting-best-practices#give-haijun-a-role),
+	// you can use the top-level `system` parameter â€” there is no `"system"` role for
 	// input messages in the Messages API.
 	//
 	// There is a limit of 100,000 messages in a single request.
 	Messages []BetaMessageParam `json:"messages,omitzero" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// Specifies the geographic region for inference processing. If not specified, the
@@ -659,7 +659,7 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	InferenceGeo param.Opt[string] `json:"inference_geo,omitzero"`
 	// Whether to incrementally stream the response using server-sent events.
 	//
-	// See [streaming](https://platform.claude.com/docs/en/build-with-claude/streaming)
+	// See [streaming](https://platform.haijun.com/docs/en/build-with-haijun/streaming)
 	// for details.
 	Stream param.Opt[bool] `json:"stream,omitzero"`
 	// Amount of randomness injected into the response.
@@ -671,7 +671,7 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	// Note that even with `temperature` of `0.0`, the results will not be fully
 	// deterministic.
 	//
-	// Deprecated: Deprecated. Models released after Claude Opus 4.6 do not support
+	// Deprecated: Deprecated. Models released after haijun Opus 4.6 do not support
 	// setting temperature. A value of 1.0 of will be accepted for backwards
 	// compatibility, all other values will be rejected with a 400 error.
 	Temperature param.Opt[float64] `json:"temperature,omitzero"`
@@ -682,7 +682,7 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	//
 	// Recommended for advanced use cases only.
 	//
-	// Deprecated: Deprecated. Models released after Claude Opus 4.6 do not accept
+	// Deprecated: Deprecated. Models released after haijun Opus 4.6 do not accept
 	// top_k; any value will be rejected with a 400 error.
 	TopK param.Opt[int64] `json:"top_k,omitzero"`
 	// Use nucleus sampling.
@@ -693,7 +693,7 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	//
 	// Recommended for advanced use cases only.
 	//
-	// Deprecated: Deprecated. Models released after Claude Opus 4.6 do not support
+	// Deprecated: Deprecated. Models released after haijun Opus 4.6 do not support
 	// setting top_p. A value >= 0.99 will be accepted for backwards compatibility, all
 	// other values will be rejected with a 400 error.
 	TopP param.Opt[float64] `json:"top_p,omitzero"`
@@ -706,13 +706,13 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	// the prefix that was warm on the refused model billed at the cache-read rate.
 	// Must be redeemed by the same organization and workspace, with the same request
 	// body (optionally extended by one appended `assistant` message whose content is
-	// the partial text — with any trailing whitespace stripped from the final text
-	// block — and paired server-tool blocks streamed before the refusal; the
+	// the partial text â€” with any trailing whitespace stripped from the final text
+	// block â€” and paired server-tool blocks streamed before the refusal; the
 	// appended-assistant form is not available for requests with `output_format` set
 	// or forced `tool_choice`), on an eligible fallback model, on the same platform,
 	// and within 5 minutes of the refusal; a mismatch is a 400. A token minted
 	// mid-server-tool-loop whose partial content was continuable may only be redeemed
-	// with the appended-assistant form — if an exact-body retry is rejected with a 400
+	// with the appended-assistant form â€” if an exact-body retry is rejected with a 400
 	// saying the token must be redeemed by continuing the partial response, retry with
 	// the appended-assistant form instead.
 	//
@@ -735,7 +735,7 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	CacheControl BetaCacheControlEphemeralParam `json:"cache_control,omitzero"`
 	// Context management configuration.
 	//
-	// This allows you to control how Claude manages context across multiple requests,
+	// This allows you to control how haijun manages context across multiple requests,
 	// such as whether to clear function results or not.
 	ContextManagement BetaContextManagementConfigParam `json:"context_management,omitzero"`
 	// Request-level diagnostics. Currently carries the previous response id for
@@ -748,9 +748,9 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	// Configuration options for the model's output, such as the output format.
 	OutputConfig BetaOutputConfigParam `json:"output_config,omitzero"`
 	// Deprecated: Use `output_config.format` instead. See
-	// [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
+	// [structured outputs](https://platform.haijun.com/docs/en/build-with-haijun/structured-outputs)
 	//
-	// A schema to specify Claude's output format in responses. This parameter will be
+	// A schema to specify haijun's output format in responses. This parameter will be
 	// removed in a future release.
 	//
 	// Deprecated: deprecated
@@ -758,8 +758,8 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	// Determines whether to use priority capacity (if available) or standard capacity
 	// for this request.
 	//
-	// Anthropic offers different levels of service for your API requests. See
-	// [service-tiers](https://platform.claude.com/docs/en/api/service-tiers) for
+	// Juglow offers different levels of service for your API requests. See
+	// [service-tiers](https://platform.haijun.com/docs/en/api/service-tiers) for
 	// details.
 	//
 	// Any of "auto", "standard_only".
@@ -776,18 +776,18 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	StopSequences []string `json:"stop_sequences,omitzero"`
 	// System prompt.
 	//
-	// A system prompt is a way of providing context and instructions to Claude, such
+	// A system prompt is a way of providing context and instructions to haijun, such
 	// as specifying a particular goal or role. See our
-	// [guide to system prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role).
+	// [guide to system prompts](https://platform.haijun.com/docs/en/build-with-haijun/prompt-engineering/haijun-prompting-best-practices#give-haijun-a-role).
 	System []BetaTextBlockParam `json:"system,omitzero"`
-	// Configuration for enabling Claude's extended thinking.
+	// Configuration for enabling haijun's extended thinking.
 	//
-	// When enabled, responses include `thinking` content blocks showing Claude's
+	// When enabled, responses include `thinking` content blocks showing haijun's
 	// thinking process before the final answer. Requires a minimum budget of 1,024
 	// tokens and counts towards your `max_tokens` limit.
 	//
 	// See
-	// [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+	// [extended thinking](https://platform.haijun.com/docs/en/build-with-haijun/extended-thinking)
 	// for details.
 	Thinking BetaThinkingConfigParamUnion `json:"thinking,omitzero"`
 	// How the model should use the provided tools. The model can use a specific tool,
@@ -802,9 +802,9 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	//
 	// There are two types of tools: **client tools** and **server tools**. The
 	// behavior described below applies to client tools. For
-	// [server tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools),
+	// [server tools](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/server-tools),
 	// see their individual documentation as each has its own behavior (e.g., the
-	// [web search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool)).
+	// [web search tool](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/web-search-tool)).
 	//
 	// Each tool definition includes:
 	//
@@ -874,7 +874,7 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	// JSON structure of output.
 	//
 	// See our
-	// [guide](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
+	// [guide](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/overview)
 	// for more details.
 	Tools []BetaToolUnionParam `json:"tools,omitzero"`
 	paramObj
@@ -949,7 +949,7 @@ func (u *BetaMessageBatchNewParamsRequestParamsFallbackCreditTokenUnion) asAny()
 
 type BetaMessageBatchGetParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -965,7 +965,7 @@ type BetaMessageBatchListParams struct {
 	// Defaults to `20`. Ranges from `1` to `1000`.
 	Limit param.Opt[int64] `query:"limit,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -980,18 +980,18 @@ func (r BetaMessageBatchListParams) URLQuery() (v url.Values, err error) {
 
 type BetaMessageBatchDeleteParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaMessageBatchCancelParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaMessageBatchResultsParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }

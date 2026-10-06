@@ -1,4 +1,4 @@
-// Package betafallback retries refused Messages requests down a fallback
+﻿// Package betafallback retries refused Messages requests down a fallback
 // chain, client-side. Beta surface; may change.
 package betafallback
 
@@ -17,10 +17,10 @@ import (
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/internal/stainlessheader"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/internal/stainlessheader"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 // BetaFallbackState keeps the requests that share it on the model that
@@ -48,7 +48,7 @@ func (s *BetaFallbackState) SetIndex(i int) {
 type betaFallbackStateKey struct{}
 
 // WithBetaFallbackState returns a request option carrying state for [BetaRefusalFallbackMiddleware].
-// Pass the same state on every request that should share the pin —
+// Pass the same state on every request that should share the pin â€”
 // typically the turns of one conversation.
 func WithBetaFallbackState(state *BetaFallbackState) option.RequestOption {
 	return requestconfig.RequestOptionFunc(func(cfg *requestconfig.RequestConfig) error {
@@ -60,7 +60,7 @@ func WithBetaFallbackState(state *BetaFallbackState) option.RequestOption {
 
 // BetaRefusalFallbackMiddleware retries a refused Messages request on each
 // model of fallbacks in turn, so a refusal costs a retry instead of
-// surfacing to the caller. Only stop_reason "refusal" triggers a retry —
+// surfacing to the caller. Only stop_reason "refusal" triggers a retry â€”
 // never transport or API errors. There are deliberately no hooks: what
 // happened is readable from the response, and middleware registered after
 // this one observes every attempt.
@@ -68,7 +68,7 @@ func WithBetaFallbackState(state *BetaFallbackState) option.RequestOption {
 // Streaming requests are retried in place: the retry's events are spliced
 // onto the open stream behind a `fallback` boundary block, with one
 // message_start, monotonic block indices, and a terminal usage.iterations
-// ledger covering every hop — the same framing the server's own fallback
+// ledger covering every hop â€” the same framing the server's own fallback
 // chain produces. A mid-stream refusal retries only when it minted a
 // fallback_credit_token (a pre-stream refusal retries either way), and when
 // the refusal advertises a prefill claim the retry continues from the
@@ -79,9 +79,9 @@ func WithBetaFallbackState(state *BetaFallbackState) option.RequestOption {
 // splice's block shape; an exhausted chain's final refusal is returned
 // verbatim.
 //
-//	client := anthropic.NewClient(
+//	client := Juglow.NewClient(
 //		option.WithMiddleware(betafallback.BetaRefusalFallbackMiddleware(
-//			[]anthropic.BetaFallbackParam{{Model: anthropic.ModelClaudeOpus4_5}},
+//			[]Juglow.BetaFallbackParam{{Model: Juglow.ModelHaijunOpus4_5}},
 //		)),
 //	)
 //
@@ -99,8 +99,8 @@ func WithBetaFallbackState(state *BetaFallbackState) option.RequestOption {
 //
 // Only the beta Messages surface is handled (client.Beta.Messages, which
 // routes ?beta=true); plain client.Messages requests pass through untouched.
-// With the Bedrock or Vertex options, register this middleware first — it
-// needs the Anthropic-shaped request, and after the platform transform it
+// With the Bedrock or Vertex options, register this middleware first â€” it
+// needs the Juglow-shaped request, and after the platform transform it
 // stands down.
 //
 // Handled requests are opted into the fallback-credit beta so retries
@@ -109,7 +109,7 @@ func WithBetaFallbackState(state *BetaFallbackState) option.RequestOption {
 //
 // The client retry layer treats the chain as one try; a retried request
 // re-enters it from the original params or the state's pin.
-func BetaRefusalFallbackMiddleware(fallbacks []anthropic.BetaFallbackParam) option.Middleware {
+func BetaRefusalFallbackMiddleware(fallbacks []Juglow.BetaFallbackParam) option.Middleware {
 	// An empty chain can never act on a refusal; stand down rather than opt
 	// requests into the credit beta.
 	if len(fallbacks) == 0 {
@@ -134,7 +134,7 @@ func BetaRefusalFallbackMiddleware(fallbacks []anthropic.BetaFallbackParam) opti
 		}
 		// The middleware is a beta feature: only the beta surface
 		// (client.Beta.Messages, which requests v1/messages?beta=true) is
-		// handled. The plain surface passes through untouched — no credit
+		// handled. The plain surface passes through untouched â€” no credit
 		// beta armed, no retry on refusal.
 		if req.URL.Query().Get("beta") != "true" {
 			return next(req)
@@ -267,8 +267,8 @@ func BetaRefusalFallbackMiddleware(fallbacks []anthropic.BetaFallbackParam) opti
 
 // prependSeams rewrites a served message's content to open with the fallback
 // boundary blocks, mirroring the streaming splice's block shape. An
-// exhausted chain's refusal — and anything that isn't an inspectable served
-// message — is left as written.
+// exhausted chain's refusal â€” and anything that isn't an inspectable served
+// message â€” is left as written.
 func prependSeams(res *http.Response, seams []seam) error {
 	if res.StatusCode != http.StatusOK || res.Header.Get("Content-Encoding") != "" {
 		return nil
@@ -279,7 +279,7 @@ func prependSeams(res *http.Response, seams []seam) error {
 		return fmt.Errorf("betafallback: reading response body: %w", err)
 	}
 	res.Body = io.NopCloser(bytes.NewReader(buf))
-	if gjson.GetBytes(buf, "stop_reason").String() == string(anthropic.BetaStopReasonRefusal) {
+	if gjson.GetBytes(buf, "stop_reason").String() == string(Juglow.BetaStopReasonRefusal) {
 		return nil
 	}
 	content := gjson.GetBytes(buf, "content")
@@ -305,8 +305,8 @@ func prependSeams(res *http.Response, seams []seam) error {
 }
 
 // trimHistory rewrites body["messages"] through trimFallbackTurns and
-// returns the request bytes to send. On no change — or if the body cannot
-// be rebuilt — the original bytes are returned untouched.
+// returns the request bytes to send. On no change â€” or if the body cannot
+// be rebuilt â€” the original bytes are returned untouched.
 func trimHistory(body map[string]json.RawMessage, orig []byte) []byte {
 	trimmed, changed := trimFallbackTurns(body["messages"])
 	if !changed {
@@ -323,7 +323,7 @@ func trimHistory(body map[string]json.RawMessage, orig []byte) []byte {
 // trimFallbackTurns removes content the server would reject from assistant
 // turns that contain a fallback block: the fallback block itself (only
 // accepted under a beta this middleware does not send), and everything
-// before it that belongs to the model that refused — thinking, connector
+// before it that belongs to the model that refused â€” thinking, connector
 // text, and tool calls that never got a result. Blocks after the fallback
 // block are what the serving model produced and stay as written. Turns
 // without a fallback block are never touched.
@@ -413,15 +413,15 @@ func ensureFallbackCreditBeta(h http.Header) {
 	if hasFallbackCreditBeta(h) {
 		return
 	}
-	h.Add("anthropic-beta", string(anthropic.AnthropicBetaFallbackCredit2026_07_01))
+	h.Add("Juglow-beta", string(Juglow.JuglowBetaFallbackCredit2026_07_01))
 }
 
 // hasFallbackCreditBeta reports whether the headers already carry the
 // fallback-credit beta.
 func hasFallbackCreditBeta(h http.Header) bool {
-	for _, value := range h.Values("anthropic-beta") {
+	for _, value := range h.Values("Juglow-beta") {
 		for _, beta := range strings.Split(value, ",") {
-			if strings.TrimSpace(beta) == string(anthropic.AnthropicBetaFallbackCredit2026_07_01) {
+			if strings.TrimSpace(beta) == string(Juglow.JuglowBetaFallbackCredit2026_07_01) {
 				return true
 			}
 		}
@@ -433,7 +433,7 @@ func hasFallbackCreditBeta(h http.Header) bool {
 // original body, reporting whether the token was included. The body stays a
 // raw map: a typed round-trip would drop unknown fields and rewrite
 // encodings that prompt caching and the token's body match depend on.
-func mergeFallback(body map[string]json.RawMessage, fallback anthropic.BetaFallbackParam, creditToken string) ([]byte, bool, error) {
+func mergeFallback(body map[string]json.RawMessage, fallback Juglow.BetaFallbackParam, creditToken string) ([]byte, bool, error) {
 	overrides, err := json.Marshal(fallback)
 	if err != nil {
 		return nil, false, fmt.Errorf("betafallback: marshaling fallback params: %w", err)
@@ -481,9 +481,9 @@ func mergeFallback(body map[string]json.RawMessage, fallback anthropic.BetaFallb
 	if creditToken != "" {
 		// The object form with best_effort mode: a token-layer redemption
 		// failure serves the retry at normal price instead of failing it.
-		token, err := json.Marshal(anthropic.BetaFallbackCreditTokenParam{
+		token, err := json.Marshal(Juglow.BetaFallbackCreditTokenParam{
 			Token: creditToken,
-			Mode:  anthropic.BetaFallbackCreditTokenParamModeBestEffort,
+			Mode:  Juglow.BetaFallbackCreditTokenParamModeBestEffort,
 		})
 		if err != nil {
 			return nil, false, fmt.Errorf("betafallback: marshaling credit token: %w", err)
@@ -549,7 +549,7 @@ func refusedMessage(res *http.Response) (refused bool, creditToken string, categ
 		return false, "", nil, fmt.Errorf("betafallback: reading response body: %w", err)
 	}
 	res.Body = io.NopCloser(bytes.NewReader(buf))
-	if gjson.GetBytes(buf, "stop_reason").String() != string(anthropic.BetaStopReasonRefusal) {
+	if gjson.GetBytes(buf, "stop_reason").String() != string(Juglow.BetaStopReasonRefusal) {
 		return false, "", nil, nil
 	}
 	if cat := gjson.GetBytes(buf, "stop_details.category"); cat.Type == gjson.String {

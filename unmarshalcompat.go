@@ -1,4 +1,4 @@
-package anthropic
+﻿package Juglow
 
 // To accept the API's `string | []T` form, register string promotion
 // for beta content unions. The generator already covers the non-beta
@@ -7,7 +7,7 @@ package anthropic
 import (
 	"reflect"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
 
 	"github.com/tidwall/gjson"
 )

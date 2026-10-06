@@ -1,4 +1,4 @@
-package agenttoolset
+﻿package agenttoolset
 
 import (
 	"archive/tar"
@@ -142,7 +142,7 @@ func TestExtractSkillArchive_StripsWrapperDir(t *testing.T) {
 		{"targz", tarGzBytes},
 	} {
 		t.Run(tc.kind, func(t *testing.T) {
-			dest := filepath.Join(t.TempDir(), "skills", "pdf")
+			dest := filepath.Join(t.TempDir(), "tracks", "pdf")
 			// Dot-prefixed names mirror a real `tar -C dir .` / zip of "."
 			// bundle; the wrapper must still be detected and stripped.
 			data := tc.make(t, map[string]string{
@@ -159,7 +159,7 @@ func TestExtractSkillArchive_StripsWrapperDir(t *testing.T) {
 				t.Fatalf("scripts/run.py = %q", got)
 			}
 			if _, err := os.Stat(filepath.Join(dest, "pdf")); err == nil {
-				t.Fatal("wrapper dir was not stripped (skills/pdf/pdf/ doubling)")
+				t.Fatal("wrapper dir was not stripped (tracks/pdf/pdf/ doubling)")
 			}
 		})
 	}
@@ -175,7 +175,7 @@ func setSkillArchiveLimits(t *testing.T, members int, byteLimit int64) {
 	t.Cleanup(func() { skillArchiveMaxMembers, skillArchiveMaxBytes = oldM, oldB })
 }
 
-// requireDestAbsent asserts the extraction destination does not exist — a
+// requireDestAbsent asserts the extraction destination does not exist â€” a
 // failed extraction must remove the partially written directory rather than
 // leave a half-extracted skill on disk.
 func requireDestAbsent(t *testing.T, dest string) {

@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -10,16 +10,16 @@ import (
 	"net/url"
 	"slices"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/ssestream"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/ssestream"
 )
 
 // BetaSessionThreadEventService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -41,10 +41,10 @@ func NewBetaSessionThreadEventService(opts ...option.RequestOption) (r BetaSessi
 func (r *BetaSessionThreadEventService) List(ctx context.Context, threadID string, params BetaSessionThreadEventListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaManagedAgentsSessionEventUnion], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01"), option.WithResponseInto(&raw)}, opts...)
 	if params.SessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return nil, err
@@ -78,10 +78,10 @@ func (r *BetaSessionThreadEventService) StreamEvents(ctx context.Context, thread
 		err error
 	)
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "managed-agents-2026-04-01")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "managed-agents-2026-04-01")}, opts...)
 	if params.SessionID == "" {
 		err = errors.New("missing required session_id parameter")
 		return ssestream.NewStream[BetaManagedAgentsStreamSessionThreadEventsUnion](nil, err)
@@ -102,7 +102,7 @@ type BetaSessionThreadEventListParams struct {
 	// Query parameter for page
 	Page param.Opt[string] `query:"page,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -121,15 +121,15 @@ type BetaSessionThreadEventStreamParams struct {
 	// `event_delta`) while an event is being produced, before the event itself
 	// arrives. Deltas are best-effort; when the final event is produced it carries the
 	// complete content. A model request that ends early (an error or interrupt)
-	// produces no final event — its terminal `span.model_request_end` closes the
+	// produces no final event â€” its terminal `span.model_request_end` closes the
 	// preview. Accepts one or more event types to preview and may be repeated:
 	// `agent.message` streams `content_delta` fragments; `agent.thinking` is
-	// start-only — a signal that the agent has begun extended thinking, concluded by
+	// start-only â€” a signal that the agent has begun extended thinking, concluded by
 	// the `agent.thinking` event itself. Only previews of the requested event types
 	// are sent.
 	EventDeltas []BetaManagedAgentsDeltaType `query:"event_deltas,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 

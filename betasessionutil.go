@@ -1,4 +1,4 @@
-package anthropic
+﻿package Juglow
 
 import "strings"
 
@@ -6,7 +6,7 @@ import "strings"
 // events into per-event-id agent.message snapshots. The zero value is ready
 // to use.
 //
-//	var previews anthropic.BetaManagedAgentsEventAccumulator
+//	var previews Juglow.BetaManagedAgentsEventAccumulator
 //	for stream.Next() {
 //		event := stream.Current()
 //		previews.Accumulate(event)

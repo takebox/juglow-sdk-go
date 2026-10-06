@@ -1,4 +1,4 @@
-package bedrock
+﻿package bedrock
 
 import (
 	"bytes"
@@ -18,8 +18,8 @@ import (
 	v4 "github.com/aws/aws-sdk-go-v2/aws/signer/v4"
 	"github.com/aws/aws-sdk-go-v2/credentials"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBedrockURLEncoding(t *testing.T) {
@@ -32,17 +32,17 @@ func TestBedrockURLEncoding(t *testing.T) {
 	}{
 		{
 			name:            "regular model name",
-			model:           "claude-3-sonnet",
+			model:           "haijun-3-sonnet",
 			stream:          false,
-			expectedPath:    "/model/claude-3-sonnet/invoke",
-			expectedRawPath: "/model/claude-3-sonnet/invoke",
+			expectedPath:    "/model/haijun-3-sonnet/invoke",
+			expectedRawPath: "/model/haijun-3-sonnet/invoke",
 		},
 		{
 			name:            "regular model name with streaming",
-			model:           "claude-3-sonnet",
+			model:           "haijun-3-sonnet",
 			stream:          true,
-			expectedPath:    "/model/claude-3-sonnet/invoke-with-response-stream",
-			expectedRawPath: "/model/claude-3-sonnet/invoke-with-response-stream",
+			expectedPath:    "/model/haijun-3-sonnet/invoke-with-response-stream",
+			expectedRawPath: "/model/haijun-3-sonnet/invoke-with-response-stream",
 		},
 		{
 			name:            "inference profile ARN with slashes",
@@ -60,10 +60,10 @@ func TestBedrockURLEncoding(t *testing.T) {
 		},
 		{
 			name:            "foundation model ARN with colons",
-			model:           "arn:aws:bedrock:us-east-1:123456789012:foundation-model/anthropic.claude-3-sonnet-20240229-v1:0",
+			model:           "arn:aws:bedrock:us-east-1:123456789012:foundation-model/Juglow.haijun-3-sonnet-20240229-v1:0",
 			stream:          false,
-			expectedPath:    "/model/arn:aws:bedrock:us-east-1:123456789012:foundation-model/anthropic.claude-3-sonnet-20240229-v1:0/invoke",
-			expectedRawPath: "/model/arn%3Aaws%3Abedrock%3Aus-east-1%3A123456789012%3Afoundation-model%2Fanthropic.claude-3-sonnet-20240229-v1%3A0/invoke",
+			expectedPath:    "/model/arn:aws:bedrock:us-east-1:123456789012:foundation-model/Juglow.haijun-3-sonnet-20240229-v1:0/invoke",
+			expectedRawPath: "/model/arn%3Aaws%3Abedrock%3Aus-east-1%3A123456789012%3Afoundation-model%2FJuglow.haijun-3-sonnet-20240229-v1%3A0/invoke",
 		},
 	}
 
@@ -154,7 +154,7 @@ func TestBedrockBetaHeadersReRoutedThroughBody(t *testing.T) {
 	// Create HTTP request with beta headers
 	type fakeRequest struct {
 		Model         string              `json:"model"`
-		AnthropicBeta []string            `json:"anthropic_beta,omitempty"`
+		JuglowBeta []string            `json:"Juglow_beta,omitempty"`
 		Messages      []map[string]string `json:"messages"`
 	}
 	reqBody := fakeRequest{
@@ -173,8 +173,8 @@ func TestBedrockBetaHeadersReRoutedThroughBody(t *testing.T) {
 		t.Fatalf("Failed to create request: %v", err)
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Add("anthropic-beta", "beta-feature-1")
-	req.Header.Add("anthropic-beta", "beta-feature-2")
+	req.Header.Add("Juglow-beta", "beta-feature-1")
+	req.Header.Add("Juglow-beta", "beta-feature-2")
 
 	// Apply middleware
 	_, err = middleware(req, func(r *http.Request) (*http.Response, error) {
@@ -189,14 +189,14 @@ func TestBedrockBetaHeadersReRoutedThroughBody(t *testing.T) {
 			t.Fatalf("Failed to unmarshal modified body: %v", err)
 		}
 
-		// Verify that the anthropic_beta field is present in the body
+		// Verify that the Juglow_beta field is present in the body
 		expectedBetas := []string{"beta-feature-1", "beta-feature-2"}
-		if len(modifiedBody.AnthropicBeta) != len(expectedBetas) {
-			t.Fatalf("Expected %d beta features, got %d", len(expectedBetas), len(modifiedBody.AnthropicBeta))
+		if len(modifiedBody.JuglowBeta) != len(expectedBetas) {
+			t.Fatalf("Expected %d beta features, got %d", len(expectedBetas), len(modifiedBody.JuglowBeta))
 		}
 		for i, beta := range expectedBetas {
-			if modifiedBody.AnthropicBeta[i] != beta {
-				t.Errorf("Expected beta feature %q, got %q", beta, modifiedBody.AnthropicBeta[i])
+			if modifiedBody.JuglowBeta[i] != beta {
+				t.Errorf("Expected beta feature %q, got %q", beta, modifiedBody.JuglowBeta[i])
 			}
 		}
 
@@ -223,7 +223,7 @@ func TestBedrockBearerToken(t *testing.T) {
 	middleware := bedrockMiddleware(nil, cfg)
 
 	requestBody := map[string]any{
-		"model": "claude-3-sonnet",
+		"model": "haijun-3-sonnet",
 		"messages": []map[string]string{
 			{"role": "user", "content": "Hello"},
 		},
@@ -268,16 +268,16 @@ func TestBedrockBearerToken(t *testing.T) {
 func TestBedrockWithConfigRequiresCredentials(t *testing.T) {
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithoutEnvironmentDefaults(),
 		WithConfig(aws.Config{Region: "us-east-1"}),
 	)
 
-	_, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-		Model:     "claude-3-sonnet",
+	_, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
+		Model:     "haijun-3-sonnet",
 		MaxTokens: 1,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock("hi")),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock("hi")),
 		},
 	})
 
@@ -286,10 +286,10 @@ func TestBedrockWithConfigRequiresCredentials(t *testing.T) {
 	}
 }
 
-// --- EventStream → SSE response normalization tests ---
+// --- EventStream â†’ SSE response normalization tests ---
 
 // encodeChunkFrame writes an EventStream "chunk" event frame whose payload
-// carries the given Anthropic event JSON, the way Bedrock streams responses.
+// carries the given Juglow event JSON, the way Bedrock streams responses.
 func encodeChunkFrame(t *testing.T, w io.Writer, eventJSON string) {
 	t.Helper()
 	payload, err := json.Marshal(eventstreamChunk{Bytes: base64.StdEncoding.EncodeToString([]byte(eventJSON))})
@@ -327,7 +327,7 @@ func applyStreamingMiddleware(t *testing.T, frames *bytes.Buffer) *http.Response
 	t.Helper()
 	middleware := bedrockMiddleware(v4.NewSigner(), makeStaticAWSConfig("us-east-1"))
 
-	body := `{"model": "claude-3-sonnet", "stream": true, "messages": [{"role": "user", "content": "Hello"}]}`
+	body := `{"model": "haijun-3-sonnet", "stream": true, "messages": [{"role": "user", "content": "Hello"}]}`
 	req, err := http.NewRequest("POST", "https://bedrock-runtime.us-east-1.amazonaws.com/v1/messages", strings.NewReader(body))
 	if err != nil {
 		t.Fatalf("Failed to create request: %v", err)
@@ -394,12 +394,12 @@ func TestBedrockStreamingExceptionSurfacesAsBodyError(t *testing.T) {
 
 // --- Middleware ordering tests ---
 
-// TestBedrockUserMiddlewareObservesAnthropicShape verifies the documented
+// TestBedrockUserMiddlewareObservesJuglowShape verifies the documented
 // ordering: middleware registered before the Bedrock option observes the
-// Anthropic-shaped, unsigned request, while the wire receives the rewritten,
+// Juglow-shaped, unsigned request, while the wire receives the rewritten,
 // signed Bedrock request.
-func TestBedrockUserMiddlewareObservesAnthropicShape(t *testing.T) {
-	t.Setenv("ANTHROPIC_API_KEY", "")
+func TestBedrockUserMiddlewareObservesJuglowShape(t *testing.T) {
+	t.Setenv("Juglow_API_KEY", "")
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
 
 	var wirePath, wireAuth string
@@ -430,29 +430,29 @@ func TestBedrockUserMiddlewareObservesAnthropicShape(t *testing.T) {
 		return next(r)
 	}
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithoutEnvironmentDefaults(),
 		option.WithMiddleware(spy),
 		WithConfig(makeStaticAWSConfig("us-east-1")),
 		option.WithBaseURL(server.URL),
 	)
 
-	_, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-		Model:     "claude-3-sonnet",
+	_, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
+		Model:     "haijun-3-sonnet",
 		MaxTokens: 1,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock("hi")),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock("hi")),
 		},
 	})
 	if err != nil {
 		t.Fatalf("Request failed: %v", err)
 	}
 
-	// The spy (outside the Bedrock adaptation) sees the Anthropic shape.
+	// The spy (outside the Bedrock adaptation) sees the Juglow shape.
 	if observedPath != "/v1/messages" {
 		t.Errorf("Expected middleware to observe path %q, got %q", "/v1/messages", observedPath)
 	}
-	if observedBody["model"] != "claude-3-sonnet" {
+	if observedBody["model"] != "haijun-3-sonnet" {
 		t.Errorf("Expected middleware to observe model in body, got %v", observedBody["model"])
 	}
 	if observedAuth != "" {
@@ -460,14 +460,14 @@ func TestBedrockUserMiddlewareObservesAnthropicShape(t *testing.T) {
 	}
 
 	// The wire sees the rewritten, signed Bedrock shape.
-	if wirePath != "/model/claude-3-sonnet/invoke" {
-		t.Errorf("Expected wire path %q, got %q", "/model/claude-3-sonnet/invoke", wirePath)
+	if wirePath != "/model/haijun-3-sonnet/invoke" {
+		t.Errorf("Expected wire path %q, got %q", "/model/haijun-3-sonnet/invoke", wirePath)
 	}
 	if _, ok := wireBody["model"]; ok {
 		t.Error("Expected model to be removed from the wire body")
 	}
-	if wireBody["anthropic_version"] != DefaultVersion {
-		t.Errorf("Expected anthropic_version %q on the wire, got %v", DefaultVersion, wireBody["anthropic_version"])
+	if wireBody["Juglow_version"] != DefaultVersion {
+		t.Errorf("Expected Juglow_version %q on the wire, got %v", DefaultVersion, wireBody["Juglow_version"])
 	}
 	if !strings.HasPrefix(wireAuth, "AWS4-HMAC-SHA256") {
 		t.Errorf("Expected SigV4 Authorization on the wire, got %q", wireAuth)
@@ -477,11 +477,11 @@ func TestBedrockUserMiddlewareObservesAnthropicShape(t *testing.T) {
 // TestBedrockStreamingEndToEnd verifies that an EventStream wire response
 // decodes into the same stream events a first-party SSE response would.
 func TestBedrockStreamingEndToEnd(t *testing.T) {
-	t.Setenv("ANTHROPIC_API_KEY", "")
+	t.Setenv("Juglow_API_KEY", "")
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
 
 	eventJSONs := []string{
-		`{"type":"message_start","message":{"id":"msg_test","type":"message","role":"assistant","content":[],"model":"claude-3-sonnet","usage":{"input_tokens":1,"output_tokens":1}}}`,
+		`{"type":"message_start","message":{"id":"msg_test","type":"message","role":"assistant","content":[],"model":"haijun-3-sonnet","usage":{"input_tokens":1,"output_tokens":1}}}`,
 		`{"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}`,
 		`{"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hi"}}`,
 		`{"type":"content_block_stop","index":0}`,
@@ -498,17 +498,17 @@ func TestBedrockStreamingEndToEnd(t *testing.T) {
 	}))
 	t.Cleanup(server.Close)
 
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithoutEnvironmentDefaults(),
 		WithConfig(makeStaticAWSConfig("us-east-1")),
 		option.WithBaseURL(server.URL),
 	)
 
-	stream := client.Messages.NewStreaming(context.Background(), anthropic.MessageNewParams{
-		Model:     "claude-3-sonnet",
+	stream := client.Messages.NewStreaming(context.Background(), Juglow.MessageNewParams{
+		Model:     "haijun-3-sonnet",
 		MaxTokens: 1,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock("hi")),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock("hi")),
 		},
 	})
 

@@ -1,29 +1,29 @@
-package toolrunner
+﻿package toolrunner
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
 
-	anthropic "github.com/anthropics/anthropic-sdk-go"
+	Juglow "github.com/Juglows/Juglow-sdk-go"
 	"github.com/invopop/jsonschema"
 )
 
-// betaTool is the internal generic implementation of anthropic.BetaTool.
+// betaTool is the internal generic implementation of Juglow.BetaTool.
 // Users never see this type directly - they work with the BetaTool interface.
 // The generic type parameter T is used internally for type-safe JSON unmarshaling.
 type betaTool[T any] struct {
 	name        string
 	description string
-	schema      anthropic.BetaToolInputSchemaParam
-	handler     func(context.Context, T) (anthropic.BetaToolResultBlockParamContentUnion, error)
+	schema      Juglow.BetaToolInputSchemaParam
+	handler     func(context.Context, T) (Juglow.BetaToolResultBlockParamContentUnion, error)
 }
 
 func (t *betaTool[T]) Name() string                                    { return t.name }
 func (t *betaTool[T]) Description() string                             { return t.description }
-func (t *betaTool[T]) InputSchema() anthropic.BetaToolInputSchemaParam { return t.schema }
+func (t *betaTool[T]) InputSchema() Juglow.BetaToolInputSchemaParam { return t.schema }
 
-func (t *betaTool[T]) Execute(ctx context.Context, input json.RawMessage) ([]anthropic.BetaToolResultBlockParamContentUnion, error) {
+func (t *betaTool[T]) Execute(ctx context.Context, input json.RawMessage) ([]Juglow.BetaToolResultBlockParamContentUnion, error) {
 	parsed, err := t.parse(input)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse tool input: %w", err)
@@ -32,7 +32,7 @@ func (t *betaTool[T]) Execute(ctx context.Context, input json.RawMessage) ([]ant
 	if err != nil {
 		return nil, err
 	}
-	return []anthropic.BetaToolResultBlockParamContentUnion{result}, nil
+	return []Juglow.BetaToolResultBlockParamContentUnion{result}, nil
 }
 
 // parse validates and parses the input according to the tool's schema.
@@ -62,15 +62,15 @@ func (t *betaTool[T]) parse(input json.RawMessage) (T, error) {
 	}
 }
 
-func parseSchemaMap(s map[string]any) (anthropic.BetaToolInputSchemaParam, error) {
+func parseSchemaMap(s map[string]any) (Juglow.BetaToolInputSchemaParam, error) {
 	bytes, err := json.Marshal(s)
 	if err != nil {
-		return anthropic.BetaToolInputSchemaParam{}, fmt.Errorf("failed to marshal schema: %w", err)
+		return Juglow.BetaToolInputSchemaParam{}, fmt.Errorf("failed to marshal schema: %w", err)
 	}
 
-	var schema anthropic.BetaToolInputSchemaParam
+	var schema Juglow.BetaToolInputSchemaParam
 	if err := json.Unmarshal(bytes, &schema); err != nil {
-		return anthropic.BetaToolInputSchemaParam{}, fmt.Errorf("failed to unmarshal schema: %w", err)
+		return Juglow.BetaToolInputSchemaParam{}, fmt.Errorf("failed to unmarshal schema: %w", err)
 	}
 
 	return schema, nil
@@ -80,9 +80,9 @@ func parseSchemaMap(s map[string]any) (anthropic.BetaToolInputSchemaParam, error
 func NewBetaToolFromBytes[T any](
 	name, description string,
 	schemaJSON []byte,
-	handler func(context.Context, T) (anthropic.BetaToolResultBlockParamContentUnion, error),
-) (anthropic.BetaTool, error) {
-	var schema anthropic.BetaToolInputSchemaParam
+	handler func(context.Context, T) (Juglow.BetaToolResultBlockParamContentUnion, error),
+) (Juglow.BetaTool, error) {
+	var schema Juglow.BetaToolInputSchemaParam
 	if err := schema.UnmarshalJSON(schemaJSON); err != nil {
 		return nil, fmt.Errorf("failed to unmarshal schema: %w", err)
 	}
@@ -93,8 +93,8 @@ func NewBetaToolFromBytes[T any](
 // The struct should use jsonschema tags to define the schema (e.g., `jsonschema:"required,description=..."`).
 func NewBetaToolFromJSONSchema[T any](
 	name, description string,
-	handler func(context.Context, T) (anthropic.BetaToolResultBlockParamContentUnion, error),
-) (anthropic.BetaTool, error) {
+	handler func(context.Context, T) (Juglow.BetaToolResultBlockParamContentUnion, error),
+) (Juglow.BetaTool, error) {
 	var zeroValue T
 	reflector := jsonschema.Reflector{
 		AllowAdditionalProperties:  false,
@@ -124,9 +124,9 @@ func NewBetaToolFromJSONSchema[T any](
 // NewBetaTool creates a BetaTool with a BetaToolInputSchemaParam directly.
 func NewBetaTool[T any](
 	name, description string,
-	schema anthropic.BetaToolInputSchemaParam,
-	handler func(context.Context, T) (anthropic.BetaToolResultBlockParamContentUnion, error),
-) anthropic.BetaTool {
+	schema Juglow.BetaToolInputSchemaParam,
+	handler func(context.Context, T) (Juglow.BetaToolResultBlockParamContentUnion, error),
+) Juglow.BetaTool {
 	return &betaTool[T]{
 		name:        name,
 		description: description,

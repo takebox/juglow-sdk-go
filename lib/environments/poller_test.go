@@ -1,4 +1,4 @@
-package environments
+﻿package environments
 
 import (
 	"bytes"
@@ -15,9 +15,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 	"github.com/stretchr/testify/require"
 )
 
@@ -61,9 +61,9 @@ func TestIsStatus(t *testing.T) {
 		want        bool
 	}{
 		{"matching status code on a wrapped api error is detected so 409 on Stop can be suppressed",
-			&anthropic.Error{StatusCode: 409}, 409, true},
+			&Juglow.Error{StatusCode: 409}, 409, true},
 		{"different status code returns false so only the intended code is matched",
-			&anthropic.Error{StatusCode: 500}, 409, false},
+			&Juglow.Error{StatusCode: 500}, 409, false},
 		{"non-api error type is never matched even if the message looks similar",
 			errors.New("409 conflict"), 409, false},
 		{"nil error is treated as no-match rather than panicking",
@@ -83,13 +83,13 @@ func TestIsFatal4xx(t *testing.T) {
 		want        bool
 	}{
 		{"400 is fatal because the request body cannot succeed on retry",
-			&anthropic.Error{StatusCode: 400}, true},
+			&Juglow.Error{StatusCode: 400}, true},
 		{"408 is excluded because timeouts deserve backoff, not teardown",
-			&anthropic.Error{StatusCode: 408}, false},
+			&Juglow.Error{StatusCode: 408}, false},
 		{"429 is excluded because rate-limits deserve backoff, not teardown",
-			&anthropic.Error{StatusCode: 429}, false},
+			&Juglow.Error{StatusCode: 429}, false},
 		{"500 is excluded because server-side errors retry, not abort",
-			&anthropic.Error{StatusCode: 500}, false},
+			&Juglow.Error{StatusCode: 500}, false},
 	}
 	for _, tc := range tests {
 		t.Run(tc.description, func(t *testing.T) {
@@ -196,7 +196,7 @@ func (f *fakeWorkServer) serveHTTP(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "unexpected", http.StatusMethodNotAllowed)
 		}
 	case strings.Contains(r.URL.Path, "/sessions/"):
-		// Bare GET /v1/sessions/{id} — the SetupSkills session lookup. The
+		// Bare GET /v1/sessions/{id} â€” the SetupSkills session lookup. The
 		// /events{,/stream} cases above already handled the event endpoints.
 		require.NotNil(f.t, f.HandleSessionGet, "unscripted Sessions.Get call: %s", r.URL.Path)
 		f.HandleSessionGet(w, r)
@@ -212,8 +212,8 @@ func (f *fakeWorkServer) Calls() []recordedCall {
 	return slices.Clone(f.calls)
 }
 
-func (f *fakeWorkServer) Client() anthropic.Client {
-	return anthropic.NewClient(
+func (f *fakeWorkServer) Client() Juglow.Client {
+	return Juglow.NewClient(
 		option.WithBaseURL(f.server.URL),
 		option.WithAPIKey("client-default-key"),
 		option.WithMaxRetries(0),
@@ -262,7 +262,7 @@ func TestWorkPoller_YieldsAndPostsStopOnClose(t *testing.T) {
 		if pollCount == 1 {
 			_, _ = w.Write([]byte(work))
 		} else {
-			// Empty poll — null body — return 204 with nothing.
+			// Empty poll â€” null body â€” return 204 with nothing.
 			w.WriteHeader(http.StatusNoContent)
 		}
 	}
@@ -361,7 +361,7 @@ func TestWorkPoller_StopRunsBeforeNextPoll(t *testing.T) {
 	calls := server.Calls()
 	require.GreaterOrEqual(t, len(calls), 5)
 
-	// Expected order: poll → ack(1) → stop(1) → poll → ack(2). Stop for
+	// Expected order: poll â†’ ack(1) â†’ stop(1) â†’ poll â†’ ack(2). Stop for
 	// work_1 must appear BEFORE the second poll, even though work_1 is
 	// already a different item from the second Next().
 	stop1Idx := -1
@@ -453,7 +453,7 @@ func TestWorkPoller_CtxCancelDuringPollExitsCleanly(t *testing.T) {
 		<-pollUnblocked
 		select {
 		case <-r.Context().Done():
-			// Server saw the cancellation — return 499-ish; client side
+			// Server saw the cancellation â€” return 499-ish; client side
 			// will surface ctx.Err.
 			http.Error(w, "cancelled", 499)
 		default:
@@ -607,7 +607,7 @@ func TestWorkPoller_DrainReturnsOnEmptyQueue(t *testing.T) {
 }
 
 // TestWorkPoller_DrainYieldsThenReturns asserts Drain still yields available
-// work and only returns once the queue empties — and that the last item is
+// work and only returns once the queue empties â€” and that the last item is
 // still stopped on the way out (the poller's auto-stop model is unchanged).
 func TestWorkPoller_DrainYieldsThenReturns(t *testing.T) {
 	server := newFakeWorkServer(t)

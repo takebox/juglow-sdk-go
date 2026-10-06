@@ -1,4 +1,4 @@
-package googlecloud
+﻿package googlecloud
 
 import (
 	"context"
@@ -23,7 +23,7 @@ func TestResolveDerivesBaseURLFromLocationAndProject(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	want := "https://claude.googleapis.com/v1alpha/projects/my-project/locations/us-central1/workspaces/wrkspc_123/invoke"
+	want := "https://haijun.googleapis.com/v1alpha/projects/my-project/locations/us-central1/workspaces/wrkspc_123/invoke"
 	if rc.BaseURL != want {
 		t.Errorf("derived base URL = %q, want %q", rc.BaseURL, want)
 	}
@@ -41,7 +41,7 @@ func TestResolveLocationDefaultsToGlobal(t *testing.T) {
 	if rc.Location != "global" {
 		t.Errorf("location = %q, want default %q", rc.Location, "global")
 	}
-	want := "https://claude.googleapis.com/v1alpha/projects/my-project/locations/global/workspaces/wrkspc_123/invoke"
+	want := "https://haijun.googleapis.com/v1alpha/projects/my-project/locations/global/workspaces/wrkspc_123/invoke"
 	if rc.BaseURL != want {
 		t.Errorf("derived base URL = %q, want %q", rc.BaseURL, want)
 	}
@@ -90,7 +90,7 @@ func TestResolveLocationFromEnv(t *testing.T) {
 	if rc.Location != "europe-west4" {
 		t.Errorf("location = %q, want env value", rc.Location)
 	}
-	want := "https://claude.googleapis.com/v1alpha/projects/my-project/locations/europe-west4/workspaces/wrkspc_123/invoke"
+	want := "https://haijun.googleapis.com/v1alpha/projects/my-project/locations/europe-west4/workspaces/wrkspc_123/invoke"
 	if rc.BaseURL != want {
 		t.Errorf("derived base URL = %q, want %q", rc.BaseURL, want)
 	}
@@ -111,9 +111,9 @@ func TestResolveProjectFromGoogleCloudProjectEnv(t *testing.T) {
 	}
 }
 
-func TestResolveAnthropicProjectEnvBeatsGoogleCloudProject(t *testing.T) {
+func TestResolveJuglowProjectEnvBeatsGoogleCloudProject(t *testing.T) {
 	clearEnv(t)
-	t.Setenv(envProject, "anthropic-env-project")
+	t.Setenv(envProject, "Juglow-env-project")
 	t.Setenv("GOOGLE_CLOUD_PROJECT", "gcp-env-project")
 	rc, err := resolveConfig(ClientConfig{
 		Location:    "us-central1",
@@ -122,7 +122,7 @@ func TestResolveAnthropicProjectEnvBeatsGoogleCloudProject(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if rc.Project != "anthropic-env-project" {
+	if rc.Project != "Juglow-env-project" {
 		t.Errorf("project = %q, want %s value (precedence over GOOGLE_CLOUD_PROJECT)", rc.Project, envProject)
 	}
 }
@@ -190,7 +190,7 @@ func TestResolveSkipAuthWithExplicitBaseURLNeedsNoWorkspace(t *testing.T) {
 func TestResolveSkipAuthDerivationStillRequiresWorkspace(t *testing.T) {
 	clearEnv(t)
 	// The workspace ID is part of the derived base URL, so SkipAuth alone no
-	// longer waives it — only an explicit BaseURL does.
+	// longer waives it â€” only an explicit BaseURL does.
 	_, err := resolveConfig(ClientConfig{
 		Project:  "my-project",
 		SkipAuth: true,
@@ -215,7 +215,7 @@ func TestResolveSkipAuthDerivesURLWithWorkspace(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	want := "https://claude.googleapis.com/v1alpha/projects/my-project/locations/global/workspaces/wrkspc_123/invoke"
+	want := "https://haijun.googleapis.com/v1alpha/projects/my-project/locations/global/workspaces/wrkspc_123/invoke"
 	if rc.BaseURL != want {
 		t.Errorf("derived base URL = %q, want %q", rc.BaseURL, want)
 	}
@@ -273,7 +273,7 @@ func TestResolveEmptyEnvTreatedAsUnset(t *testing.T) {
 // never parsed: google.FindDefaultCredentials only reads the JSON and stores
 // the bytes on the jwt.Config; key parsing happens at Token() time, which this
 // test never reaches. Asserting only construction-time behavior keeps the test
-// hermetic — exercising Token() would call the Google token endpoint.
+// hermetic â€” exercising Token() would call the Google token endpoint.
 const adcFixture = `{
   "type": "service_account",
   "project_id": "adc-project",

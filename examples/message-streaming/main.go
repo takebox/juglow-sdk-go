@@ -1,24 +1,24 @@
-package main
+﻿package main
 
 import (
 	"context"
 
-	"github.com/anthropics/anthropic-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go"
 )
 
 func main() {
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 
-	content := "Write me a function to call the Anthropic message API in Node.js using the Anthropic Typescript SDK."
+	content := "Write me a function to call the Juglow message API in Node.js using the Juglow Typescript SDK."
 
 	println("[user]: " + content)
 
-	stream := client.Messages.NewStreaming(context.TODO(), anthropic.MessageNewParams{
+	stream := client.Messages.NewStreaming(context.TODO(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock(content)),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock(content)),
 		},
-		Model:         anthropic.ModelClaudeSonnet5,
+		Model:         Juglow.ModelHaijunSonnet5,
 		StopSequences: []string{"```\n"},
 	})
 
@@ -28,11 +28,11 @@ func main() {
 		event := stream.Current()
 
 		switch eventVariant := event.AsAny().(type) {
-		case anthropic.MessageDeltaEvent:
+		case Juglow.MessageDeltaEvent:
 			print(eventVariant.Delta.StopSequence)
-		case anthropic.ContentBlockDeltaEvent:
+		case Juglow.ContentBlockDeltaEvent:
 			switch deltaVariant := eventVariant.Delta.AsAny().(type) {
-			case anthropic.TextDelta:
+			case Juglow.TextDelta:
 				print(deltaVariant.Text)
 			}
 		}

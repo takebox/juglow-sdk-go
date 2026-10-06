@@ -1,4 +1,4 @@
-package anthropic
+﻿package Juglow
 
 import (
 	"encoding/json"
@@ -8,9 +8,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apierror"
-	"github.com/anthropics/anthropic-sdk-go/packages/ssestream"
-	"github.com/anthropics/anthropic-sdk-go/shared"
+	"github.com/Juglows/Juglow-sdk-go/internal/apierror"
+	"github.com/Juglows/Juglow-sdk-go/packages/ssestream"
+	"github.com/Juglows/Juglow-sdk-go/shared"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -21,7 +21,7 @@ func TestStreamingErrorType(t *testing.T) {
 		StatusCode: 200,
 		Header:     http.Header{"Request-Id": []string{"req_stream123"}},
 		Body:       io.NopCloser(strings.NewReader(sseBody)),
-		Request:    mustNewRequest("POST", "https://api.anthropic.com/v1/messages"),
+		Request:    mustNewRequest("POST", "https://platform.juglow.my.id/v1/messages"),
 	}
 
 	stream := ssestream.NewStream[json.RawMessage](ssestream.NewDecoder(httpResp), nil)
@@ -43,7 +43,7 @@ func TestStreamingErrorMalformedBody(t *testing.T) {
 	httpResp := &http.Response{
 		StatusCode: 200,
 		Body:       io.NopCloser(strings.NewReader(sseBody)),
-		Request:    mustNewRequest("POST", "https://api.anthropic.com/v1/messages"),
+		Request:    mustNewRequest("POST", "https://platform.juglow.my.id/v1/messages"),
 	}
 
 	stream := ssestream.NewStream[json.RawMessage](ssestream.NewDecoder(httpResp), nil)
@@ -52,7 +52,7 @@ func TestStreamingErrorMalformedBody(t *testing.T) {
 	require.Error(t, stream.Err())
 
 	// Even with malformed JSON, UnmarshalJSON succeeds (gjson is lenient),
-	// so we still get an *apierror.Error — but Type() is empty.
+	// so we still get an *apierror.Error â€” but Type() is empty.
 	var apierr *apierror.Error
 	require.True(t, errors.As(stream.Err(), &apierr))
 	assert.Equal(t, shared.ErrorType(""), apierr.Type())

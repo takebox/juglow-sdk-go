@@ -1,4 +1,4 @@
-package vertex
+﻿package vertex
 
 import (
 	"bytes"
@@ -11,8 +11,8 @@ import (
 	"google.golang.org/api/option"
 	"google.golang.org/api/transport"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	sdkoption "github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	sdkoption "github.com/Juglows/Juglow-sdk-go/option"
 	"github.com/tidwall/gjson"
 	"github.com/tidwall/sjson"
 )
@@ -33,7 +33,7 @@ const cloudPlatformScope = "https://www.googleapis.com/auth/cloud-platform"
 // If you already have a [*google.Credentials], it is recommended that you instead call [WithCredentials] directly.
 //
 // Register any [sdkoption.WithMiddleware] before this option so your
-// middleware observes Anthropic-shaped requests; see [WithCredentials].
+// middleware observes Juglow-shaped requests; see [WithCredentials].
 //
 // [Application Default Credentials]: https://cloud.google.com/docs/authentication/application-default-credentials
 func WithGoogleAuth(ctx context.Context, region string, projectID string, scopes ...string) sdkoption.RequestOption {
@@ -54,20 +54,20 @@ func WithGoogleAuth(ctx context.Context, region string, projectID string, scopes
 // intercepts request to the Messages API.
 //
 // External-account (workload identity federation) credentials must be
-// constructed with a scope — typically
-// https://www.googleapis.com/auth/cloud-platform — or token minting fails.
+// constructed with a scope â€” typically
+// https://www.googleapis.com/auth/cloud-platform â€” or token minting fails.
 //
 // The Vertex adaptation (URL and body rewriting, OAuth authorization) should
 // run closest to the wire. Middleware runs in registration order, so register
 // [sdkoption.WithMiddleware] before this option:
 //
-//	client := anthropic.NewClient(
+//	client := Juglow.NewClient(
 //		option.WithMiddleware(loggingMiddleware),
 //		vertex.WithCredentials(ctx, region, projectID, creds),
 //	)
 //
-// Ordered this way, your middleware observes Anthropic-shaped requests
-// (POST /v1/messages with the model in the body) — identical to the
+// Ordered this way, your middleware observes Juglow-shaped requests
+// (POST /v1/messages with the model in the body) â€” identical to the
 // first-party API.
 func WithCredentials(ctx context.Context, region string, projectID string, creds *google.Credentials) sdkoption.RequestOption {
 	client, _, err := transport.NewHTTPClient(ctx, option.WithTokenSource(creds.TokenSource))
@@ -106,8 +106,8 @@ func vertexMiddleware(region, projectID string) sdkoption.Middleware {
 			}
 			r.Body.Close()
 
-			if !gjson.GetBytes(body, "anthropic_version").Exists() {
-				body, _ = sjson.SetBytes(body, "anthropic_version", DefaultVersion)
+			if !gjson.GetBytes(body, "Juglow_version").Exists() {
+				body, _ = sjson.SetBytes(body, "Juglow_version", DefaultVersion)
 			}
 
 			if r.URL.Path == "/v1/messages" && r.Method == http.MethodPost {
@@ -125,7 +125,7 @@ func vertexMiddleware(region, projectID string) sdkoption.Middleware {
 					specifier = "streamRawPredict"
 				}
 
-				r.URL.Path = fmt.Sprintf("/v1/projects/%s/locations/%s/publishers/anthropic/models/%s:%s", projectID, region, model, specifier)
+				r.URL.Path = fmt.Sprintf("/v1/projects/%s/locations/%s/publishers/Juglow/models/%s:%s", projectID, region, model, specifier)
 			}
 
 			if r.URL.Path == "/v1/messages/count_tokens" && r.Method == http.MethodPost {
@@ -133,7 +133,7 @@ func vertexMiddleware(region, projectID string) sdkoption.Middleware {
 					return nil, fmt.Errorf("no projectId was given and it could not be resolved from credentials")
 				}
 
-				r.URL.Path = fmt.Sprintf("/v1/projects/%s/locations/%s/publishers/anthropic/models/count-tokens:rawPredict", projectID, region)
+				r.URL.Path = fmt.Sprintf("/v1/projects/%s/locations/%s/publishers/Juglow/models/count-tokens:rawPredict", projectID, region)
 			}
 
 			reader := bytes.NewReader(body)

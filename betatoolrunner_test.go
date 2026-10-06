@@ -1,4 +1,4 @@
-package anthropic
+﻿package Juglow
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 // messagesServer scripts POST /v1/messages: the first call returns a tool_use
@@ -209,9 +209,9 @@ func TestBetaToolRunner_ToolRemoval_AppendMessagesBeforeCall(t *testing.T) {
 	}
 }
 
-// A tool_removal appended in the dispatch window — after NextMessage has
+// A tool_removal appended in the dispatch window â€” after NextMessage has
 // returned the assistant's tool_use but before the following NextMessage
-// executes it — must also stop the call. Uses the exported Params.Messages
+// executes it â€” must also stop the call. Uses the exported Params.Messages
 // mutation path.
 func TestBetaToolRunner_ToolRemoval_DispatchWindowParamsMutation(t *testing.T) {
 	weather := &stubBetaTool{name: "weather"}

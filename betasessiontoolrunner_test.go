@@ -1,4 +1,4 @@
-package anthropic
+﻿package Juglow
 
 import (
 	"context"
@@ -15,8 +15,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 	"github.com/stretchr/testify/require"
 )
 
@@ -52,7 +52,7 @@ func (s *stubBetaTool) Execute(ctx context.Context, input json.RawMessage) ([]Be
 }
 
 // dispatchedResultText joins the text blocks of the result event the runner
-// built for call — CustomResult when call.Custom, otherwise Result. Replaces
+// built for call â€” CustomResult when call.Custom, otherwise Result. Replaces
 // the removed flat DispatchedToolCall.Content convenience field.
 func dispatchedResultText(call DispatchedToolCall) string {
 	var out string
@@ -137,7 +137,7 @@ func idleEndTurnEvt(id string) map[string]any {
 }
 
 // idleRequiresActionEvt is a session.status_idle with stop_reason
-// "requires_action" — the server parks here waiting on the listed events
+// "requires_action" â€” the server parks here waiting on the listed events
 // (tool confirmations, tool results).
 func idleRequiresActionEvt(id string, eventIDs ...string) map[string]any {
 	return map[string]any{
@@ -426,7 +426,7 @@ func TestSessionToolRunner_ReconcileRetriesFailedPost(t *testing.T) {
 	var sends atomic.Int32
 	server.HandleSend = func(w http.ResponseWriter, _ *http.Request) {
 		if sends.Add(1) == 1 {
-			// First post fails permanently — the call must NOT be marked
+			// First post fails permanently â€” the call must NOT be marked
 			// answered, so the next reconcile retries it.
 			http.Error(w, "bad", http.StatusBadRequest)
 			return
@@ -458,7 +458,7 @@ func TestSessionToolRunner_ReconcileRetriesFailedPost(t *testing.T) {
 // split-client behavior: a tool-use event whose Name is not in the runner's
 // registry belongs to the other client servicing the session (e.g. the
 // customer's app backend handling custom tools). The runner must post NO
-// result for it, claim nothing, and leave the tool_use_id pending — while
+// result for it, claim nothing, and leave the tool_use_id pending â€” while
 // still yielding the DispatchedToolCall so the caller can observe the unowned
 // dispatch (Posted=false, IsError=false, no result event populated). It must
 // not panic on the registry miss.
@@ -514,7 +514,7 @@ func TestSessionToolRunner_SkipsUnownedToolByDefault(t *testing.T) {
 
 // A skipped (unanswered) unowned tool_use stays OUT of the end-turn
 // accounting: reconcile sees history ending on an end_turn idle but with the
-// unowned tool_use still unanswered, so it must NOT arm the countdown — the
+// unowned tool_use still unanswered, so it must NOT arm the countdown â€” the
 // runner has not handled that call, its owner still has to.
 func TestSessionToolRunner_SkippedUnownedToolDoesNotTripIdle(t *testing.T) {
 	server := newSessionEventsServer(t)
@@ -551,7 +551,7 @@ func TestSessionToolRunner_SkippedUnownedToolDoesNotTripIdle(t *testing.T) {
 		t.Fatalf("unexpected extra yield: %+v", r.Current())
 	}
 	require.NotErrorIs(t, r.Err(), ErrIdleTimeout,
-		"runner idled out with an unowned tool_use still unanswered — reconcile must not arm over outstanding work")
+		"runner idled out with an unowned tool_use still unanswered â€” reconcile must not arm over outstanding work")
 }
 
 func TestSessionToolRunner_SessionTerminatedEndsIteration(t *testing.T) {
@@ -621,7 +621,7 @@ func TestSessionToolRunner_ReconcileSurfacesSessionTerminatedFromHistory(t *test
 	elapsed := time.Since(start)
 
 	require.ErrorIs(t, r.Err(), ErrSessionTerminated, "reconcile must surface ErrSessionTerminated when the listed history contains session.status_terminated")
-	require.Less(t, elapsed, 3*time.Second, "runner ran too long — reconcile didn't shut down streamLoop (got %s)", elapsed)
+	require.Less(t, elapsed, 3*time.Second, "runner ran too long â€” reconcile didn't shut down streamLoop (got %s)", elapsed)
 }
 
 func TestSessionToolRunner_IdleTimeoutEndsIteration(t *testing.T) {
@@ -788,7 +788,7 @@ func TestSessionToolRunner_OnlyToolsTheServerOrUserAllowedEverRun(t *testing.T) 
 		w.Header().Set("Content-Type", "application/json")
 		_, _ = w.Write(body)
 	}
-	// From the live event stream (held open — the dispatcher is pipelined, so a
+	// From the live event stream (held open â€” the dispatcher is pipelined, so a
 	// trailing terminated would race the last dispatch):
 	server.HandleStream = func(w http.ResponseWriter, r *http.Request) {
 		streamWriter(w, r, []string{
@@ -866,9 +866,9 @@ func TestSessionToolRunner_OnlyToolsTheServerOrUserAllowedEverRun(t *testing.T) 
 // agent tried to invoke a tool and was blocked. Dropping it silently makes
 // "the agent called nothing" indistinguishable from "the agent called five
 // tools and the user denied every one", which breaks audit trails and any
-// UI that surfaces per-call outcomes. So a denied call — whether the server
+// UI that surfaces per-call outcomes. So a denied call â€” whether the server
 // evaluated permission to "deny" or the user's confirmation verdict was a
-// deny — must be yielded with DispatchedToolCall.Confirmation == "deny"
+// deny â€” must be yielded with DispatchedToolCall.Confirmation == "deny"
 // (Posted=false, IsError=false, no result), and an ask-then-allow call must
 // carry Confirmation == "allow" so the consumer can tell it was gated.
 func TestSessionToolRunner_DeniedCallsAreYieldedWithConfirmation(t *testing.T) {
@@ -933,7 +933,7 @@ func TestSessionToolRunner_DeniedCallsAreYieldedWithConfirmation(t *testing.T) {
 // A verdict this SDK cannot read must fail closed, and a server-side deny
 // outranks a stray allow. Each verdict here lands BEFORE its tool_use, so the
 // gate resolves it out of the recorded verdicts rather than through the
-// held-call path — and that read must tell "no verdict recorded" apart from
+// held-call path â€” and that read must tell "no verdict recorded" apart from
 // "a verdict recorded that we can't interpret", which a bare map lookup on
 // Go's zero value does not.
 func TestSessionToolRunner_GateFailsClosedOnStrayVerdicts(t *testing.T) {
@@ -982,7 +982,7 @@ func TestSessionToolRunner_GateFailsClosedOnStrayVerdicts(t *testing.T) {
 }
 
 // A permission value this SDK does not recognize must hold the call like
-// "ask" — never dispatch it unconfirmed — which also defers the idle
+// "ask" â€” never dispatch it unconfirmed â€” which also defers the idle
 // countdown for as long as it stays held.
 func TestSessionToolRunner_UnrecognizedPermissionHoldsTheCall(t *testing.T) {
 	server := newSessionEventsServer(t)
@@ -1008,7 +1008,7 @@ func TestSessionToolRunner_UnrecognizedPermissionHoldsTheCall(t *testing.T) {
 }
 
 // A call held from the live stream whose allow verdict only ever appears in a
-// reconcile history — the tool_use itself scrolled out of the listed window —
+// reconcile history â€” the tool_use itself scrolled out of the listed window â€”
 // must still be dispatched, exactly once.
 func TestSessionToolRunner_ReconcileVerdictResolvesCallMissingFromHistory(t *testing.T) {
 	server := newSessionEventsServer(t)
@@ -1063,7 +1063,7 @@ func TestSessionToolRunner_ReconcileVerdictResolvesCallMissingFromHistory(t *tes
 
 // Deny flavor of the window-eviction case: the verdict must resolve the held
 // copy (nothing runs, nothing posts) and clear the hold so the end_turn idle
-// in the same history can stop the runner — instead of the occupied gate
+// in the same history can stop the runner â€” instead of the occupied gate
 // deferring idle-out forever.
 func TestSessionToolRunner_ReconcileDenyForCallMissingFromHistoryLetsRunnerStop(t *testing.T) {
 	server := newSessionEventsServer(t)
@@ -1124,7 +1124,7 @@ func TestSessionToolRunner_ReconcileDenyForCallMissingFromHistoryLetsRunnerStop(
 func TestSessionToolRunner_HeldCallBlocksIdleTimeout(t *testing.T) {
 	server := newSessionEventsServer(t)
 	server.HandleStream = func(w http.ResponseWriter, r *http.Request) {
-		// An ask-gated call, then an end_turn idle, then silence — no verdict.
+		// An ask-gated call, then an end_turn idle, then silence â€” no verdict.
 		streamWriter(w, r, []string{
 			sseLine("agent.tool_use", askToolUseEvt("evt_ask", "echo", map[string]any{}, "ask")),
 			sseLine("session.status_idle", idleEndTurnEvt("evt_idle")),
@@ -1150,7 +1150,7 @@ func TestSessionToolRunner_HeldCallBlocksIdleTimeout(t *testing.T) {
 	require.NotErrorIs(t, r.Err(), ErrIdleTimeout,
 		"runner idle-timed-out while a call was held awaiting confirmation")
 	require.GreaterOrEqual(t, elapsed, time.Second,
-		"runner ended after only %s — it idle-timed-out instead of holding the call", elapsed)
+		"runner ended after only %s â€” it idle-timed-out instead of holding the call", elapsed)
 	require.Equal(t, int32(0), echo.runs.Load())
 	require.NoError(t, r.Close())
 }
@@ -1158,7 +1158,7 @@ func TestSessionToolRunner_HeldCallBlocksIdleTimeout(t *testing.T) {
 // Reconcile flavor: the held call and its end_turn both come from history, so
 // the arm the reconcile pass owes must be held pending until the verdict lands.
 func TestSessionToolRunner_OpenApprovalKeepsRunnerAliveThenAnswerLetsItStop(t *testing.T) {
-	// The user's answer closes the approval — a deny, or an unrecognized
+	// The user's answer closes the approval â€” a deny, or an unrecognized
 	// verdict resolved as one (fail closed without wedging the runner open).
 	for _, verdict := range []string{"deny", "not_a_verdict"} {
 		t.Run(verdict, func(t *testing.T) {
@@ -1206,11 +1206,11 @@ func TestSessionToolRunner_OpenApprovalKeepsRunnerAliveThenAnswerLetsItStop(t *t
 
 // The mirror image of the two tests above: once the deny retires the last
 // blocker, the end_turn the runner saw mid-hold applies and it stops on its
-// own — a held call defers the countdown, it must not cancel it outright.
+// own â€” a held call defers the countdown, it must not cancel it outright.
 func TestSessionToolRunner_DenyAfterEndTurnResumesIdle(t *testing.T) {
 	server := newSessionEventsServer(t)
 	server.HandleStream = func(w http.ResponseWriter, r *http.Request) {
-		// Hold the call, go idle on end_turn, then deny it — and stay connected.
+		// Hold the call, go idle on end_turn, then deny it â€” and stay connected.
 		streamWriter(w, r, []string{
 			sseLine("agent.tool_use", askToolUseEvt("evt_ask", "echo", map[string]any{}, "ask")),
 			sseLine("session.status_idle", idleEndTurnEvt("evt_idle")),
@@ -1237,7 +1237,7 @@ func TestSessionToolRunner_DenyAfterEndTurnResumesIdle(t *testing.T) {
 	require.ErrorIs(t, r.Err(), ErrIdleTimeout,
 		"the idle countdown must resume after a deny releases the last held call")
 	require.Less(t, elapsed, 4*time.Second,
-		"runner took %s — the released call was wrongly counted as outstanding and the countdown never resumed", elapsed)
+		"runner took %s â€” the released call was wrongly counted as outstanding and the countdown never resumed", elapsed)
 	require.Len(t, yielded, 1, "the denied call is yielded exactly once")
 	require.Equal(t, "deny", yielded[0].Confirmation)
 	require.Equal(t, int32(0), echo.runs.Load())
@@ -1246,7 +1246,7 @@ func TestSessionToolRunner_DenyAfterEndTurnResumesIdle(t *testing.T) {
 
 // An end_turn armed the countdown, then the stream dropped. The reconciled
 // history ends with an ask-gated call (held) and its end_turn, so the arm
-// defers — but the pre-disconnect countdown is now stale evidence and must be
+// defers â€” but the pre-disconnect countdown is now stale evidence and must be
 // cancelled, or the runner stops MaxIdle after the *old* end_turn while the
 // confirmation is still pending on a human.
 func TestSessionToolRunner_DeferredArmCancelsStalePreDisconnectCountdown(t *testing.T) {
@@ -1257,16 +1257,16 @@ func TestSessionToolRunner_DeferredArmCancelsStalePreDisconnectCountdown(t *test
 	var streamConns atomic.Int32
 	server.HandleStream = func(w http.ResponseWriter, r *http.Request) {
 		if streamConns.Add(1) == 1 {
-			// The agent finishes a turn (end_turn arms the countdown)… then
-			// the now-quiet SSE connection is dropped — exactly what load
+			// The agent finishes a turn (end_turn arms the countdown)â€¦ then
+			// the now-quiet SSE connection is dropped â€” exactly what load
 			// balancers do to idle streams. The runner reconnects.
 			streamWriter(w, r, []string{
 				sseLine("session.status_idle", idleEndTurnEvt("evt_idle_1")),
 			}, false)
 			return
 		}
-		// Second connection: the approver has stepped away — silence past
-		// the stale stamp's expiry — then they come back and deny, letting
+		// Second connection: the approver has stepped away â€” silence past
+		// the stale stamp's expiry â€” then they come back and deny, letting
 		// the runner stop on a fresh window.
 		f := w.(http.Flusher)
 		w.Header().Set("Content-Type", "text/event-stream")
@@ -1313,7 +1313,7 @@ func TestSessionToolRunner_DeferredArmCancelsStalePreDisconnectCountdown(t *test
 	require.Equal(t, "deny", yielded[0].Confirmation)
 }
 
-// The turn ended while the call was held, so an idle countdown is owed — but
+// The turn ended while the call was held, so an idle countdown is owed â€” but
 // it must not start until the approved call has fully dispatched, or a tool
 // slower than MaxIdle has the runner stop mid-flight and orphan the turn its
 // result starts.
@@ -1358,7 +1358,7 @@ func TestSessionToolRunner_ApprovedCallStillExecutingDefersIdleStop(t *testing.T
 }
 
 // A disarm racing the pending-arm apply must win: before the apply it clears
-// the pending arm, after it clears the stamp the apply wrote — a cancelled
+// the pending arm, after it clears the stamp the apply wrote â€” a cancelled
 // countdown must never resurrect.
 func TestIdleClock_DisarmWinsAgainstPendingArmApply(t *testing.T) {
 	for i := range 10000 {
@@ -1370,10 +1370,10 @@ func TestIdleClock_DisarmWinsAgainstPendingArmApply(t *testing.T) {
 		startGate := make(chan struct{})
 		var wg sync.WaitGroup
 		wg.Add(2)
-		// The approved call finishes dispatching — the dispatch goroutine
-		// retires the blocker, which applies the owed arm…
+		// The approved call finishes dispatching â€” the dispatch goroutine
+		// retires the blocker, which applies the owed armâ€¦
 		go func() { defer wg.Done(); <-startGate; c.unblock("tu") }()
-		// …while the stream goroutine processes a new event (e.g. the echoed
+		// â€¦while the stream goroutine processes a new event (e.g. the echoed
 		// user.tool_result of that very call): the session is not idle, so
 		// it disarms.
 		go func() { defer wg.Done(); <-startGate; c.disarm() }()
@@ -1383,6 +1383,6 @@ func TestIdleClock_DisarmWinsAgainstPendingArmApply(t *testing.T) {
 		armed := !c.armedAt.IsZero() || c.armPending
 		c.mu.Unlock()
 		require.False(t, armed,
-			"iteration %d: countdown left armed after a disarm — the pending-arm apply raced past it", i)
+			"iteration %d: countdown left armed after a disarm â€” the pending-arm apply raced past it", i)
 	}
 }

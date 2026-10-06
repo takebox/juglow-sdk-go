@@ -1,29 +1,29 @@
-package bedrock_test
+﻿package bedrock_test
 
 import (
 	"context"
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/bedrock"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/bedrock"
 )
 
-// Live integration tests for Bedrock Mantle. Skipped unless ANTHROPIC_LIVE=1.
+// Live integration tests for Bedrock Mantle. Skipped unless Juglow_LIVE=1.
 //
 // Required env vars vary by auth mode:
 //
-//	API key mode:  AWS_BEARER_TOKEN_BEDROCK (or ANTHROPIC_AWS_API_KEY),
+//	API key mode:  AWS_BEARER_TOKEN_BEDROCK (or Juglow_AWS_API_KEY),
 //	               AWS_REGION
 //
 //	SigV4 mode:    AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION
 //
-// Run: ANTHROPIC_LIVE=1 go test ./bedrock/... -run TestLiveMantle -v
+// Run: Juglow_LIVE=1 go test ./bedrock/... -run TestLiveMantle -v
 
 func skipUnlessLive(t *testing.T) {
 	t.Helper()
-	if os.Getenv("ANTHROPIC_LIVE") != "1" {
-		t.Skip("set ANTHROPIC_LIVE=1 to run live integration tests")
+	if os.Getenv("Juglow_LIVE") != "1" {
+		t.Skip("set Juglow_LIVE=1 to run live integration tests")
 	}
 }
 
@@ -37,20 +37,20 @@ func requireEnv(t *testing.T, names ...string) {
 }
 
 func liveModel() string {
-	if m := os.Getenv("ANTHROPIC_LIVE_MODEL"); m != "" {
+	if m := os.Getenv("Juglow_LIVE_MODEL"); m != "" {
 		return m
 	}
-	return "claude-sonnet-4-6"
+	return "haijun-sonnet-4-6"
 }
 
 func sendMantleMessage(t *testing.T, client *bedrock.MantleClient) {
 	t.Helper()
 
-	message, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+	message, err := client.Messages.New(context.Background(), Juglow.MessageNewParams{
 		Model:     liveModel(),
 		MaxTokens: 32,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(anthropic.NewTextBlock("Say exactly: hello")),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(Juglow.NewTextBlock("Say exactly: hello")),
 		},
 	})
 	if err != nil {
@@ -69,10 +69,10 @@ func TestLiveMantleAPIKey(t *testing.T) {
 	// Need at least one of these for the API key
 	apiKey := os.Getenv("AWS_BEARER_TOKEN_BEDROCK")
 	if apiKey == "" {
-		apiKey = os.Getenv("ANTHROPIC_AWS_API_KEY")
+		apiKey = os.Getenv("Juglow_AWS_API_KEY")
 	}
 	if apiKey == "" {
-		t.Fatal("required env var AWS_BEARER_TOKEN_BEDROCK or ANTHROPIC_AWS_API_KEY is not set")
+		t.Fatal("required env var AWS_BEARER_TOKEN_BEDROCK or Juglow_AWS_API_KEY is not set")
 	}
 
 	client, err := bedrock.NewMantleClient(context.Background(), bedrock.MantleClientConfig{
@@ -107,8 +107,8 @@ func TestLiveMantleSigV4DefaultChain(t *testing.T) {
 
 	// Clear all API key env vars so the default AWS credential chain is used
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
-	t.Setenv("ANTHROPIC_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
+	t.Setenv("Juglow_API_KEY", "")
 
 	client, err := bedrock.NewMantleClient(context.Background(), bedrock.MantleClientConfig{})
 	if err != nil {
@@ -124,8 +124,8 @@ func TestLiveMantleSigV4ProfileFromCredentialsFile(t *testing.T) {
 
 	// Clear explicit creds and API keys so the SDK must resolve from ~/.aws/credentials
 	t.Setenv("AWS_BEARER_TOKEN_BEDROCK", "")
-	t.Setenv("ANTHROPIC_AWS_API_KEY", "")
-	t.Setenv("ANTHROPIC_API_KEY", "")
+	t.Setenv("Juglow_AWS_API_KEY", "")
+	t.Setenv("Juglow_API_KEY", "")
 	t.Setenv("AWS_ACCESS_KEY_ID", "")
 	t.Setenv("AWS_SECRET_ACCESS_KEY", "")
 	t.Setenv("AWS_SESSION_TOKEN", "")

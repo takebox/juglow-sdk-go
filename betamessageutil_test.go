@@ -1,15 +1,15 @@
-package anthropic_test
+﻿package Juglow_test
 
 import (
 	"encoding/json"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go"
 )
 
-func unmarshalBetaContentBlockParam(t *testing.T, jsonData string) anthropic.BetaContentBlockParamUnion {
+func unmarshalBetaContentBlockParam(t *testing.T, jsonData string) Juglow.BetaContentBlockParamUnion {
 	t.Helper()
-	var block anthropic.BetaContentBlockUnion
+	var block Juglow.BetaContentBlockUnion
 	if err := json.Unmarshal([]byte(jsonData), &block); err != nil {
 		t.Fatalf("Failed to unmarshal JSON: %v", err)
 	}
@@ -55,7 +55,7 @@ func TestBetaTextCitationToParamKeepsAllFields(t *testing.T) {
 func TestBetaAccumulatePreservesWireJSON(t *testing.T) {
 	toolResult := `{"type":"bash_code_execution_tool_result","tool_use_id":"srvtoolu_01","content":{"type":"bash_code_execution_result","stdout":"","stderr":"","return_code":0,"content":[{"type":"bash_code_execution_output","file_id":"file_011ABC"}]}}`
 	events := []string{
-		`{"type":"message_start","message":{"id":"msg_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":1,"output_tokens":1}}}`,
+		`{"type":"message_start","message":{"id":"msg_01","type":"message","role":"assistant","model":"haijun-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":1,"output_tokens":1}}}`,
 		`{"type":"content_block_start","index":0,"content_block":` + toolResult + `}`,
 		`{"type":"content_block_stop","index":0}`,
 		`{"type":"content_block_start","index":1,"content_block":{"type":"tool_use","id":"toolu_01","name":"create_pdf","input":{}}}`,
@@ -65,9 +65,9 @@ func TestBetaAccumulatePreservesWireJSON(t *testing.T) {
 		`{"type":"message_stop"}`,
 	}
 
-	var message anthropic.BetaMessage
+	var message Juglow.BetaMessage
 	for _, eventJSON := range events {
-		var event anthropic.BetaRawMessageStreamEventUnion
+		var event Juglow.BetaRawMessageStreamEventUnion
 		if err := json.Unmarshal([]byte(eventJSON), &event); err != nil {
 			t.Fatalf("Failed to unmarshal event: %v", err)
 		}
@@ -80,13 +80,13 @@ func TestBetaAccumulatePreservesWireJSON(t *testing.T) {
 		t.Errorf("Expected content block 0 to keep its wire JSON\n got: %s\nwant: %s", got, toolResult)
 	}
 
-	wantMessage := `{"id":"msg_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[` + toolResult +
+	wantMessage := `{"id":"msg_01","type":"message","role":"assistant","model":"haijun-haiku-4-5","content":[` + toolResult +
 		`,{"type":"tool_use","id":"toolu_01","name":"create_pdf","input":{}}],"stop_reason":"max_tokens","stop_sequence":null,"usage":{"input_tokens":1,"output_tokens":4096}}`
 	if got := message.RawJSON(); got != wantMessage {
 		t.Errorf("Expected the accumulated message JSON to match the wire\n got: %s\nwant: %s", got, wantMessage)
 	}
 
-	block, ok := message.Content[0].AsAny().(anthropic.BetaBashCodeExecutionToolResultBlock)
+	block, ok := message.Content[0].AsAny().(Juglow.BetaBashCodeExecutionToolResultBlock)
 	if !ok {
 		t.Fatalf("Expected BetaBashCodeExecutionToolResultBlock, got %T", message.Content[0].AsAny())
 	}

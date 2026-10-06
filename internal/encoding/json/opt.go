@@ -1,11 +1,11 @@
-// EDIT(begin): add custom options for JSON encoding
+﻿// EDIT(begin): add custom options for JSON encoding
 package json
 
 import (
 	stdjson "encoding/json"
 	"reflect"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/encoding/json/shims"
+	"github.com/Juglows/Juglow-sdk-go/internal/encoding/json/shims"
 )
 
 type Option func(*encOpts)

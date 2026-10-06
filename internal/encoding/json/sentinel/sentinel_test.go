@@ -1,8 +1,8 @@
-package sentinel_test
+﻿package sentinel_test
 
 import (
-	"github.com/anthropics/anthropic-sdk-go/internal/encoding/json/sentinel"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/internal/encoding/json/sentinel"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 	"reflect"
 	"slices"
 	"testing"

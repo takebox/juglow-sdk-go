@@ -1,4 +1,4 @@
-package googlecloud_test
+﻿package googlecloud_test
 
 import (
 	"context"
@@ -6,37 +6,37 @@ import (
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/googlecloud"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/googlecloud"
 )
 
-// Live integration test for the Google Cloud client. Skipped unless ANTHROPIC_LIVE=1.
+// Live integration test for the Google Cloud client. Skipped unless Juglow_LIVE=1.
 //
 // Authentication uses Application Default Credentials (cloud-platform scope), e.g.
 // after `gcloud auth application-default login`. Required env vars:
 //
-//	ANTHROPIC_GOOGLE_CLOUD_PROJECT       GCP consumer project (or inferred from ADC)
-//	ANTHROPIC_GOOGLE_CLOUD_WORKSPACE_ID  Anthropic workspace ID for the org
-//	ANTHROPIC_GOOGLE_CLOUD_LOCATION      GCP location (test override; default us-central1)
+//	Juglow_GOOGLE_CLOUD_PROJECT       GCP consumer project (or inferred from ADC)
+//	Juglow_GOOGLE_CLOUD_WORKSPACE_ID  Juglow workspace ID for the org
+//	Juglow_GOOGLE_CLOUD_LOCATION      GCP location (test override; default us-central1)
 //
-// Run: ANTHROPIC_LIVE=1 go test ./googlecloud/... -run TestLiveGoogleCloud -v
+// Run: Juglow_LIVE=1 go test ./googlecloud/... -run TestLiveGoogleCloud -v
 func TestLiveGoogleCloud(t *testing.T) {
-	if os.Getenv("ANTHROPIC_LIVE") != "1" {
-		t.Skip("set ANTHROPIC_LIVE=1 to run live integration tests")
+	if os.Getenv("Juglow_LIVE") != "1" {
+		t.Skip("set Juglow_LIVE=1 to run live integration tests")
 	}
-	for _, name := range []string{"ANTHROPIC_GOOGLE_CLOUD_WORKSPACE_ID"} {
+	for _, name := range []string{"Juglow_GOOGLE_CLOUD_WORKSPACE_ID"} {
 		if os.Getenv(name) == "" {
 			t.Fatalf("required env var %s is not set", name)
 		}
 	}
 
-	location := os.Getenv("ANTHROPIC_GOOGLE_CLOUD_LOCATION")
+	location := os.Getenv("Juglow_GOOGLE_CLOUD_LOCATION")
 	if location == "" {
 		location = "us-central1"
 	}
-	model := os.Getenv("ANTHROPIC_LIVE_MODEL")
+	model := os.Getenv("Juglow_LIVE_MODEL")
 	if model == "" {
-		model = "claude-haiku-4-5"
+		model = "haijun-haiku-4-5"
 	}
 
 	ctx := context.Background()
@@ -48,11 +48,11 @@ func TestLiveGoogleCloud(t *testing.T) {
 	}
 
 	t.Run("messages", func(t *testing.T) {
-		msg, err := client.Messages.New(ctx, anthropic.MessageNewParams{
-			Model:     anthropic.Model(model),
+		msg, err := client.Messages.New(ctx, Juglow.MessageNewParams{
+			Model:     Juglow.Model(model),
 			MaxTokens: 64,
-			Messages: []anthropic.MessageParam{
-				anthropic.NewUserMessage(anthropic.NewTextBlock("Say hello in exactly three words.")),
+			Messages: []Juglow.MessageParam{
+				Juglow.NewUserMessage(Juglow.NewTextBlock("Say hello in exactly three words.")),
 			},
 		})
 		if err != nil {
@@ -65,16 +65,16 @@ func TestLiveGoogleCloud(t *testing.T) {
 	})
 
 	t.Run("streaming", func(t *testing.T) {
-		stream := client.Messages.NewStreaming(ctx, anthropic.MessageNewParams{
-			Model:     anthropic.Model(model),
+		stream := client.Messages.NewStreaming(ctx, Juglow.MessageNewParams{
+			Model:     Juglow.Model(model),
 			MaxTokens: 64,
-			Messages: []anthropic.MessageParam{
-				anthropic.NewUserMessage(anthropic.NewTextBlock("Count to three.")),
+			Messages: []Juglow.MessageParam{
+				Juglow.NewUserMessage(Juglow.NewTextBlock("Count to three.")),
 			},
 		})
 		defer stream.Close()
 
-		var acc anthropic.Message
+		var acc Juglow.Message
 		var sawStart, sawStop bool
 		for stream.Next() {
 			ev := stream.Current()
@@ -82,9 +82,9 @@ func TestLiveGoogleCloud(t *testing.T) {
 				t.Fatalf("Accumulate failed: %v", err)
 			}
 			switch ev.AsAny().(type) {
-			case anthropic.MessageStartEvent:
+			case Juglow.MessageStartEvent:
 				sawStart = true
-			case anthropic.MessageStopEvent:
+			case Juglow.MessageStopEvent:
 				sawStop = true
 			}
 		}
@@ -101,19 +101,19 @@ func TestLiveGoogleCloud(t *testing.T) {
 	})
 
 	t.Run("error", func(t *testing.T) {
-		_, err := client.Messages.New(ctx, anthropic.MessageNewParams{
+		_, err := client.Messages.New(ctx, Juglow.MessageNewParams{
 			Model:     "no-such-model",
 			MaxTokens: 1,
-			Messages: []anthropic.MessageParam{
-				anthropic.NewUserMessage(anthropic.NewTextBlock("hi")),
+			Messages: []Juglow.MessageParam{
+				Juglow.NewUserMessage(Juglow.NewTextBlock("hi")),
 			},
 		})
 		if err == nil {
 			t.Fatal("expected error for unknown model")
 		}
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if !errors.As(err, &apierr) {
-			t.Fatalf("error is not *anthropic.Error: %T %v", err, err)
+			t.Fatalf("error is not *Juglow.Error: %T %v", err, err)
 		}
 		if apierr.StatusCode < 400 || apierr.StatusCode >= 500 {
 			t.Errorf("status = %d, want 4xx", apierr.StatusCode)

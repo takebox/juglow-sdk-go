@@ -1,8 +1,8 @@
-package paramutil
+﻿package paramutil
 
 import (
 	"fmt"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 	"reflect"
 )
 

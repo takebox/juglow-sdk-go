@@ -1,4 +1,4 @@
-package agenttoolset
+﻿package agenttoolset
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	anthropic "github.com/anthropics/anthropic-sdk-go"
+	Juglow "github.com/Juglows/Juglow-sdk-go"
 	"github.com/stretchr/testify/require"
 )
 
@@ -113,7 +113,7 @@ func TestResolvePath(t *testing.T) {
 
 // TestResolvePathConfinesSymlinks verifies the real (non-lexical) confinement:
 // a symlink that lives inside the workdir but points outside it is resolved
-// before the workdir check, so the operation is rejected — even when the link
+// before the workdir check, so the operation is rejected â€” even when the link
 // target does not exist (dangling).
 func TestResolvePathConfinesSymlinks(t *testing.T) {
 	work := t.TempDir()
@@ -162,10 +162,10 @@ type closerTool struct {
 
 func (c *closerTool) Name() string        { return c.name }
 func (c *closerTool) Description() string { return c.name }
-func (c *closerTool) InputSchema() anthropic.BetaToolInputSchemaParam {
-	return anthropic.BetaToolInputSchemaParam{Properties: map[string]any{}}
+func (c *closerTool) InputSchema() Juglow.BetaToolInputSchemaParam {
+	return Juglow.BetaToolInputSchemaParam{Properties: map[string]any{}}
 }
-func (c *closerTool) Execute(context.Context, json.RawMessage) ([]anthropic.BetaToolResultBlockParamContentUnion, error) {
+func (c *closerTool) Execute(context.Context, json.RawMessage) ([]Juglow.BetaToolResultBlockParamContentUnion, error) {
 	return nil, nil
 }
 func (c *closerTool) Close() error {
@@ -187,23 +187,23 @@ func TestCloseAllIsolatesPanicsAndErrors(t *testing.T) {
 
 	// Order chosen so the panicking tool sits between two well-behaved ones:
 	// this verifies CloseAll doesn't short-circuit on either side.
-	CloseAll([]anthropic.BetaTool{good, panicker, errored})
+	CloseAll([]Juglow.BetaTool{good, panicker, errored})
 
 	require.True(t, good.closed,
 		"tool before the panicker must still see Close")
 	require.True(t, errored.closed,
-		"tool after the panicker must still see Close — per-tool recover keeps the loop running")
+		"tool after the panicker must still see Close â€” per-tool recover keeps the loop running")
 }
 
 // A tool-input refusal is matchable by name, not only by its wording.
 func TestToolRefusalIsAToolError(t *testing.T) {
 	env := &AgentToolContext{Workdir: t.TempDir()}
-	tools := []anthropic.BetaTool{BetaReadTool(env), BetaBashTool(env)}
+	tools := []Juglow.BetaTool{BetaReadTool(env), BetaBashTool(env)}
 	defer CloseAll(tools)
 
 	tests := []struct {
 		description string
-		tool        anthropic.BetaTool
+		tool        Juglow.BetaTool
 		input       map[string]any
 		wantContent string
 	}{

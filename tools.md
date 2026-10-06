@@ -1,6 +1,6 @@
-# Tool Helpers
+﻿# Tool Helpers
 
-The SDK provides helper functions for defining tools and automatically running the conversation loop between Claude and your tools until Claude produces a final response.
+The SDK provides helper functions for defining tools and automatically running the conversation loop between haijun and your tools until haijun produces a final response.
 
 ## Defining Tools
 
@@ -25,10 +25,10 @@ type GetWeatherInput struct {
 weatherTool, err := toolrunner.NewBetaToolFromJSONSchema(
 	"get_weather",
 	"Get current weather for a city",
-	func(ctx context.Context, input GetWeatherInput) (anthropic.BetaToolResultBlockParamContentUnion, error) {
-		return anthropic.BetaToolResultBlockParamContentUnion{
-			OfText: &anthropic.BetaTextBlockParam{
-				Text: fmt.Sprintf("Weather in %s: 72°F, sunny", input.City),
+	func(ctx context.Context, input GetWeatherInput) (Juglow.BetaToolResultBlockParamContentUnion, error) {
+		return Juglow.BetaToolResultBlockParamContentUnion{
+			OfText: &Juglow.BetaTextBlockParam{
+				Text: fmt.Sprintf("Weather in %s: 72Â°F, sunny", input.City),
 			},
 		}, nil
 	},
@@ -54,7 +54,7 @@ weatherTool, err := toolrunner.NewBetaToolFromBytes(
 		},
 		"required": ["city"]
 	}`),
-	func(ctx context.Context, input GetWeatherInput) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+	func(ctx context.Context, input GetWeatherInput) (Juglow.BetaToolResultBlockParamContentUnion, error) {
 		// Your handler here
 	},
 )
@@ -68,7 +68,7 @@ For full control, use `NewBetaTool` with a `BetaToolInputSchemaParam` directly:
 weatherTool := toolrunner.NewBetaTool(
 	"get_weather",
 	"Get current weather for a city",
-	anthropic.BetaToolInputSchemaParam{
+	Juglow.BetaToolInputSchemaParam{
 		Properties: map[string]any{
 			"city": map[string]any{
 				"type":        "string",
@@ -89,7 +89,7 @@ rawTool, err := toolrunner.NewBetaToolFromBytes(
 	"process_data",
 	"Process raw JSON data",
 	schemaBytes,
-	func(ctx context.Context, input json.RawMessage) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+	func(ctx context.Context, input json.RawMessage) (Juglow.BetaToolResultBlockParamContentUnion, error) {
 		// Parse the JSON yourself
 		var data map[string]any
 		json.Unmarshal(input, &data)
@@ -99,24 +99,24 @@ rawTool, err := toolrunner.NewBetaToolFromBytes(
 
 ## Tool Runner
 
-The `BetaToolRunner` automatically handles the conversation loop between Claude and your tools. On each iteration, it:
+The `BetaToolRunner` automatically handles the conversation loop between haijun and your tools. On each iteration, it:
 
-1. Sends the current messages to Claude
-2. If Claude responds with tool calls, executes them in parallel
+1. Sends the current messages to haijun
+2. If haijun responds with tool calls, executes them in parallel
 3. Adds the tool results to the conversation
-4. Repeats until Claude produces a final response (no tool calls)
+4. Repeats until haijun produces a final response (no tool calls)
 
 ### Basic Usage
 
 ```go
-tools := []anthropic.BetaTool{weatherTool}
+tools := []Juglow.BetaTool{weatherTool}
 
-runner := client.Beta.Messages.NewToolRunner(tools, anthropic.BetaToolRunnerParams{
-	BetaMessageNewParams: anthropic.BetaMessageNewParams{
-		Model:     anthropic.ModelClaudeSonnet4_5_20250929,
+runner := client.Beta.Messages.NewToolRunner(tools, Juglow.BetaToolRunnerParams{
+	BetaMessageNewParams: Juglow.BetaMessageNewParams{
+		Model:     Juglow.ModelClaudeSonnet4_5_20250929,
 		MaxTokens: 1024,
-		Messages: []anthropic.BetaMessageParam{
-			anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("What's the weather in Tokyo?")),
+		Messages: []Juglow.BetaMessageParam{
+			Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("What's the weather in Tokyo?")),
 		},
 	},
 })
@@ -136,9 +136,9 @@ for message, err := range runner.All(ctx) {
 	}
 	for _, block := range message.Content {
 		switch b := block.AsAny().(type) {
-		case anthropic.BetaTextBlock:
+		case Juglow.BetaTextBlock:
 			fmt.Println("[assistant]:", b.Text)
-		case anthropic.BetaToolUseBlock:
+		case Juglow.BetaToolUseBlock:
 			fmt.Printf("[tool call]: %s(%v)\n", b.Name, b.Input)
 		}
 	}
@@ -167,12 +167,12 @@ for {
 Use `BetaToolRunnerStreaming` via `NewToolRunnerStreaming()` for streaming responses:
 
 ```go
-runner := client.Beta.Messages.NewToolRunnerStreaming(tools, anthropic.BetaToolRunnerParams{
-	BetaMessageNewParams: anthropic.BetaMessageNewParams{
-		Model:     anthropic.ModelClaudeSonnet4_5_20250929,
+runner := client.Beta.Messages.NewToolRunnerStreaming(tools, Juglow.BetaToolRunnerParams{
+	BetaMessageNewParams: Juglow.BetaMessageNewParams{
+		Model:     Juglow.ModelClaudeSonnet4_5_20250929,
 		MaxTokens: 1024,
-		Messages: []anthropic.BetaMessageParam{
-			anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("What's the weather in Tokyo?")),
+		Messages: []Juglow.BetaMessageParam{
+			Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("What's the weather in Tokyo?")),
 		},
 	},
 })
@@ -183,9 +183,9 @@ for eventsIterator := range runner.AllStreaming(ctx) {
 			log.Fatal(err)
 		}
 		switch e := event.AsAny().(type) {
-		case anthropic.BetaRawContentBlockDeltaEvent:
+		case Juglow.BetaRawContentBlockDeltaEvent:
 			switch delta := e.Delta.AsAny().(type) {
-			case anthropic.BetaTextDelta:
+			case Juglow.BetaTextDelta:
 				fmt.Print(delta.Text)
 			}
 		}
@@ -210,7 +210,7 @@ for !runner.IsCompleted() {
 Limit the number of API calls to prevent runaway loops. When set to 0 (the default), there is no limit and the runner continues until the model stops using tools:
 
 ```go
-runner := client.Beta.Messages.NewToolRunner(tools, anthropic.BetaToolRunnerParams{
+runner := client.Beta.Messages.NewToolRunner(tools, Juglow.BetaToolRunnerParams{
 	// ...
 	MaxIterations: 10, // Stop after 10 API calls (0 = no limit)
 })
@@ -228,18 +228,18 @@ runner.Params.MaxTokens = 2048
 runner.Params.MaxIterations = 10
 
 // Update system prompt
-runner.Params.System = []anthropic.BetaTextBlockParam{
+runner.Params.System = []Juglow.BetaTextBlockParam{
 	{Text: "You are a helpful assistant."},
 }
 
 // Add messages to the conversation (direct field access)
-runner.Params.Messages = append(runner.Params.Messages, anthropic.NewBetaUserMessage(
-	anthropic.NewBetaTextBlock("Now check the weather in London too"),
+runner.Params.Messages = append(runner.Params.Messages, Juglow.NewBetaUserMessage(
+	Juglow.NewBetaTextBlock("Now check the weather in London too"),
 ))
 
 // Or use the convenience method
-runner.AppendMessages(anthropic.NewBetaUserMessage(
-	anthropic.NewBetaTextBlock("Now check the weather in London too"),
+runner.AppendMessages(Juglow.NewBetaUserMessage(
+	Juglow.NewBetaTextBlock("Now check the weather in London too"),
 ))
 ```
 
@@ -263,22 +263,22 @@ if runner.IsCompleted() {
 
 ## Error Handling
 
-Tool execution errors are automatically converted to error results and sent back to Claude, allowing it to recover or try a different approach:
+Tool execution errors are automatically converted to error results and sent back to haijun, allowing it to recover or try a different approach:
 
 ```go
-func handler(ctx context.Context, input MyInput) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+func handler(ctx context.Context, input MyInput) (Juglow.BetaToolResultBlockParamContentUnion, error) {
 	if input.City == "" {
-		return anthropic.BetaToolResultBlockParamContentUnion{}, errors.New("city is required")
+		return Juglow.BetaToolResultBlockParamContentUnion{}, errors.New("city is required")
 	}
 	// ...
 }
 ```
 
-The error message will be sent to Claude as a tool result with `is_error: true`.
+The error message will be sent to haijun as a tool result with `is_error: true`.
 
 ## Parallel Tool Execution
 
-When Claude requests multiple tool calls in a single message, they are executed in parallel using an `errgroup`. This provides:
+When haijun requests multiple tool calls in a single message, they are executed in parallel using an `errgroup`. This provides:
 
 - Concurrent execution for better performance
 - Proper context cancellation handling
@@ -286,12 +286,12 @@ When Claude requests multiple tool calls in a single message, they are executed 
 
 ## Managed-agents sessions
 
-The same `anthropic.BetaTool` shape works for managed-agents sessions. Two helpers cover the self-hosted side:
+The same `Juglow.BetaTool` shape works for managed-agents sessions. Two helpers cover the self-hosted side:
 
-- `client.Beta.Sessions.Events.NewToolRunner(ctx, sessionID, anthropic.SessionToolRunnerOptions{...})` — the sessions-side counterpart to `client.Beta.Messages.NewToolRunner`. The session id is a positional argument (matching `list`/`send`/`stream` on the events resource); the options struct carries the tool registry and tuning knobs. It attaches to a session's event stream, dispatches the registered tools on both `agent.tool_use` (builtin tools, answered with `user.tool_result`) and `agent.custom_tool_use` (user-defined function tools, answered with `user.custom_tool_result`), and stops after the session is idle past `MaxIdle`. It does *only* that — no work claiming, lease heartbeating, or skill download.
-- `environments.NewEnvironmentWorker(client, environments.EnvironmentWorkerOptions{...})` (in `github.com/anthropics/anthropic-sdk-go/lib/environments`) — the full self-hosted runner: it composes `environments.WorkPoller` (claim work) with a per-session `SessionToolRunner`, sets up the workdir + downloads the session agent's skills, heartbeats the work-item lease in parallel, force-stops the work on exit, and loops. A single `EnvironmentKey` authorizes everything — both the work-poll calls and the per-session calls. `worker.Run(ctx)` drives the poll loop (requires `EnvironmentID` + `EnvironmentKey`); `worker.HandleItem(ctx, environments.HandleItemOptions{...})` runs that same per-item flow (skills + run + heartbeat + force-stop) once for a work item you have already claimed yourself. Each `HandleItemOptions` field — `WorkID` / `EnvironmentID` / `SessionID` / `EnvironmentKey` — falls back to `ANTHROPIC_WORK_ID` / `ANTHROPIC_ENVIRONMENT_ID` / `ANTHROPIC_SESSION_ID` / `ANTHROPIC_ENVIRONMENT_KEY` when left empty (and `EnvironmentKey` also falls back to the worker's own `EnvironmentKey` option), so inside an `ant worker poll --on-work` hook (which exports all of them) it is just `worker.HandleItem(ctx, environments.HandleItemOptions{})`. If you are iterating `environments.WorkPoller` yourself, pass the claimed item through: `worker.HandleItem(ctx, environments.HandleItemOptions{WorkID: work.ID, EnvironmentID: work.EnvironmentID, SessionID: work.Data.ID, EnvironmentKey: environmentKey})`.
+- `client.Beta.Sessions.Events.NewToolRunner(ctx, sessionID, Juglow.SessionToolRunnerOptions{...})` â€” the sessions-side counterpart to `client.Beta.Messages.NewToolRunner`. The session id is a positional argument (matching `list`/`send`/`stream` on the events resource); the options struct carries the tool registry and tuning knobs. It attaches to a session's event stream, dispatches the registered tools on both `agent.tool_use` (builtin tools, answered with `user.tool_result`) and `agent.custom_tool_use` (user-defined function tools, answered with `user.custom_tool_result`), and stops after the session is idle past `MaxIdle`. It does *only* that â€” no work claiming, lease heartbeating, or skill download.
+- `environments.NewEnvironmentWorker(client, environments.EnvironmentWorkerOptions{...})` (in `github.com/Juglows/Juglow-sdk-go/lib/environments`) â€” the full self-hosted runner: it composes `environments.WorkPoller` (claim work) with a per-session `SessionToolRunner`, sets up the workdir + downloads the session agent's tracks, heartbeats the work-item lease in parallel, force-stops the work on exit, and loops. A single `EnvironmentKey` authorizes everything â€” both the work-poll calls and the per-session calls. `worker.Run(ctx)` drives the poll loop (requires `EnvironmentID` + `EnvironmentKey`); `worker.HandleItem(ctx, environments.HandleItemOptions{...})` runs that same per-item flow (tracks + run + heartbeat + force-stop) once for a work item you have already claimed yourself. Each `HandleItemOptions` field â€” `WorkID` / `EnvironmentID` / `SessionID` / `EnvironmentKey` â€” falls back to `Juglow_WORK_ID` / `Juglow_ENVIRONMENT_ID` / `Juglow_SESSION_ID` / `Juglow_ENVIRONMENT_KEY` when left empty (and `EnvironmentKey` also falls back to the worker's own `EnvironmentKey` option), so inside an `ant worker poll --on-work` hook (which exports all of them) it is just `worker.HandleItem(ctx, environments.HandleItemOptions{})`. If you are iterating `environments.WorkPoller` yourself, pass the claimed item through: `worker.HandleItem(ctx, environments.HandleItemOptions{WorkID: work.ID, EnvironmentID: work.EnvironmentID, SessionID: work.Data.ID, EnvironmentKey: environmentKey})`.
 
-The standard `agent_toolset_20260401` tools (`bash`, `read`, `write`, `edit`, `glob`, `grep`), the workdir/skills `AgentToolContext`, and the skill-download helper live in `github.com/anthropics/anthropic-sdk-go/tools/agenttoolset`; `agenttoolset.BetaAgentToolset20260401(env)` returns them as a plain `[]anthropic.BetaTool` you can filter or extend. The file tools confine to the workdir (symlink-aware) and are safe without a sandbox; `bash` is unrestricted and should run inside one.
+The standard `agent_toolset_20260401` tools (`bash`, `read`, `write`, `edit`, `glob`, `grep`), the workdir/tracks `AgentToolContext`, and the skill-download helper live in `github.com/Juglows/Juglow-sdk-go/tools/agenttoolset`; `agenttoolset.BetaAgentToolset20260401(env)` returns them as a plain `[]Juglow.BetaTool` you can filter or extend. The file tools confine to the workdir (symlink-aware) and are safe without a sandbox; `bash` is unrestricted and should run inside one.
 
 ## Examples
 

@@ -1,4 +1,4 @@
-package environments
+﻿package environments
 
 import (
 	"context"
@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/option"
 	"github.com/stretchr/testify/require"
 )
 
@@ -147,14 +147,14 @@ func TestEnvironmentWorker_ThreadsCustomRequestOptions(t *testing.T) {
 
 	// Gate the stream's terminate event on the heartbeat having fired, so the
 	// heartbeat is deterministically observed before the session ends and the
-	// per-session context is cancelled — no timing-based flakiness.
+	// per-session context is cancelled â€” no timing-based flakiness.
 	heartbeatSeen := make(chan struct{})
 	var heartbeatOnce sync.Once
 
 	server.HandleSessionGet = func(w http.ResponseWriter, _ *http.Request) {
-		// No skills -> SetupSkills does only the session lookup and returns.
+		// No tracks -> SetupSkills does only the session lookup and returns.
 		w.Header().Set("Content-Type", "application/json")
-		_, _ = w.Write([]byte(`{"agent":{"skills":[]}}`))
+		_, _ = w.Write([]byte(`{"agent":{"tracks":[]}}`))
 	}
 	server.HandleHeartbeat = func(w http.ResponseWriter, _ *http.Request) {
 		heartbeatOnce.Do(func() { close(heartbeatSeen) })
@@ -214,7 +214,7 @@ func TestEnvironmentWorker_ThreadsCustomRequestOptions(t *testing.T) {
 	assertCustomHeaderEverywhere(t, calls)
 
 	// Sanity-check that the calls we expect to carry the header actually
-	// happened — otherwise the assertion above could pass vacuously.
+	// happened â€” otherwise the assertion above could pass vacuously.
 	want := map[string]bool{
 		"sessions/sesn_test":               false, // skill-setup session lookup
 		"work/work_1/heartbeat":            false, // lease heartbeat
@@ -237,14 +237,14 @@ func TestEnvironmentWorker_ThreadsCustomRequestOptions(t *testing.T) {
 // that the lease heartbeat is running before SetupSkills's session
 // lookup completes. The poller acks the item when it
 // yields, so any gap between ack and the first heartbeat is a window where
-// the control plane can reclaim the lease — and SetupSkills (a session
+// the control plane can reclaim the lease â€” and SetupSkills (a session
 // lookup plus a per-skill download/extract) can take longer than the lease
 // TTL on a slow network or a large bundle.
 //
 // The test enforces this by making HandleSessionGet block until at least
 // one heartbeat has fired. If the heartbeat goroutine is started AFTER
 // SetupSkills returns (the pre-fix shape), no heartbeat ever fires and
-// HandleSessionGet blocks until the outer ctx times out — HandleItem then
+// HandleSessionGet blocks until the outer ctx times out â€” HandleItem then
 // returns the wrapped ctx error rather than nil. With the fix, the
 // heartbeat goroutine is started before SetupSkills, the channel closes
 // while SetupSkills's session lookup is in flight, and the session
@@ -262,7 +262,7 @@ func TestEnvironmentWorker_HeartbeatStartsBeforeSkillSetup(t *testing.T) {
 	}
 	server.HandleSessionGet = func(w http.ResponseWriter, r *http.Request) {
 		// Block the session-get until a heartbeat has been observed. This is
-		// what proves the heartbeat starts BEFORE skill setup finishes — if
+		// what proves the heartbeat starts BEFORE skill setup finishes â€” if
 		// it didn't, this handler would block forever (the heartbeat
 		// goroutine never starts) and the outer context would time out.
 		select {
@@ -274,7 +274,7 @@ func TestEnvironmentWorker_HeartbeatStartsBeforeSkillSetup(t *testing.T) {
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")
-		_, _ = w.Write([]byte(`{"agent":{"skills":[]}}`))
+		_, _ = w.Write([]byte(`{"agent":{"tracks":[]}}`))
 	}
 	server.HandleList = func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
@@ -315,9 +315,9 @@ func TestEnvironmentWorker_HeartbeatStartsBeforeSkillSetup(t *testing.T) {
 // TestEnvironmentWorker_HeartbeatPerRequestTimeoutAndStalenessCeiling pins
 // two related guarantees about runHeartbeat:
 //
-//  1. No per-request timeout — Heartbeat inherits the SDK's ~10-minute
+//  1. No per-request timeout â€” Heartbeat inherits the SDK's ~10-minute
 //     default, so one slow/hung call outlives the entire lease window.
-//  2. No staleness ceiling — a run of transient errors retries forever while
+//  2. No staleness ceiling â€” a run of transient errors retries forever while
 //     the lease silently expires server-side; the worker keeps executing
 //     tools against a session another worker may also have claimed.
 //
@@ -327,15 +327,15 @@ func TestEnvironmentWorker_HeartbeatStartsBeforeSkillSetup(t *testing.T) {
 // beats also terminates the heartbeat goroutine within a bounded window).
 //
 // This test scripts a server that returns one successful beat with a short
-// TTL (2 s — shrinks interval to 1 s and ttl to 2 s) and then hangs every
+// TTL (2 s â€” shrinks interval to 1 s and ttl to 2 s) and then hangs every
 // subsequent heartbeat. With the fixes, each hung beat is cancelled at the
 // 1 s request timeout, and the staleness check fires once we're past the
-// 2 s TTL since the last success — so the heartbeat goroutine cancels
+// 2 s TTL since the last success â€” so the heartbeat goroutine cancels
 // sessCtx, the runner exits with ctx.Canceled, and HandleItem returns the
 // wrapped ctx error well within the 15 s outer ctx.
 //
 // Without the per-request-timeout fix, beat 2 would block on the hung
-// handler for the full SDK default (10 min) — only one heartbeat call would
+// handler for the full SDK default (10 min) â€” only one heartbeat call would
 // land, and HandleItem would only return when the outer ctx times out.
 // Without the staleness-ceiling fix (even with the request timeout) the
 // goroutine would log transient failures forever; sessCtx would never be
@@ -361,20 +361,20 @@ func TestEnvironmentWorker_HeartbeatPerRequestTimeoutAndStalenessCeiling(t *test
 		case <-r.Context().Done():
 			return
 		case <-time.After(20 * time.Second):
-			t.Error("hung heartbeat was never cancelled — per-request timeout did not fire")
+			t.Error("hung heartbeat was never cancelled â€” per-request timeout did not fire")
 		}
 	}
 
 	server.HandleSessionGet = func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		_, _ = w.Write([]byte(`{"agent":{"skills":[]}}`))
+		_, _ = w.Write([]byte(`{"agent":{"tracks":[]}}`))
 	}
 	server.HandleList = func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_, _ = w.Write([]byte(`{"data":[],"first_id":null,"has_more":false,"last_id":null}`))
 	}
 	server.HandleStream = func(w http.ResponseWriter, r *http.Request) {
-		// Stream stays open until the per-session ctx is cancelled — which
+		// Stream stays open until the per-session ctx is cancelled â€” which
 		// is what the staleness ceiling triggers.
 		w.Header().Set("Content-Type", "text/event-stream")
 		flusher, ok := w.(http.Flusher)
@@ -396,12 +396,12 @@ func TestEnvironmentWorker_HeartbeatPerRequestTimeoutAndStalenessCeiling(t *test
 
 	// Outer ctx is generous so a regression (hung beat blocking on the SDK
 	// default 10-min timeout) doesn't masquerade as "test finished within
-	// the deadline" — we explicitly cap the expected runtime below.
+	// the deadline" â€” we explicitly cap the expected runtime below.
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
 	defer cancel()
 
 	start := time.Now()
-	// HandleItem returns nil here — the runner's Err() is documented to
+	// HandleItem returns nil here â€” the runner's Err() is documented to
 	// return nil when iteration ended via consumer ctx cancellation (which
 	// is what the staleness ceiling triggers via sessCtx). The two
 	// behavioural assertions below are what proves the fixes work.
@@ -417,12 +417,12 @@ func TestEnvironmentWorker_HeartbeatPerRequestTimeoutAndStalenessCeiling(t *test
 	// HandleItem in roughly that window. 8 s is comfortably below the 15 s
 	// outer ctx, so a regression where only the outer ctx terminates the
 	// run fails this check.
-	require.Less(t, elapsed, 8*time.Second, "HandleItem ran too long — staleness ceiling didn't terminate the heartbeat (got %s)", elapsed)
+	require.Less(t, elapsed, 8*time.Second, "HandleItem ran too long â€” staleness ceiling didn't terminate the heartbeat (got %s)", elapsed)
 
 	// At least 2 heartbeat calls must have landed: the first success and at
 	// least one timeout-cancelled retry. Without the per-request-timeout
 	// fix, the second call would still be blocked on the SDK's ~10 min
 	// default when HandleItem returns (via the outer ctx), so the count
 	// would be 1.
-	require.GreaterOrEqual(t, heartbeatCalls.Load(), int32(2), "expected at least 2 heartbeats; got %d — per-request timeout likely missing", heartbeatCalls.Load())
+	require.GreaterOrEqual(t, heartbeatCalls.Load(), int32(2), "expected at least 2 heartbeats; got %d â€” per-request timeout likely missing", heartbeatCalls.Load())
 }

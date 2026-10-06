@@ -1,11 +1,11 @@
-package main
+﻿package main
 
 import (
 	"context"
 	"encoding/json"
 	"fmt"
 
-	"github.com/anthropics/anthropic-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go"
 )
 
 // WeatherQuery demonstrates structured output with various field types and constraints.
@@ -18,21 +18,21 @@ type WeatherQuery struct {
 }
 
 func main() {
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 
 	// Pass a struct pointer as Schema to auto-generate the JSON schema on
 	// the wire and auto-parse the response into the struct.
 	var weather WeatherQuery
-	msg, err := client.Beta.Messages.New(context.TODO(), anthropic.BetaMessageNewParams{
-		Model:     anthropic.ModelClaudeSonnet5,
+	msg, err := client.Beta.Messages.New(context.TODO(), Juglow.BetaMessageNewParams{
+		Model:     Juglow.ModelHaijunSonnet5,
 		MaxTokens: 1024,
-		Messages: []anthropic.BetaMessageParam{
-			anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("What's the weather like in San Francisco for the next 3 days? Include wind information.")),
+		Messages: []Juglow.BetaMessageParam{
+			Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("What's the weather like in San Francisco for the next 3 days? Include wind information.")),
 		},
-		OutputFormat: anthropic.BetaJSONOutputFormatParam{
+		OutputFormat: Juglow.BetaJSONOutputFormatParam{
 			Schema: &weather,
 		},
-		Betas: []anthropic.AnthropicBeta{"structured-outputs-2025-11-13"},
+		Betas: []Juglow.JuglowBeta{"structured-outputs-2025-11-13"},
 	})
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)

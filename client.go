@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -12,15 +12,15 @@ import (
 	"strings"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/config"
-	"github.com/anthropics/anthropic-sdk-go/internal/auth"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/internal/auth"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 // Client creates a struct with services and top level methods that help with
-// interacting with the anthropic API. You should not instantiate this client
+// interacting with the Juglow API. You should not instantiate this client
 // directly, and instead use the [NewClient] method instead.
 type Client struct {
 	Options     []option.RequestOption
@@ -33,55 +33,55 @@ type Client struct {
 // DefaultClientOptions walks the default credential chain per the
 // cross-SDK credential precedence spec:
 //
-//  1. ANTHROPIC_API_KEY
-//  2. ANTHROPIC_AUTH_TOKEN
-//  3. Explicit profile via ANTHROPIC_PROFILE (surfaces the error if the
-//     named profile is missing — the user explicitly selected it)
-//  4. Env-var federation (ANTHROPIC_FEDERATION_RULE_ID +
-//     ANTHROPIC_ORGANIZATION_ID + ANTHROPIC_IDENTITY_TOKEN_FILE / _TOKEN)
-//  5. Fallback profile (active_config file or literal "default" — a
+//  1. Juglow_API_KEY
+//  2. Juglow_AUTH_TOKEN
+//  3. Explicit profile via Juglow_PROFILE (surfaces the error if the
+//     named profile is missing â€” the user explicitly selected it)
+//  4. Env-var federation (Juglow_FEDERATION_RULE_ID +
+//     Juglow_ORGANIZATION_ID + Juglow_IDENTITY_TOKEN_FILE / _TOKEN)
+//  5. Fallback profile (active_config file or literal "default" â€” a
 //     quiet miss when absent, so a WIF-configured machine with a
 //     leftover default profile still uses WIF)
 //
 // When no source produces a credential, the first request fails with an
-// [auth.NoCredentialsError]. If ANTHROPIC_PROFILE points at a missing or
+// [auth.NoCredentialsError]. If Juglow_PROFILE points at a missing or
 // invalid profile, the first request instead fails with a wrapped
 // profile-load error naming the profile. An explicit credential option
 // passed to [NewClient] (e.g. [option.WithAPIKey] or [option.WithAuthToken])
-// suppresses both paths. Also honors ANTHROPIC_BASE_URL.
+// suppresses both paths. Also honors Juglow_BASE_URL.
 func DefaultClientOptions() []option.RequestOption {
 	defaults := []option.RequestOption{
 		option.WithHTTPClient(defaultHTTPClient()),
 		option.WithEnvironmentProduction(),
 	}
-	if o, ok := os.LookupEnv("ANTHROPIC_BASE_URL"); ok {
+	if o, ok := os.LookupEnv("Juglow_BASE_URL"); ok {
 		defaults = append(defaults, option.WithBaseURL(o))
 	}
 
 	statuses := []auth.CredentialSourceStatus{}
 
-	if v, ok := os.LookupEnv("ANTHROPIC_API_KEY"); ok && v != "" {
+	if v, ok := os.LookupEnv("Juglow_API_KEY"); ok && v != "" {
 		defaults = append(defaults, option.WithAPIKey(v))
 		return defaults
 	}
 	statuses = append(statuses, auth.CredentialSourceStatus{
-		Name:  "ANTHROPIC_API_KEY env var",
+		Name:  "Juglow_API_KEY env var",
 		State: auth.CredentialSourceNotSet,
 	})
 
-	if v, ok := os.LookupEnv("ANTHROPIC_AUTH_TOKEN"); ok && v != "" {
+	if v, ok := os.LookupEnv("Juglow_AUTH_TOKEN"); ok && v != "" {
 		defaults = append(defaults, option.WithAuthToken(v))
 		return defaults
 	}
 	statuses = append(statuses, auth.CredentialSourceStatus{
-		Name:  "ANTHROPIC_AUTH_TOKEN env var",
+		Name:  "Juglow_AUTH_TOKEN env var",
 		State: auth.CredentialSourceNotSet,
 	})
 
-	// Step 3: explicit profile via ANTHROPIC_PROFILE. The user named a
-	// specific profile, so a load failure is surfaced immediately — do
+	// Step 3: explicit profile via Juglow_PROFILE. The user named a
+	// specific profile, so a load failure is surfaced immediately â€” do
 	// not fall through to env federation or the fallback profile.
-	if profile, ok := os.LookupEnv("ANTHROPIC_PROFILE"); ok && profile != "" {
+	if profile, ok := os.LookupEnv("Juglow_PROFILE"); ok && profile != "" {
 		cfg, err := config.LoadProfile(config.DefaultDir(), profile)
 		if err != nil {
 			return append(defaults, explicitProfileErrorOption(profile, err))
@@ -98,22 +98,22 @@ func DefaultClientOptions() []option.RequestOption {
 		return defaults
 	}
 	envFederationStatus := auth.CredentialSourceStatus{
-		Name:   "env federation (ANTHROPIC_FEDERATION_RULE_ID + ANTHROPIC_ORGANIZATION_ID + ANTHROPIC_IDENTITY_TOKEN_FILE)",
+		Name:   "env federation (Juglow_FEDERATION_RULE_ID + Juglow_ORGANIZATION_ID + Juglow_IDENTITY_TOKEN_FILE)",
 		State:  envState,
 		Detail: envDetail,
 	}
 
 	// Step 5: fallback profile (active_config or literal "default"). A
-	// missing profile here is a quiet miss — fall through to the no-
+	// missing profile here is a quiet miss â€” fall through to the no-
 	// credentials aggregate.
 	fallbackStatus, fallbackOpt := tryLoadFallbackProfile()
 	if fallbackOpt != nil {
 		return append(defaults, fallbackOpt)
 	}
-	if o, ok := os.LookupEnv("ANTHROPIC_WEBHOOK_SIGNING_KEY"); ok {
+	if o, ok := os.LookupEnv("Juglow_WEBHOOK_SIGNING_KEY"); ok {
 		defaults = append(defaults, option.WithWebhookKey(o))
 	}
-	if o, ok := os.LookupEnv("ANTHROPIC_CUSTOM_HEADERS"); ok {
+	if o, ok := os.LookupEnv("Juglow_CUSTOM_HEADERS"); ok {
 		for _, line := range strings.Split(o, "\n") {
 			colon := strings.Index(line, ":")
 			if colon >= 0 {
@@ -153,10 +153,10 @@ func tryLoadFallbackProfile() (auth.CredentialSourceStatus, option.RequestOption
 
 // explicitProfileErrorOption installs a middleware that fails the request
 // with the underlying load error, unless a caller-supplied credential
-// option preempts the profile. Used when ANTHROPIC_PROFILE names a profile
+// option preempts the profile. Used when Juglow_PROFILE names a profile
 // whose config file cannot be loaded.
 func explicitProfileErrorOption(profile string, loadErr error) option.RequestOption {
-	profileErr := fmt.Errorf("ANTHROPIC_PROFILE=%q: %w", profile, loadErr)
+	profileErr := fmt.Errorf("Juglow_PROFILE=%q: %w", profile, loadErr)
 	return requestconfig.RequestOptionFunc(func(r *requestconfig.RequestConfig) error {
 		cfg := r
 		check := func(req *http.Request, next func(*http.Request) (*http.Response, error)) (*http.Response, error) {
@@ -195,8 +195,8 @@ func noCredentialsSentinel(statuses []auth.CredentialSourceStatus) option.Reques
 }
 
 // NewClient generates a new client with the default option read from the
-// environment (ANTHROPIC_API_KEY, ANTHROPIC_WEBHOOK_SIGNING_KEY, ANTHROPIC_AUTH_TOKEN,
-// ANTHROPIC_BASE_URL). The option passed in as arguments are applied after these
+// environment (Juglow_API_KEY, Juglow_WEBHOOK_SIGNING_KEY, Juglow_AUTH_TOKEN,
+// Juglow_BASE_URL). The option passed in as arguments are applied after these
 // default arguments, and all option will be passed down to the services and requests
 // that this client makes.
 //
@@ -239,7 +239,7 @@ func NewClient(opts ...option.RequestOption) (r Client) {
 // [URLQuery], and/or [MarshalForm] functions. It is undefined behavior to use a
 // struct uses [param.Field] without specifying how it is serialized.
 //
-// Any "…Params" object defined in this library can be used as the request
+// Any "â€¦Params" object defined in this library can be used as the request
 // argument. Note that 'path' arguments will not be forwarded into the url.
 //
 // The response body will be deserialized into the res variable, depending on its

@@ -1,4 +1,4 @@
-package auth
+﻿package auth
 
 import (
 	"os"
@@ -6,8 +6,8 @@ import (
 )
 
 // identityProviderFromEnv resolves an [IdentityTokenProvider] from env vars,
-// preferring ANTHROPIC_IDENTITY_TOKEN_FILE (rotation-safe) over the literal
-// ANTHROPIC_IDENTITY_TOKEN. Returns nil when neither is set.
+// preferring Juglow_IDENTITY_TOKEN_FILE (rotation-safe) over the literal
+// Juglow_IDENTITY_TOKEN. Returns nil when neither is set.
 func identityProviderFromEnv() IdentityTokenProvider {
 	if path, ok := os.LookupEnv(EnvIdentityTokenFile); ok {
 		return &IdentityTokenFile{Path: path}
@@ -58,10 +58,10 @@ func EnvCredentials() (*CredentialsResult, string, CredentialSourceState) {
 		cfg.ServiceAccountID = sa
 	}
 	if ws, ok := os.LookupEnv(EnvWorkspaceID); ok {
-		// An empty ANTHROPIC_WORKSPACE_ID (a defaulted-but-empty CI variable)
+		// An empty Juglow_WORKSPACE_ID (a defaulted-but-empty CI variable)
 		// is treated as unset: WorkspaceID stays "" and the wire field has
 		// json:"workspace_id,omitempty", so `"workspace_id": ""` is never
-		// serialized. No coercion needed — Go's Getenv + omitempty handle it.
+		// serialized. No coercion needed â€” Go's Getenv + omitempty handle it.
 		cfg.WorkspaceID = ws
 	}
 

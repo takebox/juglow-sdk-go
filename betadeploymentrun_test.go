@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBetaDeploymentRunGetWithOptionalParams(t *testing.T) {
@@ -23,19 +23,19 @@ func TestBetaDeploymentRunGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.DeploymentRuns.Get(
 		context.TODO(),
 		"deployment_run_id",
-		anthropic.BetaDeploymentRunGetParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaDeploymentRunGetParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -52,24 +52,24 @@ func TestBetaDeploymentRunListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.DeploymentRuns.List(context.TODO(), anthropic.BetaDeploymentRunListParams{
-		CreatedAtGt:  anthropic.Time(time.Now()),
-		CreatedAtGte: anthropic.Time(time.Now()),
-		CreatedAtLt:  anthropic.Time(time.Now()),
-		CreatedAtLte: anthropic.Time(time.Now()),
-		DeploymentID: anthropic.String("deployment_id"),
-		HasError:     anthropic.Bool(true),
-		Limit:        anthropic.Int(0),
-		Page:         anthropic.String("page"),
-		TriggerType:  anthropic.BetaManagedAgentsTriggerTypeSchedule,
-		Betas:        []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+	_, err := client.Beta.DeploymentRuns.List(context.TODO(), Juglow.BetaDeploymentRunListParams{
+		CreatedAtGt:  Juglow.Time(time.Now()),
+		CreatedAtGte: Juglow.Time(time.Now()),
+		CreatedAtLt:  Juglow.Time(time.Now()),
+		CreatedAtLte: Juglow.Time(time.Now()),
+		DeploymentID: Juglow.String("deployment_id"),
+		HasError:     Juglow.Bool(true),
+		Limit:        Juglow.Int(0),
+		Page:         Juglow.String("page"),
+		TriggerType:  Juglow.BetaManagedAgentsTriggerTypeSchedule,
+		Betas:        []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

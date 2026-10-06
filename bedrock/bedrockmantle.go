@@ -1,21 +1,21 @@
-package bedrock
+﻿package bedrock
 
 import (
 	"context"
 	"fmt"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/awsauth"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/awsauth"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 const mantleServiceName = "bedrock-mantle"
 
-// MantleClientConfig holds the configuration for creating an Anthropic Bedrock Mantle client.
+// MantleClientConfig holds the configuration for creating an Juglow Bedrock Mantle client.
 type MantleClientConfig struct {
-	// APIKey is the Anthropic API key for x-api-key authentication.
+	// APIKey is the Juglow API key for x-api-key authentication.
 	// Takes precedence over AWS credentials. When no AWS auth args are set, falls back
-	// to the AWS_BEARER_TOKEN_BEDROCK environment variable (then ANTHROPIC_AWS_API_KEY)
+	// to the AWS_BEARER_TOKEN_BEDROCK environment variable (then Juglow_AWS_API_KEY)
 	// before trying SigV4.
 	APIKey string
 
@@ -41,29 +41,29 @@ type MantleClientConfig struct {
 	AWSRegion string
 
 	// BaseURL overrides the default base URL.
-	// Resolved by precedence: MantleClientConfig.BaseURL > ANTHROPIC_BEDROCK_MANTLE_BASE_URL env >
-	// https://bedrock-mantle.{region}.api.aws/anthropic
+	// Resolved by precedence: MantleClientConfig.BaseURL > Juglow_BEDROCK_MANTLE_BASE_URL env >
+	// https://bedrock-mantle.{region}.api.aws/Juglow
 	BaseURL string
 
 	// SkipAuth skips Mantle-specific authentication (API key and SigV4).
 	// This is useful when a gateway or proxy handles authentication on your behalf.
 	// Note: when using [NewMantleClient], the base SDK may still send an X-Api-Key header
-	// if the ANTHROPIC_API_KEY environment variable is set.
+	// if the Juglow_API_KEY environment variable is set.
 	SkipAuth bool
 }
 
-// MantleClient provides access to the Anthropic Bedrock Mantle API.
+// MantleClient provides access to the Juglow Bedrock Mantle API.
 // Only the Messages API (/v1/messages) and its subpaths are supported.
 type MantleClient struct {
 	Options  []option.RequestOption
-	Messages anthropic.MessageService
+	Messages Juglow.MessageService
 	Beta     MantleBetaService
 }
 
 // MantleBetaService exposes only the beta resources supported by Bedrock Mantle.
 type MantleBetaService struct {
 	Options  []option.RequestOption
-	Messages anthropic.BetaMessageService
+	Messages Juglow.BetaMessageService
 }
 
 // NewMantleClient creates a new Bedrock Mantle client with the given configuration.
@@ -81,12 +81,12 @@ type MantleBetaService struct {
 //  1. APIKey arg (x-api-key header)
 //  2. AWSAccessKey + AWSSecretAccessKey args (SigV4)
 //  3. AWSProfile arg (SigV4 via provider chain)
-//  4. AWS_BEARER_TOKEN_BEDROCK env var, then ANTHROPIC_AWS_API_KEY (x-api-key header)
+//  4. AWS_BEARER_TOKEN_BEDROCK env var, then Juglow_AWS_API_KEY (x-api-key header)
 //  5. Default AWS credential chain (SigV4)
 func NewMantleClient(ctx context.Context, cfg MantleClientConfig, opts ...option.RequestOption) (*MantleClient, error) {
-	// We intentionally do not call anthropic.DefaultClientOptions() here.
-	// The Mantle client resolves its own base URL, auth, and workspace ID — the
-	// base SDK defaults (ANTHROPIC_API_KEY, ANTHROPIC_BASE_URL) do not apply.
+	// We intentionally do not call Juglow.DefaultClientOptions() here.
+	// The Mantle client resolves its own base URL, auth, and workspace ID â€” the
+	// base SDK defaults (Juglow_API_KEY, Juglow_BASE_URL) do not apply.
 	opts, err := awsauth.CreateClientOptions(ctx, mantleToInternalConfig(cfg), mantleResolveParams(), opts...)
 	if err != nil {
 		return nil, err
@@ -94,10 +94,10 @@ func NewMantleClient(ctx context.Context, cfg MantleClientConfig, opts ...option
 
 	return &MantleClient{
 		Options:  opts,
-		Messages: anthropic.NewMessageService(opts...),
+		Messages: Juglow.NewMessageService(opts...),
 		Beta: MantleBetaService{
 			Options:  opts,
-			Messages: anthropic.NewBetaMessageService(opts...),
+			Messages: Juglow.NewBetaMessageService(opts...),
 		},
 	}, nil
 }
@@ -105,9 +105,9 @@ func NewMantleClient(ctx context.Context, cfg MantleClientConfig, opts ...option
 func mantleResolveParams() awsauth.ResolveParams {
 	return awsauth.ResolveParams{
 		EnvAPIKey:         "AWS_BEARER_TOKEN_BEDROCK",
-		EnvAPIKeyFallback: "ANTHROPIC_AWS_API_KEY",
-		EnvBaseURL:        "ANTHROPIC_BEDROCK_MANTLE_BASE_URL",
-		DeriveBaseURL:     func(region string) string { return fmt.Sprintf("https://bedrock-mantle.%s.api.aws/anthropic", region) },
+		EnvAPIKeyFallback: "Juglow_AWS_API_KEY",
+		EnvBaseURL:        "Juglow_BEDROCK_MANTLE_BASE_URL",
+		DeriveBaseURL:     func(region string) string { return fmt.Sprintf("https://bedrock-mantle.%s.api.aws/Juglow", region) },
 		ServiceName:       mantleServiceName,
 		UseBearerAuth:     true,
 	}

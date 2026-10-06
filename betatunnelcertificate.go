@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -11,18 +11,18 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 )
 
 // BetaTunnelCertificateService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -41,19 +41,19 @@ func NewBetaTunnelCertificateService(opts ...option.RequestOption) (r BetaTunnel
 }
 
 // The Tunnels API is in research preview. It requires the
-// `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+// `Juglow-beta: mcp-tunnels-2026-06-22` header and may change without a
 // deprecation period. It supersedes the Admin API endpoints at
 // `/v1/organizations/tunnels`, which remain available during a migration window.
 //
-// Registers a public CA certificate on a tunnel. Anthropic verifies the gateway's
+// Registers a public CA certificate on a tunnel. Juglow verifies the gateway's
 // server certificate against this CA when it terminates the inner TLS session. A
 // tunnel holds at most two non-archived certificates.
 func (r *BetaTunnelCertificateService) New(ctx context.Context, tunnelID string, params BetaTunnelCertificateNewParams, opts ...option.RequestOption) (res *BetaTunnelCertificate, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "mcp-tunnels-2026-06-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "mcp-tunnels-2026-06-22")}, opts...)
 	if tunnelID == "" {
 		err = errors.New("missing required tunnel_id parameter")
 		return nil, err
@@ -64,17 +64,17 @@ func (r *BetaTunnelCertificateService) New(ctx context.Context, tunnelID string,
 }
 
 // The Tunnels API is in research preview. It requires the
-// `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+// `Juglow-beta: mcp-tunnels-2026-06-22` header and may change without a
 // deprecation period. It supersedes the Admin API endpoints at
 // `/v1/organizations/tunnels`, which remain available during a migration window.
 //
 // Fetches a tunnel certificate by ID.
 func (r *BetaTunnelCertificateService) Get(ctx context.Context, certificateID string, params BetaTunnelCertificateGetParams, opts ...option.RequestOption) (res *BetaTunnelCertificate, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "mcp-tunnels-2026-06-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "mcp-tunnels-2026-06-22")}, opts...)
 	if params.TunnelID == "" {
 		err = errors.New("missing required tunnel_id parameter")
 		return nil, err
@@ -89,7 +89,7 @@ func (r *BetaTunnelCertificateService) Get(ctx context.Context, certificateID st
 }
 
 // The Tunnels API is in research preview. It requires the
-// `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+// `Juglow-beta: mcp-tunnels-2026-06-22` header and may change without a
 // deprecation period. It supersedes the Admin API endpoints at
 // `/v1/organizations/tunnels`, which remain available during a migration window.
 //
@@ -98,10 +98,10 @@ func (r *BetaTunnelCertificateService) Get(ctx context.Context, certificateID st
 func (r *BetaTunnelCertificateService) List(ctx context.Context, tunnelID string, params BetaTunnelCertificateListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaTunnelCertificate], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "mcp-tunnels-2026-06-22"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "mcp-tunnels-2026-06-22"), option.WithResponseInto(&raw)}, opts...)
 	if tunnelID == "" {
 		err = errors.New("missing required tunnel_id parameter")
 		return nil, err
@@ -120,7 +120,7 @@ func (r *BetaTunnelCertificateService) List(ctx context.Context, tunnelID string
 }
 
 // The Tunnels API is in research preview. It requires the
-// `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+// `Juglow-beta: mcp-tunnels-2026-06-22` header and may change without a
 // deprecation period. It supersedes the Admin API endpoints at
 // `/v1/organizations/tunnels`, which remain available during a migration window.
 //
@@ -131,20 +131,20 @@ func (r *BetaTunnelCertificateService) ListAutoPaging(ctx context.Context, tunne
 }
 
 // The Tunnels API is in research preview. It requires the
-// `anthropic-beta: mcp-tunnels-2026-06-22` header and may change without a
+// `Juglow-beta: mcp-tunnels-2026-06-22` header and may change without a
 // deprecation period. It supersedes the Admin API endpoints at
 // `/v1/organizations/tunnels`, which remain available during a migration window.
 //
-// Archives a tunnel certificate, removing it from the set Anthropic trusts for the
+// Archives a tunnel certificate, removing it from the set Juglow trusts for the
 // tunnel. The certificate record is retained. Archiving the last non-archived
 // certificate is permitted; the tunnel rejects MCP traffic until a new certificate
 // is added.
 func (r *BetaTunnelCertificateService) Archive(ctx context.Context, certificateID string, params BetaTunnelCertificateArchiveParams, opts ...option.RequestOption) (res *BetaTunnelCertificate, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "mcp-tunnels-2026-06-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "mcp-tunnels-2026-06-22")}, opts...)
 	if params.TunnelID == "" {
 		err = errors.New("missing required tunnel_id parameter")
 		return nil, err
@@ -198,7 +198,7 @@ type BetaTunnelCertificateNewParams struct {
 	// private-key material. Maximum 8KB.
 	CaCertificatePem string `json:"ca_certificate_pem" api:"required"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -213,7 +213,7 @@ func (r *BetaTunnelCertificateNewParams) UnmarshalJSON(data []byte) error {
 type BetaTunnelCertificateGetParams struct {
 	TunnelID string `path:"tunnel_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -225,7 +225,7 @@ type BetaTunnelCertificateListParams struct {
 	// Opaque pagination cursor from a previous `list_tunnel_certificates` response.
 	Page param.Opt[string] `query:"page,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -241,6 +241,6 @@ func (r BetaTunnelCertificateListParams) URLQuery() (v url.Values, err error) {
 type BetaTunnelCertificateArchiveParams struct {
 	TunnelID string `path:"tunnel_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }

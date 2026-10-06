@@ -1,4 +1,4 @@
-package main
+﻿package main
 
 import (
 	"context"
@@ -7,11 +7,11 @@ import (
 	"io"
 	"os"
 
-	"github.com/anthropics/anthropic-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go"
 )
 
 func main() {
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 
 	content := "How many dogs are in this picture?"
 
@@ -19,7 +19,7 @@ func main() {
 
 	file, err := os.Open("./multimodal/nine_dogs.png")
 	if err != nil {
-		panic(fmt.Errorf("failed to open file: you should run this example from the root of the anthropic-go/examples directory: %w", err))
+		panic(fmt.Errorf("failed to open file: you should run this example from the root of the Juglow-go/examples directory: %w", err))
 	}
 	fileBytes, err := io.ReadAll(file)
 	if err != nil {
@@ -27,15 +27,15 @@ func main() {
 	}
 	fileEncoded := base64.StdEncoding.EncodeToString(fileBytes)
 
-	message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
+	message, err := client.Messages.New(context.TODO(), Juglow.MessageNewParams{
 		MaxTokens: 1024,
-		Messages: []anthropic.MessageParam{
-			anthropic.NewUserMessage(
-				anthropic.NewTextBlock(content),
-				anthropic.NewImageBlockBase64("image/png", fileEncoded),
+		Messages: []Juglow.MessageParam{
+			Juglow.NewUserMessage(
+				Juglow.NewTextBlock(content),
+				Juglow.NewImageBlockBase64("image/png", fileEncoded),
 			),
 		},
-		Model:         anthropic.ModelClaudeSonnet5,
+		Model:         Juglow.ModelHaijunSonnet5,
 		StopSequences: []string{"```\n"},
 	})
 	if err != nil {

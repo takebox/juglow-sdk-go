@@ -1,4 +1,4 @@
-package apijson
+﻿package apijson
 
 import (
 	"bytes"
@@ -13,7 +13,7 @@ import (
 
 	"github.com/tidwall/sjson"
 
-	shimjson "github.com/anthropics/anthropic-sdk-go/internal/encoding/json"
+	shimjson "github.com/Juglows/Juglow-sdk-go/internal/encoding/json"
 )
 
 var encoders sync.Map // map[encoderEntry]encoderFunc

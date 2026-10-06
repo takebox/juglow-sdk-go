@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -12,17 +12,17 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
 )
 
 // BetaMemoryStoreMemoryService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -43,10 +43,10 @@ func NewBetaMemoryStoreMemoryService(opts ...option.RequestOption) (r BetaMemory
 // Create a memory
 func (r *BetaMemoryStoreMemoryService) New(ctx context.Context, memoryStoreID string, params BetaMemoryStoreMemoryNewParams, opts ...option.RequestOption) (res *BetaManagedAgentsMemory, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "agent-memory-2026-07-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "agent-memory-2026-07-22")}, opts...)
 	if memoryStoreID == "" {
 		err = errors.New("missing required memory_store_id parameter")
 		return nil, err
@@ -59,10 +59,10 @@ func (r *BetaMemoryStoreMemoryService) New(ctx context.Context, memoryStoreID st
 // Retrieve a memory
 func (r *BetaMemoryStoreMemoryService) Get(ctx context.Context, memoryID string, params BetaMemoryStoreMemoryGetParams, opts ...option.RequestOption) (res *BetaManagedAgentsMemory, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "agent-memory-2026-07-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "agent-memory-2026-07-22")}, opts...)
 	if params.MemoryStoreID == "" {
 		err = errors.New("missing required memory_store_id parameter")
 		return nil, err
@@ -79,10 +79,10 @@ func (r *BetaMemoryStoreMemoryService) Get(ctx context.Context, memoryID string,
 // Update a memory
 func (r *BetaMemoryStoreMemoryService) Update(ctx context.Context, memoryID string, params BetaMemoryStoreMemoryUpdateParams, opts ...option.RequestOption) (res *BetaManagedAgentsMemory, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "agent-memory-2026-07-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "agent-memory-2026-07-22")}, opts...)
 	if params.MemoryStoreID == "" {
 		err = errors.New("missing required memory_store_id parameter")
 		return nil, err
@@ -100,10 +100,10 @@ func (r *BetaMemoryStoreMemoryService) Update(ctx context.Context, memoryID stri
 func (r *BetaMemoryStoreMemoryService) List(ctx context.Context, memoryStoreID string, params BetaMemoryStoreMemoryListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaManagedAgentsMemoryListItemUnion], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "agent-memory-2026-07-22"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "agent-memory-2026-07-22"), option.WithResponseInto(&raw)}, opts...)
 	if memoryStoreID == "" {
 		err = errors.New("missing required memory_store_id parameter")
 		return nil, err
@@ -129,10 +129,10 @@ func (r *BetaMemoryStoreMemoryService) ListAutoPaging(ctx context.Context, memor
 // Delete a memory
 func (r *BetaMemoryStoreMemoryService) Delete(ctx context.Context, memoryID string, params BetaMemoryStoreMemoryDeleteParams, opts ...option.RequestOption) (res *BetaManagedAgentsDeletedMemory, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "agent-memory-2026-07-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "agent-memory-2026-07-22")}, opts...)
 	if params.MemoryStoreID == "" {
 		err = errors.New("missing required memory_store_id parameter")
 		return nil, err
@@ -300,8 +300,8 @@ func (BetaManagedAgentsMemoryPrefix) implBetaManagedAgentsMemoryListItemUnion() 
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := BetaManagedAgentsMemoryListItemUnion.AsAny().(type) {
-//	case anthropic.BetaManagedAgentsMemory:
-//	case anthropic.BetaManagedAgentsMemoryPrefix:
+//	case Juglow.BetaManagedAgentsMemory:
+//	case Juglow.BetaManagedAgentsMemoryPrefix:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -425,7 +425,7 @@ type BetaMemoryStoreMemoryNewParams struct {
 	// Any of "basic", "full".
 	View BetaManagedAgentsMemoryView `query:"view,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -453,7 +453,7 @@ type BetaMemoryStoreMemoryGetParams struct {
 	// Any of "basic", "full".
 	View BetaManagedAgentsMemoryView `query:"view,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -489,7 +489,7 @@ type BetaMemoryStoreMemoryUpdateParams struct {
 	// 200 instead of 409.
 	Precondition BetaManagedAgentsPreconditionParam `json:"precondition,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -533,7 +533,7 @@ type BetaMemoryStoreMemoryListParams struct {
 	// Any of "basic", "full".
 	View BetaManagedAgentsMemoryView `query:"view,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -551,7 +551,7 @@ type BetaMemoryStoreMemoryDeleteParams struct {
 	// Query parameter for expected_content_sha256
 	ExpectedContentSha256 param.Opt[string] `query:"expected_content_sha256,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 

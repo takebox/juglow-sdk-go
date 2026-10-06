@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBetaDreamNewWithOptionalParams(t *testing.T) {
@@ -22,25 +22,25 @@ func TestBetaDreamNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Dreams.New(context.TODO(), anthropic.BetaDreamNewParams{
-		Inputs: []anthropic.BetaDreamInputUnionParam{{
-			OfMemoryStore: &anthropic.BetaDreamMemoryStoreInputParam{
+	_, err := client.Beta.Dreams.New(context.TODO(), Juglow.BetaDreamNewParams{
+		Inputs: []Juglow.BetaDreamInputUnionParam{{
+			OfMemoryStore: &Juglow.BetaDreamMemoryStoreInputParam{
 				MemoryStoreID: "x",
-				Type:          anthropic.BetaDreamMemoryStoreInputTypeMemoryStore,
+				Type:          Juglow.BetaDreamMemoryStoreInputTypeMemoryStore,
 			},
 		}},
-		Model: anthropic.BetaDreamNewParamsModelUnion{
-			OfString: anthropic.String("string"),
+		Model: Juglow.BetaDreamNewParamsModelUnion{
+			OfString: Juglow.String("string"),
 		},
-		Instructions: anthropic.String("x"),
-		Betas:        []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Instructions: Juglow.String("x"),
+		Betas:        []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -56,19 +56,19 @@ func TestBetaDreamGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Dreams.Get(
 		context.TODO(),
 		"dream_id",
-		anthropic.BetaDreamGetParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaDreamGetParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -84,21 +84,21 @@ func TestBetaDreamListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Dreams.List(context.TODO(), anthropic.BetaDreamListParams{
-		CreatedAtGt:     anthropic.Time(time.Now()),
-		CreatedAtLt:     anthropic.Time(time.Now()),
-		IncludeArchived: anthropic.Bool(true),
-		Limit:           anthropic.Int(0),
-		Page:            anthropic.String("page"),
-		Statuses:        []anthropic.BetaDreamStatus{anthropic.BetaDreamStatusPending},
-		Betas:           []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+	_, err := client.Beta.Dreams.List(context.TODO(), Juglow.BetaDreamListParams{
+		CreatedAtGt:     Juglow.Time(time.Now()),
+		CreatedAtLt:     Juglow.Time(time.Now()),
+		IncludeArchived: Juglow.Bool(true),
+		Limit:           Juglow.Int(0),
+		Page:            Juglow.String("page"),
+		Statuses:        []Juglow.BetaDreamStatus{Juglow.BetaDreamStatusPending},
+		Betas:           []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -114,19 +114,19 @@ func TestBetaDreamArchiveWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Dreams.Archive(
 		context.TODO(),
 		"dream_id",
-		anthropic.BetaDreamArchiveParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaDreamArchiveParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -142,19 +142,19 @@ func TestBetaDreamCancelWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Dreams.Cancel(
 		context.TODO(),
 		"dream_id",
-		anthropic.BetaDreamCancelParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaDreamCancelParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

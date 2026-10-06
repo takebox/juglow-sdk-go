@@ -1,4 +1,4 @@
-package anthropic_test
+﻿package Juglow_test
 
 // Union variant selection for request params: the variant whose
 // constants match wins; otherwise the closest structural fit.
@@ -9,13 +9,13 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go"
 )
 
 func TestParamUnmarshalNullAnyFieldDecodesToNil(t *testing.T) {
 	raw := `{"model": "m", "max_tokens": 1,
 		"messages": [{"role": "assistant", "content": [{"type": "tool_use", "id": "t1", "name": "f", "input": null}]}]}`
-	var p anthropic.MessageNewParams
+	var p Juglow.MessageNewParams
 	if err := json.Unmarshal([]byte(raw), &p); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -32,7 +32,7 @@ func TestParamUnmarshalNullAnyFieldDecodesToNil(t *testing.T) {
 func TestParamUnmarshalUnknownFieldsIgnored(t *testing.T) {
 	raw := `{"model": "m", "max_tokens": 1, "some_future_field": {"a": 1},
 		"messages": [{"role": "user", "content": [{"type": "text", "text": "hi", "x_meta": 1}]}]}`
-	var p anthropic.MessageNewParams
+	var p Juglow.MessageNewParams
 	if err := json.Unmarshal([]byte(raw), &p); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -56,30 +56,30 @@ func TestParamUnmarshalUnknownFieldsIgnored(t *testing.T) {
 func TestParamUnmarshalToolUnionVariantIdentity(t *testing.T) {
 	cases := map[string]struct {
 		raw    string
-		picked func(u anthropic.ToolUnionParam) bool
+		picked func(u Juglow.ToolUnionParam) bool
 	}{
 		"web_search_20250305": {
 			`{"type": "web_search_20250305", "name": "web_search", "max_uses": 3}`,
-			func(u anthropic.ToolUnionParam) bool {
+			func(u Juglow.ToolUnionParam) bool {
 				return u.OfWebSearchTool20250305 != nil && u.OfWebSearchTool20250305.MaxUses.Value == 3
 			},
 		},
 		"text_editor_20250429": {
 			`{"type": "text_editor_20250429", "name": "str_replace_based_edit_tool"}`,
-			func(u anthropic.ToolUnionParam) bool { return u.OfTextEditor20250429 != nil },
+			func(u Juglow.ToolUnionParam) bool { return u.OfTextEditor20250429 != nil },
 		},
 		"code_execution_20260120": {
 			`{"type": "code_execution_20260120", "name": "code_execution"}`,
-			func(u anthropic.ToolUnionParam) bool { return u.OfCodeExecutionTool20260120 != nil },
+			func(u Juglow.ToolUnionParam) bool { return u.OfCodeExecutionTool20260120 != nil },
 		},
 		"web_fetch_20250910": {
 			`{"type": "web_fetch_20250910", "name": "web_fetch"}`,
-			func(u anthropic.ToolUnionParam) bool { return u.OfWebFetchTool20250910 != nil },
+			func(u Juglow.ToolUnionParam) bool { return u.OfWebFetchTool20250910 != nil },
 		},
 	}
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
-			var u anthropic.ToolUnionParam
+			var u Juglow.ToolUnionParam
 			if err := json.Unmarshal([]byte(tc.raw), &u); err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
@@ -94,7 +94,7 @@ func TestParamUnmarshalToolUnionVariantIdentity(t *testing.T) {
 // config survives the round trip.
 func TestParamUnmarshalUnknownToolVersionPreservesConfig(t *testing.T) {
 	raw := `{"type":"web_search_20990101","name":"web_search","max_uses":5,"allowed_domains":["example.com"]}`
-	var u anthropic.ToolUnionParam
+	var u Juglow.ToolUnionParam
 	if err := json.Unmarshal([]byte(raw), &u); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -113,7 +113,7 @@ func TestParamUnmarshalCustomToolPicksOfTool(t *testing.T) {
 		`{"name":"my_tool","input_schema":{"type":"object"}}`,
 		`{"type":"custom","name":"my_tool","input_schema":{"type":"object"}}`,
 	} {
-		var u anthropic.ToolUnionParam
+		var u Juglow.ToolUnionParam
 		if err := json.Unmarshal([]byte(raw), &u); err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
@@ -139,14 +139,14 @@ func assertJSONEqual(t *testing.T, want, got string) {
 
 // Bare-string content promotes to a one-element text-block slice.
 func TestParamUnmarshalStringPromotion(t *testing.T) {
-	var p anthropic.MessageNewParams
+	var p Juglow.MessageNewParams
 	if err := json.Unmarshal([]byte(`{"model":"m","max_tokens":1,"system":"be brief"}`), &p); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 	if len(p.System) != 1 || p.System[0].Text != "be brief" {
 		t.Errorf("system string not promoted, got %#v", p.System)
 	}
-	var bm anthropic.BetaMessageParam
+	var bm Juglow.BetaMessageParam
 	if err := json.Unmarshal([]byte(`{"role":"user","content":"hello"}`), &bm); err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

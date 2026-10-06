@@ -1,4 +1,4 @@
-// The deserialization algorithm from apijson may be subject to improvements
+﻿// The deserialization algorithm from apijson may be subject to improvements
 // between minor versions, particularly with respect to calling [json.Unmarshal]
 // into param unions.
 
@@ -13,7 +13,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 
 	"github.com/tidwall/gjson"
 )

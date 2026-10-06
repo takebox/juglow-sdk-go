@@ -1,16 +1,16 @@
-// Package environments provides helpers for running self-hosted environment
+﻿// Package environments provides helpers for running self-hosted environment
 // workers: the control-plane [WorkPoller] (claim work items and hand them
-// back) and the [EnvironmentWorker] composition (poll + skills + run the
+// back) and the [EnvironmentWorker] composition (poll + tracks + run the
 // session tools while heartbeating + force-stop + loop). They are designed
 // to feel at home alongside the SDK's other iterators (ssestream.Stream[T],
 // BetaToolRunner): pull-style Next/Current/Err/Close plus a Go 1.23
 // range-over-func All().
 //
 // The per-session tool-execution loop itself lives next to the Messages tool
-// runner as [github.com/anthropics/anthropic-sdk-go.SessionToolRunner]
+// runner as [github.com/Juglows/Juglow-sdk-go.SessionToolRunner]
 // (client.Beta.Sessions.Events.NewToolRunner), and the agent_toolset_20260401
 // tool implementations live in
-// [github.com/anthropics/anthropic-sdk-go/tools/agenttoolset].
+// [github.com/Juglows/Juglow-sdk-go/tools/agenttoolset].
 package environments
 
 import (
@@ -27,10 +27,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/stainlessheader"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/stainlessheader"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 )
 
 // bearerReqOpts returns the auth-only per-request options every
@@ -38,7 +38,7 @@ import (
 //
 //   - WithHeaderDel("X-Api-Key") clears the parent client's default API key
 //     so it doesn't ride on the wire alongside the bearer credential.
-//     option.WithAuthToken alone only *adds* an Authorization header — the
+//     option.WithAuthToken alone only *adds* an Authorization header â€” the
 //     parent's WithAPIKey middleware still sets X-Api-Key, so both end up on
 //     every request and the server's route-by-route precedence is what would
 //     otherwise decide which one auth gets.
@@ -80,7 +80,7 @@ func helperReqOpts(environmentKey string, helper stainlessheader.Value) ([]optio
 	return append(opts, stainlessheader.With(helper)), nil
 }
 
-// ManagedAgentsBeta is the anthropic-beta value gating self-hosted
+// ManagedAgentsBeta is the Juglow-beta value gating self-hosted
 // environments access. The work resource and the sessions.events.*
 // resource both auto-inject this header on every call, so the runner
 // does not need to set it explicitly; the constant is exported so
@@ -99,7 +99,7 @@ const ManagedAgentsBeta = "managed-agents-2026-04-01"
 
 const (
 	// pollBlockMillis is the long-poll block_ms we request from the API.
-	// The server caps this at 999 — we rely on client-side jitter between
+	// The server caps this at 999 â€” we rely on client-side jitter between
 	// empty polls to spread reconnections across workers.
 	pollBlockMillis = 999
 
@@ -117,7 +117,7 @@ type WorkPollerOptions struct {
 	EnvironmentID string
 
 	// EnvironmentKey is the bearer token used to authorize every work.*
-	// call the poller issues — Poll, Ack and Stop. Required.
+	// call the poller issues â€” Poll, Ack and Stop. Required.
 	EnvironmentKey string
 
 	// WorkerID is a stable identifier reported back to the server for
@@ -125,8 +125,8 @@ type WorkPollerOptions struct {
 	// "<os.Hostname()>-<random hex>".
 	WorkerID string
 
-	// RequestOptions are applied to every work.* call the poller issues —
-	// Poll, Ack and Stop — on top of the environment-key auth and
+	// RequestOptions are applied to every work.* call the poller issues â€”
+	// Poll, Ack and Stop â€” on top of the environment-key auth and
 	// x-stainless-helper telemetry the poller adds itself. Use it for a
 	// proxy/custom header or a base-URL override. These options are applied
 	// first, so the poller's own environment-key auth and helper header take
@@ -135,7 +135,7 @@ type WorkPollerOptions struct {
 
 	// Drain controls what the poller does when the work queue is empty.
 	// When false (default) the poller long-polls forever, sleeping with
-	// jitter between empty polls — the long-running-runner shape. When true
+	// jitter between empty polls â€” the long-running-runner shape. When true
 	// the poller returns as soon as a poll comes back empty: Next returns
 	// false and Err stays nil (normal termination, same as ctx
 	// cancellation), so a webhook-driven dispatcher can drain the queue and
@@ -143,7 +143,7 @@ type WorkPollerOptions struct {
 	// single non-blocking pass.
 	Drain bool
 
-	// BlockMs is the long-poll block_ms forwarded to work.poll — how long
+	// BlockMs is the long-poll block_ms forwarded to work.poll â€” how long
 	// the server holds an empty poll open. Three states:
 	//   - omitted (zero value): the poller uses the default of 999ms (the
 	//     server caps block_ms at 999).
@@ -165,7 +165,7 @@ type WorkPollerOptions struct {
 }
 
 // WorkPoller long-polls an environment's work queue, claims items, and posts
-// ack — yielding each claimed [anthropic.BetaSelfHostedWork] to the consumer
+// ack â€” yielding each claimed [Juglow.BetaSelfHostedWork] to the consumer
 // via Next/Current. After the consumer finishes with a yielded item (the next
 // Next call or Close), the poller posts Stop for that work item. Poll, Ack and
 // Stop are all authorized with the environment key.
@@ -190,11 +190,11 @@ type WorkPollerOptions struct {
 //	}
 type WorkPoller struct {
 	ctx    context.Context
-	client anthropic.Client
+	client Juglow.Client
 	opts   WorkPollerOptions
 	log    *slog.Logger
 
-	current     *anthropic.BetaSelfHostedWork
+	current     *Juglow.BetaSelfHostedWork
 	err         error  // first construction-time or per-call error, or nil
 	pendingStop func() // runs on next Next or Close; nil between yields
 	failures    int    // consecutive poll failures, for poll backoff
@@ -210,7 +210,7 @@ type WorkPoller struct {
 // EnvironmentKey is empty, Next returns false on the first call and Err
 // returns the corresponding error. The returned pointer is never nil so
 // `defer poller.Close()` is always safe.
-func NewWorkPoller(ctx context.Context, client anthropic.Client, opts WorkPollerOptions) *WorkPoller {
+func NewWorkPoller(ctx context.Context, client Juglow.Client, opts WorkPollerOptions) *WorkPoller {
 	log := opts.Logger
 	if log == nil {
 		log = slog.Default()
@@ -274,8 +274,8 @@ func (p *WorkPoller) Next() bool {
 	// block_ms: an explicit value is forwarded as-is, an explicit null omits
 	// the param (non-blocking poll), and the omitted/zero case falls back to
 	// the default 999 so the historical behaviour is preserved.
-	pollParams := anthropic.BetaEnvironmentWorkPollParams{
-		AnthropicWorkerID: param.NewOpt(p.opts.WorkerID),
+	pollParams := Juglow.BetaEnvironmentWorkPollParams{
+		JuglowWorkerID: param.NewOpt(p.opts.WorkerID),
 	}
 	switch {
 	case p.opts.BlockMs.Valid():
@@ -291,7 +291,7 @@ func (p *WorkPoller) Next() bool {
 
 	for {
 		if p.ctx.Err() != nil {
-			// ctx cancellation is normal termination, not an error — same
+			// ctx cancellation is normal termination, not an error â€” same
 			// convention as io.EOF for Go iterators.
 			return false
 		}
@@ -307,7 +307,7 @@ func (p *WorkPoller) Next() bool {
 				return false
 			}
 			// A bad environment key or a missing environment is a 4xx that
-			// will never succeed on retry — surface it instead of backing
+			// will never succeed on retry â€” surface it instead of backing
 			// off forever, matching the heartbeat/stream sibling loops.
 			if isFatal4xx(err) {
 				p.log.ErrorContext(p.ctx, "poll hit permanent 4xx; stopping",
@@ -345,12 +345,12 @@ func (p *WorkPoller) Next() bool {
 		if _, err := p.client.Beta.Environments.Work.Ack(
 			p.ctx,
 			work.ID,
-			anthropic.BetaEnvironmentWorkAckParams{
+			Juglow.BetaEnvironmentWorkAckParams{
 				EnvironmentID: p.opts.EnvironmentID,
 			},
 			reqOpts...,
 		); err != nil {
-			// The claim could not be confirmed — discard the item rather than
+			// The claim could not be confirmed â€” discard the item rather than
 			// leaving it dangling, and back off before polling again.
 			log.ErrorContext(p.ctx, "ack failed, discarding work item",
 				slog.Any("error", err))
@@ -368,7 +368,7 @@ func (p *WorkPoller) Next() bool {
 
 // Current returns the most recent claimed work item. Only valid after Next
 // returned true and before the next Next call.
-func (p *WorkPoller) Current() *anthropic.BetaSelfHostedWork {
+func (p *WorkPoller) Current() *Juglow.BetaSelfHostedWork {
 	return p.current
 }
 
@@ -381,7 +381,7 @@ func (p *WorkPoller) Err() error {
 
 // Close runs the deferred Stop for the last yielded work item (if any)
 // and marks the poller closed. Safe to call multiple times; subsequent
-// Next calls return false. Always returns nil — the signature satisfies
+// Next calls return false. Always returns nil â€” the signature satisfies
 // io.Closer so callers can `defer poller.Close()` uniformly.
 func (p *WorkPoller) Close() error {
 	if p.closed {
@@ -393,15 +393,15 @@ func (p *WorkPoller) Close() error {
 }
 
 // All returns a Go 1.23 range-over-func iterator yielding each claimed
-// [anthropic.BetaSelfHostedWork]. On the final iteration (or on early break)
+// [Juglow.BetaSelfHostedWork]. On the final iteration (or on early break)
 // err carries the value of Err.
 //
 //	for work, err := range poller.All() {
 //	    if err != nil { return err }
 //	    // ...
 //	}
-func (p *WorkPoller) All() iter.Seq2[*anthropic.BetaSelfHostedWork, error] {
-	return func(yield func(*anthropic.BetaSelfHostedWork, error) bool) {
+func (p *WorkPoller) All() iter.Seq2[*Juglow.BetaSelfHostedWork, error] {
+	return func(yield func(*Juglow.BetaSelfHostedWork, error) bool) {
 		for p.Next() {
 			if !yield(p.Current(), nil) {
 				return
@@ -428,7 +428,7 @@ func (p *WorkPoller) makeStopClosure(workID, envID string, reqOpts []option.Requ
 		stopCtx, cancel := context.WithTimeout(context.Background(), stopTimeout)
 		defer cancel()
 		stopErr := stopWork(stopCtx, p.client, workID,
-			anthropic.BetaEnvironmentWorkStopParams{EnvironmentID: envID},
+			Juglow.BetaEnvironmentWorkStopParams{EnvironmentID: envID},
 			reqOpts...)
 		if stopErr != nil && !isStatus(stopErr, 409) {
 			log.WarnContext(stopCtx, "stop failed", slog.Any("error", stopErr))
@@ -455,7 +455,7 @@ func (p *WorkPoller) makeStopClosure(workID, envID string, reqOpts []option.Requ
 // (the executor hands the body off without parsing). TS and Python
 // never hit this because their decoders handle 204/empty bodies
 // gracefully; only Go is strict here.
-func stopWork(ctx context.Context, client anthropic.Client, workID string, params anthropic.BetaEnvironmentWorkStopParams, opts ...option.RequestOption) error {
+func stopWork(ctx context.Context, client Juglow.Client, workID string, params Juglow.BetaEnvironmentWorkStopParams, opts ...option.RequestOption) error {
 	var raw *http.Response
 	opts = append(opts, option.WithResponseBodyInto(&raw))
 	_, err := client.Beta.Environments.Work.Stop(ctx, workID, params, opts...)
@@ -466,16 +466,16 @@ func stopWork(ctx context.Context, client anthropic.Client, workID string, param
 }
 
 // discardUnprocessable best-effort force-stops a claimed work item the poller
-// cannot hand to a consumer — its ack failed — so the item does not dangle
+// cannot hand to a consumer â€” its ack failed â€” so the item does not dangle
 // and get redelivered, then backs off before the next poll so a persistently
 // bad item cannot hot-loop the poller. reqOpts carries the environment key.
-func (p *WorkPoller) discardUnprocessable(work *anthropic.BetaSelfHostedWork, reqOpts []option.RequestOption, log *slog.Logger) {
+func (p *WorkPoller) discardUnprocessable(work *Juglow.BetaSelfHostedWork, reqOpts []option.RequestOption, log *slog.Logger) {
 	stopCtx, cancel := context.WithTimeout(context.Background(), stopTimeout)
 	defer cancel()
 	if err := stopWork(stopCtx, p.client, work.ID,
-		anthropic.BetaEnvironmentWorkStopParams{
+		Juglow.BetaEnvironmentWorkStopParams{
 			EnvironmentID: work.EnvironmentID,
-			BetaSelfHostedWorkStopRequest: anthropic.BetaSelfHostedWorkStopRequestParam{
+			BetaSelfHostedWorkStopRequest: Juglow.BetaSelfHostedWorkStopRequestParam{
 				Force: param.NewOpt(true),
 			},
 		},
@@ -541,13 +541,13 @@ func defaultWorkerID(log *slog.Logger) string {
 		if err != nil {
 			log.Debug("os.Hostname failed; using random-only worker id", slog.Any("error", err))
 		}
-		return "anthropic-sdk-go-runner-" + suffix
+		return "Juglow-sdk-go-runner-" + suffix
 	}
 	return host + "-" + suffix
 }
 
 func isStatus(err error, code int) bool {
-	var apiErr *anthropic.Error
+	var apiErr *Juglow.Error
 	return errors.As(err, &apiErr) && apiErr.StatusCode == code
 }
 
@@ -555,7 +555,7 @@ func isStatus(err error, code int) bool {
 // on retry. 408 (timeout) and 429 (rate-limited) are excluded so callers
 // can back off rather than tear down.
 func isFatal4xx(err error) bool {
-	var apiErr *anthropic.Error
+	var apiErr *Juglow.Error
 	if !errors.As(err, &apiErr) {
 		return false
 	}

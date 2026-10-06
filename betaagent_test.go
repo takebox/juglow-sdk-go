@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestBetaAgentNewWithOptionalParams(t *testing.T) {
@@ -22,73 +22,73 @@ func TestBetaAgentNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Agents.New(context.TODO(), anthropic.BetaAgentNewParams{
-		Model: anthropic.BetaManagedAgentsModelConfigParams{
-			ID: anthropic.BetaManagedAgentsModelClaudeOpus4_8,
-			Effort: anthropic.BetaManagedAgentsModelConfigParamsEffortUnion{
-				OfBetaManagedAgentsModelConfigsEffortBetaManagedAgentsEffortLevel: anthropic.String("low"),
+	_, err := client.Beta.Agents.New(context.TODO(), Juglow.BetaAgentNewParams{
+		Model: Juglow.BetaManagedAgentsModelConfigParams{
+			ID: Juglow.BetaManagedAgentsModelHaijunOpus4_8,
+			Effort: Juglow.BetaManagedAgentsModelConfigParamsEffortUnion{
+				OfBetaManagedAgentsModelConfigsEffortBetaManagedAgentsEffortLevel: Juglow.String("low"),
 			},
-			InferenceGeo: anthropic.String("inference_geo"),
-			Speed:        anthropic.BetaManagedAgentsModelConfigParamsSpeedStandard,
+			InferenceGeo: Juglow.String("inference_geo"),
+			Speed:        Juglow.BetaManagedAgentsModelConfigParamsSpeedStandard,
 		},
 		Name:        "My First Agent",
-		Description: anthropic.String("A general-purpose starter agent."),
-		MCPServers: []anthropic.BetaManagedAgentsURLMCPServerParams{{
+		Description: Juglow.String("A general-purpose starter agent."),
+		MCPServers: []Juglow.BetaManagedAgentsURLMCPServerParams{{
 			Name: "example-mcp",
-			Type: anthropic.BetaManagedAgentsURLMCPServerParamsTypeURL,
+			Type: Juglow.BetaManagedAgentsURLMCPServerParamsTypeURL,
 			URL:  "https://example-server.modelcontextprotocol.io/sse",
 		}},
 		Metadata: map[string]string{
 			"foo": "bar",
 		},
-		Multiagent: anthropic.BetaManagedAgentsMultiagentParams{
-			Agents: []anthropic.BetaManagedAgentsMultiagentRosterEntryParamsUnion{{
-				OfString: anthropic.String("agent_011CZkYqphY8vELVzwCUpqiQ"),
+		Multiagent: Juglow.BetaManagedAgentsMultiagentParams{
+			Agents: []Juglow.BetaManagedAgentsMultiagentRosterEntryParamsUnion{{
+				OfString: Juglow.String("agent_011CZkYqphY8vELVzwCUpqiQ"),
 			}, {
-				OfBetaManagedAgentsMultiagentSelfs: &anthropic.BetaManagedAgentsMultiagentSelfParams{
-					Type: anthropic.BetaManagedAgentsMultiagentSelfParamsTypeSelf,
+				OfBetaManagedAgentsMultiagentSelfs: &Juglow.BetaManagedAgentsMultiagentSelfParams{
+					Type: Juglow.BetaManagedAgentsMultiagentSelfParamsTypeSelf,
 				},
 			}},
-			Type: anthropic.BetaManagedAgentsMultiagentParamsTypeCoordinator,
+			Type: Juglow.BetaManagedAgentsMultiagentParamsTypeCoordinator,
 		},
-		Skills: []anthropic.BetaManagedAgentsSkillParamsUnion{{
-			OfAnthropic: &anthropic.BetaManagedAgentsAnthropicSkillParams{
+		tracks: []Juglow.BetaManagedAgentsSkillParamsUnion{{
+			OfJuglow: &Juglow.BetaManagedAgentsJuglowSkillParams{
 				SkillID: "xlsx",
-				Type:    anthropic.BetaManagedAgentsAnthropicSkillParamsTypeAnthropic,
-				Version: anthropic.String("1"),
+				Type:    Juglow.BetaManagedAgentsJuglowSkillParamsTypeJuglow,
+				Version: Juglow.String("1"),
 			},
 		}},
-		System: anthropic.String("You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end."),
-		Tools: []anthropic.BetaAgentNewParamsToolUnion{{
-			OfAgentToolset20260401: &anthropic.BetaManagedAgentsAgentToolset20260401Params{
-				Type: anthropic.BetaManagedAgentsAgentToolset20260401ParamsTypeAgentToolset20260401,
-				Configs: []anthropic.BetaManagedAgentsAgentToolConfigParams{{
-					Name:    anthropic.BetaManagedAgentsAgentToolConfigParamsNameBash,
-					Enabled: anthropic.Bool(true),
-					PermissionPolicy: anthropic.BetaManagedAgentsAgentToolConfigParamsPermissionPolicyUnion{
-						OfAlwaysAllow: &anthropic.BetaManagedAgentsAlwaysAllowPolicyParam{
-							Type: anthropic.BetaManagedAgentsAlwaysAllowPolicyTypeAlwaysAllow,
+		System: Juglow.String("You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end."),
+		Tools: []Juglow.BetaAgentNewParamsToolUnion{{
+			OfAgentToolset20260401: &Juglow.BetaManagedAgentsAgentToolset20260401Params{
+				Type: Juglow.BetaManagedAgentsAgentToolset20260401ParamsTypeAgentToolset20260401,
+				Configs: []Juglow.BetaManagedAgentsAgentToolConfigParams{{
+					Name:    Juglow.BetaManagedAgentsAgentToolConfigParamsNameBash,
+					Enabled: Juglow.Bool(true),
+					PermissionPolicy: Juglow.BetaManagedAgentsAgentToolConfigParamsPermissionPolicyUnion{
+						OfAlwaysAllow: &Juglow.BetaManagedAgentsAlwaysAllowPolicyParam{
+							Type: Juglow.BetaManagedAgentsAlwaysAllowPolicyTypeAlwaysAllow,
 						},
 					},
 				}},
-				DefaultConfig: anthropic.BetaManagedAgentsAgentToolsetDefaultConfigParams{
-					Enabled: anthropic.Bool(true),
-					PermissionPolicy: anthropic.BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyUnion{
-						OfAlwaysAllow: &anthropic.BetaManagedAgentsAlwaysAllowPolicyParam{
-							Type: anthropic.BetaManagedAgentsAlwaysAllowPolicyTypeAlwaysAllow,
+				DefaultConfig: Juglow.BetaManagedAgentsAgentToolsetDefaultConfigParams{
+					Enabled: Juglow.Bool(true),
+					PermissionPolicy: Juglow.BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyUnion{
+						OfAlwaysAllow: &Juglow.BetaManagedAgentsAlwaysAllowPolicyParam{
+							Type: Juglow.BetaManagedAgentsAlwaysAllowPolicyTypeAlwaysAllow,
 						},
 					},
 				},
 			},
 		}},
-		Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -105,20 +105,20 @@ func TestBetaAgentGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Agents.Get(
 		context.TODO(),
 		"agent_011CZkYpogX7uDKUyvBTophP",
-		anthropic.BetaAgentGetParams{
-			Version: anthropic.Int(0),
-			Betas:   []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaAgentGetParams{
+			Version: Juglow.Int(0),
+			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -134,78 +134,78 @@ func TestBetaAgentUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Agents.Update(
 		context.TODO(),
 		"agent_011CZkYpogX7uDKUyvBTophP",
-		anthropic.BetaAgentUpdateParams{
-			Description: anthropic.String("updated"),
-			MCPServers: []anthropic.BetaManagedAgentsURLMCPServerParams{{
+		Juglow.BetaAgentUpdateParams{
+			Description: Juglow.String("updated"),
+			MCPServers: []Juglow.BetaManagedAgentsURLMCPServerParams{{
 				Name: "example-mcp",
-				Type: anthropic.BetaManagedAgentsURLMCPServerParamsTypeURL,
+				Type: Juglow.BetaManagedAgentsURLMCPServerParamsTypeURL,
 				URL:  "https://example-server.modelcontextprotocol.io/sse",
 			}},
 			Metadata: map[string]string{
 				"foo": "string",
 			},
-			Model: anthropic.BetaManagedAgentsModelConfigParams{
-				ID: anthropic.BetaManagedAgentsModelClaudeOpus4_8,
-				Effort: anthropic.BetaManagedAgentsModelConfigParamsEffortUnion{
-					OfBetaManagedAgentsModelConfigsEffortBetaManagedAgentsEffortLevel: anthropic.String("low"),
+			Model: Juglow.BetaManagedAgentsModelConfigParams{
+				ID: Juglow.BetaManagedAgentsModelHaijunOpus4_8,
+				Effort: Juglow.BetaManagedAgentsModelConfigParamsEffortUnion{
+					OfBetaManagedAgentsModelConfigsEffortBetaManagedAgentsEffortLevel: Juglow.String("low"),
 				},
-				InferenceGeo: anthropic.String("inference_geo"),
-				Speed:        anthropic.BetaManagedAgentsModelConfigParamsSpeedStandard,
+				InferenceGeo: Juglow.String("inference_geo"),
+				Speed:        Juglow.BetaManagedAgentsModelConfigParamsSpeedStandard,
 			},
-			Multiagent: anthropic.BetaManagedAgentsMultiagentParams{
-				Agents: []anthropic.BetaManagedAgentsMultiagentRosterEntryParamsUnion{{
-					OfString: anthropic.String("agent_011CZkYqphY8vELVzwCUpqiQ"),
+			Multiagent: Juglow.BetaManagedAgentsMultiagentParams{
+				Agents: []Juglow.BetaManagedAgentsMultiagentRosterEntryParamsUnion{{
+					OfString: Juglow.String("agent_011CZkYqphY8vELVzwCUpqiQ"),
 				}, {
-					OfBetaManagedAgentsMultiagentSelfs: &anthropic.BetaManagedAgentsMultiagentSelfParams{
-						Type: anthropic.BetaManagedAgentsMultiagentSelfParamsTypeSelf,
+					OfBetaManagedAgentsMultiagentSelfs: &Juglow.BetaManagedAgentsMultiagentSelfParams{
+						Type: Juglow.BetaManagedAgentsMultiagentSelfParamsTypeSelf,
 					},
 				}},
-				Type: anthropic.BetaManagedAgentsMultiagentParamsTypeCoordinator,
+				Type: Juglow.BetaManagedAgentsMultiagentParamsTypeCoordinator,
 			},
-			Name: anthropic.String("name"),
-			Skills: []anthropic.BetaManagedAgentsSkillParamsUnion{{
-				OfAnthropic: &anthropic.BetaManagedAgentsAnthropicSkillParams{
+			Name: Juglow.String("name"),
+			tracks: []Juglow.BetaManagedAgentsSkillParamsUnion{{
+				OfJuglow: &Juglow.BetaManagedAgentsJuglowSkillParams{
 					SkillID: "xlsx",
-					Type:    anthropic.BetaManagedAgentsAnthropicSkillParamsTypeAnthropic,
-					Version: anthropic.String("1"),
+					Type:    Juglow.BetaManagedAgentsJuglowSkillParamsTypeJuglow,
+					Version: Juglow.String("1"),
 				},
 			}},
-			System: anthropic.String("You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end."),
-			Tools: []anthropic.BetaAgentUpdateParamsToolUnion{{
-				OfAgentToolset20260401: &anthropic.BetaManagedAgentsAgentToolset20260401Params{
-					Type: anthropic.BetaManagedAgentsAgentToolset20260401ParamsTypeAgentToolset20260401,
-					Configs: []anthropic.BetaManagedAgentsAgentToolConfigParams{{
-						Name:    anthropic.BetaManagedAgentsAgentToolConfigParamsNameBash,
-						Enabled: anthropic.Bool(true),
-						PermissionPolicy: anthropic.BetaManagedAgentsAgentToolConfigParamsPermissionPolicyUnion{
-							OfAlwaysAllow: &anthropic.BetaManagedAgentsAlwaysAllowPolicyParam{
-								Type: anthropic.BetaManagedAgentsAlwaysAllowPolicyTypeAlwaysAllow,
+			System: Juglow.String("You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end."),
+			Tools: []Juglow.BetaAgentUpdateParamsToolUnion{{
+				OfAgentToolset20260401: &Juglow.BetaManagedAgentsAgentToolset20260401Params{
+					Type: Juglow.BetaManagedAgentsAgentToolset20260401ParamsTypeAgentToolset20260401,
+					Configs: []Juglow.BetaManagedAgentsAgentToolConfigParams{{
+						Name:    Juglow.BetaManagedAgentsAgentToolConfigParamsNameBash,
+						Enabled: Juglow.Bool(true),
+						PermissionPolicy: Juglow.BetaManagedAgentsAgentToolConfigParamsPermissionPolicyUnion{
+							OfAlwaysAllow: &Juglow.BetaManagedAgentsAlwaysAllowPolicyParam{
+								Type: Juglow.BetaManagedAgentsAlwaysAllowPolicyTypeAlwaysAllow,
 							},
 						},
 					}},
-					DefaultConfig: anthropic.BetaManagedAgentsAgentToolsetDefaultConfigParams{
-						Enabled: anthropic.Bool(true),
-						PermissionPolicy: anthropic.BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyUnion{
-							OfAlwaysAllow: &anthropic.BetaManagedAgentsAlwaysAllowPolicyParam{
-								Type: anthropic.BetaManagedAgentsAlwaysAllowPolicyTypeAlwaysAllow,
+					DefaultConfig: Juglow.BetaManagedAgentsAgentToolsetDefaultConfigParams{
+						Enabled: Juglow.Bool(true),
+						PermissionPolicy: Juglow.BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyUnion{
+							OfAlwaysAllow: &Juglow.BetaManagedAgentsAlwaysAllowPolicyParam{
+								Type: Juglow.BetaManagedAgentsAlwaysAllowPolicyTypeAlwaysAllow,
 							},
 						},
 					},
 				},
 			}},
-			Version: anthropic.Int(1),
-			Betas:   []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+			Version: Juglow.Int(1),
+			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -222,20 +222,20 @@ func TestBetaAgentListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Agents.List(context.TODO(), anthropic.BetaAgentListParams{
-		CreatedAtGte:    anthropic.Time(time.Now()),
-		CreatedAtLte:    anthropic.Time(time.Now()),
-		IncludeArchived: anthropic.Bool(true),
-		Limit:           anthropic.Int(0),
-		Page:            anthropic.String("page"),
-		Betas:           []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+	_, err := client.Beta.Agents.List(context.TODO(), Juglow.BetaAgentListParams{
+		CreatedAtGte:    Juglow.Time(time.Now()),
+		CreatedAtLte:    Juglow.Time(time.Now()),
+		IncludeArchived: Juglow.Bool(true),
+		Limit:           Juglow.Int(0),
+		Page:            Juglow.String("page"),
+		Betas:           []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}
@@ -251,19 +251,19 @@ func TestBetaAgentArchiveWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
 	_, err := client.Beta.Agents.Archive(
 		context.TODO(),
 		"agent_011CZkYpogX7uDKUyvBTophP",
-		anthropic.BetaAgentArchiveParams{
-			Betas: []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Juglow.BetaAgentArchiveParams{
+			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

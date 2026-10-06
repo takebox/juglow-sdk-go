@@ -1,17 +1,17 @@
-package main
+﻿package main
 
 import (
 	"context"
 	"fmt"
 
-	"github.com/anthropics/anthropic-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go"
 )
 
 func main() {
-	client := anthropic.NewClient()
+	client := Juglow.NewClient()
 	ctx := context.TODO()
 
-	environment, err := client.Beta.Environments.New(ctx, anthropic.BetaEnvironmentNewParams{
+	environment, err := client.Beta.Environments.New(ctx, Juglow.BetaEnvironmentNewParams{
 		Name: "streaming-deltas-example",
 	})
 	if err != nil {
@@ -19,10 +19,10 @@ func main() {
 	}
 	fmt.Println("Created environment:", environment.ID)
 
-	agent, err := client.Beta.Agents.New(ctx, anthropic.BetaAgentNewParams{
+	agent, err := client.Beta.Agents.New(ctx, Juglow.BetaAgentNewParams{
 		Name: "streaming-deltas-example",
-		Model: anthropic.BetaManagedAgentsModelConfigParams{
-			ID: anthropic.BetaManagedAgentsModelClaudeSonnet4_6,
+		Model: Juglow.BetaManagedAgentsModelConfigParams{
+			ID: Juglow.BetaManagedAgentsModelHaijunSonnet4_6,
 		},
 	})
 	if err != nil {
@@ -30,12 +30,12 @@ func main() {
 	}
 	fmt.Println("Created agent:", agent.ID)
 
-	session, err := client.Beta.Sessions.New(ctx, anthropic.BetaSessionNewParams{
+	session, err := client.Beta.Sessions.New(ctx, Juglow.BetaSessionNewParams{
 		EnvironmentID: environment.ID,
-		Agent: anthropic.BetaSessionNewParamsAgentUnion{
-			OfBetaManagedAgentsAgents: &anthropic.BetaManagedAgentsAgentParams{
+		Agent: Juglow.BetaSessionNewParamsAgentUnion{
+			OfBetaManagedAgentsAgents: &Juglow.BetaManagedAgentsAgentParams{
 				ID:   agent.ID,
-				Type: anthropic.BetaManagedAgentsAgentParamsTypeAgent,
+				Type: Juglow.BetaManagedAgentsAgentParamsTypeAgent,
 			},
 		},
 	})
@@ -44,20 +44,20 @@ func main() {
 	}
 	fmt.Println("Created session:", session.ID)
 
-	stream := client.Beta.Sessions.Events.StreamEvents(ctx, session.ID, anthropic.BetaSessionEventStreamParams{
-		EventDeltas: []anthropic.BetaManagedAgentsDeltaType{anthropic.BetaManagedAgentsDeltaTypeAgentMessage},
+	stream := client.Beta.Sessions.Events.StreamEvents(ctx, session.ID, Juglow.BetaSessionEventStreamParams{
+		EventDeltas: []Juglow.BetaManagedAgentsDeltaType{Juglow.BetaManagedAgentsDeltaTypeAgentMessage},
 	})
 
-	_, err = client.Beta.Sessions.Events.Send(ctx, session.ID, anthropic.BetaSessionEventSendParams{
-		Events: []anthropic.BetaManagedAgentsEventParamsUnion{
+	_, err = client.Beta.Sessions.Events.Send(ctx, session.ID, Juglow.BetaSessionEventSendParams{
+		Events: []Juglow.BetaManagedAgentsEventParamsUnion{
 			{
-				OfUserMessage: &anthropic.BetaManagedAgentsUserMessageEventParams{
-					Type: anthropic.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
-					Content: []anthropic.BetaManagedAgentsUserMessageEventParamsContentUnion{
+				OfUserMessage: &Juglow.BetaManagedAgentsUserMessageEventParams{
+					Type: Juglow.BetaManagedAgentsUserMessageEventParamsTypeUserMessage,
+					Content: []Juglow.BetaManagedAgentsUserMessageEventParamsContentUnion{
 						{
-							OfText: &anthropic.BetaManagedAgentsTextBlockParam{
+							OfText: &Juglow.BetaManagedAgentsTextBlockParam{
 								Text: "Write a short haiku about the ocean.",
-								Type: anthropic.BetaManagedAgentsTextBlockTypeText,
+								Type: Juglow.BetaManagedAgentsTextBlockTypeText,
 							},
 						},
 					},
@@ -69,7 +69,7 @@ func main() {
 		panic(err)
 	}
 
-	var previews anthropic.BetaManagedAgentsEventAccumulator
+	var previews Juglow.BetaManagedAgentsEventAccumulator
 
 	fmt.Println("\nStreaming:")
 	for stream.Next() {

@@ -1,4 +1,4 @@
-package toolrunner_test
+﻿package toolrunner_test
 
 import (
 	"context"
@@ -11,10 +11,10 @@ import (
 	"testing"
 	"time"
 
-	anthropic "github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/toolrunner"
+	Juglow "github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/toolrunner"
 )
 
 // schemaToBytes converts a map schema to JSON bytes for use with NewBetaToolFromBytes.
@@ -28,10 +28,10 @@ func schemaToBytes(t *testing.T, schema map[string]any) []byte {
 }
 
 // assistantText extracts concatenated assistant text blocks from a BetaMessage.
-func assistantText(msg *anthropic.BetaMessage) string {
+func assistantText(msg *Juglow.BetaMessage) string {
 	var b strings.Builder
 	for _, c := range msg.Content {
-		if tb, ok := c.AsAny().(anthropic.BetaTextBlock); ok {
+		if tb, ok := c.AsAny().(Juglow.BetaTextBlock); ok {
 			b.WriteString(tb.Text)
 		}
 	}
@@ -53,16 +53,16 @@ var weatherSchema = map[string]any{
 	"required": []string{"city"},
 }
 
-func weatherTool(t *testing.T) anthropic.BetaTool {
+func weatherTool(t *testing.T) Juglow.BetaTool {
 	t.Helper()
 	tool, err := toolrunner.NewBetaToolFromBytes("get_weather", "Get weather", schemaToBytes(t, weatherSchema),
-		func(ctx context.Context, req weatherRequest) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+		func(ctx context.Context, req weatherRequest) (Juglow.BetaToolResultBlockParamContentUnion, error) {
 			temp := 20
 			if req.Units == "fahrenheit" {
 				temp = 68
 			}
-			return anthropic.BetaToolResultBlockParamContentUnion{
-				OfText: &anthropic.BetaTextBlockParam{Text: fmt.Sprintf("The weather in %s is %d degrees %s.", req.City, temp, req.Units)},
+			return Juglow.BetaToolResultBlockParamContentUnion{
+				OfText: &Juglow.BetaTextBlockParam{Text: fmt.Sprintf("The weather in %s is %d degrees %s.", req.City, temp, req.Units)},
 			}, nil
 		})
 	if err != nil {
@@ -71,10 +71,10 @@ func weatherTool(t *testing.T) anthropic.BetaTool {
 	return tool
 }
 
-func newClientWithVCR(t *testing.T, cassette string) anthropic.Client {
+func newClientWithVCR(t *testing.T, cassette string) Juglow.Client {
 	t.Helper()
 	httpClient, _ := testutil.NewVCRHTTPClient(t, cassette)
-	return anthropic.NewClient(
+	return Juglow.NewClient(
 		option.WithHTTPClient(httpClient),
 		option.WithAPIKey("test-key"),
 	)
@@ -87,19 +87,19 @@ func TestToolRunner_All_Basic(t *testing.T) {
 	client := newClientWithVCR(t, "tool_runner_basic")
 	tool := weatherTool(t)
 
-	runner := client.Beta.Messages.NewToolRunner([]anthropic.BetaTool{tool}, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet4_5,
+	runner := client.Beta.Messages.NewToolRunner([]Juglow.BetaTool{tool}, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet4_5,
 			MaxTokens: 512,
-			Messages: []anthropic.BetaMessageParam{
-				anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("What's the weather in San Francisco? Use fahrenheit.")),
+			Messages: []Juglow.BetaMessageParam{
+				Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("What's the weather in San Francisco? Use fahrenheit.")),
 			},
 		},
 		MaxIterations: 5,
 	})
 
 	ctx := context.Background()
-	var last *anthropic.BetaMessage
+	var last *Juglow.BetaMessage
 	for msg, err := range runner.All(ctx) {
 		if err != nil {
 			t.Fatalf("runner error: %v", err)
@@ -120,12 +120,12 @@ func TestToolRunner_RunToCompletion(t *testing.T) {
 	client := newClientWithVCR(t, "tool_runner_run_to_completion")
 	tool := weatherTool(t)
 
-	runner := client.Beta.Messages.NewToolRunner([]anthropic.BetaTool{tool}, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet4_5,
+	runner := client.Beta.Messages.NewToolRunner([]Juglow.BetaTool{tool}, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet4_5,
 			MaxTokens: 512,
-			Messages: []anthropic.BetaMessageParam{
-				anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("What's the weather in San Francisco? Use fahrenheit.")),
+			Messages: []Juglow.BetaMessageParam{
+				Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("What's the weather in San Francisco? Use fahrenheit.")),
 			},
 		},
 		MaxIterations: 5,
@@ -149,12 +149,12 @@ func TestToolRunner_NextMessage_Step(t *testing.T) {
 	client := newClientWithVCR(t, "tool_runner_next_message")
 	tool := weatherTool(t)
 
-	runner := client.Beta.Messages.NewToolRunner([]anthropic.BetaTool{tool}, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet4_5,
+	runner := client.Beta.Messages.NewToolRunner([]Juglow.BetaTool{tool}, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet4_5,
 			MaxTokens: 512,
-			Messages: []anthropic.BetaMessageParam{
-				anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("What's the weather in SF? Use celsius.")),
+			Messages: []Juglow.BetaMessageParam{
+				Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("What's the weather in SF? Use celsius.")),
 			},
 		},
 		MaxIterations: 5,
@@ -192,12 +192,12 @@ func TestToolRunner_AllStreaming(t *testing.T) {
 	client := newClientWithVCR(t, "tool_runner_streaming_all")
 	tool := weatherTool(t)
 
-	runner := client.Beta.Messages.NewToolRunnerStreaming([]anthropic.BetaTool{tool}, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet4_5,
+	runner := client.Beta.Messages.NewToolRunnerStreaming([]Juglow.BetaTool{tool}, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet4_5,
 			MaxTokens: 512,
-			Messages: []anthropic.BetaMessageParam{
-				anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("Weather in SF in fahrenheit?")),
+			Messages: []Juglow.BetaMessageParam{
+				Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("Weather in SF in fahrenheit?")),
 			},
 		},
 		MaxIterations: 5,
@@ -212,9 +212,9 @@ func TestToolRunner_AllStreaming(t *testing.T) {
 		stringBuilder := strings.Builder{}
 		for ev := range iterator {
 			switch evVariant := ev.AsAny().(type) {
-			case anthropic.BetaRawContentBlockDeltaEvent:
+			case Juglow.BetaRawContentBlockDeltaEvent:
 				switch deltaVariant := evVariant.Delta.AsAny().(type) {
-				case anthropic.BetaTextDelta:
+				case Juglow.BetaTextDelta:
 					stringBuilder.WriteString(deltaVariant.Text)
 				}
 			}
@@ -233,12 +233,12 @@ func TestToolRunner_NextStreaming_EventTypes(t *testing.T) {
 	client := newClientWithVCR(t, "tool_runner_next_streaming")
 	tool := weatherTool(t)
 
-	runner := client.Beta.Messages.NewToolRunnerStreaming([]anthropic.BetaTool{tool}, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet4_5,
+	runner := client.Beta.Messages.NewToolRunnerStreaming([]Juglow.BetaTool{tool}, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet4_5,
 			MaxTokens: 512,
-			Messages: []anthropic.BetaMessageParam{
-				anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("Weather in SF?")),
+			Messages: []Juglow.BetaMessageParam{
+				Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("Weather in SF?")),
 			},
 		},
 		MaxIterations: 1,
@@ -265,23 +265,23 @@ func TestToolRunner_ToolCallError_ThenSuccess(t *testing.T) {
 	client := newClientWithVCR(t, "tool_runner_tool_call_error")
 	called := false
 	tool, err := toolrunner.NewBetaToolFromBytes("get_weather", "Get weather", schemaToBytes(t, weatherSchema),
-		func(ctx context.Context, req weatherRequest) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+		func(ctx context.Context, req weatherRequest) (Juglow.BetaToolResultBlockParamContentUnion, error) {
 			if !called {
 				called = true
-				return anthropic.BetaToolResultBlockParamContentUnion{}, fmt.Errorf("Unexpected error, try again")
+				return Juglow.BetaToolResultBlockParamContentUnion{}, fmt.Errorf("Unexpected error, try again")
 			}
-			return anthropic.BetaToolResultBlockParamContentUnion{OfText: &anthropic.BetaTextBlockParam{Text: "Sunny 68°F"}}, nil
+			return Juglow.BetaToolResultBlockParamContentUnion{OfText: &Juglow.BetaTextBlockParam{Text: "Sunny 68Â°F"}}, nil
 		})
 	if err != nil {
 		t.Fatalf("create tool: %v", err)
 	}
 
-	runner := client.Beta.Messages.NewToolRunner([]anthropic.BetaTool{tool}, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet4_5,
+	runner := client.Beta.Messages.NewToolRunner([]Juglow.BetaTool{tool}, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet4_5,
 			MaxTokens: 512,
-			Messages: []anthropic.BetaMessageParam{
-				anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("Weather in San Francisco?")),
+			Messages: []Juglow.BetaMessageParam{
+				Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("Weather in San Francisco?")),
 			},
 		},
 	})
@@ -300,7 +300,7 @@ func TestToolRunner_ToolCallError_ThenSuccess(t *testing.T) {
 	// look through all the messages to find the tool results
 	// 1. should be an error
 	// 2. should be a success
-	toolResultBlocks := []*anthropic.BetaToolResultBlockParam{}
+	toolResultBlocks := []*Juglow.BetaToolResultBlockParam{}
 	for _, msg := range messages {
 		for _, c := range msg.Content {
 			if tr := c.OfToolResult; tr != nil {
@@ -327,7 +327,7 @@ func TestToolRunner_ToolCallError_ThenSuccess(t *testing.T) {
 		t.Fatalf("expected second tool result to be a success")
 	}
 	successText := successToolResultBlock.Content[0].OfText.Text
-	if successText != "Sunny 68°F" {
+	if successText != "Sunny 68Â°F" {
 		t.Fatalf("expected success message in tool result, got: %s", successText)
 	}
 
@@ -345,12 +345,12 @@ func TestToolRunner_CustomHandlingWithPushMessages(t *testing.T) {
 	client := newClientWithVCR(t, "tool_runner_custom_handling")
 	tool := weatherTool(t)
 
-	runner := client.Beta.Messages.NewToolRunner([]anthropic.BetaTool{tool}, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet4_5,
+	runner := client.Beta.Messages.NewToolRunner([]Juglow.BetaTool{tool}, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet4_5,
 			MaxTokens: 512,
-			Messages: []anthropic.BetaMessageParam{
-				anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("What's the weather in SF in celsius?")),
+			Messages: []Juglow.BetaMessageParam{
+				Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("What's the weather in SF in celsius?")),
 			},
 		},
 	})
@@ -364,7 +364,7 @@ func TestToolRunner_CustomHandlingWithPushMessages(t *testing.T) {
 	// Find first tool_use id
 	var toolUseID string
 	for _, c := range msg.Content {
-		if tu, ok := c.AsAny().(anthropic.BetaToolUseBlock); ok {
+		if tu, ok := c.AsAny().(Juglow.BetaToolUseBlock); ok {
 			toolUseID = tu.ID
 			break
 		}
@@ -375,14 +375,14 @@ func TestToolRunner_CustomHandlingWithPushMessages(t *testing.T) {
 	// Build a new runner with our custom tool_result appended to messages to avoid
 	// automatic execution for the prior assistant tool_use turn.
 	msgs := runner.Messages()
-	msgs = append(msgs, anthropic.NewBetaUserMessage(
-		anthropic.BetaContentBlockParamUnion{OfToolResult: &anthropic.BetaToolResultBlockParam{ToolUseID: toolUseID, Content: []anthropic.BetaToolResultBlockParamContentUnion{{OfText: &anthropic.BetaTextBlockParam{Text: "Celsius 20°C"}}}}},
+	msgs = append(msgs, Juglow.NewBetaUserMessage(
+		Juglow.BetaContentBlockParamUnion{OfToolResult: &Juglow.BetaToolResultBlockParam{ToolUseID: toolUseID, Content: []Juglow.BetaToolResultBlockParamContentUnion{{OfText: &Juglow.BetaTextBlockParam{Text: "Celsius 20Â°C"}}}}},
 	))
 
 	// No tools so the next turn is just the assistant producing final text
-	runner2 := client.Beta.Messages.NewToolRunner(nil, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet4_5,
+	runner2 := client.Beta.Messages.NewToolRunner(nil, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet4_5,
 			MaxTokens: 512,
 			Messages:  msgs,
 		},
@@ -402,12 +402,12 @@ func TestToolRunner_MaxIterations(t *testing.T) {
 	client := newClientWithVCR(t, "tool_runner_max_iterations")
 	tool := weatherTool(t)
 
-	runner := client.Beta.Messages.NewToolRunner([]anthropic.BetaTool{tool}, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet4_5,
+	runner := client.Beta.Messages.NewToolRunner([]Juglow.BetaTool{tool}, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet4_5,
 			MaxTokens: 512,
-			Messages: []anthropic.BetaMessageParam{
-				anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("Check weather in SF and NY, step by step")),
+			Messages: []Juglow.BetaMessageParam{
+				Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("Check weather in SF and NY, step by step")),
 			},
 		},
 		MaxIterations: 2,
@@ -440,25 +440,25 @@ func TestToolRunner_ConcurrentToolExecution(t *testing.T) {
 	startTime := time.Now()
 
 	weatherTool, err := toolrunner.NewBetaToolFromBytes("get_weather", "Get weather for a city", schemaToBytes(t, weatherSchema),
-		func(ctx context.Context, req weatherRequest) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+		func(ctx context.Context, req weatherRequest) (Juglow.BetaToolResultBlockParamContentUnion, error) {
 			executionTimes.Store(req.City, time.Since(startTime))
 			callCount.Add(1)
 			// Small delay - if sequential this would take 3x longer
 			time.Sleep(50 * time.Millisecond)
-			return anthropic.BetaToolResultBlockParamContentUnion{
-				OfText: &anthropic.BetaTextBlockParam{Text: fmt.Sprintf("Weather in %s: Sunny 72°F", req.City)},
+			return Juglow.BetaToolResultBlockParamContentUnion{
+				OfText: &Juglow.BetaTextBlockParam{Text: fmt.Sprintf("Weather in %s: Sunny 72Â°F", req.City)},
 			}, nil
 		})
 	if err != nil {
 		t.Fatalf("create weather tool: %v", err)
 	}
 
-	runner := client.Beta.Messages.NewToolRunner([]anthropic.BetaTool{weatherTool}, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet4_5,
+	runner := client.Beta.Messages.NewToolRunner([]Juglow.BetaTool{weatherTool}, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet4_5,
 			MaxTokens: 512,
-			Messages: []anthropic.BetaMessageParam{
-				anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock(
+			Messages: []Juglow.BetaMessageParam{
+				Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock(
 					"What's the weather in San Francisco, New York, and London? Check all three cities at once.",
 				)),
 			},
@@ -507,16 +507,16 @@ func TestToolRunner_ContextCancellation(t *testing.T) {
 		"properties": map[string]any{"input": map[string]any{"type": "string"}},
 	}
 	slowTool, err := toolrunner.NewBetaToolFromBytes("slow_tool", "A slow tool", schemaToBytes(t, slowSchema),
-		func(ctx context.Context, req struct{ Input string }) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+		func(ctx context.Context, req struct{ Input string }) (Juglow.BetaToolResultBlockParamContentUnion, error) {
 			close(toolStarted)
 			// Wait for context cancellation or timeout
 			select {
 			case <-ctx.Done():
-				return anthropic.BetaToolResultBlockParamContentUnion{}, ctx.Err()
+				return Juglow.BetaToolResultBlockParamContentUnion{}, ctx.Err()
 			case <-time.After(5 * time.Second):
 				close(toolCompleted)
-				return anthropic.BetaToolResultBlockParamContentUnion{
-					OfText: &anthropic.BetaTextBlockParam{Text: "completed"},
+				return Juglow.BetaToolResultBlockParamContentUnion{
+					OfText: &Juglow.BetaTextBlockParam{Text: "completed"},
 				}, nil
 			}
 		})
@@ -524,12 +524,12 @@ func TestToolRunner_ContextCancellation(t *testing.T) {
 		t.Fatalf("create slow tool: %v", err)
 	}
 
-	runner := client.Beta.Messages.NewToolRunner([]anthropic.BetaTool{slowTool}, anthropic.BetaToolRunnerParams{
-		BetaMessageNewParams: anthropic.BetaMessageNewParams{
-			Model:     anthropic.ModelClaudeSonnet4_5,
+	runner := client.Beta.Messages.NewToolRunner([]Juglow.BetaTool{slowTool}, Juglow.BetaToolRunnerParams{
+		BetaMessageNewParams: Juglow.BetaMessageNewParams{
+			Model:     Juglow.ModelHaijunSonnet4_5,
 			MaxTokens: 512,
-			Messages: []anthropic.BetaMessageParam{
-				anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("Call the slow_tool with input 'test'")),
+			Messages: []Juglow.BetaMessageParam{
+				Juglow.NewBetaUserMessage(Juglow.NewBetaTextBlock("Call the slow_tool with input 'test'")),
 			},
 		},
 		MaxIterations: 5,
@@ -583,9 +583,9 @@ func TestToolRunner_MalformedJSONInput(t *testing.T) {
 		"required": []string{"required_field"},
 	}
 	tool, err := toolrunner.NewBetaToolFromBytes("strict_tool", "A tool with strict input", schemaToBytes(t, strictSchema),
-		func(ctx context.Context, input StrictInput) (anthropic.BetaToolResultBlockParamContentUnion, error) {
-			return anthropic.BetaToolResultBlockParamContentUnion{
-				OfText: &anthropic.BetaTextBlockParam{Text: "success"},
+		func(ctx context.Context, input StrictInput) (Juglow.BetaToolResultBlockParamContentUnion, error) {
+			return Juglow.BetaToolResultBlockParamContentUnion{
+				OfText: &Juglow.BetaTextBlockParam{Text: "success"},
 			}, nil
 		})
 	if err != nil {

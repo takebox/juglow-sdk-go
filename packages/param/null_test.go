@@ -1,8 +1,8 @@
-package param_test
+﻿package param_test
 
 import (
 	"encoding/json"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 	"testing"
 )
 

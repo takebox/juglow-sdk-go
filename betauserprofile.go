@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -11,17 +11,17 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
 )
 
 // BetaUserProfileService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -42,10 +42,10 @@ func NewBetaUserProfileService(opts ...option.RequestOption) (r BetaUserProfileS
 // Create User Profile
 func (r *BetaUserProfileService) New(ctx context.Context, params BetaUserProfileNewParams, opts ...option.RequestOption) (res *BetaUserProfile, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "user-profiles-2026-03-24")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "user-profiles-2026-03-24")}, opts...)
 	path := "v1/user_profiles?beta=true"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
@@ -54,10 +54,10 @@ func (r *BetaUserProfileService) New(ctx context.Context, params BetaUserProfile
 // Get User Profile
 func (r *BetaUserProfileService) Get(ctx context.Context, userProfileID string, query BetaUserProfileGetParams, opts ...option.RequestOption) (res *BetaUserProfile, err error) {
 	for _, v := range query.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "user-profiles-2026-03-24")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "user-profiles-2026-03-24")}, opts...)
 	if userProfileID == "" {
 		err = errors.New("missing required user_profile_id parameter")
 		return nil, err
@@ -70,10 +70,10 @@ func (r *BetaUserProfileService) Get(ctx context.Context, userProfileID string, 
 // Update User Profile
 func (r *BetaUserProfileService) Update(ctx context.Context, userProfileID string, params BetaUserProfileUpdateParams, opts ...option.RequestOption) (res *BetaUserProfile, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "user-profiles-2026-03-24")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "user-profiles-2026-03-24")}, opts...)
 	if userProfileID == "" {
 		err = errors.New("missing required user_profile_id parameter")
 		return nil, err
@@ -87,10 +87,10 @@ func (r *BetaUserProfileService) Update(ctx context.Context, userProfileID strin
 func (r *BetaUserProfileService) List(ctx context.Context, params BetaUserProfileListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaUserProfile], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "user-profiles-2026-03-24"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "user-profiles-2026-03-24"), option.WithResponseInto(&raw)}, opts...)
 	path := "v1/user_profiles?beta=true"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
 	if err != nil {
@@ -112,10 +112,10 @@ func (r *BetaUserProfileService) ListAutoPaging(ctx context.Context, params Beta
 // Create Enrollment URL
 func (r *BetaUserProfileService) NewEnrollmentURL(ctx context.Context, userProfileID string, body BetaUserProfileNewEnrollmentURLParams, opts ...option.RequestOption) (res *BetaUserProfileEnrollmentURL, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "user-profiles-2026-03-24")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "user-profiles-2026-03-24")}, opts...)
 	if userProfileID == "" {
 		err = errors.New("missing required user_profile_id parameter")
 		return nil, err
@@ -135,7 +135,7 @@ type BetaUserProfile struct {
 	Metadata map[string]string `json:"metadata" api:"required"`
 	// How the entity behind a user profile relates to the platform that owns the API
 	// key. `external`: an individual end-user of the platform. `resold`: a company the
-	// platform resells Claude access to. `internal`: the platform's own usage.
+	// platform resells haijun access to. `internal`: the platform's own usage.
 	//
 	// Any of "external", "resold", "internal".
 	Relationship BetaUserProfileRelationship `json:"relationship" api:"required"`
@@ -177,7 +177,7 @@ func (r *BetaUserProfile) UnmarshalJSON(data []byte) error {
 
 // How the entity behind a user profile relates to the platform that owns the API
 // key. `external`: an individual end-user of the platform. `resold`: a company the
-// platform resells Claude access to. `internal`: the platform's own usage.
+// platform resells haijun access to. `internal`: the platform's own usage.
 type BetaUserProfileRelationship string
 
 const (
@@ -267,12 +267,12 @@ type BetaUserProfileNewParams struct {
 	Metadata map[string]string `json:"metadata,omitzero"`
 	// How the entity behind a user profile relates to the platform that owns the API
 	// key. `external`: an individual end-user of the platform. `resold`: a company the
-	// platform resells Claude access to. `internal`: the platform's own usage.
+	// platform resells haijun access to. `internal`: the platform's own usage.
 	//
 	// Any of "external", "resold", "internal".
 	Relationship BetaUserProfileNewParamsRelationship `json:"relationship,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -286,7 +286,7 @@ func (r *BetaUserProfileNewParams) UnmarshalJSON(data []byte) error {
 
 // How the entity behind a user profile relates to the platform that owns the API
 // key. `external`: an individual end-user of the platform. `resold`: a company the
-// platform resells Claude access to. `internal`: the platform's own usage.
+// platform resells haijun access to. `internal`: the platform's own usage.
 type BetaUserProfileNewParamsRelationship string
 
 const (
@@ -297,7 +297,7 @@ const (
 
 type BetaUserProfileGetParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -310,7 +310,7 @@ type BetaUserProfileUpdateParams struct {
 	Name param.Opt[string] `json:"name,omitzero"`
 	// How the entity behind a user profile relates to the platform that owns the API
 	// key. `external`: an individual end-user of the platform. `resold`: a company the
-	// platform resells Claude access to. `internal`: the platform's own usage.
+	// platform resells haijun access to. `internal`: the platform's own usage.
 	//
 	// Any of "external", "resold", "internal".
 	Relationship BetaUserProfileUpdateParamsRelationship `json:"relationship,omitzero"`
@@ -320,7 +320,7 @@ type BetaUserProfileUpdateParams struct {
 	// values up to 512 characters.
 	Metadata map[string]string `json:"metadata,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -334,7 +334,7 @@ func (r *BetaUserProfileUpdateParams) UnmarshalJSON(data []byte) error {
 
 // How the entity behind a user profile relates to the platform that owns the API
 // key. `external`: an individual end-user of the platform. `resold`: a company the
-// platform resells Claude access to. `internal`: the platform's own usage.
+// platform resells haijun access to. `internal`: the platform's own usage.
 type BetaUserProfileUpdateParamsRelationship string
 
 const (
@@ -353,7 +353,7 @@ type BetaUserProfileListParams struct {
 	// Any of "asc", "desc".
 	Order BetaUserProfileListParamsOrder `query:"order,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -376,6 +376,6 @@ const (
 
 type BetaUserProfileNewEnrollmentURLParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }

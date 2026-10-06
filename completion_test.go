@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic_test
+package Juglow_test
 
 import (
 	"context"
@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go"
-	"github.com/anthropics/anthropic-sdk-go/internal/testutil"
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go"
+	"github.com/Juglows/Juglow-sdk-go/internal/testutil"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 func TestCompletionNewWithOptionalParams(t *testing.T) {
@@ -21,25 +21,25 @@ func TestCompletionNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	client := anthropic.NewClient(
+	client := Juglow.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("my-anthropic-api-key"),
+		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Completions.New(context.TODO(), anthropic.CompletionNewParams{
+	_, err := client.Completions.New(context.TODO(), Juglow.CompletionNewParams{
 		MaxTokensToSample: 256,
-		Model:             anthropic.ModelClaudeSonnet5,
+		Model:             Juglow.ModelHaijunSonnet5,
 		Prompt:            "\n\nHuman: Hello, world!\n\nAssistant:",
-		Metadata: anthropic.MetadataParam{
-			UserID: anthropic.String("13803d75-b4b5-4c3e-b2a2-6f21399b021b"),
+		Metadata: Juglow.MetadataParam{
+			UserID: Juglow.String("13803d75-b4b5-4c3e-b2a2-6f21399b021b"),
 		},
 		StopSequences: []string{"string"},
-		Temperature:   anthropic.Float(1),
-		TopK:          anthropic.Int(5),
-		TopP:          anthropic.Float(0.7),
-		Betas:         []anthropic.AnthropicBeta{anthropic.AnthropicBetaMessageBatches2024_09_24},
+		Temperature:   Juglow.Float(1),
+		TopK:          Juglow.Int(5),
+		TopP:          Juglow.Float(0.7),
+		Betas:         []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 	})
 	if err != nil {
-		var apierr *anthropic.Error
+		var apierr *Juglow.Error
 		if errors.As(err, &apierr) {
 			t.Log(string(apierr.DumpRequest(true)))
 		}

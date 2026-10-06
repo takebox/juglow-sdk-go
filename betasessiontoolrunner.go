@@ -1,4 +1,4 @@
-package anthropic
+﻿package Juglow
 
 import (
 	"context"
@@ -11,9 +11,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/stainlessheader"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/internal/stainlessheader"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
 	"golang.org/x/sync/errgroup"
 )
 
@@ -58,7 +58,7 @@ var (
 )
 
 // SessionToolRunnerOptions configures a [SessionToolRunner]. The
-// managed-agents session id is not part of this struct — it is a positional
+// managed-agents session id is not part of this struct â€” it is a positional
 // argument to NewToolRunner, matching list/send/stream on the events resource.
 type SessionToolRunnerOptions struct {
 	// Tools is the registry of locally-executable tools, in the same
@@ -66,10 +66,10 @@ type SessionToolRunnerOptions struct {
 	// looks up each agent.tool_use and agent.custom_tool_use event's Name
 	// against this slice and routes to the matching tool. Use
 	// agenttoolset.BetaAgentToolset20260401(env) (from
-	// github.com/anthropics/anthropic-sdk-go/tools/agenttoolset) for the
+	// github.com/Juglows/Juglow-sdk-go/tools/agenttoolset) for the
 	// standard agent_toolset_20260401 set; filter or extend the slice to
-	// customise. Tool lifetime — including Close on tools that implement
-	// io.Closer — is the caller's responsibility: the runner never closes
+	// customise. Tool lifetime â€” including Close on tools that implement
+	// io.Closer â€” is the caller's responsibility: the runner never closes
 	// tools, so the same slice can be reused across multiple sessions.
 	Tools []BetaTool
 
@@ -78,7 +78,7 @@ type SessionToolRunnerOptions struct {
 	// countdown and it re-arms on the next "end_turn" idle. The countdown is
 	// deferred while a confirmation-gated call is held or still dispatching,
 	// and starts fresh once the last such call resolves. nil uses
-	// [DefaultMaxIdle] (60s). A non-nil value <= 0 disables it — the runner
+	// [DefaultMaxIdle] (60s). A non-nil value <= 0 disables it â€” the runner
 	// then only stops on session termination, the consumer breaking out, or
 	// ctx cancellation.
 	MaxIdle *time.Duration
@@ -87,14 +87,14 @@ type SessionToolRunnerOptions struct {
 	// retries). Defaults to slog.Default().
 	Logger *slog.Logger
 
-	// RequestOptions are applied to every request the runner issues — the
+	// RequestOptions are applied to every request the runner issues â€” the
 	// event stream, the reconcile list, and the tool-result send. The runner
 	// additionally tags each request with an x-stainless-helper header of
 	// its own (appended last, so it always wins on a collision with a
 	// caller-supplied tag).
 	//
 	// Self-hosted-environment callers must pass the environment key here.
-	// option.WithAuthToken alone only ADDS an Authorization header — the
+	// option.WithAuthToken alone only ADDS an Authorization header â€” the
 	// parent client's WithAPIKey middleware still emits X-Api-Key on every
 	// request, so both creds would land on the wire and the server rejects
 	// the dual auth on the events stream. Pair the bearer with an explicit
@@ -130,7 +130,7 @@ type SessionToolRunnerOptions struct {
 // agent.tool_use (the builtin agent_toolset_20260401 tools, answered with
 // user.tool_result) and agent.custom_tool_use (user-defined function tools,
 // answered with user.custom_tool_result). The Custom field reports which kind
-// this dispatch came from and selects which embedded-event pair is populated —
+// this dispatch came from and selects which embedded-event pair is populated â€”
 // ToolUse/Result for a builtin call, CustomToolUse/CustomResult for a custom
 // one. The flat top-level convenience fields (ToolUseID / Name / IsError /
 // Posted) are populated for both kinds; read whichever is more convenient,
@@ -141,7 +141,7 @@ type SessionToolRunnerOptions struct {
 // IsError is true if the tool reported failure or exceeded its per-call
 // timeout. Posted is orthogonal to IsError: it reports whether a result event
 // was successfully sent back to the session. Posted=false means the agent will
-// not see a result from this runner, regardless of IsError — either because
+// not see a result from this runner, regardless of IsError â€” either because
 // the send failed or because the tool name is not one this runner owns and the
 // runner deliberately posted nothing and left the id pending for its owner.
 type DispatchedToolCall struct {
@@ -155,7 +155,7 @@ type DispatchedToolCall struct {
 	// Confirmation is the verdict that gated this call, if any. "allow"
 	// means the call required user confirmation and was approved before it
 	// ran; "deny" means the user denied it or the server evaluated its
-	// permission to "deny" — the tool was never executed and nothing was
+	// permission to "deny" â€” the tool was never executed and nothing was
 	// posted (Posted=false, IsError=false, no Result). Empty means the call
 	// needed no confirmation.
 	Confirmation string
@@ -186,7 +186,7 @@ type DispatchedToolCall struct {
 
 	// ToolUseID is the id of the tool-use event that triggered this dispatch
 	// (flat convenience copy of ToolUse.ID / CustomToolUse.ID). It is the id
-	// the posted result event references — tool_use_id for a builtin call,
+	// the posted result event references â€” tool_use_id for a builtin call,
 	// custom_tool_use_id for a custom one. Use it to correlate logs with the
 	// session history.
 	ToolUseID string
@@ -200,8 +200,8 @@ type DispatchedToolCall struct {
 	IsError bool
 
 	// Posted reports whether a result event for this call reached the session.
-	// False on a permanent 4xx or exhausted retries, and also false — with no
-	// result event ever built — for a tool name this runner does not own when
+	// False on a permanent 4xx or exhausted retries, and also false â€” with no
+	// result event ever built â€” for a tool name this runner does not own when
 	// it deliberately posts nothing and leaves the id pending for its owner.
 	Posted bool
 }
@@ -209,13 +209,13 @@ type DispatchedToolCall struct {
 // SessionToolRunner attaches to a managed-agents session, executes incoming
 // agent.tool_use and agent.custom_tool_use events via a local tool registry,
 // and posts the matching user.tool_result / user.custom_tool_result events
-// back. agent.mcp_tool_use events are left alone — MCP tools are server-side.
+// back. agent.mcp_tool_use events are left alone â€” MCP tools are server-side.
 // It is the sessions-side counterpart to (*BetaMessageService).NewToolRunner:
-// it does ONLY the tool-execution loop — attach to the event stream, reconcile
+// it does ONLY the tool-execution loop â€” attach to the event stream, reconcile
 // via the events list endpoint, dispatch the registered tools, post results,
 // and the idle-after-end_turn timeout.
-// Lease heartbeating, work claiming, and skill download are not its concern —
-// see [github.com/anthropics/anthropic-sdk-go/lib/environments.EnvironmentWorker]
+// Lease heartbeating, work claiming, and skill download are not its concern â€”
+// see [github.com/Juglows/Juglow-sdk-go/lib/environments.EnvironmentWorker]
 // for the full self-hosted runner composition.
 //
 // A SessionToolRunner is NOT safe for concurrent use. All methods must be
@@ -224,14 +224,14 @@ type DispatchedToolCall struct {
 // execution per the agent.tool_use contract).
 //
 // A call the server gated with evaluated_permission "ask" (the always_ask
-// policy — or any unrecognized value, failing closed) is held until its
+// policy â€” or any unrecognized value, failing closed) is held until its
 // user.tool_confirmation arrives: only an explicit "allow" runs it. A "deny"
-// verdict — or a call the server already evaluated to "deny" — is never
+// verdict â€” or a call the server already evaluated to "deny" â€” is never
 // executed and posts nothing, but IS yielded (Confirmation="deny",
 // Posted=false, no Result) so the caller can observe it. While a call is held
 // the server parks the session at stop_reason "requires_action" and the
 // runner waits until the verdict arrives, the session terminates, or ctx is
-// cancelled — wrap in [environments.EnvironmentWorker] for lease-driven
+// cancelled â€” wrap in [environments.EnvironmentWorker] for lease-driven
 // detach, or pass a context.WithTimeout for a wall-clock bound.
 //
 // Tool lifetime is the caller's responsibility; the runner never closes tools,
@@ -239,7 +239,7 @@ type DispatchedToolCall struct {
 //
 // Typical usage:
 //
-//	r := client.Beta.Sessions.Events.NewToolRunner(ctx, sessionID, anthropic.SessionToolRunnerOptions{
+//	r := client.Beta.Sessions.Events.NewToolRunner(ctx, sessionID, Juglow.SessionToolRunnerOptions{
 //	    Tools: agenttoolset.BetaAgentToolset20260401(&agenttoolset.AgentToolContext{Workdir: "."}),
 //	})
 //	defer r.Close()
@@ -247,7 +247,7 @@ type DispatchedToolCall struct {
 //	    call := r.Current()
 //	    // observe call.Name, call.IsError, call.Posted
 //	}
-//	if err := r.Err(); err != nil && !errors.Is(err, anthropic.ErrSessionTerminated) {
+//	if err := r.Err(); err != nil && !errors.Is(err, Juglow.ErrSessionTerminated) {
 //	    log.Print(err)
 //	}
 type SessionToolRunner struct {
@@ -262,7 +262,7 @@ type SessionToolRunner struct {
 	// x-stainless-helper telemetry header. Immutable after construction.
 	reqOpts []option.RequestOption
 
-	// ctx is the runner's internal context — a child of the caller's ctx —
+	// ctx is the runner's internal context â€” a child of the caller's ctx â€”
 	// used by all background loops. cancel terminates them.
 	ctx    context.Context
 	cancel context.CancelFunc
@@ -279,11 +279,11 @@ type SessionToolRunner struct {
 	// Tracks in-flight tool executions for the drain phase.
 	inFlight sync.WaitGroup
 
-	// Dedup sets — touched by the stream goroutine, the reconcile pass before
+	// Dedup sets â€” touched by the stream goroutine, the reconcile pass before
 	// each stream reconnect, and the dispatch goroutine. `seen` prevents
 	// re-dispatching the same tool_use across reconcile+stream overlaps;
 	// `answered` prevents re-executing a tool whose result the server already
-	// has. One mutex covers both — they're always touched together at low
+	// has. One mutex covers both â€” they're always touched together at low
 	// frequency.
 	mu       sync.Mutex
 	seen     map[string]struct{}
@@ -358,13 +358,13 @@ func (r *BetaSessionEventService) NewToolRunner(ctx context.Context, sessionID s
 	rn.awaitingConfirmation = map[string]pendingToolUse{}
 	rn.idle = newIdleClock(rn.maxIdle())
 	if sessionID == "" {
-		rn.constructErr = errors.New("anthropic: NewToolRunner requires a non-empty session id")
+		rn.constructErr = errors.New("Juglow: NewToolRunner requires a non-empty session id")
 	}
 	return rn
 }
 
 // NewSessionToolRunner is the package-level equivalent of
-// (*BetaSessionEventService).NewToolRunner — useful when you have a [Client]
+// (*BetaSessionEventService).NewToolRunner â€” useful when you have a [Client]
 // value. Prefer client.Beta.Sessions.Events.NewToolRunner in new code.
 func NewSessionToolRunner(ctx context.Context, client Client, sessionID string, opts SessionToolRunnerOptions) *SessionToolRunner {
 	return client.Beta.Sessions.Events.NewToolRunner(ctx, sessionID, opts)
@@ -412,7 +412,7 @@ func (r *SessionToolRunner) Err() error {
 
 // Close stops all background goroutines and waits for the cleanup goroutine
 // (which drains in-flight tools) to finish. Safe to call multiple times. Always
-// returns nil — the signature satisfies io.Closer so callers can `defer
+// returns nil â€” the signature satisfies io.Closer so callers can `defer
 // r.Close()` uniformly. The runner never closes the tools it was given.
 func (r *SessionToolRunner) Close() error {
 	if r.closed {
@@ -478,8 +478,8 @@ func (r *SessionToolRunner) coordinate(g *errgroup.Group) {
 // drainInFlight waits up to the configured drain timeout (opts.DrainTimeout, or
 // defaultSessionRunnerDrainTimeout) for any in-flight tool executions to
 // complete, then logs a warning and returns. On timeout the waiter goroutine
-// below stays blocked on r.inFlight.Wait() — and pins the runner state it closes
-// over — until each tool actually returns; that is bounded by the per-tool
+// below stays blocked on r.inFlight.Wait() â€” and pins the runner state it closes
+// over â€” until each tool actually returns; that is bounded by the per-tool
 // timeout (opts.ToolTimeout, or defaultSessionRunnerToolTimeout), not unbounded,
 // but it does mean a slow tool can outlive Close.
 func (r *SessionToolRunner) drainInFlight() {
@@ -514,7 +514,7 @@ func (r *SessionToolRunner) setTerminalErr(err error) {
 // has picked up and queued for dispatch. Exactly one of toolUse / customToolUse
 // is populated, selected by custom: an agent.tool_use is answered with a
 // user.tool_result, an agent.custom_tool_use with a user.custom_tool_result.
-// confirmation is the verdict that released it onto the queue — "allow" for an
+// confirmation is the verdict that released it onto the queue â€” "allow" for an
 // ask-gated call the user approved, "" for a call that needed no confirmation.
 // Denied calls never reach the queue.
 type pendingToolUse struct {
@@ -524,7 +524,7 @@ type pendingToolUse struct {
 	confirmation  string
 }
 
-// id returns the tool-use event id — the key for the seen/answered dedup sets
+// id returns the tool-use event id â€” the key for the seen/answered dedup sets
 // and the id the posted result event references.
 func (p pendingToolUse) id() string {
 	if p.custom {
@@ -553,8 +553,8 @@ func (p pendingToolUse) input() map[string]any {
 // stops the runner once armedAt + maxIdle has elapsed.
 //
 // It also owns the deferral of that countdown: gated tool work registered via
-// block — a call held for user confirmation, or a user-approved call still
-// dispatching — keeps an arm pending until unblock retires the last blocker.
+// block â€” a call held for user confirmation, or a user-approved call still
+// dispatching â€” keeps an arm pending until unblock retires the last blocker.
 // The server can report an end_turn idle while a call is held (a legacy
 // v1beta idle is up-converted with stop_reason "end_turn" unconditionally), so
 // the countdown must never run over gated work: stopping then would drop the
@@ -572,7 +572,7 @@ type idleClock struct {
 	armedAt time.Time // zero when disarmed
 	// armPending is set when an arm found blockers outstanding; the unblock
 	// retiring the last blocker applies it. Cleared by any disarm. While it is
-	// set — and, more generally, while blockers is non-empty — armedAt is zero.
+	// set â€” and, more generally, while blockers is non-empty â€” armedAt is zero.
 	armPending bool
 	blockers   map[string]struct{}
 }
@@ -585,7 +585,7 @@ func newIdleClock(maxIdle time.Duration) *idleClock {
 // disarms on anything else.
 //
 // user.tool_confirmation is neutral: it signals neither agent activity nor an
-// idle, and its effect on the clock flows through block/unblock instead —
+// idle, and its effect on the clock flows through block/unblock instead â€”
 // disarming here would discard the pending arm the verdict is about to settle.
 func (c *idleClock) noteEvent(eventType, stopReason string) {
 	if eventType == "user.tool_confirmation" {
@@ -599,7 +599,7 @@ func (c *idleClock) noteEvent(eventType, stopReason string) {
 	}
 }
 
-// arm (re)starts the countdown from now and wakes the watchdog — or, while
+// arm (re)starts the countdown from now and wakes the watchdog â€” or, while
 // blockers are outstanding, holds the arm pending instead.
 func (c *idleClock) arm() {
 	if c.maxIdle <= 0 {
@@ -624,7 +624,7 @@ func (c *idleClock) arm() {
 	c.signal()
 }
 
-// disarm cancels the countdown and any pending arm. Blockers persist — they
+// disarm cancels the countdown and any pending arm. Blockers persist â€” they
 // track real outstanding work, retired only by unblock.
 func (c *idleClock) disarm() {
 	c.mu.Lock()
@@ -655,10 +655,10 @@ func (c *idleClock) block(id string) {
 }
 
 // unblock retires gated work (a no-op for ids never blocked) and applies a
-// pending arm once the last blocker retires — the countdown then runs a full
+// pending arm once the last blocker retires â€” the countdown then runs a full
 // fresh window from now. The apply happens inside the critical section:
 // deciding under the lock but stamping after releasing it would let a
-// concurrent disarm (a new stream event — the session is not idle) land in the
+// concurrent disarm (a new stream event â€” the session is not idle) land in the
 // gap and be overwritten, resurrecting a cancelled countdown.
 func (c *idleClock) unblock(id string) {
 	c.mu.Lock()
@@ -802,14 +802,14 @@ func jitterDuration(d time.Duration) time.Duration {
 // and agent.custom_tool_use with user.custom_tool_result when deciding what is
 // still unanswered.
 //
-// Every tool-use event is collected — and marked seen so the concurrently
-// running stream loop does not also enqueue it — but the enqueue decision is
+// Every tool-use event is collected â€” and marked seen so the concurrently
+// running stream loop does not also enqueue it â€” but the enqueue decision is
 // gated on `answered`, NOT `seen`: a tool_use whose result post previously
 // FAILED was never marked answered, so it is re-dispatched on the next
 // reconcile instead of being silently dropped.
 //
 // Returns ErrSessionTerminated if the listed history contains a
-// session.status_terminated or session.deleted event — the live stream
+// session.status_terminated or session.deleted event â€” the live stream
 // will never replay a terminate that fired before we attached, so without
 // this check streamLoop would reconnect forever against a dead session.
 func (r *SessionToolRunner) reconcile(ctx context.Context, out chan<- pendingToolUse) error {
@@ -881,7 +881,7 @@ func (r *SessionToolRunner) reconcile(ctx context.Context, out chan<- pendingToo
 	}
 	// Routing resolved denied calls in place (marking them answered) and held
 	// ask-gated calls for their verdict. If the last event in history is an
-	// end_turn idle and no tool work is outstanding, the session is done — arm
+	// end_turn idle and no tool work is outstanding, the session is done â€” arm
 	// the stop-countdown so the runner stops even if that end_turn arrived
 	// during a disconnect. A still-held call doesn't count as outstanding: the
 	// clock blocks on it, so the arm is held pending until its verdict lands.
@@ -914,8 +914,8 @@ func (r *SessionToolRunner) outstanding(unanswered []pendingToolUse) []pendingTo
 // tool-use per session at a time, so serial execution is correct. Pushes the
 // resulting DispatchedToolCall to r.results.
 //
-// Each call is unblocked once it is fully disposed of — executed, or moot
-// because it was answered elsewhere — retiring the idle-clock blocker
+// Each call is unblocked once it is fully disposed of â€” executed, or moot
+// because it was answered elsewhere â€” retiring the idle-clock blocker
 // applyVerdict took on a user-approved call. unblock is a no-op for a call
 // that was never gated.
 func (r *SessionToolRunner) dispatchLoop(ctx context.Context, in <-chan pendingToolUse) error {
@@ -927,7 +927,7 @@ func (r *SessionToolRunner) dispatchLoop(ctx context.Context, in <-chan pendingT
 			if !ok {
 				return nil
 			}
-			// Retire the blocker only once the call is fully disposed of —
+			// Retire the blocker only once the call is fully disposed of â€”
 			// executed and surfaced, or moot because it was answered
 			// elsewhere. Surfacing can block on a full results buffer, and
 			// the countdown must not start while the call is still queued.
@@ -982,7 +982,7 @@ func (r *SessionToolRunner) drainTimeout() time.Duration {
 // idleWatchdog returns ErrIdleTimeout once the session has been idle past
 // the bound matching its stop_reason. It is event-driven: the stream
 // goroutine nudges idle.wake whenever it updates the clock, and the
-// watchdog re-arms a single timer off that authoritative stamp — no
+// watchdog re-arms a single timer off that authoritative stamp â€” no
 // polling ticker.
 func (r *SessionToolRunner) idleWatchdog(ctx context.Context) error {
 	timer := time.NewTimer(time.Hour)
@@ -1064,7 +1064,7 @@ func (r *SessionToolRunner) execute(ctx context.Context, p pendingToolUse) Dispa
 		// registered for belongs to the other client servicing this session
 		// (typically the customer's app backend handling custom tools). Post
 		// NO result, do not mark it answered, and leave the tool_use_id
-		// pending for its owner — claiming it would corrupt the conversation.
+		// pending for its owner â€” claiming it would corrupt the conversation.
 		// Still yield the call so the caller can observe the unowned
 		// dispatch; nothing was sent, so Posted and IsError stay false and no
 		// result event is populated. The id remains unanswered, so reconcile
@@ -1159,8 +1159,8 @@ func toCustomToolResultContent(blocks []BetaToolResultBlockParamContentUnion) []
 	return out
 }
 
-// postCall builds the matching result event for call — user.custom_tool_result
-// when call.Custom, otherwise user.tool_result — from the tool's result blocks,
+// postCall builds the matching result event for call â€” user.custom_tool_result
+// when call.Custom, otherwise user.tool_result â€” from the tool's result blocks,
 // sends it, and records the event on call.Result / call.CustomResult and the
 // send outcome on call.Posted. The tool-use id is marked answered ONLY when
 // the result post actually succeeds: a failed post leaves the call unanswered
@@ -1221,7 +1221,7 @@ func (r *SessionToolRunner) sendResult(ctx context.Context, event BetaManagedAge
 			slog.String("tool_use_id", toolUseID),
 			slog.Int("attempt", attempt+1),
 			slog.Any("error", err))
-		// Don't back off after the final attempt — there is no retry left to
+		// Don't back off after the final attempt â€” there is no retry left to
 		// wait for, so sleeping would only delay returning the failure.
 		if attempt < sessionRunnerSendRetries-1 {
 			sleepCtx(ctx, time.Duration(attempt+1)*time.Second)
@@ -1254,7 +1254,7 @@ func (r *SessionToolRunner) isAnswered(id string) bool {
 }
 
 // routeToolEvent enqueues p for dispatch, honoring its evaluated permission.
-// A call the server gated with "ask" (or any unrecognized permission — fail
+// A call the server gated with "ask" (or any unrecognized permission â€” fail
 // closed) is held until its user.tool_confirmation arrives; a call already
 // evaluated to "deny" is resolved as denied regardless of any recorded verdict.
 func (r *SessionToolRunner) routeToolEvent(ctx context.Context, out chan<- pendingToolUse, p pendingToolUse) {
@@ -1266,8 +1266,8 @@ func (r *SessionToolRunner) routeToolEvent(ctx context.Context, out chan<- pendi
 	if !p.custom {
 		perm = string(p.toolUse.EvaluatedPermission)
 	}
-	// Comma-ok, not the zero value: a verdict this SDK doesn't recognise —
-	// including an empty one — must reach applyVerdict and fail closed, not
+	// Comma-ok, not the zero value: a verdict this SDK doesn't recognise â€”
+	// including an empty one â€” must reach applyVerdict and fail closed, not
 	// read as "no verdict yet" and dispatch.
 	verdict, hasVerdict := r.confirmationVerdicts[id]
 	if perm == "deny" {
@@ -1281,7 +1281,7 @@ func (r *SessionToolRunner) routeToolEvent(ctx context.Context, out chan<- pendi
 			case out <- p:
 			}
 		} else if _, held := r.awaitingConfirmation[id]; !held {
-			// "ask" — or a permission this SDK doesn't recognise — waits for
+			// "ask" â€” or a permission this SDK doesn't recognise â€” waits for
 			// the user's verdict. (Already held: a reconcile after a reconnect
 			// re-routes the call; keep the existing hold.)
 			r.log.Info("tool call awaiting confirmation; holding",
@@ -1308,12 +1308,12 @@ func (r *SessionToolRunner) noteConfirmation(ctx context.Context, out chan<- pen
 // applyVerdict dispatches or resolves a gated call according to its verdict.
 // Only an explicit "allow" releases the call to execute; anything else fails
 // closed as a denial. A denied call is marked answered and yielded directly
-// (nothing ran, nothing posted) — it never reaches the dispatch queue.
+// (nothing ran, nothing posted) â€” it never reaches the dispatch queue.
 //
 // The idle-clock blocker accounting lives here: a denial retires the held
-// call's blocker, while an allow keeps one on the call — taking it now if the
+// call's blocker, while an allow keeps one on the call â€” taking it now if the
 // verdict was already known when the call was routed, so no hold was ever
-// taken — until the dispatch loop has finished with it. The countdown must not
+// taken â€” until the dispatch loop has finished with it. The countdown must not
 // run over gated work that is still in flight.
 func (r *SessionToolRunner) applyVerdict(ctx context.Context, out chan<- pendingToolUse, p pendingToolUse, verdict string) {
 	id := p.id()

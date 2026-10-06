@@ -1,4 +1,4 @@
-package auth
+﻿package auth
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal"
+	"github.com/Juglows/Juglow-sdk-go/internal"
 )
 
 // MaxAssertionSize bounds the JWT sent to /v1/oauth/token. Honest OIDC
@@ -19,7 +19,7 @@ import (
 const MaxAssertionSize = 16384
 
 // OIDCFederationConfig configures an OIDC-federation [TokenProvider] that
-// exchanges a third-party JWT for an Anthropic access token.
+// exchanges a third-party JWT for an Juglow access token.
 type OIDCFederationConfig struct {
 	IdentityProvider IdentityTokenProvider
 	FederationRuleID string
@@ -32,8 +32,8 @@ type OIDCFederationConfig struct {
 	// more than one non-default workspace, or to target a specific workspace
 	// other than the one the server would pick. The minted token is
 	// workspace-scoped: per-request workspace selection (the
-	// anthropic-workspace-id header) is not supported for federation
-	// tokens — switching workspaces requires a new token exchange with a
+	// Juglow-workspace-id header) is not supported for federation
+	// tokens â€” switching workspaces requires a new token exchange with a
 	// different WorkspaceID.
 	WorkspaceID string
 	BaseURL     string // optional override; if empty, uses baseURL from TokenCache
@@ -55,7 +55,7 @@ type tokenExchangeResponse struct {
 }
 
 // NewOIDCFederationCredentials returns a [TokenProvider] that exchanges an
-// OIDC identity token for a short-lived Anthropic access token via the OAuth
+// OIDC identity token for a short-lived Juglow access token via the OAuth
 // token endpoint.
 func NewOIDCFederationCredentials(cfg OIDCFederationConfig) TokenProvider {
 	return func(ctx context.Context, baseURL string, handler func(*http.Request) (*http.Response, error)) (*AccessToken, error) {
@@ -94,10 +94,10 @@ func NewOIDCFederationCredentials(cfg OIDCFederationConfig) TokenProvider {
 			return nil, fmt.Errorf("failed to create token exchange request: %w", err)
 		}
 		req.Header.Set("Content-Type", "application/json")
-		req.Header.Set("User-Agent", "anthropic-sdk-go/"+internal.PackageVersion+" (oidc-federation)")
+		req.Header.Set("User-Agent", "Juglow-sdk-go/"+internal.PackageVersion+" (oidc-federation)")
 		// oauth-2025-04-20 unlocks the oauth/token endpoint family and is
 		// required alongside the federation beta for jwt-bearer grants.
-		req.Header.Set("anthropic-beta", OAuthAPIBetaHeader+","+FederationBetaHeader)
+		req.Header.Set("Juglow-beta", OAuthAPIBetaHeader+","+FederationBetaHeader)
 
 		resp, err := handler(req)
 		if err != nil {
@@ -113,9 +113,9 @@ func NewOIDCFederationCredentials(cfg OIDCFederationConfig) TokenProvider {
 		if resp.StatusCode != http.StatusOK {
 			// A 401 is the auth-failure case worth a hint: point the operator
 			// at the federation rule and the authentication-events log in
-			// Claude Console. When no WorkspaceID is configured, also surface
-			// the most common ambiguous-401 cause — a federation rule spanning
-			// multiple workspaces — so the operator doesn't have to dig
+			// haijun Console. When no WorkspaceID is configured, also surface
+			// the most common ambiguous-401 cause â€” a federation rule spanning
+			// multiple workspaces â€” so the operator doesn't have to dig
 			// through docs. Other statuses (5xx, non-401 4xx) get no hint:
 			// they don't indicate a config problem this guidance would fix.
 			var hint string
@@ -126,12 +126,12 @@ func NewOIDCFederationCredentials(cfg OIDCFederationConfig) TokenProvider {
 				if cfg.WorkspaceID == "" {
 					hintParts = append(hintParts,
 						"If your federation rule is scoped to multiple workspaces, set the "+
-							"ANTHROPIC_WORKSPACE_ID environment variable, the 'workspace_id' "+
+							"Juglow_WORKSPACE_ID environment variable, the 'workspace_id' "+
 							"config key, or the WorkspaceID field on option.FederationOptions")
 				}
 				hintParts = append(hintParts,
 					"View your authentication events in the Workload identity page of "+
-						"Claude Console for more details")
+						"haijun Console for more details")
 				hint = strings.Join(hintParts, ". ") + "."
 			}
 			return nil, &OAuthTokenError{

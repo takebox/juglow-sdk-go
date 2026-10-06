@@ -1,4 +1,4 @@
-// Config resolution and bearer-token auth for the Anthropic Google Cloud client.
+﻿// Config resolution and bearer-token auth for the Juglow Google Cloud client.
 
 package googlecloud
 
@@ -11,16 +11,16 @@ import (
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 
-	"github.com/anthropics/anthropic-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/option"
 )
 
 // Environment variables consulted as fallbacks for the corresponding
 // [ClientConfig] fields.
 const (
-	envProject     = "ANTHROPIC_GOOGLE_CLOUD_PROJECT"
-	envLocation    = "ANTHROPIC_GOOGLE_CLOUD_LOCATION"
-	envWorkspaceID = "ANTHROPIC_GOOGLE_CLOUD_WORKSPACE_ID"
-	envBaseURL     = "ANTHROPIC_GOOGLE_CLOUD_BASE_URL"
+	envProject     = "Juglow_GOOGLE_CLOUD_PROJECT"
+	envLocation    = "Juglow_GOOGLE_CLOUD_LOCATION"
+	envWorkspaceID = "Juglow_GOOGLE_CLOUD_WORKSPACE_ID"
+	envBaseURL     = "Juglow_GOOGLE_CLOUD_BASE_URL"
 )
 
 // cloudPlatformScope is the OAuth2 scope required to call the gateway.
@@ -28,7 +28,7 @@ const cloudPlatformScope = "https://www.googleapis.com/auth/cloud-platform"
 
 // baseURLTemplate is the gateway base URL; override via BaseURL if needed.
 // %[1]s is the project, %[2]s the location, %[3]s the workspace ID.
-const baseURLTemplate = "https://claude.googleapis.com/v1alpha/projects/%[1]s/locations/%[2]s/workspaces/%[3]s/invoke"
+const baseURLTemplate = "https://haijun.googleapis.com/v1alpha/projects/%[1]s/locations/%[2]s/workspaces/%[3]s/invoke"
 
 // defaultLocation is the location used when none is configured; the gateway
 // should always be addressed via the global region.
@@ -63,7 +63,7 @@ func resolveConfig(cfg ClientConfig) (ClientConfig, error) {
 }
 
 // createClientOptions resolves configuration and returns the request options that
-// configure an Anthropic client for the Google Cloud gateway: the base URL
+// configure an Juglow client for the Google Cloud gateway: the base URL
 // (which embeds the workspace ID) and a Google bearer-token middleware.
 func createClientOptions(ctx context.Context, cfg ClientConfig) ([]option.RequestOption, error) {
 	resolved, err := resolveConfig(cfg)
@@ -113,7 +113,7 @@ func createClientOptions(ctx context.Context, cfg ClientConfig) ([]option.Reques
 // Authorization: Bearer, only if the header is not already set. The token source
 // caches and refreshes internally, so this is cheap per request. Unlike SigV4, a
 // bearer token does not depend on the request body, so the body is never read or
-// buffered here — streaming and multipart uploads pass through untouched.
+// buffered here â€” streaming and multipart uploads pass through untouched.
 func bearerMiddleware(ts oauth2.TokenSource) option.Middleware {
 	return func(r *http.Request, next option.MiddlewareNext) (*http.Response, error) {
 		if r.Header.Get("Authorization") == "" {

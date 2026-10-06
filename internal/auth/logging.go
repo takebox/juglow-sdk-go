@@ -1,4 +1,4 @@
-package auth
+﻿package auth
 
 import (
 	"log"
@@ -23,7 +23,7 @@ func warnOnce(key, format string, args ...any) {
 	if already {
 		return
 	}
-	log.Printf("anthropic-sdk-go/auth: "+format, args...)
+	log.Printf("Juglow-sdk-go/auth: "+format, args...)
 }
 
 // ResetWarnOnceForTest clears the warnOnce dedupe set. Exported for test
@@ -43,7 +43,7 @@ type ConfigShadowSource int
 
 const (
 	// ConfigShadowFromEnv means the static credential was picked up from
-	// ANTHROPIC_API_KEY or ANTHROPIC_AUTH_TOKEN by the env autoloader.
+	// Juglow_API_KEY or Juglow_AUTH_TOKEN by the env autoloader.
 	// Remediation: unset the env var.
 	ConfigShadowFromEnv ConfigShadowSource = iota
 	// ConfigShadowFromOption means the static credential was passed

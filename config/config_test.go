@@ -1,4 +1,4 @@
-package config_test
+﻿package config_test
 
 import (
 	"bytes"
@@ -10,7 +10,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/anthropics/anthropic-sdk-go/config"
+	"github.com/Juglows/Juglow-sdk-go/config"
 )
 
 // setupConfigDir creates a temp config dir with configs/<profile>.json written
@@ -61,8 +61,8 @@ func TestLoadConfig_ProfileFromEnv(t *testing.T) {
 	body := oidcFederationProfile()
 	body["base_url"] = "https://work.example.com"
 	dir := setupConfigDir(t, "work", body)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "work")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "work")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -79,8 +79,8 @@ func TestLoadConfig_ProfileFromEnv(t *testing.T) {
 func TestLoadConfig_ProfileFromActiveConfigFile(t *testing.T) {
 	dir := setupConfigDir(t, "staging", userOAuthProfile())
 	os.WriteFile(filepath.Join(dir, "active_config"), []byte("staging"), 0644)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	unsetEnv(t, "ANTHROPIC_PROFILE")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	unsetEnv(t, "Juglow_PROFILE")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -93,8 +93,8 @@ func TestLoadConfig_ProfileFromActiveConfigFile(t *testing.T) {
 
 func TestLoadConfig_DefaultProfile(t *testing.T) {
 	dir := setupConfigDir(t, "default", userOAuthProfile())
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	unsetEnv(t, "ANTHROPIC_PROFILE")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	unsetEnv(t, "Juglow_PROFILE")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -117,8 +117,8 @@ func TestLoadConfig_EnvProfileTakesPrecedenceOverActiveConfig(t *testing.T) {
 	os.WriteFile(filepath.Join(dir, "configs", "from-file.json"), setupB, 0644)
 	os.WriteFile(filepath.Join(dir, "active_config"), []byte("from-file"), 0644)
 
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "from-env")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "from-env")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -145,8 +145,8 @@ func TestLoadConfig_OIDCFederationAllFields(t *testing.T) {
 			},
 		},
 	})
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "default")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "default")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -189,8 +189,8 @@ func TestLoadConfig_UserOAuthWithClientID(t *testing.T) {
 	body := userOAuthProfile()
 	body["authentication"].(map[string]any)["client_id"] = "client-xyz"
 	dir := setupConfigDir(t, "default", body)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "default")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "default")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -206,8 +206,8 @@ func TestLoadConfig_UserOAuthWithClientID(t *testing.T) {
 
 func TestLoadConfig_DefaultCredentialsPath(t *testing.T) {
 	dir := setupConfigDir(t, "myprofile", userOAuthProfile())
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "myprofile")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "myprofile")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -223,8 +223,8 @@ func TestLoadConfig_ExplicitCredentialsPathNotOverridden(t *testing.T) {
 	body := userOAuthProfile()
 	body["authentication"].(map[string]any)["credentials_path"] = "/explicit/path.json"
 	dir := setupConfigDir(t, "default", body)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "default")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "default")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -236,8 +236,8 @@ func TestLoadConfig_ExplicitCredentialsPathNotOverridden(t *testing.T) {
 }
 
 func TestLoadConfig_MissingConfigFile(t *testing.T) {
-	t.Setenv("ANTHROPIC_CONFIG_DIR", "/nonexistent/dir")
-	t.Setenv("ANTHROPIC_PROFILE", "default")
+	t.Setenv("Juglow_CONFIG_DIR", "/nonexistent/dir")
+	t.Setenv("Juglow_PROFILE", "default")
 
 	_, err := config.LoadConfig()
 	if err == nil {
@@ -248,8 +248,8 @@ func TestLoadConfig_MissingConfigFile(t *testing.T) {
 func TestLoadConfig_EmptyActiveConfigFallsBackToDefault(t *testing.T) {
 	dir := setupConfigDir(t, "default", userOAuthProfile())
 	os.WriteFile(filepath.Join(dir, "active_config"), []byte("  \n  "), 0644)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	unsetEnv(t, "ANTHROPIC_PROFILE")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	unsetEnv(t, "Juglow_PROFILE")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -264,8 +264,8 @@ func TestLoadConfig_MissingAuthenticationInfo(t *testing.T) {
 	dir := setupConfigDir(t, "default", map[string]any{
 		"base_url": "https://api.example.com",
 	})
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "default")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "default")
 
 	_, err := config.LoadConfig()
 	if err == nil {
@@ -285,8 +285,8 @@ func TestLoadConfig_CrossVariantFieldTolerated(t *testing.T) {
 			"client_id":          "ignored-cross-variant",
 		},
 	})
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "default")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "default")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -315,8 +315,8 @@ func TestLoadConfig_BothVariantFieldsTolerated(t *testing.T) {
 			"client_id":          "client-xyz",
 		},
 	})
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "default")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "default")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -336,8 +336,8 @@ func TestLoadConfig_UnknownAuthenticationType(t *testing.T) {
 			"type": "totally_made_up",
 		},
 	})
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "default")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "default")
 
 	_, err := config.LoadConfig()
 	if err == nil {
@@ -363,8 +363,8 @@ func TestLoadConfig_RejectsProfileWithPathTraversal(t *testing.T) {
 		"",
 	} {
 		t.Run(bad, func(t *testing.T) {
-			t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-			t.Setenv("ANTHROPIC_PROFILE", bad)
+			t.Setenv("Juglow_CONFIG_DIR", dir)
+			t.Setenv("Juglow_PROFILE", bad)
 			if _, err := config.LoadConfig(); err == nil {
 				t.Fatalf("expected error for profile %q", bad)
 			}
@@ -379,8 +379,8 @@ func TestLoadConfig_ToleratesUnknownTopLevelFields(t *testing.T) {
 	body["future_field"] = "ignored-by-this-sdk-version"
 	body["_comment"] = "human-readable annotation"
 	dir := setupConfigDir(t, "default", body)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "default")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "default")
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		t.Fatal(err)
@@ -393,7 +393,7 @@ func TestLoadConfig_ToleratesUnknownTopLevelFields(t *testing.T) {
 // TestLoadConfig_ToleratesUnknownVariantFields covers the tolerance rule
 // inside AuthenticationInfo.UnmarshalJSON. A typo'd field name (e.g.
 // "federation_rule" instead of "federation_rule_id") is silently ignored
-// — the typo surfaces as a missing-required-field error at credential
+// â€” the typo surfaces as a missing-required-field error at credential
 // resolution time, not a parse error.
 func TestLoadConfig_ToleratesUnknownVariantFields(t *testing.T) {
 	dir := setupConfigDir(t, "default", map[string]any{
@@ -404,8 +404,8 @@ func TestLoadConfig_ToleratesUnknownVariantFields(t *testing.T) {
 			"_comment":           "per-spec tolerance",
 		},
 	})
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "default")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "default")
 	cfg, err := config.LoadConfig()
 	if err != nil {
 		t.Fatal(err)
@@ -426,8 +426,8 @@ func TestLoadConfig_UnknownVariantFieldLogsWarning(t *testing.T) {
 			"federaton_rule_id":  "typo-ignored",
 		},
 	})
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	t.Setenv("ANTHROPIC_PROFILE", "default")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	t.Setenv("Juglow_PROFILE", "default")
 	config.ResetConfigWarnOnceForTest()
 
 	var buf bytes.Buffer
@@ -633,15 +633,15 @@ func TestLoadConfig_EnvDoesNotOverrideProfileFields(t *testing.T) {
 	}
 
 	dir := setupConfigDir(t, "default", body)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	unsetEnv(t, "ANTHROPIC_PROFILE")
-	t.Setenv("ANTHROPIC_BASE_URL", "https://env.example.com")
-	t.Setenv("ANTHROPIC_ORGANIZATION_ID", "org_from_env")
-	t.Setenv("ANTHROPIC_WORKSPACE_ID", "wrkspc_from_env")
-	t.Setenv("ANTHROPIC_FEDERATION_RULE_ID", "fdrl_from_env")
-	t.Setenv("ANTHROPIC_SERVICE_ACCOUNT_ID", "svac_from_env")
-	t.Setenv("ANTHROPIC_SCOPE", "scope_from_env")
-	t.Setenv("ANTHROPIC_IDENTITY_TOKEN_FILE", "/tmp/env-token")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	unsetEnv(t, "Juglow_PROFILE")
+	t.Setenv("Juglow_BASE_URL", "https://env.example.com")
+	t.Setenv("Juglow_ORGANIZATION_ID", "org_from_env")
+	t.Setenv("Juglow_WORKSPACE_ID", "wrkspc_from_env")
+	t.Setenv("Juglow_FEDERATION_RULE_ID", "fdrl_from_env")
+	t.Setenv("Juglow_SERVICE_ACCOUNT_ID", "svac_from_env")
+	t.Setenv("Juglow_SCOPE", "scope_from_env")
+	t.Setenv("Juglow_IDENTITY_TOKEN_FILE", "/tmp/env-token")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -683,14 +683,14 @@ func TestLoadConfig_EnvFillsMissingFields(t *testing.T) {
 		},
 	}
 	dir := setupConfigDir(t, "default", body)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	unsetEnv(t, "ANTHROPIC_PROFILE")
-	t.Setenv("ANTHROPIC_ORGANIZATION_ID", "org_from_env")
-	t.Setenv("ANTHROPIC_WORKSPACE_ID", "wrkspc_from_env")
-	t.Setenv("ANTHROPIC_FEDERATION_RULE_ID", "fdrl_from_env")
-	t.Setenv("ANTHROPIC_SERVICE_ACCOUNT_ID", "svac_from_env")
-	t.Setenv("ANTHROPIC_SCOPE", "scope_from_env")
-	t.Setenv("ANTHROPIC_IDENTITY_TOKEN_FILE", "/tmp/env-token")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	unsetEnv(t, "Juglow_PROFILE")
+	t.Setenv("Juglow_ORGANIZATION_ID", "org_from_env")
+	t.Setenv("Juglow_WORKSPACE_ID", "wrkspc_from_env")
+	t.Setenv("Juglow_FEDERATION_RULE_ID", "fdrl_from_env")
+	t.Setenv("Juglow_SERVICE_ACCOUNT_ID", "svac_from_env")
+	t.Setenv("Juglow_SCOPE", "scope_from_env")
+	t.Setenv("Juglow_IDENTITY_TOKEN_FILE", "/tmp/env-token")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -721,9 +721,9 @@ func TestLoadConfig_EnvFillsMissingUserOAuthScope(t *testing.T) {
 	// Profile omits scope entirely.
 	body := userOAuthProfile()
 	dir := setupConfigDir(t, "default", body)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	unsetEnv(t, "ANTHROPIC_PROFILE")
-	t.Setenv("ANTHROPIC_SCOPE", "scope_from_env")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	unsetEnv(t, "Juglow_PROFILE")
+	t.Setenv("Juglow_SCOPE", "scope_from_env")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -743,9 +743,9 @@ func TestLoadConfig_EnvDoesNotOverrideUserOAuthScope(t *testing.T) {
 	auth["scope"] = "scope_from_file"
 
 	dir := setupConfigDir(t, "default", body)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	unsetEnv(t, "ANTHROPIC_PROFILE")
-	t.Setenv("ANTHROPIC_SCOPE", "scope_from_env")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	unsetEnv(t, "Juglow_PROFILE")
+	t.Setenv("Juglow_SCOPE", "scope_from_env")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -763,9 +763,9 @@ func TestLoadConfig_EnvOverrideIgnoresEmptyValue(t *testing.T) {
 	body := oidcFederationProfile()
 	body["base_url"] = "https://file.example.com"
 	dir := setupConfigDir(t, "default", body)
-	t.Setenv("ANTHROPIC_CONFIG_DIR", dir)
-	unsetEnv(t, "ANTHROPIC_PROFILE")
-	t.Setenv("ANTHROPIC_BASE_URL", "")
+	t.Setenv("Juglow_CONFIG_DIR", dir)
+	unsetEnv(t, "Juglow_PROFILE")
+	t.Setenv("Juglow_BASE_URL", "")
 
 	cfg, err := config.LoadConfig()
 	if err != nil {
@@ -781,13 +781,13 @@ func TestLoadConfig_XDGConfigHome(t *testing.T) {
 		t.Skip("XDG not applicable on Windows")
 	}
 	xdg := t.TempDir()
-	configsDir := filepath.Join(xdg, "anthropic", "configs")
+	configsDir := filepath.Join(xdg, "Juglow", "configs")
 	os.MkdirAll(configsDir, 0755)
 	body, _ := json.MarshalIndent(oidcFederationProfile(), "", "  ")
 	os.WriteFile(filepath.Join(configsDir, "default.json"), body, 0644)
 
-	unsetEnv(t, "ANTHROPIC_CONFIG_DIR")
-	unsetEnv(t, "ANTHROPIC_PROFILE")
+	unsetEnv(t, "Juglow_CONFIG_DIR")
+	unsetEnv(t, "Juglow_PROFILE")
 	t.Setenv("XDG_CONFIG_HOME", xdg)
 	t.Setenv("HOME", t.TempDir()) // ensure fallback path is not used
 

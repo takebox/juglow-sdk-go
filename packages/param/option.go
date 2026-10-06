@@ -1,9 +1,9 @@
-package param
+﻿package param
 
 import (
 	"encoding/json"
 	"fmt"
-	shimjson "github.com/anthropics/anthropic-sdk-go/internal/encoding/json"
+	shimjson "github.com/Juglows/Juglow-sdk-go/internal/encoding/json"
 	"time"
 )
 

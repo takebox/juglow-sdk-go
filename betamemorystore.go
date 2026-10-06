@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -11,17 +11,17 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/apiquery"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/pagination"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/apiquery"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/pagination"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
 )
 
 // BetaMemoryStoreService contains methods and other services that help with
-// interacting with the anthropic API.
+// interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -46,10 +46,10 @@ func NewBetaMemoryStoreService(opts ...option.RequestOption) (r BetaMemoryStoreS
 // Create a memory store
 func (r *BetaMemoryStoreService) New(ctx context.Context, params BetaMemoryStoreNewParams, opts ...option.RequestOption) (res *BetaManagedAgentsMemoryStore, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "agent-memory-2026-07-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "agent-memory-2026-07-22")}, opts...)
 	path := "v1/memory_stores?beta=true"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
@@ -58,10 +58,10 @@ func (r *BetaMemoryStoreService) New(ctx context.Context, params BetaMemoryStore
 // Retrieve a memory store
 func (r *BetaMemoryStoreService) Get(ctx context.Context, memoryStoreID string, query BetaMemoryStoreGetParams, opts ...option.RequestOption) (res *BetaManagedAgentsMemoryStore, err error) {
 	for _, v := range query.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "agent-memory-2026-07-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "agent-memory-2026-07-22")}, opts...)
 	if memoryStoreID == "" {
 		err = errors.New("missing required memory_store_id parameter")
 		return nil, err
@@ -74,10 +74,10 @@ func (r *BetaMemoryStoreService) Get(ctx context.Context, memoryStoreID string, 
 // Update a memory store
 func (r *BetaMemoryStoreService) Update(ctx context.Context, memoryStoreID string, params BetaMemoryStoreUpdateParams, opts ...option.RequestOption) (res *BetaManagedAgentsMemoryStore, err error) {
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "agent-memory-2026-07-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "agent-memory-2026-07-22")}, opts...)
 	if memoryStoreID == "" {
 		err = errors.New("missing required memory_store_id parameter")
 		return nil, err
@@ -91,10 +91,10 @@ func (r *BetaMemoryStoreService) Update(ctx context.Context, memoryStoreID strin
 func (r *BetaMemoryStoreService) List(ctx context.Context, params BetaMemoryStoreListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaManagedAgentsMemoryStore], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "agent-memory-2026-07-22"), option.WithResponseInto(&raw)}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "agent-memory-2026-07-22"), option.WithResponseInto(&raw)}, opts...)
 	path := "v1/memory_stores?beta=true"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
 	if err != nil {
@@ -116,10 +116,10 @@ func (r *BetaMemoryStoreService) ListAutoPaging(ctx context.Context, params Beta
 // Delete a memory store
 func (r *BetaMemoryStoreService) Delete(ctx context.Context, memoryStoreID string, body BetaMemoryStoreDeleteParams, opts ...option.RequestOption) (res *BetaManagedAgentsDeletedMemoryStore, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "agent-memory-2026-07-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "agent-memory-2026-07-22")}, opts...)
 	if memoryStoreID == "" {
 		err = errors.New("missing required memory_store_id parameter")
 		return nil, err
@@ -132,10 +132,10 @@ func (r *BetaMemoryStoreService) Delete(ctx context.Context, memoryStoreID strin
 // Archive a memory store
 func (r *BetaMemoryStoreService) Archive(ctx context.Context, memoryStoreID string, body BetaMemoryStoreArchiveParams, opts ...option.RequestOption) (res *BetaManagedAgentsMemoryStore, err error) {
 	for _, v := range body.Betas {
-		opts = append(opts, option.WithHeaderAdd("anthropic-beta", fmt.Sprintf("%v", v)))
+		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("anthropic-beta", "agent-memory-2026-07-22")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "agent-memory-2026-07-22")}, opts...)
 	if memoryStoreID == "" {
 		err = errors.New("missing required memory_store_id parameter")
 		return nil, err
@@ -183,7 +183,7 @@ type BetaManagedAgentsMemoryStore struct {
 	ID string `json:"id" api:"required"`
 	// A timestamp in RFC 3339 format
 	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
-	// Human-readable name for the store. 1–255 characters. The store's mount-path slug
+	// Human-readable name for the store. 1â€“255 characters. The store's mount-path slug
 	// under `/mnt/memory/` is derived from this name.
 	Name string `json:"name" api:"required"`
 	// Any of "memory_store".
@@ -197,7 +197,7 @@ type BetaManagedAgentsMemoryStore struct {
 	// be useful to the agent. Empty string when unset.
 	Description string `json:"description"`
 	// Arbitrary key-value tags for your own bookkeeping (such as the end user a store
-	// belongs to). Up to 16 pairs; keys 1–64 characters; values up to 512 characters.
+	// belongs to). Up to 16 pairs; keys 1â€“64 characters; values up to 512 characters.
 	// Returned on retrieve/list but not filterable.
 	Metadata map[string]string `json:"metadata"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -228,7 +228,7 @@ const (
 )
 
 type BetaMemoryStoreNewParams struct {
-	// Human-readable name for the store. Required; 1–255 characters; no control
+	// Human-readable name for the store. Required; 1â€“255 characters; no control
 	// characters. The mount-path slug under `/mnt/memory/` is derived from this name
 	// (lowercased, non-alphanumeric runs collapsed to a hyphen). Names need not be
 	// unique within a workspace.
@@ -238,11 +238,11 @@ type BetaMemoryStoreNewParams struct {
 	// be useful to the agent.
 	Description param.Opt[string] `json:"description,omitzero"`
 	// Arbitrary key-value tags for your own bookkeeping (such as the end user a store
-	// belongs to). Up to 16 pairs; keys 1–64 characters; values up to 512 characters.
+	// belongs to). Up to 16 pairs; keys 1â€“64 characters; values up to 512 characters.
 	// Not visible to the agent.
 	Metadata map[string]string `json:"metadata,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -256,7 +256,7 @@ func (r *BetaMemoryStoreNewParams) UnmarshalJSON(data []byte) error {
 
 type BetaMemoryStoreGetParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -264,7 +264,7 @@ type BetaMemoryStoreUpdateParams struct {
 	// New description for the store, up to 1024 characters. Pass an empty string to
 	// clear it.
 	Description param.Opt[string] `json:"description,omitzero"`
-	// New human-readable name for the store. 1–255 characters; no control characters.
+	// New human-readable name for the store. 1â€“255 characters; no control characters.
 	// Renaming changes the slug used for the store's `mount_path` in sessions created
 	// after the update.
 	Name param.Opt[string] `json:"name,omitzero"`
@@ -273,7 +273,7 @@ type BetaMemoryStoreUpdateParams struct {
 	// each) with values up to 512 chars.
 	Metadata map[string]string `json:"metadata,omitzero"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -302,7 +302,7 @@ type BetaMemoryStoreListParams struct {
 	// previous response to fetch the next page; omit for the first page.
 	Page param.Opt[string] `query:"page,omitzero" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
@@ -317,12 +317,12 @@ func (r BetaMemoryStoreListParams) URLQuery() (v url.Values, err error) {
 
 type BetaMemoryStoreDeleteParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
 type BetaMemoryStoreArchiveParams struct {
 	// Optional header to specify the beta version(s) you want to use.
-	Betas []AnthropicBeta `header:"anthropic-beta,omitzero" json:"-"`
+	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }

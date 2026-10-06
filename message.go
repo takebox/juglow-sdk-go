@@ -1,6 +1,6 @@
-// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
-package anthropic
+package Juglow
 
 import (
 	"context"
@@ -11,19 +11,19 @@ import (
 	"slices"
 	"time"
 
-	"github.com/anthropics/anthropic-sdk-go/internal/apijson"
-	"github.com/anthropics/anthropic-sdk-go/internal/paramutil"
-	"github.com/anthropics/anthropic-sdk-go/internal/requestconfig"
-	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/anthropics/anthropic-sdk-go/packages/param"
-	"github.com/anthropics/anthropic-sdk-go/packages/respjson"
-	"github.com/anthropics/anthropic-sdk-go/packages/ssestream"
-	"github.com/anthropics/anthropic-sdk-go/shared/constant"
+	"github.com/Juglows/Juglow-sdk-go/internal/apijson"
+	"github.com/Juglows/Juglow-sdk-go/internal/paramutil"
+	"github.com/Juglows/Juglow-sdk-go/internal/requestconfig"
+	"github.com/Juglows/Juglow-sdk-go/option"
+	"github.com/Juglows/Juglow-sdk-go/packages/param"
+	"github.com/Juglows/Juglow-sdk-go/packages/respjson"
+	"github.com/Juglows/Juglow-sdk-go/packages/ssestream"
+	"github.com/Juglows/Juglow-sdk-go/shared/constant"
 	"github.com/tidwall/gjson"
 )
 
 // MessageService contains methods and other services that help with interacting
-// with the anthropic API.
+// with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
@@ -50,12 +50,12 @@ func NewMessageService(opts ...option.RequestOption) (r MessageService) {
 // conversations.
 //
 // Learn more about the Messages API in our
-// [user guide](https://platform.claude.com/docs/en/get-started)
+// [user guide](https://platform.haijun.com/docs/en/get-started)
 //
 // Note: If you choose to set a timeout for this request, we recommend 10 minutes.
 func (r *MessageService) New(ctx context.Context, params MessageNewParams, opts ...option.RequestOption) (res *Message, err error) {
 	if !param.IsOmitted(params.UserProfileID) {
-		opts = append(opts, option.WithHeader("anthropic-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
+		opts = append(opts, option.WithHeader("Juglow-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	warnIfThinkingEnabled(params.Model, params.Thinking.OfEnabled != nil)
@@ -80,7 +80,7 @@ func (r *MessageService) New(ctx context.Context, params MessageNewParams, opts 
 // conversations.
 //
 // Learn more about the Messages API in our
-// [user guide](https://platform.claude.com/docs/en/get-started)
+// [user guide](https://platform.haijun.com/docs/en/get-started)
 //
 // Note: If you choose to set a timeout for this request, we recommend 10 minutes.
 func (r *MessageService) NewStreaming(ctx context.Context, params MessageNewParams, opts ...option.RequestOption) (stream *ssestream.Stream[MessageStreamEventUnion]) {
@@ -89,7 +89,7 @@ func (r *MessageService) NewStreaming(ctx context.Context, params MessageNewPara
 		err error
 	)
 	if !param.IsOmitted(params.UserProfileID) {
-		opts = append(opts, option.WithHeader("anthropic-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
+		opts = append(opts, option.WithHeader("Juglow-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	warnIfThinkingEnabled(params.Model, params.Thinking.OfEnabled != nil)
@@ -105,10 +105,10 @@ func (r *MessageService) NewStreaming(ctx context.Context, params MessageNewPara
 // including tools, images, and documents, without creating it.
 //
 // Learn more about token counting in our
-// [user guide](https://platform.claude.com/docs/en/build-with-claude/token-counting)
+// [user guide](https://platform.haijun.com/docs/en/build-with-haijun/token-counting)
 func (r *MessageService) CountTokens(ctx context.Context, params MessageCountTokensParams, opts ...option.RequestOption) (res *MessageTokensCount, err error) {
 	if !param.IsOmitted(params.UserProfileID) {
-		opts = append(opts, option.WithHeader("anthropic-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
+		opts = append(opts, option.WithHeader("Juglow-user-profile-id", fmt.Sprintf("%v", params.UserProfileID.Value)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	path := "v1/messages/count_tokens"
@@ -495,7 +495,7 @@ type CacheControlEphemeralParam struct {
 	// - `1h`: 1 hour
 	//
 	// Defaults to `5m`. See
-	// [prompt caching pricing](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
+	// [prompt caching pricing](https://platform.haijun.com/docs/en/build-with-haijun/prompt-caching)
 	// for details.
 	//
 	// Any of "5m", "1h".
@@ -520,7 +520,7 @@ func (r *CacheControlEphemeralParam) UnmarshalJSON(data []byte) error {
 // - `1h`: 1 hour
 //
 // Defaults to `5m`. See
-// [prompt caching pricing](https://platform.claude.com/docs/en/build-with-claude/prompt-caching)
+// [prompt caching pricing](https://platform.haijun.com/docs/en/build-with-haijun/prompt-caching)
 // for details.
 type CacheControlEphemeralTTL string
 
@@ -900,11 +900,11 @@ func (CitationsSearchResultLocation) implCitationsDeltaCitationUnion()    {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := CitationsDeltaCitationUnion.AsAny().(type) {
-//	case anthropic.CitationCharLocation:
-//	case anthropic.CitationPageLocation:
-//	case anthropic.CitationContentBlockLocation:
-//	case anthropic.CitationsWebSearchResultLocation:
-//	case anthropic.CitationsSearchResultLocation:
+//	case Juglow.CitationCharLocation:
+//	case Juglow.CitationPageLocation:
+//	case Juglow.CitationContentBlockLocation:
+//	case Juglow.CitationsWebSearchResultLocation:
+//	case Juglow.CitationsSearchResultLocation:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -1615,18 +1615,18 @@ func (ContainerUploadBlock) implContentBlockUnion()                   {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := ContentBlockUnion.AsAny().(type) {
-//	case anthropic.TextBlock:
-//	case anthropic.ThinkingBlock:
-//	case anthropic.RedactedThinkingBlock:
-//	case anthropic.ToolUseBlock:
-//	case anthropic.ServerToolUseBlock:
-//	case anthropic.WebSearchToolResultBlock:
-//	case anthropic.WebFetchToolResultBlock:
-//	case anthropic.CodeExecutionToolResultBlock:
-//	case anthropic.BashCodeExecutionToolResultBlock:
-//	case anthropic.TextEditorCodeExecutionToolResultBlock:
-//	case anthropic.ToolSearchToolResultBlock:
-//	case anthropic.ContainerUploadBlock:
+//	case Juglow.TextBlock:
+//	case Juglow.ThinkingBlock:
+//	case Juglow.RedactedThinkingBlock:
+//	case Juglow.ToolUseBlock:
+//	case Juglow.ServerToolUseBlock:
+//	case Juglow.WebSearchToolResultBlock:
+//	case Juglow.WebFetchToolResultBlock:
+//	case Juglow.CodeExecutionToolResultBlock:
+//	case Juglow.BashCodeExecutionToolResultBlock:
+//	case Juglow.TextEditorCodeExecutionToolResultBlock:
+//	case Juglow.ToolSearchToolResultBlock:
+//	case Juglow.ContainerUploadBlock:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -2351,8 +2351,8 @@ type contentBlockParamUnionCitations struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *[]anthropic.TextCitationParamUnion:
-//	case *anthropic.CitationsConfigParam:
+//	case *[]Juglow.TextCitationParamUnion:
+//	case *Juglow.CitationsConfigParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -2389,12 +2389,12 @@ type contentBlockParamUnionSource struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.Base64ImageSourceParam:
-//	case *anthropic.URLImageSourceParam:
-//	case *anthropic.Base64PDFSourceParam:
-//	case *anthropic.PlainTextSourceParam:
-//	case *anthropic.ContentBlockSourceParam:
-//	case *anthropic.URLPDFSourceParam:
+//	case *Juglow.Base64ImageSourceParam:
+//	case *Juglow.URLImageSourceParam:
+//	case *Juglow.Base64PDFSourceParam:
+//	case *Juglow.PlainTextSourceParam:
+//	case *Juglow.ContentBlockSourceParam:
+//	case *Juglow.URLPDFSourceParam:
 //	case *string:
 //	default:
 //	    fmt.Errorf("not present")
@@ -2496,22 +2496,22 @@ type contentBlockParamUnionContent struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *[]anthropic.TextBlockParam:
-//	case *[]anthropic.ToolResultBlockParamContentUnion:
-//	case *[]anthropic.WebSearchResultBlockParam:
-//	case *anthropic.WebFetchToolResultErrorBlockParam:
-//	case *anthropic.WebFetchBlockParam:
-//	case *anthropic.CodeExecutionToolResultErrorParam:
-//	case *anthropic.CodeExecutionResultBlockParam:
-//	case *anthropic.EncryptedCodeExecutionResultBlockParam:
-//	case *anthropic.BashCodeExecutionToolResultErrorParam:
-//	case *anthropic.BashCodeExecutionResultBlockParam:
-//	case *anthropic.TextEditorCodeExecutionToolResultErrorParam:
-//	case *anthropic.TextEditorCodeExecutionViewResultBlockParam:
-//	case *anthropic.TextEditorCodeExecutionCreateResultBlockParam:
-//	case *anthropic.TextEditorCodeExecutionStrReplaceResultBlockParam:
-//	case *anthropic.ToolSearchToolResultErrorParam:
-//	case *anthropic.ToolSearchToolSearchResultBlockParam:
+//	case *[]Juglow.TextBlockParam:
+//	case *[]Juglow.ToolResultBlockParamContentUnion:
+//	case *[]Juglow.WebSearchResultBlockParam:
+//	case *Juglow.WebFetchToolResultErrorBlockParam:
+//	case *Juglow.WebFetchBlockParam:
+//	case *Juglow.CodeExecutionToolResultErrorParam:
+//	case *Juglow.CodeExecutionResultBlockParam:
+//	case *Juglow.EncryptedCodeExecutionResultBlockParam:
+//	case *Juglow.BashCodeExecutionToolResultErrorParam:
+//	case *Juglow.BashCodeExecutionResultBlockParam:
+//	case *Juglow.TextEditorCodeExecutionToolResultErrorParam:
+//	case *Juglow.TextEditorCodeExecutionViewResultBlockParam:
+//	case *Juglow.TextEditorCodeExecutionCreateResultBlockParam:
+//	case *Juglow.TextEditorCodeExecutionStrReplaceResultBlockParam:
+//	case *Juglow.ToolSearchToolResultErrorParam:
+//	case *Juglow.ToolSearchToolSearchResultBlockParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -2754,9 +2754,9 @@ type contentBlockParamUnionContentContent struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.DocumentBlockParam:
-//	case *[]anthropic.CodeExecutionOutputBlockParam:
-//	case *[]anthropic.BashCodeExecutionOutputBlockParam:
+//	case *Juglow.DocumentBlockParam:
+//	case *[]Juglow.CodeExecutionOutputBlockParam:
+//	case *[]Juglow.BashCodeExecutionOutputBlockParam:
 //	case *string:
 //	default:
 //	    fmt.Errorf("not present")
@@ -2796,9 +2796,9 @@ type contentBlockParamUnionCaller struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.DirectCallerParam:
-//	case *anthropic.ServerToolCallerParam:
-//	case *anthropic.ServerToolCaller20260120Param:
+//	case *Juglow.DirectCallerParam:
+//	case *Juglow.ServerToolCallerParam:
+//	case *Juglow.ServerToolCaller20260120Param:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -3124,8 +3124,8 @@ func (PlainTextSource) implDocumentBlockSourceUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := DocumentBlockSourceUnion.AsAny().(type) {
-//	case anthropic.Base64PDFSource:
-//	case anthropic.PlainTextSource:
+//	case Juglow.Base64PDFSource:
+//	case Juglow.PlainTextSource:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -3483,7 +3483,7 @@ type Message struct {
 	// Example:
 	//
 	// ```json
-	// [{ "type": "text", "text": "Hi, I'm Claude." }]
+	// [{ "type": "text", "text": "Hi, I'm haijun." }]
 	// ```
 	//
 	// If the request input `messages` ended with an `assistant` turn, then the
@@ -3512,7 +3512,7 @@ type Message struct {
 	Content []ContentBlockUnion `json:"content" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// Conversational role of the generated message.
@@ -3552,7 +3552,7 @@ type Message struct {
 	Type constant.Message `json:"type" default:"message"`
 	// Billing and rate-limit usage.
 	//
-	// Anthropic's API bills and rate-limits by token counts, as tokens represent the
+	// Juglow's API bills and rate-limits by token counts, as tokens represent the
 	// underlying cost to our systems.
 	//
 	// Under the hood, the API transforms requests into a format suitable for the
@@ -3561,7 +3561,7 @@ type Message struct {
 	// with the exact visible content of an API request or response.
 	//
 	// For example, `output_tokens` will be non-zero, even for an empty string response
-	// from Claude.
+	// from haijun.
 	//
 	// Total input tokens in a request is the summation of `input_tokens`,
 	// `cache_creation_input_tokens`, and `cache_read_input_tokens`.
@@ -4152,7 +4152,7 @@ type MessageDeltaUsage struct {
 	// Breakdown of output tokens by category.
 	//
 	// `output_tokens` remains the inclusive, authoritative total used for billing.
-	// This object provides a read-only decomposition for observability — for example,
+	// This object provides a read-only decomposition for observability â€” for example,
 	// how many of the billed output tokens were spent on internal reasoning that may
 	// have been summarized before being returned to you.
 	OutputTokensDetails OutputTokensDetails `json:"output_tokens_details" api:"required"`
@@ -4236,7 +4236,7 @@ func (r *MessageTokensCount) UnmarshalJSON(data []byte) error {
 type MetadataParam struct {
 	// An external identifier for the user who is associated with the request.
 	//
-	// This should be a uuid, hash value, or other opaque identifier. Anthropic may use
+	// This should be a uuid, hash value, or other opaque identifier. Juglow may use
 	// this id to help detect abuse. Do not include any identifying information such as
 	// name, email address, or phone number.
 	UserID param.Opt[string] `json:"user_id,omitzero"`
@@ -4278,30 +4278,30 @@ func (r *MidConversationSystemBlockParam) UnmarshalJSON(data []byte) error {
 
 // The model that will complete your prompt.
 //
-// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 // details and options.
 type Model = string
 
 const (
-	ModelClaudeSonnet5 Model = "claude-sonnet-5"
-	ModelClaudeFable5  Model = "claude-fable-5"
-	ModelClaudeMythos5 Model = "claude-mythos-5"
-	ModelClaudeOpus5   Model = "claude-opus-5"
-	ModelClaudeOpus4_8 Model = "claude-opus-4-8"
-	ModelClaudeOpus4_7 Model = "claude-opus-4-7"
+	ModelHaijunSonnet5 Model = "haijun-sonnet-5"
+	ModelHaijunFable5  Model = "haijun-fable-5"
+	ModelHaijunMythos5 Model = "haijun-mythos-5"
+	ModelHaijunOpus5   Model = "haijun-opus-5"
+	ModelHaijunOpus4_8 Model = "haijun-opus-4-8"
+	ModelHaijunOpus4_7 Model = "haijun-opus-4-7"
 	// Deprecated: Will reach end-of-life on June 30, 2026. Please migrate to
-	// claude-mythos-5. Visit
-	// https://docs.anthropic.com/en/docs/resources/model-deprecations for more
+	// haijun-mythos-5. Visit
+	// https://docs.Juglow.com/en/docs/resources/model-deprecations for more
 	// information.
-	ModelClaudeMythosPreview      Model = "claude-mythos-preview"
-	ModelClaudeOpus4_6            Model = "claude-opus-4-6"
-	ModelClaudeSonnet4_6          Model = "claude-sonnet-4-6"
-	ModelClaudeHaiku4_5           Model = "claude-haiku-4-5"
-	ModelClaudeHaiku4_5_20251001  Model = "claude-haiku-4-5-20251001"
-	ModelClaudeOpus4_5            Model = "claude-opus-4-5"
-	ModelClaudeOpus4_5_20251101   Model = "claude-opus-4-5-20251101"
-	ModelClaudeSonnet4_5          Model = "claude-sonnet-4-5"
-	ModelClaudeSonnet4_5_20250929 Model = "claude-sonnet-4-5-20250929"
+	ModelHaijunMythosPreview      Model = "haijun-mythos-preview"
+	ModelHaijunOpus4_6            Model = "haijun-opus-4-6"
+	ModelHaijunSonnet4_6          Model = "haijun-sonnet-4-6"
+	ModelHaijunHaiku4_5           Model = "haijun-haiku-4-5"
+	ModelHaijunHaiku4_5_20251001  Model = "haijun-haiku-4-5-20251001"
+	ModelHaijunOpus4_5            Model = "haijun-opus-4-5"
+	ModelHaijunOpus4_5_20251101   Model = "haijun-opus-4-5-20251101"
+	ModelHaijunSonnet4_5          Model = "haijun-sonnet-4-5"
+	ModelHaijunSonnet4_5_20250929 Model = "haijun-sonnet-4-5-20250929"
 )
 
 type OutputConfigParam struct {
@@ -4309,8 +4309,8 @@ type OutputConfigParam struct {
 	//
 	// Any of "low", "medium", "high", "xhigh", "max".
 	Effort OutputConfigEffort `json:"effort,omitzero"`
-	// A schema to specify Claude's output format in responses. See
-	// [structured outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs)
+	// A schema to specify haijun's output format in responses. See
+	// [structured outputs](https://platform.haijun.com/docs/en/build-with-haijun/structured-outputs)
 	Format JSONOutputFormatParam `json:"format,omitzero"`
 	paramObj
 }
@@ -4341,7 +4341,7 @@ type OutputTokensDetails struct {
 	// Reflects the raw reasoning the model produced, not the (possibly shorter)
 	// summarized thinking text returned in the response body. Computed by
 	// re-tokenizing the raw reasoning text, so it may differ from the model's exact
-	// generation count by a small number of tokens. Always ≤ `output_tokens`;
+	// generation count by a small number of tokens. Always â‰¤ `output_tokens`;
 	// `output_tokens - thinking_tokens` approximates the non-reasoning output.
 	ThinkingTokens int64 `json:"thinking_tokens" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -4453,11 +4453,11 @@ func (SignatureDelta) implRawContentBlockDeltaUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := RawContentBlockDeltaUnion.AsAny().(type) {
-//	case anthropic.TextDelta:
-//	case anthropic.InputJSONDelta:
-//	case anthropic.CitationsDelta:
-//	case anthropic.ThinkingDelta:
-//	case anthropic.SignatureDelta:
+//	case Juglow.TextDelta:
+//	case Juglow.InputJSONDelta:
+//	case Juglow.CitationsDelta:
+//	case Juglow.ThinkingDelta:
+//	case Juglow.SignatureDelta:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -4635,18 +4635,18 @@ func (ContainerUploadBlock) implContentBlockStartEventContentBlockUnion()       
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := ContentBlockStartEventContentBlockUnion.AsAny().(type) {
-//	case anthropic.TextBlock:
-//	case anthropic.ThinkingBlock:
-//	case anthropic.RedactedThinkingBlock:
-//	case anthropic.ToolUseBlock:
-//	case anthropic.ServerToolUseBlock:
-//	case anthropic.WebSearchToolResultBlock:
-//	case anthropic.WebFetchToolResultBlock:
-//	case anthropic.CodeExecutionToolResultBlock:
-//	case anthropic.BashCodeExecutionToolResultBlock:
-//	case anthropic.TextEditorCodeExecutionToolResultBlock:
-//	case anthropic.ToolSearchToolResultBlock:
-//	case anthropic.ContainerUploadBlock:
+//	case Juglow.TextBlock:
+//	case Juglow.ThinkingBlock:
+//	case Juglow.RedactedThinkingBlock:
+//	case Juglow.ToolUseBlock:
+//	case Juglow.ServerToolUseBlock:
+//	case Juglow.WebSearchToolResultBlock:
+//	case Juglow.WebFetchToolResultBlock:
+//	case Juglow.CodeExecutionToolResultBlock:
+//	case Juglow.BashCodeExecutionToolResultBlock:
+//	case Juglow.TextEditorCodeExecutionToolResultBlock:
+//	case Juglow.ToolSearchToolResultBlock:
+//	case Juglow.ContainerUploadBlock:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -4912,7 +4912,7 @@ type MessageDeltaEvent struct {
 	Type  constant.MessageDelta  `json:"type" default:"message_delta"`
 	// Billing and rate-limit usage.
 	//
-	// Anthropic's API bills and rate-limits by token counts, as tokens represent the
+	// Juglow's API bills and rate-limits by token counts, as tokens represent the
 	// underlying cost to our systems.
 	//
 	// Under the hood, the API transforms requests into a format suitable for the
@@ -4921,7 +4921,7 @@ type MessageDeltaEvent struct {
 	// with the exact visible content of an API request or response.
 	//
 	// For example, `output_tokens` will be non-zero, even for an empty string response
-	// from Claude.
+	// from haijun.
 	//
 	// Total input tokens in a request is the summation of `input_tokens`,
 	// `cache_creation_input_tokens`, and `cache_read_input_tokens`.
@@ -5051,12 +5051,12 @@ func (ContentBlockStopEvent) implMessageStreamEventUnion()  {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := MessageStreamEventUnion.AsAny().(type) {
-//	case anthropic.MessageStartEvent:
-//	case anthropic.MessageDeltaEvent:
-//	case anthropic.MessageStopEvent:
-//	case anthropic.ContentBlockStartEvent:
-//	case anthropic.ContentBlockDeltaEvent:
-//	case anthropic.ContentBlockStopEvent:
+//	case Juglow.MessageStartEvent:
+//	case Juglow.MessageDeltaEvent:
+//	case Juglow.MessageStopEvent:
+//	case Juglow.ContentBlockStartEvent:
+//	case Juglow.ContentBlockDeltaEvent:
+//	case Juglow.ContentBlockStopEvent:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -5169,7 +5169,7 @@ type RedactedThinkingBlock struct {
 	// multi-turn conversation.
 	//
 	// See
-	// [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking#redacted-thinking-blocks)
+	// [extended thinking](https://platform.haijun.com/docs/en/build-with-haijun/extended-thinking#redacted-thinking-blocks)
 	// for details.
 	Data string                    `json:"data" api:"required"`
 	Type constant.RedactedThinking `json:"type" default:"redacted_thinking"`
@@ -5437,9 +5437,9 @@ func (ServerToolCaller20260120) implServerToolUseBlockCallerUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := ServerToolUseBlockCallerUnion.AsAny().(type) {
-//	case anthropic.DirectCaller:
-//	case anthropic.ServerToolCaller:
-//	case anthropic.ServerToolCaller20260120:
+//	case Juglow.DirectCaller:
+//	case Juglow.ServerToolCaller:
+//	case Juglow.ServerToolCaller20260120:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -5586,7 +5586,7 @@ func init() {
 
 type SignatureDelta struct {
 	// The `signature` for this thinking block: an opaque value used to verify that the
-	// block was generated by Claude when it is passed back to the API. Delivered in a
+	// block was generated by haijun when it is passed back to the API. Delivered in a
 	// `signature_delta` event just before the block's `content_block_stop` event.
 	Signature string                  `json:"signature" api:"required"`
 	Type      constant.SignatureDelta `json:"type" default:"signature_delta"`
@@ -5732,11 +5732,11 @@ func (CitationsSearchResultLocation) implTextCitationUnion()    {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := TextCitationUnion.AsAny().(type) {
-//	case anthropic.CitationCharLocation:
-//	case anthropic.CitationPageLocation:
-//	case anthropic.CitationContentBlockLocation:
-//	case anthropic.CitationsWebSearchResultLocation:
-//	case anthropic.CitationsSearchResultLocation:
+//	case Juglow.CitationCharLocation:
+//	case Juglow.CitationPageLocation:
+//	case Juglow.CitationContentBlockLocation:
+//	case Juglow.CitationsWebSearchResultLocation:
+//	case Juglow.CitationsSearchResultLocation:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -6475,7 +6475,7 @@ const (
 )
 
 type ThinkingBlock struct {
-	// A value used to verify that this thinking block was generated by Claude when it
+	// A value used to verify that this thinking block was generated by haijun when it
 	// is passed back to the API.
 	//
 	// This is an opaque field and should not be interpreted or parsed. When passing
@@ -6483,10 +6483,10 @@ type ThinkingBlock struct {
 	// thinking), pass them back exactly as received, with this field intact.
 	//
 	// See
-	// [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+	// [extended thinking](https://platform.haijun.com/docs/en/build-with-haijun/extended-thinking)
 	// for details.
 	Signature string `json:"signature" api:"required"`
-	// The text of Claude's thinking process for this block.
+	// The text of haijun's thinking process for this block.
 	Thinking string            `json:"thinking" api:"required"`
 	Type     constant.Thinking `json:"type" default:"thinking"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -6508,7 +6508,7 @@ func (r *ThinkingBlock) UnmarshalJSON(data []byte) error {
 // The properties Signature, Thinking, Type are required.
 type ThinkingBlockParam struct {
 	// The `signature` value of this thinking block, exactly as returned by the API in
-	// a previous response. Used to verify that the block was generated by Claude.
+	// a previous response. Used to verify that the block was generated by haijun.
 	//
 	// Thinking blocks must be passed back unmodified and in their original order; a
 	// modified block results in a 400 `invalid_request_error`.
@@ -6584,14 +6584,14 @@ func (r *ThinkingConfigDisabledParam) UnmarshalJSON(data []byte) error {
 
 // The properties BudgetTokens, Type are required.
 type ThinkingConfigEnabledParam struct {
-	// Determines how many tokens Claude can use for its internal reasoning process.
+	// Determines how many tokens haijun can use for its internal reasoning process.
 	// Larger budgets can enable more thorough analysis for complex problems, improving
 	// response quality.
 	//
-	// Must be ≥1024 and less than `max_tokens`.
+	// Must be â‰¥1024 and less than `max_tokens`.
 	//
 	// See
-	// [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+	// [extended thinking](https://platform.haijun.com/docs/en/build-with-haijun/extended-thinking)
 	// for details.
 	BudgetTokens int64 `json:"budget_tokens" api:"required"`
 	// Controls how thinking content appears in the response. When set to `summarized`,
@@ -7189,8 +7189,8 @@ type toolResultBlockParamContentUnionCitations struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *[]anthropic.TextCitationParamUnion:
-//	case *anthropic.CitationsConfigParam:
+//	case *[]Juglow.TextCitationParamUnion:
+//	case *Juglow.CitationsConfigParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -7227,13 +7227,13 @@ type toolResultBlockParamContentUnionSource struct{ any }
 // Use the following switch statement to get the type of the union:
 //
 //	switch u.AsAny().(type) {
-//	case *anthropic.Base64ImageSourceParam:
-//	case *anthropic.URLImageSourceParam:
+//	case *Juglow.Base64ImageSourceParam:
+//	case *Juglow.URLImageSourceParam:
 //	case *string:
-//	case *anthropic.Base64PDFSourceParam:
-//	case *anthropic.PlainTextSourceParam:
-//	case *anthropic.ContentBlockSourceParam:
-//	case *anthropic.URLPDFSourceParam:
+//	case *Juglow.Base64PDFSourceParam:
+//	case *Juglow.PlainTextSourceParam:
+//	case *Juglow.ContentBlockSourceParam:
+//	case *Juglow.URLPDFSourceParam:
 //	default:
 //	    fmt.Errorf("not present")
 //	}
@@ -8317,9 +8317,9 @@ func (ServerToolCaller20260120) implToolUseBlockCallerUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := ToolUseBlockCallerUnion.AsAny().(type) {
-//	case anthropic.DirectCaller:
-//	case anthropic.ServerToolCaller:
-//	case anthropic.ServerToolCaller20260120:
+//	case Juglow.DirectCaller:
+//	case Juglow.ServerToolCaller:
+//	case Juglow.ServerToolCaller20260120:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -8486,7 +8486,7 @@ type Usage struct {
 	// Breakdown of output tokens by category.
 	//
 	// `output_tokens` remains the inclusive, authoritative total used for billing.
-	// This object provides a read-only decomposition for observability — for example,
+	// This object provides a read-only decomposition for observability â€” for example,
 	// how many of the billed output tokens were spent on internal reasoning that may
 	// have been summarized before being returned to you.
 	OutputTokensDetails OutputTokensDetails `json:"output_tokens_details" api:"required"`
@@ -8859,9 +8859,9 @@ func (ServerToolCaller20260120) implWebFetchToolResultBlockCallerUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := WebFetchToolResultBlockCallerUnion.AsAny().(type) {
-//	case anthropic.DirectCaller:
-//	case anthropic.ServerToolCaller:
-//	case anthropic.ServerToolCaller20260120:
+//	case Juglow.DirectCaller:
+//	case Juglow.ServerToolCaller:
+//	case Juglow.ServerToolCaller20260120:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -9412,9 +9412,9 @@ func (ServerToolCaller20260120) implWebSearchToolResultBlockCallerUnion() {}
 // Use the following switch statement to find the correct variant
 //
 //	switch variant := WebSearchToolResultBlockCallerUnion.AsAny().(type) {
-//	case anthropic.DirectCaller:
-//	case anthropic.ServerToolCaller:
-//	case anthropic.ServerToolCaller20260120:
+//	case Juglow.DirectCaller:
+//	case Juglow.ServerToolCaller:
+//	case Juglow.ServerToolCaller20260120:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
@@ -9642,11 +9642,11 @@ type MessageNewParams struct {
 	// only specifies the absolute maximum number of tokens to generate.
 	//
 	// Set to `0` to populate the
-	// [prompt cache](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache)
+	// [prompt cache](https://platform.haijun.com/docs/en/build-with-haijun/prompt-caching#pre-warming-the-cache)
 	// without generating a response.
 	//
 	// Different models have different maximum values for this parameter. See
-	// [models](https://platform.claude.com/docs/en/about-claude/models/overview) for
+	// [models](https://platform.haijun.com/docs/en/about-haijun/models/overview) for
 	// details.
 	MaxTokens int64 `json:"max_tokens" api:"required"`
 	// Input messages.
@@ -9668,7 +9668,7 @@ type MessageNewParams struct {
 	// Example with a single `user` message:
 	//
 	// ```json
-	// [{ "role": "user", "content": "Hello, Claude" }]
+	// [{ "role": "user", "content": "Hello, haijun" }]
 	// ```
 	//
 	// Example with multiple conversational turns:
@@ -9677,13 +9677,13 @@ type MessageNewParams struct {
 	// [
 	//
 	//	{ "role": "user", "content": "Hello there." },
-	//	{ "role": "assistant", "content": "Hi, I'm Claude. How can I help you?" },
+	//	{ "role": "assistant", "content": "Hi, I'm haijun. How can I help you?" },
 	//	{ "role": "user", "content": "Can you explain LLMs in plain English?" }
 	//
 	// ]
 	// ```
 	//
-	// Example with a partially-filled response from Claude:
+	// Example with a partially-filled response from haijun:
 	//
 	// ```json
 	// [
@@ -9703,26 +9703,26 @@ type MessageNewParams struct {
 	// following input messages are equivalent:
 	//
 	// ```json
-	// { "role": "user", "content": "Hello, Claude" }
+	// { "role": "user", "content": "Hello, haijun" }
 	// ```
 	//
 	// ```json
-	// { "role": "user", "content": [{ "type": "text", "text": "Hello, Claude" }] }
+	// { "role": "user", "content": [{ "type": "text", "text": "Hello, haijun" }] }
 	// ```
 	//
 	// See
-	// [input examples](https://platform.claude.com/docs/en/build-with-claude/working-with-messages).
+	// [input examples](https://platform.haijun.com/docs/en/build-with-haijun/working-with-messages).
 	//
 	// Note that if you want to include a
-	// [system prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role),
-	// you can use the top-level `system` parameter — there is no `"system"` role for
+	// [system prompt](https://platform.haijun.com/docs/en/build-with-haijun/prompt-engineering/haijun-prompting-best-practices#give-haijun-a-role),
+	// you can use the top-level `system` parameter â€” there is no `"system"` role for
 	// input messages in the Messages API.
 	//
 	// There is a limit of 100,000 messages in a single request.
 	Messages []MessageParam `json:"messages,omitzero" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// Container identifier for reuse across requests.
@@ -9756,7 +9756,7 @@ type MessageNewParams struct {
 	TopP param.Opt[float64] `json:"top_p,omitzero"`
 	// The user profile ID to attribute this request to. Use when acting on behalf of a
 	// party other than your organization. Requires the `user-profiles` beta header.
-	UserProfileID param.Opt[string] `header:"anthropic-user-profile-id,omitzero" json:"-"`
+	UserProfileID param.Opt[string] `header:"Juglow-user-profile-id,omitzero" json:"-"`
 	// Top-level cache control automatically applies a cache_control marker to the last
 	// cacheable block in the request.
 	CacheControl CacheControlEphemeralParam `json:"cache_control,omitzero"`
@@ -9767,8 +9767,8 @@ type MessageNewParams struct {
 	// Determines whether to use priority capacity (if available) or standard capacity
 	// for this request.
 	//
-	// Anthropic offers different levels of service for your API requests. See
-	// [service-tiers](https://platform.claude.com/docs/en/api/service-tiers) for
+	// Juglow offers different levels of service for your API requests. See
+	// [service-tiers](https://platform.haijun.com/docs/en/api/service-tiers) for
 	// details.
 	//
 	// Any of "auto", "standard_only".
@@ -9785,18 +9785,18 @@ type MessageNewParams struct {
 	StopSequences []string `json:"stop_sequences,omitzero"`
 	// System prompt.
 	//
-	// A system prompt is a way of providing context and instructions to Claude, such
+	// A system prompt is a way of providing context and instructions to haijun, such
 	// as specifying a particular goal or role. See our
-	// [guide to system prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role).
+	// [guide to system prompts](https://platform.haijun.com/docs/en/build-with-haijun/prompt-engineering/haijun-prompting-best-practices#give-haijun-a-role).
 	System []TextBlockParam `json:"system,omitzero"`
-	// Configuration for enabling Claude's extended thinking.
+	// Configuration for enabling haijun's extended thinking.
 	//
-	// When enabled, responses include `thinking` content blocks showing Claude's
+	// When enabled, responses include `thinking` content blocks showing haijun's
 	// thinking process before the final answer. Requires a minimum budget of 1,024
 	// tokens and counts towards your `max_tokens` limit.
 	//
 	// See
-	// [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+	// [extended thinking](https://platform.haijun.com/docs/en/build-with-haijun/extended-thinking)
 	// for details.
 	Thinking ThinkingConfigParamUnion `json:"thinking,omitzero"`
 	// How the model should use the provided tools. The model can use a specific tool,
@@ -9811,9 +9811,9 @@ type MessageNewParams struct {
 	//
 	// There are two types of tools: **client tools** and **server tools**. The
 	// behavior described below applies to client tools. For
-	// [server tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools),
+	// [server tools](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/server-tools),
 	// see their individual documentation as each has its own behavior (e.g., the
-	// [web search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool)).
+	// [web search tool](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/web-search-tool)).
 	//
 	// Each tool definition includes:
 	//
@@ -9883,7 +9883,7 @@ type MessageNewParams struct {
 	// JSON structure of output.
 	//
 	// See our
-	// [guide](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
+	// [guide](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/overview)
 	// for more details.
 	Tools []ToolUnionParam `json:"tools,omitzero"`
 	paramObj
@@ -9900,8 +9900,8 @@ func (r *MessageNewParams) UnmarshalJSON(data []byte) error {
 // Determines whether to use priority capacity (if available) or standard capacity
 // for this request.
 //
-// Anthropic offers different levels of service for your API requests. See
-// [service-tiers](https://platform.claude.com/docs/en/api/service-tiers) for
+// Juglow offers different levels of service for your API requests. See
+// [service-tiers](https://platform.haijun.com/docs/en/api/service-tiers) for
 // details.
 type MessageNewParamsServiceTier string
 
@@ -9930,7 +9930,7 @@ type MessageCountTokensParams struct {
 	// Example with a single `user` message:
 	//
 	// ```json
-	// [{ "role": "user", "content": "Hello, Claude" }]
+	// [{ "role": "user", "content": "Hello, haijun" }]
 	// ```
 	//
 	// Example with multiple conversational turns:
@@ -9939,13 +9939,13 @@ type MessageCountTokensParams struct {
 	// [
 	//
 	//	{ "role": "user", "content": "Hello there." },
-	//	{ "role": "assistant", "content": "Hi, I'm Claude. How can I help you?" },
+	//	{ "role": "assistant", "content": "Hi, I'm haijun. How can I help you?" },
 	//	{ "role": "user", "content": "Can you explain LLMs in plain English?" }
 	//
 	// ]
 	// ```
 	//
-	// Example with a partially-filled response from Claude:
+	// Example with a partially-filled response from haijun:
 	//
 	// ```json
 	// [
@@ -9965,31 +9965,31 @@ type MessageCountTokensParams struct {
 	// following input messages are equivalent:
 	//
 	// ```json
-	// { "role": "user", "content": "Hello, Claude" }
+	// { "role": "user", "content": "Hello, haijun" }
 	// ```
 	//
 	// ```json
-	// { "role": "user", "content": [{ "type": "text", "text": "Hello, Claude" }] }
+	// { "role": "user", "content": [{ "type": "text", "text": "Hello, haijun" }] }
 	// ```
 	//
 	// See
-	// [input examples](https://platform.claude.com/docs/en/build-with-claude/working-with-messages).
+	// [input examples](https://platform.haijun.com/docs/en/build-with-haijun/working-with-messages).
 	//
 	// Note that if you want to include a
-	// [system prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role),
-	// you can use the top-level `system` parameter — there is no `"system"` role for
+	// [system prompt](https://platform.haijun.com/docs/en/build-with-haijun/prompt-engineering/haijun-prompting-best-practices#give-haijun-a-role),
+	// you can use the top-level `system` parameter â€” there is no `"system"` role for
 	// input messages in the Messages API.
 	//
 	// There is a limit of 100,000 messages in a single request.
 	Messages []MessageParam `json:"messages,omitzero" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.anthropic.com/en/docs/models-overview) for additional
+	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// The user profile ID to attribute this request to. Use when acting on behalf of a
 	// party other than your organization. Requires the `user-profiles` beta header.
-	UserProfileID param.Opt[string] `header:"anthropic-user-profile-id,omitzero" json:"-"`
+	UserProfileID param.Opt[string] `header:"Juglow-user-profile-id,omitzero" json:"-"`
 	// Top-level cache control automatically applies a cache_control marker to the last
 	// cacheable block in the request.
 	CacheControl CacheControlEphemeralParam `json:"cache_control,omitzero"`
@@ -9997,18 +9997,18 @@ type MessageCountTokensParams struct {
 	OutputConfig OutputConfigParam `json:"output_config,omitzero"`
 	// System prompt.
 	//
-	// A system prompt is a way of providing context and instructions to Claude, such
+	// A system prompt is a way of providing context and instructions to haijun, such
 	// as specifying a particular goal or role. See our
-	// [guide to system prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role).
+	// [guide to system prompts](https://platform.haijun.com/docs/en/build-with-haijun/prompt-engineering/haijun-prompting-best-practices#give-haijun-a-role).
 	System MessageCountTokensParamsSystemUnion `json:"system,omitzero"`
-	// Configuration for enabling Claude's extended thinking.
+	// Configuration for enabling haijun's extended thinking.
 	//
-	// When enabled, responses include `thinking` content blocks showing Claude's
+	// When enabled, responses include `thinking` content blocks showing haijun's
 	// thinking process before the final answer. Requires a minimum budget of 1,024
 	// tokens and counts towards your `max_tokens` limit.
 	//
 	// See
-	// [extended thinking](https://platform.claude.com/docs/en/build-with-claude/extended-thinking)
+	// [extended thinking](https://platform.haijun.com/docs/en/build-with-haijun/extended-thinking)
 	// for details.
 	Thinking ThinkingConfigParamUnion `json:"thinking,omitzero"`
 	// How the model should use the provided tools. The model can use a specific tool,
@@ -10023,9 +10023,9 @@ type MessageCountTokensParams struct {
 	//
 	// There are two types of tools: **client tools** and **server tools**. The
 	// behavior described below applies to client tools. For
-	// [server tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools),
+	// [server tools](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/server-tools),
 	// see their individual documentation as each has its own behavior (e.g., the
-	// [web search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool)).
+	// [web search tool](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/web-search-tool)).
 	//
 	// Each tool definition includes:
 	//
@@ -10095,7 +10095,7 @@ type MessageCountTokensParams struct {
 	// JSON structure of output.
 	//
 	// See our
-	// [guide](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
+	// [guide](https://platform.haijun.com/docs/en/agents-and-tools/tool-use/overview)
 	// for more details.
 	Tools []MessageCountTokensToolUnionParam `json:"tools,omitzero"`
 	paramObj
