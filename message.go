@@ -3511,7 +3511,7 @@ type Message struct {
 	Content []ContentBlockUnion `json:"content" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// Conversational role of the generated message.
@@ -4277,7 +4277,7 @@ func (r *MidConversationSystemBlockParam) UnmarshalJSON(data []byte) error {
 
 // The model that will complete your prompt.
 //
-// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 // details and options.
 type Model = string
 
@@ -4290,7 +4290,7 @@ const (
 	ModelHaijunOpus4_7 Model = "haijun-opus-4-7"
 	// Deprecated: Will reach end-of-life on June 30, 2026. Please migrate to
 	// haijun-mythos-5. Visit
-	// https://docs.Juglow.com/en/docs/resources/model-deprecations for more
+	// https://docs.juglow.my.id/en/docs/resources/model-deprecations for more
 	// information.
 	ModelHaijunMythosPreview      Model = "haijun-mythos-preview"
 	ModelHaijunOpus4_6            Model = "haijun-opus-4-6"
@@ -9721,7 +9721,7 @@ type MessageNewParams struct {
 	Messages []MessageParam `json:"messages,omitzero" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// Container identifier for reuse across requests.
@@ -9983,7 +9983,7 @@ type MessageCountTokensParams struct {
 	Messages []MessageParam `json:"messages,omitzero" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// The user profile ID to attribute this request to. Use when acting on behalf of a

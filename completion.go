@@ -89,7 +89,7 @@ type Completion struct {
 	Completion string `json:"completion" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// The reason that we stopped.
@@ -130,7 +130,7 @@ type CompletionNewParams struct {
 	MaxTokensToSample int64 `json:"max_tokens_to_sample" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// The prompt that you want haijun to complete.

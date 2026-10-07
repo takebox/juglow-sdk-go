@@ -650,7 +650,7 @@ type BetaMessageBatchNewParamsRequestParams struct {
 	Messages []BetaMessageParam `json:"messages,omitzero" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// Specifies the geographic region for inference processing. If not specified, the

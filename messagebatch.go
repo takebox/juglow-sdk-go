@@ -627,7 +627,7 @@ type MessageBatchNewParamsRequestParams struct {
 	Messages []MessageParam `json:"messages,omitzero" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// Container identifier for reuse across requests.

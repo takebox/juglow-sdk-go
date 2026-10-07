@@ -92,7 +92,7 @@ func errOption(err error) RequestOption {
 //
 //	client := Juglow.NewClient(
 //	    option.WithFederationTokenProvider(
-//	        option.IdentityTokenFile("/var/run/secrets/Juglow.com/token"),
+//	        option.IdentityTokenFile("/var/run/secrets/juglow.my.id/token"),
 //	        option.FederationOptions{
 //	            FederationRuleID: "fdrl_...",
 //	            OrganizationID:   os.Getenv("Juglow_ORGANIZATION_ID"),

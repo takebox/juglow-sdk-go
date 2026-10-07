@@ -142,7 +142,7 @@ type BetaAdvisorMessageIterationUsage struct {
 	InputTokens int64 `json:"input_tokens" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// The number of output tokens which were used.
@@ -256,7 +256,7 @@ func (r *BetaAdvisorResultBlockParam) UnmarshalJSON(data []byte) error {
 type BetaAdvisorTool20260301Param struct {
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// Bounds the advisor's total output (thinking + text) per call. When the advisor
@@ -5087,7 +5087,7 @@ func (r *BetaFallbackCreditUsageStatusUnion) UnmarshalJSON(data []byte) error {
 type BetaFallbackInfo struct {
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
@@ -5110,7 +5110,7 @@ func (r *BetaFallbackInfo) UnmarshalJSON(data []byte) error {
 type BetaFallbackInfoParam struct {
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	paramObj
@@ -5141,7 +5141,7 @@ type BetaFallbackMessageIterationUsage struct {
 	InputTokens int64 `json:"input_tokens" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// The number of output tokens which were used.
@@ -5179,7 +5179,7 @@ func (r *BetaFallbackMessageIterationUsage) UnmarshalJSON(data []byte) error {
 type BetaFallbackParam struct {
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model     Model            `json:"model,omitzero" api:"required"`
 	MaxTokens param.Opt[int64] `json:"max_tokens,omitzero"`
@@ -6190,7 +6190,7 @@ type BetaMessage struct {
 	Diagnostics BetaDiagnostics `json:"diagnostics" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// Conversational role of the generated message.
@@ -6331,7 +6331,7 @@ type BetaMessageIterationUsage struct {
 	InputTokens int64 `json:"input_tokens" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model" api:"required"`
 	// The number of output tokens which were used.
@@ -13306,7 +13306,7 @@ type BetaMessageNewParams struct {
 	Messages []BetaMessageParam `json:"messages,omitzero" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// Specifies the geographic region for inference processing. If not specified, the
@@ -13677,7 +13677,7 @@ type BetaMessageCountTokensParams struct {
 	Messages []BetaMessageParam `json:"messages,omitzero" api:"required"`
 	// The model that will complete your prompt.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	Model Model `json:"model,omitzero" api:"required"`
 	// The user profile ID to attribute this request to. Use when acting on behalf of a

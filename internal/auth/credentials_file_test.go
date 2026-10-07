@@ -419,7 +419,7 @@ func TestResolveCredentials_BaseURLFromConfig(t *testing.T) {
 	})
 
 	result, err := ResolveCredentials(&config.Config{
-		BaseURL: "https://staging.Juglow.com",
+		BaseURL: "https://staging.juglow.my.id",
 		AuthenticationInfo: &config.AuthenticationInfo{
 			Type:            config.AuthenticationTypeUserOAuth,
 			CredentialsPath: credPath,
@@ -429,8 +429,8 @@ func TestResolveCredentials_BaseURLFromConfig(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.BaseURL != "https://staging.Juglow.com" {
-		t.Fatalf("got base_url %q, want %q", result.BaseURL, "https://staging.Juglow.com")
+	if result.BaseURL != "https://staging.juglow.my.id" {
+		t.Fatalf("got base_url %q, want %q", result.BaseURL, "https://staging.juglow.my.id")
 	}
 }
 

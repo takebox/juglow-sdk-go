@@ -9,12 +9,12 @@ interactions:
     headers:
       Accept:
       - application/json
-      Takebox AI-Version:
+      Juglow-Version:
       - "2023-06-01"
       Content-Type:
       - application/json
       User-Agent:
-      - Takebox AI/Go 1.16.0
+      - Juglow/Go 1.16.0
       X-Api-Key:
       - fake-api-key-for-testing-only
       X-Stainless-Arch:
@@ -40,31 +40,31 @@ interactions:
       get the current weather in San Francisco for you using Fahrenheit units."},{"type":"tool_use","id":"toolu_01RspNj5YbBdaKwpEEcKirBJ","name":"get_weather","input":{"city":"San
       Francisco","units":"fahrenheit"}}],"stop_reason":"tool_use","stop_sequence":null,"usage":{"input_tokens":402,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":90,"service_tier":"standard"}}'
     headers:
-      Takebox AI-Organization-Id:
+      Juglow-Organization-Id:
       - 1577a8a6-174a-4705-916c-6b22ae7a49e6
-      Takebox AI-Ratelimit-Input-Tokens-Limit:
+      Juglow-Ratelimit-Input-Tokens-Limit:
       - "200000"
-      Takebox AI-Ratelimit-Input-Tokens-Remaining:
+      Juglow-Ratelimit-Input-Tokens-Remaining:
       - "199000"
-      Takebox AI-Ratelimit-Input-Tokens-Reset:
+      Juglow-Ratelimit-Input-Tokens-Reset:
       - "2025-10-30T16:17:36Z"
-      Takebox AI-Ratelimit-Output-Tokens-Limit:
+      Juglow-Ratelimit-Output-Tokens-Limit:
       - "80000"
-      Takebox AI-Ratelimit-Output-Tokens-Remaining:
+      Juglow-Ratelimit-Output-Tokens-Remaining:
       - "80000"
-      Takebox AI-Ratelimit-Output-Tokens-Reset:
+      Juglow-Ratelimit-Output-Tokens-Reset:
       - "2025-10-30T16:17:37Z"
-      Takebox AI-Ratelimit-Requests-Limit:
+      Juglow-Ratelimit-Requests-Limit:
       - "4000"
-      Takebox AI-Ratelimit-Requests-Remaining:
+      Juglow-Ratelimit-Requests-Remaining:
       - "3998"
-      Takebox AI-Ratelimit-Requests-Reset:
+      Juglow-Ratelimit-Requests-Reset:
       - "2025-10-30T16:17:35Z"
-      Takebox AI-Ratelimit-Tokens-Limit:
+      Juglow-Ratelimit-Tokens-Limit:
       - "280000"
-      Takebox AI-Ratelimit-Tokens-Remaining:
+      Juglow-Ratelimit-Tokens-Remaining:
       - "279000"
-      Takebox AI-Ratelimit-Tokens-Reset:
+      Juglow-Ratelimit-Tokens-Reset:
       - "2025-10-30T16:17:36Z"
       Cf-Cache-Status:
       - DYNAMIC
@@ -98,12 +98,12 @@ interactions:
     headers:
       Accept:
       - application/json
-      Takebox AI-Version:
+      Juglow-Version:
       - "2023-06-01"
       Content-Type:
       - application/json
       User-Agent:
-      - Takebox AI/Go 1.16.0
+      - Juglow/Go 1.16.0
       X-Api-Key:
       - fake-api-key-for-testing-only
       X-Stainless-Arch:
@@ -128,31 +128,31 @@ interactions:
     body: '{"model":"haijun-3-7-sonnet-20250219","id":"msg_01D2irNnbwPJPt2d5D6B4ovq","type":"message","role":"assistant","content":[{"type":"text","text":"The
       weather in San Francisco is currently 68 degrees Fahrenheit."}],"stop_reason":"end_turn","stop_sequence":null,"usage":{"input_tokens":515,"cache_creation_input_tokens":0,"cache_read_input_tokens":0,"cache_creation":{"ephemeral_5m_input_tokens":0,"ephemeral_1h_input_tokens":0},"output_tokens":19,"service_tier":"standard"}}'
     headers:
-      Takebox AI-Organization-Id:
+      Juglow-Organization-Id:
       - 1577a8a6-174a-4705-916c-6b22ae7a49e6
-      Takebox AI-Ratelimit-Input-Tokens-Limit:
+      Juglow-Ratelimit-Input-Tokens-Limit:
       - "200000"
-      Takebox AI-Ratelimit-Input-Tokens-Remaining:
+      Juglow-Ratelimit-Input-Tokens-Remaining:
       - "199000"
-      Takebox AI-Ratelimit-Input-Tokens-Reset:
+      Juglow-Ratelimit-Input-Tokens-Reset:
       - "2025-10-30T16:17:38Z"
-      Takebox AI-Ratelimit-Output-Tokens-Limit:
+      Juglow-Ratelimit-Output-Tokens-Limit:
       - "80000"
-      Takebox AI-Ratelimit-Output-Tokens-Remaining:
+      Juglow-Ratelimit-Output-Tokens-Remaining:
       - "80000"
-      Takebox AI-Ratelimit-Output-Tokens-Reset:
+      Juglow-Ratelimit-Output-Tokens-Reset:
       - "2025-10-30T16:17:38Z"
-      Takebox AI-Ratelimit-Requests-Limit:
+      Juglow-Ratelimit-Requests-Limit:
       - "4000"
-      Takebox AI-Ratelimit-Requests-Remaining:
+      Juglow-Ratelimit-Requests-Remaining:
       - "3999"
-      Takebox AI-Ratelimit-Requests-Reset:
+      Juglow-Ratelimit-Requests-Reset:
       - "2025-10-30T16:17:37Z"
-      Takebox AI-Ratelimit-Tokens-Limit:
+      Juglow-Ratelimit-Tokens-Limit:
       - "280000"
-      Takebox AI-Ratelimit-Tokens-Remaining:
+      Juglow-Ratelimit-Tokens-Remaining:
       - "279000"
-      Takebox AI-Ratelimit-Tokens-Reset:
+      Juglow-Ratelimit-Tokens-Reset:
       - "2025-10-30T16:17:38Z"
       Cf-Cache-Status:
       - DYNAMIC

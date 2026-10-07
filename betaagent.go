@@ -1979,7 +1979,7 @@ const (
 
 // The model that will power your agent.
 //
-// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 // details and options.
 type BetaManagedAgentsModel = string
 
@@ -2003,7 +2003,7 @@ const (
 type BetaManagedAgentsModelConfig struct {
 	// The model that will power your agent.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	ID BetaManagedAgentsModel `json:"id" api:"required"`
 	// How hard haijun works on each turn. Sets `output_config.effort` on every
@@ -2141,7 +2141,7 @@ const (
 type BetaManagedAgentsModelConfigParams struct {
 	// The model that will power your agent.
 	//
-	// See [models](https://docs.Juglow.com/en/docs/models-overview) for additional
+	// See [models](https://docs.juglow.my.id/en/docs/models-overview) for additional
 	// details and options.
 	ID BetaManagedAgentsModel `json:"id,omitzero" api:"required"`
 	// Geographic region for model inference. When unset, requests fall through to the
