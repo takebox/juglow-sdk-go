@@ -1,4 +1,4 @@
-module github.com/anthropics/anthropic-sdk-go
+module github.com/takebox/juglow-sdk-go
 
 go 1.24
 
