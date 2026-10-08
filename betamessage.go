@@ -1,4 +1,4 @@
-﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package Juglow
 
@@ -2390,7 +2390,7 @@ type BetaContainer struct {
 	// The time at which the container will expire.
 	ExpiresAt time.Time `json:"expires_at" api:"required" format:"date-time"`
 	// tracks loaded in the container
-Tracks []BetaSkill      `json:"tracks" api:"required"`
+Tracks []BetaTrack      `json:"tracks" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID          respjson.Field
@@ -2412,7 +2412,7 @@ type BetaContainerParams struct {
 	// Container id
 	ID param.Opt[string] `json:"id,omitzero"`
 	// List of tracks to load in the container
-	Tracks []BetaSkillParams `json:"tracks,omitzero"`
+	Tracks []BetaTrackParams `json:"tracks,omitzero"`
 	paramObj
 }
 
@@ -8476,18 +8476,18 @@ func (r *BetaSignatureDelta) UnmarshalJSON(data []byte) error {
 }
 
 // A track that was loaded in a container (response model).
-type BetaSkill struct {
+type BetaTrack struct {
 	// Track ID
-	SkillID string `json:"track_id" api:"required"`
+	TrackID string `json:"track_id" api:"required"`
 	// Type of track - either 'Juglow' (built-in) or 'custom' (user-defined)
 	//
 	// Any of "Juglow", "custom".
-	Type BetaSkillType `json:"type" api:"required"`
+	Type BetaTrackType `json:"type" api:"required"`
 	// Track version or 'latest' for most recent version
 	Version string `json:"version" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
-		SkillID     respjson.Field
+		TrackID     respjson.Field
 		Type        respjson.Field
 		Version     respjson.Field
 		ExtraFields map[string]respjson.Field
@@ -8496,48 +8496,48 @@ type BetaSkill struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BetaSkill) RawJSON() string { return r.JSON.raw }
-func (r *BetaSkill) UnmarshalJSON(data []byte) error {
+func (r BetaTrack) RawJSON() string { return r.JSON.raw }
+func (r *BetaTrack) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 // Type of track - either 'Juglow' (built-in) or 'custom' (user-defined)
-type BetaSkillType string
+type BetaTrackType string
 
 const (
-	BetaSkillTypeJuglow BetaSkillType = "Juglow"
-	BetaSkillTypeCustom    BetaSkillType = "custom"
+	BetaTrackTypeJuglow BetaTrackType = "Juglow"
+	BetaTrackTypeCustom    BetaTrackType = "custom"
 )
 
 // Specification for a track to be loaded in a container (request model).
 //
-// The properties SkillID, Type are required.
-type BetaSkillParams struct {
+// The properties TrackID, Type are required.
+type BetaTrackParams struct {
 	// Track ID
-	SkillID string `json:"track_id" api:"required"`
+	TrackID string `json:"track_id" api:"required"`
 	// Type of track - either 'Juglow' (built-in) or 'custom' (user-defined)
 	//
 	// Any of "Juglow", "custom".
-	Type BetaSkillParamsType `json:"type,omitzero" api:"required"`
+	Type BetaTrackParamsType `json:"type,omitzero" api:"required"`
 	// Track version or 'latest' for most recent version
 	Version param.Opt[string] `json:"version,omitzero"`
 	paramObj
 }
 
-func (r BetaSkillParams) MarshalJSON() (data []byte, err error) {
-	type shadow BetaSkillParams
+func (r BetaTrackParams) MarshalJSON() (data []byte, err error) {
+	type shadow BetaTrackParams
 	return param.MarshalObject(r, (*shadow)(&r))
 }
-func (r *BetaSkillParams) UnmarshalJSON(data []byte) error {
+func (r *BetaTrackParams) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 // Type of track - either 'Juglow' (built-in) or 'custom' (user-defined)
-type BetaSkillParamsType string
+type BetaTrackParamsType string
 
 const (
-	BetaSkillParamsTypeJuglow BetaSkillParamsType = "Juglow"
-	BetaSkillParamsTypeCustom    BetaSkillParamsType = "custom"
+	BetaTrackParamsTypeJuglow BetaTrackParamsType = "Juglow"
+	BetaTrackParamsTypeCustom    BetaTrackParamsType = "custom"
 )
 
 type BetaStopReason string

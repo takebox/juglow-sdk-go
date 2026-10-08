@@ -1,4 +1,4 @@
-﻿package environments
+package environments
 
 import (
 	"bytes"
@@ -196,7 +196,7 @@ func (f *fakeWorkServer) serveHTTP(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "unexpected", http.StatusMethodNotAllowed)
 		}
 	case strings.Contains(r.URL.Path, "/sessions/"):
-		// Bare GET /v1/sessions/{id} â€” the SetupSkills session lookup. The
+		// Bare GET /v1/sessions/{id} â€” the SetupTracks session lookup. The
 		// /events{,/stream} cases above already handled the event endpoints.
 		require.NotNil(f.t, f.HandleSessionGet, "unscripted Sessions.Get call: %s", r.URL.Path)
 		f.HandleSessionGet(w, r)

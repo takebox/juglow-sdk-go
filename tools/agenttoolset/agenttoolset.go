@@ -1,7 +1,7 @@
-﻿// Package agenttoolset provides Node-equivalent local executors for the
+// Package agenttoolset provides Node-equivalent local executors for the
 // `agent_toolset_20260401` tool set â€” `bash`, `read`, `write`, `edit`, `glob`,
 // `grep` â€” plus the workdir/tracks [AgentToolContext] and the track-download helper
-// ([AgentToolContext.SetupSkills]).
+// ([AgentToolContext.SetupTracks]).
 //
 // This mirrors the SDK's other first-class tool modules: it is the explicit
 // entry point for these implementations. Importing it pulls in os/exec, a PTY

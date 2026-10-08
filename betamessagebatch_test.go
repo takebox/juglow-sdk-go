@@ -1,4 +1,4 @@
-﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package Juglow_test
 
@@ -58,9 +58,9 @@ func TestBetaMessageBatchNewWithOptionalParams(t *testing.T) {
 				Container: Juglow.BetaMessageBatchNewParamsRequestParamsContainerUnion{
 					OfContainers: &Juglow.BetaContainerParams{
 						ID: Juglow.String("id"),
-						Tracks: []Juglow.BetaSkillParams{{
-							SkillID: "pdf",
-							Type:    Juglow.BetaSkillParamsTypeJuglow,
+						Tracks: []Juglow.BetaTrackParams{{
+							TrackID: "pdf",
+							Type:    Juglow.BetaTrackParamsTypeJuglow,
 							Version: Juglow.String("latest"),
 						}},
 					},

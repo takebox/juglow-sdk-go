@@ -1,4 +1,4 @@
-﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package Juglow
 
@@ -182,7 +182,7 @@ type BetaManagedAgentsSessionThreadAgentUnion struct {
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
 	Name string `json:"name"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
-	Tracks []BetaManagedAgentsSessionThreadAgentSkillUnion `json:"tracks"`
+	Tracks []BetaManagedAgentsSessionThreadAgentTrackUnion `json:"tracks"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
 	System string `json:"system"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].

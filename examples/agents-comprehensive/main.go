@@ -1,4 +1,4 @@
-﻿package main
+package main
 
 import (
 	"context"
@@ -63,15 +63,15 @@ func main() {
 	fmt.Println("Created credential:", credential.ID)
 
 	// Upload a custom track
-	skillFile, err := os.Open("agents-comprehensive/greeting-TRACK.md")
+	trackFile, err := os.Open("agents-comprehensive/greeting-TRACK.md")
 	if err != nil {
 		panic(err)
 	}
-	defer skillFile.Close()
+	defer trackFile.Close()
 
-	track, err := client.Beta.tracks.New(ctx, Juglow.BetaSkillNewParams{
+	track, err := client.Beta.tracks.New(ctx, Juglow.BetaTrackNewParams{
 		DisplayTitle: param.NewOpt(fmt.Sprintf("comprehensive-greeting-%d", time.Now().UnixMilli())),
-		Files:        []io.Reader{namedReader{skillFile, "greeting/TRACK.md"}},
+		Files:        []io.Reader{namedReader{trackFile, "greeting/TRACK.md"}},
 	})
 	if err != nil {
 		panic(err)
@@ -125,17 +125,17 @@ func main() {
 	// Patch the agent to v2 by adding tracks; each update bumps the version
 	agent, err := client.Beta.Agents.Update(ctx, agentV1.ID, Juglow.BetaAgentUpdateParams{
 		Version: Juglow.Int(agentV1.Version),
-		tracks: []Juglow.BetaManagedAgentsSkillParamsUnion{
+		tracks: []Juglow.BetaManagedAgentsTrackParamsUnion{
 			{
-				OfCustom: &Juglow.BetaManagedAgentsCustomSkillParams{
-					Type:    Juglow.BetaManagedAgentsCustomSkillParamsTypeCustom,
-					SkillID: track.ID,
+				OfCustom: &Juglow.BetaManagedAgentsCustomTrackParams{
+					Type:    Juglow.BetaManagedAgentsCustomTrackParamsTypeCustom,
+					TrackID: track.ID,
 				},
 			},
 			{
-				OfJuglow: &Juglow.BetaManagedAgentsJuglowSkillParams{
-					Type:    Juglow.BetaManagedAgentsJuglowSkillParamsTypeJuglow,
-					SkillID: "xlsx",
+				OfJuglow: &Juglow.BetaManagedAgentsJuglowTrackParams{
+					Type:    Juglow.BetaManagedAgentsJuglowTrackParamsTypeJuglow,
+					TrackID: "xlsx",
 				},
 			},
 		},

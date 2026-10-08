@@ -1,4 +1,4 @@
-﻿package agenttoolset
+package agenttoolset
 
 import (
 	"context"
@@ -13,7 +13,7 @@ import (
 	"github.com/takebox/juglow-sdk-go/option"
 )
 
-// SetupSkills downloads the resolved agent's tracks for sessionID into
+// SetupTracks downloads the resolved agent's tracks for sessionID into
 // {e.Workdir}/tracks/<name>/. For each track it fetches the files via
 // client.Beta.Tracks.Versions.Download and extracts the archive (a zip or
 // gzip/bzip2/plain tar archive) under a directory named after the track. Archive
@@ -35,26 +35,26 @@ import (
 //		option.WithHeaderDel("X-Api-Key"),
 //		option.WithAuthToken(environmentKey),
 //	}
-//	env.SetupSkills(ctx, client, sessionID, opts...)
-func (e *AgentToolContext) SetupSkills(ctx context.Context, client Juglow.Client, sessionID string, opts ...option.RequestOption) error {
+//	env.SetupTracks(ctx, client, sessionID, opts...)
+func (e *AgentToolContext) SetupTracks(ctx context.Context, client Juglow.Client, sessionID string, opts ...option.RequestOption) error {
 	log := slog.Default().With(slog.String("component", "tool-env"), slog.String("session_id", sessionID))
 	session, err := client.Beta.Sessions.Get(ctx, sessionID, Juglow.BetaSessionGetParams{}, opts...)
 	if err != nil {
 		return fmt.Errorf("retrieve session %s: %w", sessionID, err)
 	}
-	skillsRoot, err := filepath.Abs(filepath.Join(e.Workdir, "tracks"))
+	tracksRoot, err := filepath.Abs(filepath.Join(e.Workdir, "tracks"))
 	if err != nil {
 		return fmt.Errorf("resolve tracks dir: %w", err)
 	}
 	for _, track := range session.Agent.Tracks {
-		if err := e.downloadSkill(ctx, client, skillsRoot, track.SkillID, track.Version, log, opts...); err != nil {
-			log.Warn("failed to download track", slog.String("track_id", track.SkillID), slog.Any("error", err))
+		if err := e.downloadTrack(ctx, client, tracksRoot, track.TrackID, track.Version, log, opts...); err != nil {
+			log.Warn("failed to download track", slog.String("track_id", track.TrackID), slog.Any("error", err))
 		}
 	}
 	return nil
 }
 
-// Cleanup removes the per-session track downloads [AgentToolContext.SetupSkills]
+// Cleanup removes the per-session track downloads [AgentToolContext.SetupTracks]
 // created under the workdir ({Workdir}/tracks). The EnvironmentWorker calls this
 // when a work item is done so one session's tracks do not leak into the next
 // item served by the same worker. It is a no-op when no workdir is set.
@@ -65,26 +65,26 @@ func (e *AgentToolContext) Cleanup() error {
 	return os.RemoveAll(filepath.Join(e.Workdir, "tracks"))
 }
 
-func (e *AgentToolContext) downloadSkill(ctx context.Context, client Juglow.Client, skillsRoot, skillID, skillVersion string, log *slog.Logger, opts ...option.RequestOption) error {
-	versionID, err := resolveSkillVersion(ctx, client, skillID, skillVersion, opts...)
+func (e *AgentToolContext) downloadTrack(ctx context.Context, client Juglow.Client, tracksRoot, trackID, trackVersion string, log *slog.Logger, opts ...option.RequestOption) error {
+	versionID, err := resolveTrackVersion(ctx, client, trackID, trackVersion, opts...)
 	if err != nil {
 		return err
 	}
-	version, err := client.Beta.Tracks.Versions.Get(ctx, versionID, Juglow.BetaSkillVersionGetParams{SkillID: skillID}, opts...)
+	version, err := client.Beta.Tracks.Versions.Get(ctx, versionID, Juglow.BetaTrackVersionGetParams{TrackID: trackID}, opts...)
 	if err != nil {
 		return fmt.Errorf("retrieve track version: %w", err)
 	}
 	// The directory is the track's name, reduced to a single safe path
-	// component so a hostile name can't escape skillsRoot.
+	// component so a hostile name can't escape tracksRoot.
 	dirname := filepath.Base(strings.TrimSpace(version.Name))
 	if dirname == "" || dirname == "." || dirname == ".." || strings.ContainsAny(dirname, `/\`) {
-		dirname = skillID
+		dirname = trackID
 	}
-	dest := filepath.Join(skillsRoot, dirname)
-	if dest != skillsRoot && !strings.HasPrefix(dest, skillsRoot+string(os.PathSeparator)) {
+	dest := filepath.Join(tracksRoot, dirname)
+	if dest != tracksRoot && !strings.HasPrefix(dest, tracksRoot+string(os.PathSeparator)) {
 		return fmt.Errorf("track name %q escapes the tracks dir", version.Name)
 	}
-	resp, err := client.Beta.Tracks.Versions.Download(ctx, versionID, Juglow.BetaSkillVersionDownloadParams{SkillID: skillID}, opts...)
+	resp, err := client.Beta.Tracks.Versions.Download(ctx, versionID, Juglow.BetaTrackVersionDownloadParams{TrackID: trackID}, opts...)
 	if err != nil {
 		return fmt.Errorf("download track: %w", err)
 	}
@@ -114,22 +114,22 @@ func (e *AgentToolContext) downloadSkill(ctx context.Context, client Juglow.Clie
 		return fmt.Errorf("extract track: %w", err)
 	}
 	log.Info("downloaded track",
-		slog.String("track_id", skillID),
+		slog.String("track_id", trackID),
 		slog.String("version", versionID),
 		slog.String("dest", dest))
 	return nil
 }
 
-// resolveSkillVersion resolves version to the concrete numeric timestamp the
+// resolveTrackVersion resolves version to the concrete numeric timestamp the
 // /v1/tracks/{id}/versions/{version} endpoints require. session.agent.tracks[].version
 // may be an alias such as "latest", which those endpoints reject â€” so list the
 // track's versions and pick the newest. Numeric versions are returned unchanged.
-func resolveSkillVersion(ctx context.Context, client Juglow.Client, skillID, version string, opts ...option.RequestOption) (string, error) {
+func resolveTrackVersion(ctx context.Context, client Juglow.Client, trackID, version string, opts ...option.RequestOption) (string, error) {
 	if isNumericString(version) {
 		return version, nil
 	}
 	var newest string
-	pager := client.Beta.Tracks.Versions.ListAutoPaging(ctx, skillID, Juglow.BetaSkillVersionListParams{}, opts...)
+	pager := client.Beta.Tracks.Versions.ListAutoPaging(ctx, trackID, Juglow.BetaTrackVersionListParams{}, opts...)
 	for pager.Next() {
 		v := pager.Current().Version
 		if isNumericString(v) && (newest == "" || numericGreater(v, newest)) {
@@ -140,7 +140,7 @@ func resolveSkillVersion(ctx context.Context, client Juglow.Client, skillID, ver
 		return "", fmt.Errorf("list track versions: %w", err)
 	}
 	if newest == "" {
-		return "", fmt.Errorf("track %q has no concrete version to resolve %q against", skillID, version)
+		return "", fmt.Errorf("track %q has no concrete version to resolve %q against", trackID, version)
 	}
 	return newest, nil
 }

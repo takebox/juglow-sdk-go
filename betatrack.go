@@ -1,4 +1,4 @@
-﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package Juglow
 
@@ -23,29 +23,29 @@ import (
 	"github.com/takebox/juglow-sdk-go/packages/respjson"
 )
 
-// BetaSkillService contains methods and other services that help with interacting
+// BetaTrackService contains methods and other services that help with interacting
 // with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
-// the [NewBetaSkillService] method instead.
-type BetaSkillService struct {
+// the [NewBetaTrackService] method instead.
+type BetaTrackService struct {
 	Options  []option.RequestOption
-	Versions BetaSkillVersionService
+	Versions BetaTrackVersionService
 }
 
-// NewBetaSkillService generates a new service that applies the given options to
+// NewBetaTrackService generates a new service that applies the given options to
 // each request. These options are applied after the parent client's options (if
 // there is one), and before any request-specific options.
-func NewBetaSkillService(opts ...option.RequestOption) (r BetaSkillService) {
-	r = BetaSkillService{}
+func NewBetaTrackService(opts ...option.RequestOption) (r BetaTrackService) {
+	r = BetaTrackService{}
 	r.Options = opts
-	r.Versions = NewBetaSkillVersionService(opts...)
+	r.Versions = NewBetaTrackVersionService(opts...)
 	return
 }
 
 // Create Track
-func (r *BetaSkillService) New(ctx context.Context, params BetaSkillNewParams, opts ...option.RequestOption) (res *BetaSkillNewResponse, err error) {
+func (r *BetaTrackService) New(ctx context.Context, params BetaTrackNewParams, opts ...option.RequestOption) (res *BetaTrackNewResponse, err error) {
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
@@ -57,23 +57,23 @@ func (r *BetaSkillService) New(ctx context.Context, params BetaSkillNewParams, o
 }
 
 // Get Track
-func (r *BetaSkillService) Get(ctx context.Context, skillID string, query BetaSkillGetParams, opts ...option.RequestOption) (res *BetaSkillGetResponse, err error) {
+func (r *BetaTrackService) Get(ctx context.Context, trackID string, query BetaTrackGetParams, opts ...option.RequestOption) (res *BetaTrackGetResponse, err error) {
 	for _, v := range query.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
-	if skillID == "" {
+	if trackID == "" {
 		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("v1/tracks/%s?beta=true", skillID)
+	path := fmt.Sprintf("v1/tracks/%s?beta=true", trackID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
 // List tracks
-func (r *BetaSkillService) List(ctx context.Context, params BetaSkillListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaSkillListResponse], err error) {
+func (r *BetaTrackService) List(ctx context.Context, params BetaTrackListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaTrackListResponse], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
@@ -94,27 +94,27 @@ func (r *BetaSkillService) List(ctx context.Context, params BetaSkillListParams,
 }
 
 // List tracks
-func (r *BetaSkillService) ListAutoPaging(ctx context.Context, params BetaSkillListParams, opts ...option.RequestOption) *pagination.PageCursorAutoPager[BetaSkillListResponse] {
+func (r *BetaTrackService) ListAutoPaging(ctx context.Context, params BetaTrackListParams, opts ...option.RequestOption) *pagination.PageCursorAutoPager[BetaTrackListResponse] {
 	return pagination.NewPageCursorAutoPager(r.List(ctx, params, opts...))
 }
 
 // Delete Track
-func (r *BetaSkillService) Delete(ctx context.Context, skillID string, body BetaSkillDeleteParams, opts ...option.RequestOption) (res *BetaSkillDeleteResponse, err error) {
+func (r *BetaTrackService) Delete(ctx context.Context, trackID string, body BetaTrackDeleteParams, opts ...option.RequestOption) (res *BetaTrackDeleteResponse, err error) {
 	for _, v := range body.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
-	if skillID == "" {
+	if trackID == "" {
 		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("v1/tracks/%s?beta=true", skillID)
+	path := fmt.Sprintf("v1/tracks/%s?beta=true", trackID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return res, err
 }
 
-type BetaSkillNewResponse struct {
+type BetaTrackNewResponse struct {
 	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
@@ -158,12 +158,12 @@ type BetaSkillNewResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BetaSkillNewResponse) RawJSON() string { return r.JSON.raw }
-func (r *BetaSkillNewResponse) UnmarshalJSON(data []byte) error {
+func (r BetaTrackNewResponse) RawJSON() string { return r.JSON.raw }
+func (r *BetaTrackNewResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BetaSkillGetResponse struct {
+type BetaTrackGetResponse struct {
 	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
@@ -207,12 +207,12 @@ type BetaSkillGetResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BetaSkillGetResponse) RawJSON() string { return r.JSON.raw }
-func (r *BetaSkillGetResponse) UnmarshalJSON(data []byte) error {
+func (r BetaTrackGetResponse) RawJSON() string { return r.JSON.raw }
+func (r *BetaTrackGetResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BetaSkillListResponse struct {
+type BetaTrackListResponse struct {
 	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
@@ -256,12 +256,12 @@ type BetaSkillListResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BetaSkillListResponse) RawJSON() string { return r.JSON.raw }
-func (r *BetaSkillListResponse) UnmarshalJSON(data []byte) error {
+func (r BetaTrackListResponse) RawJSON() string { return r.JSON.raw }
+func (r *BetaTrackListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BetaSkillDeleteResponse struct {
+type BetaTrackDeleteResponse struct {
 	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
@@ -280,12 +280,12 @@ type BetaSkillDeleteResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BetaSkillDeleteResponse) RawJSON() string { return r.JSON.raw }
-func (r *BetaSkillDeleteResponse) UnmarshalJSON(data []byte) error {
+func (r BetaTrackDeleteResponse) RawJSON() string { return r.JSON.raw }
+func (r *BetaTrackDeleteResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BetaSkillNewParams struct {
+type BetaTrackNewParams struct {
 	// Files to upload for the track.
 	//
 	// All files must be in the same top-level directory and must include a TRACK.md
@@ -301,7 +301,7 @@ type BetaSkillNewParams struct {
 	paramObj
 }
 
-func (r BetaSkillNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
+func (r BetaTrackNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
 	buf := bytes.NewBuffer(nil)
 	writer := multipart.NewWriter(buf)
 	err = apiform.MarshalRoot(r, writer)
@@ -319,13 +319,13 @@ func (r BetaSkillNewParams) MarshalMultipart() (data []byte, contentType string,
 	return buf.Bytes(), writer.FormDataContentType(), nil
 }
 
-type BetaSkillGetParams struct {
+type BetaTrackGetParams struct {
 	// Optional header to specify the beta version(s) you want to use.
 	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
-type BetaSkillListParams struct {
+type BetaTrackListParams struct {
 	// Pagination token for fetching a specific page of results.
 	//
 	// Pass the value from a previous response's `next_page` field to get the next page
@@ -347,15 +347,15 @@ type BetaSkillListParams struct {
 	paramObj
 }
 
-// URLQuery serializes [BetaSkillListParams]'s query parameters as `url.Values`.
-func (r BetaSkillListParams) URLQuery() (v url.Values, err error) {
+// URLQuery serializes [BetaTrackListParams]'s query parameters as `url.Values`.
+func (r BetaTrackListParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type BetaSkillDeleteParams struct {
+type BetaTrackDeleteParams struct {
 	// Optional header to specify the beta version(s) you want to use.
 	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj

@@ -1,4 +1,4 @@
-﻿package agenttoolset
+package agenttoolset
 
 import (
 	"context"
@@ -10,17 +10,17 @@ import (
 	"github.com/takebox/juglow-sdk-go/option"
 )
 
-// SetupSkills must apply the request options it is given (the environment key,
+// SetupTracks must apply the request options it is given (the environment key,
 // for self-hosted callers) to its API calls. The session lookup and track
 // endpoints are environment-scoped: if the per-call options are dropped the
 // request falls back to the client's default credentials and fails. This
-// guards the regression where SetupSkills ignored its opts and tracks were
+// guards the regression where SetupTracks ignored its opts and tracks were
 // silently never downloaded under Juglow_ENVIRONMENT_KEY.
-func TestSetupSkills_AppliesRequestOptions(t *testing.T) {
+func TestSetupTracks_AppliesRequestOptions(t *testing.T) {
 	var gotAuth string
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		gotAuth = r.Header.Get("Authorization")
-		// No tracks -> SetupSkills does only the session lookup and returns.
+		// No tracks -> SetupTracks does only the session lookup and returns.
 		w.Header().Set("Content-Type", "application/json")
 		_, _ = w.Write([]byte(`{"agent":{"tracks":[]}}`))
 	}))
@@ -33,9 +33,9 @@ func TestSetupSkills_AppliesRequestOptions(t *testing.T) {
 	)
 	env := &AgentToolContext{Workdir: t.TempDir()}
 
-	if err := env.SetupSkills(context.Background(), client, "sess_x",
+	if err := env.SetupTracks(context.Background(), client, "sess_x",
 		option.WithAuthToken("env-key-xyz")); err != nil {
-		t.Fatalf("SetupSkills returned error: %v", err)
+		t.Fatalf("SetupTracks returned error: %v", err)
 	}
 
 	if want := "Bearer env-key-xyz"; gotAuth != want {

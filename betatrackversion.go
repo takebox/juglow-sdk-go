@@ -1,4 +1,4 @@
-﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package Juglow
 
@@ -23,49 +23,49 @@ import (
 	"github.com/takebox/juglow-sdk-go/packages/respjson"
 )
 
-// BetaSkillVersionService contains methods and other services that help with
+// BetaTrackVersionService contains methods and other services that help with
 // interacting with the Juglow API.
 //
 // Note, unlike clients, this service does not read variables from the environment
 // automatically. You should not instantiate this service directly, and instead use
-// the [NewBetaSkillVersionService] method instead.
-type BetaSkillVersionService struct {
+// the [NewBetaTrackVersionService] method instead.
+type BetaTrackVersionService struct {
 	Options []option.RequestOption
 }
 
-// NewBetaSkillVersionService generates a new service that applies the given
+// NewBetaTrackVersionService generates a new service that applies the given
 // options to each request. These options are applied after the parent client's
 // options (if there is one), and before any request-specific options.
-func NewBetaSkillVersionService(opts ...option.RequestOption) (r BetaSkillVersionService) {
-	r = BetaSkillVersionService{}
+func NewBetaTrackVersionService(opts ...option.RequestOption) (r BetaTrackVersionService) {
+	r = BetaTrackVersionService{}
 	r.Options = opts
 	return
 }
 
 // Create Track Version
-func (r *BetaSkillVersionService) New(ctx context.Context, skillID string, params BetaSkillVersionNewParams, opts ...option.RequestOption) (res *BetaSkillVersionNewResponse, err error) {
+func (r *BetaTrackVersionService) New(ctx context.Context, trackID string, params BetaTrackVersionNewParams, opts ...option.RequestOption) (res *BetaTrackVersionNewResponse, err error) {
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
-	if skillID == "" {
+	if trackID == "" {
 		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("v1/tracks/%s/versions?beta=true", skillID)
+	path := fmt.Sprintf("v1/tracks/%s/versions?beta=true", trackID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return res, err
 }
 
 // Get Track Version
-func (r *BetaSkillVersionService) Get(ctx context.Context, version string, params BetaSkillVersionGetParams, opts ...option.RequestOption) (res *BetaSkillVersionGetResponse, err error) {
+func (r *BetaTrackVersionService) Get(ctx context.Context, version string, params BetaTrackVersionGetParams, opts ...option.RequestOption) (res *BetaTrackVersionGetResponse, err error) {
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
-	if params.SkillID == "" {
+	if params.TrackID == "" {
 		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
@@ -73,24 +73,24 @@ func (r *BetaSkillVersionService) Get(ctx context.Context, version string, param
 		err = errors.New("missing required version parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("v1/tracks/%s/versions/%s?beta=true", params.SkillID, version)
+	path := fmt.Sprintf("v1/tracks/%s/versions/%s?beta=true", params.TrackID, version)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
 // List Track Versions
-func (r *BetaSkillVersionService) List(ctx context.Context, skillID string, params BetaSkillVersionListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaSkillVersionListResponse], err error) {
+func (r *BetaTrackVersionService) List(ctx context.Context, trackID string, params BetaTrackVersionListParams, opts ...option.RequestOption) (res *pagination.PageCursor[BetaTrackVersionListResponse], err error) {
 	var raw *http.Response
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02"), option.WithResponseInto(&raw)}, opts...)
-	if skillID == "" {
+	if trackID == "" {
 		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("v1/tracks/%s/versions?beta=true", skillID)
+	path := fmt.Sprintf("v1/tracks/%s/versions?beta=true", trackID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, params, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -104,18 +104,18 @@ func (r *BetaSkillVersionService) List(ctx context.Context, skillID string, para
 }
 
 // List Track Versions
-func (r *BetaSkillVersionService) ListAutoPaging(ctx context.Context, skillID string, params BetaSkillVersionListParams, opts ...option.RequestOption) *pagination.PageCursorAutoPager[BetaSkillVersionListResponse] {
-	return pagination.NewPageCursorAutoPager(r.List(ctx, skillID, params, opts...))
+func (r *BetaTrackVersionService) ListAutoPaging(ctx context.Context, trackID string, params BetaTrackVersionListParams, opts ...option.RequestOption) *pagination.PageCursorAutoPager[BetaTrackVersionListResponse] {
+	return pagination.NewPageCursorAutoPager(r.List(ctx, trackID, params, opts...))
 }
 
 // Delete Track Version
-func (r *BetaSkillVersionService) Delete(ctx context.Context, version string, params BetaSkillVersionDeleteParams, opts ...option.RequestOption) (res *BetaSkillVersionDeleteResponse, err error) {
+func (r *BetaTrackVersionService) Delete(ctx context.Context, version string, params BetaTrackVersionDeleteParams, opts ...option.RequestOption) (res *BetaTrackVersionDeleteResponse, err error) {
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02")}, opts...)
-	if params.SkillID == "" {
+	if params.TrackID == "" {
 		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
@@ -123,19 +123,19 @@ func (r *BetaSkillVersionService) Delete(ctx context.Context, version string, pa
 		err = errors.New("missing required version parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("v1/tracks/%s/versions/%s?beta=true", params.SkillID, version)
+	path := fmt.Sprintf("v1/tracks/%s/versions/%s?beta=true", params.TrackID, version)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return res, err
 }
 
 // Download a track version's content as a zip archive.
-func (r *BetaSkillVersionService) Download(ctx context.Context, version string, params BetaSkillVersionDownloadParams, opts ...option.RequestOption) (res *http.Response, err error) {
+func (r *BetaTrackVersionService) Download(ctx context.Context, version string, params BetaTrackVersionDownloadParams, opts ...option.RequestOption) (res *http.Response, err error) {
 	for _, v := range params.Betas {
 		opts = append(opts, option.WithHeaderAdd("Juglow-beta", fmt.Sprintf("%v", v)))
 	}
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Juglow-beta", "tracks-2025-10-02"), option.WithHeader("Accept", "application/binary")}, opts...)
-	if params.SkillID == "" {
+	if params.TrackID == "" {
 		err = errors.New("missing required track_id parameter")
 		return nil, err
 	}
@@ -143,12 +143,12 @@ func (r *BetaSkillVersionService) Download(ctx context.Context, version string, 
 		err = errors.New("missing required version parameter")
 		return nil, err
 	}
-	path := fmt.Sprintf("v1/tracks/%s/versions/%s/content?beta=true", params.SkillID, version)
+	path := fmt.Sprintf("v1/tracks/%s/versions/%s/content?beta=true", params.TrackID, version)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
-type BetaSkillVersionNewResponse struct {
+type BetaTrackVersionNewResponse struct {
 	// Unique identifier for the track version.
 	//
 	// The format and length of IDs may change over time.
@@ -168,7 +168,7 @@ type BetaSkillVersionNewResponse struct {
 	// This is extracted from the TRACK.md file in the track upload.
 	Name string `json:"name" api:"required"`
 	// Identifier for the track that this version belongs to.
-	SkillID string `json:"track_id" api:"required"`
+	TrackID string `json:"track_id" api:"required"`
 	// Object type.
 	//
 	// For Track Versions, this is always `"track_version"`.
@@ -184,7 +184,7 @@ type BetaSkillVersionNewResponse struct {
 		Description respjson.Field
 		Directory   respjson.Field
 		Name        respjson.Field
-		SkillID     respjson.Field
+		TrackID     respjson.Field
 		Type        respjson.Field
 		Version     respjson.Field
 		ExtraFields map[string]respjson.Field
@@ -193,12 +193,12 @@ type BetaSkillVersionNewResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BetaSkillVersionNewResponse) RawJSON() string { return r.JSON.raw }
-func (r *BetaSkillVersionNewResponse) UnmarshalJSON(data []byte) error {
+func (r BetaTrackVersionNewResponse) RawJSON() string { return r.JSON.raw }
+func (r *BetaTrackVersionNewResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BetaSkillVersionGetResponse struct {
+type BetaTrackVersionGetResponse struct {
 	// Unique identifier for the track version.
 	//
 	// The format and length of IDs may change over time.
@@ -218,7 +218,7 @@ type BetaSkillVersionGetResponse struct {
 	// This is extracted from the TRACK.md file in the track upload.
 	Name string `json:"name" api:"required"`
 	// Identifier for the track that this version belongs to.
-	SkillID string `json:"track_id" api:"required"`
+	TrackID string `json:"track_id" api:"required"`
 	// Object type.
 	//
 	// For Track Versions, this is always `"track_version"`.
@@ -234,7 +234,7 @@ type BetaSkillVersionGetResponse struct {
 		Description respjson.Field
 		Directory   respjson.Field
 		Name        respjson.Field
-		SkillID     respjson.Field
+		TrackID     respjson.Field
 		Type        respjson.Field
 		Version     respjson.Field
 		ExtraFields map[string]respjson.Field
@@ -243,12 +243,12 @@ type BetaSkillVersionGetResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BetaSkillVersionGetResponse) RawJSON() string { return r.JSON.raw }
-func (r *BetaSkillVersionGetResponse) UnmarshalJSON(data []byte) error {
+func (r BetaTrackVersionGetResponse) RawJSON() string { return r.JSON.raw }
+func (r *BetaTrackVersionGetResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BetaSkillVersionListResponse struct {
+type BetaTrackVersionListResponse struct {
 	// Unique identifier for the track version.
 	//
 	// The format and length of IDs may change over time.
@@ -268,7 +268,7 @@ type BetaSkillVersionListResponse struct {
 	// This is extracted from the TRACK.md file in the track upload.
 	Name string `json:"name" api:"required"`
 	// Identifier for the track that this version belongs to.
-	SkillID string `json:"track_id" api:"required"`
+	TrackID string `json:"track_id" api:"required"`
 	// Object type.
 	//
 	// For Track Versions, this is always `"track_version"`.
@@ -284,7 +284,7 @@ type BetaSkillVersionListResponse struct {
 		Description respjson.Field
 		Directory   respjson.Field
 		Name        respjson.Field
-		SkillID     respjson.Field
+		TrackID     respjson.Field
 		Type        respjson.Field
 		Version     respjson.Field
 		ExtraFields map[string]respjson.Field
@@ -293,12 +293,12 @@ type BetaSkillVersionListResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BetaSkillVersionListResponse) RawJSON() string { return r.JSON.raw }
-func (r *BetaSkillVersionListResponse) UnmarshalJSON(data []byte) error {
+func (r BetaTrackVersionListResponse) RawJSON() string { return r.JSON.raw }
+func (r *BetaTrackVersionListResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BetaSkillVersionDeleteResponse struct {
+type BetaTrackVersionDeleteResponse struct {
 	// Version identifier for the track.
 	//
 	// Each version is identified by a Unix epoch timestamp (e.g., "1759178010641129").
@@ -317,12 +317,12 @@ type BetaSkillVersionDeleteResponse struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BetaSkillVersionDeleteResponse) RawJSON() string { return r.JSON.raw }
-func (r *BetaSkillVersionDeleteResponse) UnmarshalJSON(data []byte) error {
+func (r BetaTrackVersionDeleteResponse) RawJSON() string { return r.JSON.raw }
+func (r *BetaTrackVersionDeleteResponse) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BetaSkillVersionNewParams struct {
+type BetaTrackVersionNewParams struct {
 	// Files to upload for the track.
 	//
 	// All files must be in the same top-level directory and must include a TRACK.md
@@ -333,7 +333,7 @@ type BetaSkillVersionNewParams struct {
 	paramObj
 }
 
-func (r BetaSkillVersionNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
+func (r BetaTrackVersionNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
 	buf := bytes.NewBuffer(nil)
 	writer := multipart.NewWriter(buf)
 	err = apiform.MarshalRoot(r, writer)
@@ -351,17 +351,17 @@ func (r BetaSkillVersionNewParams) MarshalMultipart() (data []byte, contentType 
 	return buf.Bytes(), writer.FormDataContentType(), nil
 }
 
-type BetaSkillVersionGetParams struct {
+type BetaTrackVersionGetParams struct {
 	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
-	SkillID string `path:"track_id" api:"required" json:"-"`
+	TrackID string `path:"track_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
 	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
-type BetaSkillVersionListParams struct {
+type BetaTrackVersionListParams struct {
 	// Number of items to return per page.
 	//
 	// Defaults to `20`. Ranges from `1` to `1000`.
@@ -373,30 +373,30 @@ type BetaSkillVersionListParams struct {
 	paramObj
 }
 
-// URLQuery serializes [BetaSkillVersionListParams]'s query parameters as
+// URLQuery serializes [BetaTrackVersionListParams]'s query parameters as
 // `url.Values`.
-func (r BetaSkillVersionListParams) URLQuery() (v url.Values, err error) {
+func (r BetaTrackVersionListParams) URLQuery() (v url.Values, err error) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
-type BetaSkillVersionDeleteParams struct {
+type BetaTrackVersionDeleteParams struct {
 	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
-	SkillID string `path:"track_id" api:"required" json:"-"`
+	TrackID string `path:"track_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
 	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj
 }
 
-type BetaSkillVersionDownloadParams struct {
+type BetaTrackVersionDownloadParams struct {
 	// Unique identifier for the track.
 	//
 	// The format and length of IDs may change over time.
-	SkillID string `path:"track_id" api:"required" json:"-"`
+	TrackID string `path:"track_id" api:"required" json:"-"`
 	// Optional header to specify the beta version(s) you want to use.
 	Betas []JuglowBeta `header:"Juglow-beta,omitzero" json:"-"`
 	paramObj

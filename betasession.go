@@ -1,4 +1,4 @@
-﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package Juglow
 
@@ -283,7 +283,7 @@ type BetaManagedAgentsAgentWithOverridesParams struct {
 	Model BetaManagedAgentsModelConfigParams `json:"model,omitzero"`
 	// Replacement track list. Full replacement: the provided array becomes the tracks.
 	// Send an empty array to clear; omit to preserve the agent's tracks.
-	Tracks []BetaManagedAgentsSkillParamsUnion `json:"tracks,omitzero"`
+	Tracks []BetaManagedAgentsTrackParamsUnion `json:"tracks,omitzero"`
 	// Replacement tool list. Full replacement: the provided array becomes the tool
 	// configuration. Send an empty array to clear; omit to preserve the agent's tools.
 	Tools []BetaManagedAgentsAgentWithOverridesParamsToolUnion `json:"tools,omitzero"`
@@ -1313,7 +1313,7 @@ type BetaManagedAgentsSessionAgent struct {
 	// member.
 	Multiagent BetaManagedAgentsSessionMultiagentCoordinator `json:"multiagent" api:"required"`
 	Name       string                                        `json:"name" api:"required"`
-	Tracks     []BetaManagedAgentsSessionAgentSkillUnion     `json:"tracks" api:"required"`
+	Tracks     []BetaManagedAgentsSessionAgentTrackUnion     `json:"tracks" api:"required"`
 	System     string                                        `json:"system" api:"required"`
 	Tools      []BetaManagedAgentsSessionAgentToolUnion      `json:"tools" api:"required"`
 	// Any of "agent".
@@ -1343,45 +1343,45 @@ func (r *BetaManagedAgentsSessionAgent) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// BetaManagedAgentsSessionAgentSkillUnion contains all possible properties and
-// values from [BetaManagedAgentsJuglowSkill], [BetaManagedAgentsCustomSkill].
+// BetaManagedAgentsSessionAgentTrackUnion contains all possible properties and
+// values from [BetaManagedAgentsJuglowTrack], [BetaManagedAgentsCustomTrack].
 //
-// Use the [BetaManagedAgentsSessionAgentSkillUnion.AsAny] method to switch on the
+// Use the [BetaManagedAgentsSessionAgentTrackUnion.AsAny] method to switch on the
 // variant.
 //
 // Use the methods beginning with 'As' to cast the union to one of its variants.
-type BetaManagedAgentsSessionAgentSkillUnion struct {
-	SkillID string `json:"track_id"`
+type BetaManagedAgentsSessionAgentTrackUnion struct {
+	TrackID string `json:"track_id"`
 	// Any of "Juglow", "custom".
 	Type    string `json:"type"`
 	Version string `json:"version"`
 	JSON    struct {
-		SkillID respjson.Field
+		TrackID respjson.Field
 		Type    respjson.Field
 		Version respjson.Field
 		raw     string
 	} `json:"-"`
 }
 
-// anyBetaManagedAgentsSessionAgentSkill is implemented by each variant of
-// [BetaManagedAgentsSessionAgentSkillUnion] to add type safety for the return type
-// of [BetaManagedAgentsSessionAgentSkillUnion.AsAny]
-type anyBetaManagedAgentsSessionAgentSkill interface {
-	implBetaManagedAgentsSessionAgentSkillUnion()
+// anyBetaManagedAgentsSessionAgentTrack is implemented by each variant of
+// [BetaManagedAgentsSessionAgentTrackUnion] to add type safety for the return type
+// of [BetaManagedAgentsSessionAgentTrackUnion.AsAny]
+type anyBetaManagedAgentsSessionAgentTrack interface {
+	implBetaManagedAgentsSessionAgentTrackUnion()
 }
 
-func (BetaManagedAgentsJuglowSkill) implBetaManagedAgentsSessionAgentSkillUnion() {}
-func (BetaManagedAgentsCustomSkill) implBetaManagedAgentsSessionAgentSkillUnion()    {}
+func (BetaManagedAgentsJuglowTrack) implBetaManagedAgentsSessionAgentTrackUnion() {}
+func (BetaManagedAgentsCustomTrack) implBetaManagedAgentsSessionAgentTrackUnion()    {}
 
 // Use the following switch statement to find the correct variant
 //
-//	switch variant := BetaManagedAgentsSessionAgentSkillUnion.AsAny().(type) {
-//	case Juglow.BetaManagedAgentsJuglowSkill:
-//	case Juglow.BetaManagedAgentsCustomSkill:
+//	switch variant := BetaManagedAgentsSessionAgentTrackUnion.AsAny().(type) {
+//	case Juglow.BetaManagedAgentsJuglowTrack:
+//	case Juglow.BetaManagedAgentsCustomTrack:
 //	default:
 //	  fmt.Errorf("no variant present")
 //	}
-func (u BetaManagedAgentsSessionAgentSkillUnion) AsAny() anyBetaManagedAgentsSessionAgentSkill {
+func (u BetaManagedAgentsSessionAgentTrackUnion) AsAny() anyBetaManagedAgentsSessionAgentTrack {
 	switch u.Type {
 	case "Juglow":
 		return u.AsJuglow()
@@ -1391,20 +1391,20 @@ func (u BetaManagedAgentsSessionAgentSkillUnion) AsAny() anyBetaManagedAgentsSes
 	return nil
 }
 
-func (u BetaManagedAgentsSessionAgentSkillUnion) AsJuglow() (v BetaManagedAgentsJuglowSkill) {
+func (u BetaManagedAgentsSessionAgentTrackUnion) AsJuglow() (v BetaManagedAgentsJuglowTrack) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
 
-func (u BetaManagedAgentsSessionAgentSkillUnion) AsCustom() (v BetaManagedAgentsCustomSkill) {
+func (u BetaManagedAgentsSessionAgentTrackUnion) AsCustom() (v BetaManagedAgentsCustomTrack) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
 
 // Returns the unmodified JSON received from the API
-func (u BetaManagedAgentsSessionAgentSkillUnion) RawJSON() string { return u.JSON.raw }
+func (u BetaManagedAgentsSessionAgentTrackUnion) RawJSON() string { return u.JSON.raw }
 
-func (r *BetaManagedAgentsSessionAgentSkillUnion) UnmarshalJSON(data []byte) error {
+func (r *BetaManagedAgentsSessionAgentTrackUnion) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -1824,7 +1824,7 @@ type BetaManagedAgentsSessionMultiagentCoordinatorAgentUnion struct {
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
 	Name string `json:"name"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
-	Tracks []BetaManagedAgentsSessionThreadAgentSkillUnion `json:"tracks"`
+	Tracks []BetaManagedAgentsSessionThreadAgentTrackUnion `json:"tracks"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
 	System string `json:"system"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
@@ -2530,7 +2530,7 @@ func (u BetaSessionNewParamsAgentUnion) GetModel() *BetaManagedAgentsModelConfig
 }
 
 // Returns a pointer to the underlying variant's property, if present.
-func (u BetaSessionNewParamsAgentUnion) GetSkills() []BetaManagedAgentsSkillParamsUnion {
+func (u BetaSessionNewParamsAgentUnion) GetTracks() []BetaManagedAgentsTrackParamsUnion {
 	if vt := u.OfBetaManagedAgentsAgentWithOverridess; vt != nil {
 		return vt.Tracks
 	}

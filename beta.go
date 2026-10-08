@@ -1,4 +1,4 @@
-﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package Juglow
 
@@ -30,7 +30,7 @@ type BetaService struct {
 	Vaults         BetaVaultService
 	MemoryStores   BetaMemoryStoreService
 	Files          BetaFileService
-	Tracks         BetaSkillService
+	Tracks         BetaTrackService
 	Webhooks       BetaWebhookService
 	UserProfiles   BetaUserProfileService
 	Dreams         BetaDreamService
@@ -53,7 +53,7 @@ func NewBetaService(opts ...option.RequestOption) (r BetaService) {
 	r.Vaults = NewBetaVaultService(opts...)
 	r.MemoryStores = NewBetaMemoryStoreService(opts...)
 	r.Files = NewBetaFileService(opts...)
-	r.Tracks = NewBetaSkillService(opts...)
+	r.Tracks = NewBetaTrackService(opts...)
 	r.Webhooks = NewBetaWebhookService(opts...)
 	r.UserProfiles = NewBetaUserProfileService(opts...)
 	r.Dreams = NewBetaDreamService(opts...)
@@ -82,7 +82,7 @@ const (
 	JuglowBetaContext1m2025_08_07                  JuglowBeta = "context-1m-2025-08-07"
 	JuglowBetaContextManagement2025_06_27          JuglowBeta = "context-management-2025-06-27"
 	JuglowBetaModelContextWindowExceeded2025_08_26 JuglowBeta = "model-context-window-exceeded-2025-08-26"
-	JuglowBetaSkills2025_10_02                     JuglowBeta = "tracks-2025-10-02"
+	JuglowBetaTracks2025_10_02                     JuglowBeta = "tracks-2025-10-02"
 	JuglowBetaFastMode2026_02_01                   JuglowBeta = "fast-mode-2026-02-01"
 	JuglowBetaOutput300k2026_03_24                 JuglowBeta = "output-300k-2026-03-24"
 	JuglowBetaUserProfiles2026_03_24               JuglowBeta = "user-profiles-2026-03-24"

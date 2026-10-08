@@ -1,4 +1,4 @@
-﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package Juglow_test
 
@@ -15,7 +15,7 @@ import (
 	"github.com/takebox/juglow-sdk-go/option"
 )
 
-func TestBetaSkillNewWithOptionalParams(t *testing.T) {
+func TestBetaTrackNewWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -27,7 +27,7 @@ func TestBetaSkillNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Tracks.New(context.TODO(), Juglow.BetaSkillNewParams{
+	_, err := client.Beta.Tracks.New(context.TODO(), Juglow.BetaTrackNewParams{
 		Files:        []io.Reader{io.Reader(bytes.NewBuffer([]byte("Example data")))},
 		DisplayTitle: Juglow.String("display_title"),
 		Betas:        []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
@@ -41,7 +41,7 @@ func TestBetaSkillNewWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestBetaSkillGetWithOptionalParams(t *testing.T) {
+func TestBetaTrackGetWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -56,7 +56,7 @@ func TestBetaSkillGetWithOptionalParams(t *testing.T) {
 	_, err := client.Beta.Tracks.Get(
 		context.TODO(),
 		"track_id",
-		Juglow.BetaSkillGetParams{
+		Juglow.BetaTrackGetParams{
 			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
@@ -69,7 +69,7 @@ func TestBetaSkillGetWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestBetaSkillListWithOptionalParams(t *testing.T) {
+func TestBetaTrackListWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -81,7 +81,7 @@ func TestBetaSkillListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.Tracks.List(context.TODO(), Juglow.BetaSkillListParams{
+	_, err := client.Beta.Tracks.List(context.TODO(), Juglow.BetaTrackListParams{
 		Limit:  Juglow.Int(0),
 		Page:   Juglow.String("page"),
 		Source: Juglow.String("source"),
@@ -96,7 +96,7 @@ func TestBetaSkillListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestBetaSkillDeleteWithOptionalParams(t *testing.T) {
+func TestBetaTrackDeleteWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -111,7 +111,7 @@ func TestBetaSkillDeleteWithOptionalParams(t *testing.T) {
 	_, err := client.Beta.Tracks.Delete(
 		context.TODO(),
 		"track_id",
-		Juglow.BetaSkillDeleteParams{
+		Juglow.BetaTrackDeleteParams{
 			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)

@@ -1,4 +1,4 @@
-﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package Juglow
 
@@ -159,7 +159,7 @@ func (r *BetaManagedAgentsDeploymentRun) UnmarshalJSON(data []byte) error {
 // [BetaManagedAgentsVaultArchivedRunError],
 // [BetaManagedAgentsFileNotFoundRunError],
 // [BetaManagedAgentsMemoryStoreArchivedRunError],
-// [BetaManagedAgentsSkillNotFoundRunError],
+// [BetaManagedAgentsTrackNotFoundRunError],
 // [BetaManagedAgentsSessionResourceNotFoundRunError],
 // [BetaManagedAgentsWorkspaceArchivedRunError],
 // [BetaManagedAgentsOrganizationDisabledRunError],
@@ -204,7 +204,7 @@ func (BetaManagedAgentsVaultNotFoundRunError) implBetaManagedAgentsDeploymentRun
 func (BetaManagedAgentsVaultArchivedRunError) implBetaManagedAgentsDeploymentRunErrorUnion()       {}
 func (BetaManagedAgentsFileNotFoundRunError) implBetaManagedAgentsDeploymentRunErrorUnion()        {}
 func (BetaManagedAgentsMemoryStoreArchivedRunError) implBetaManagedAgentsDeploymentRunErrorUnion() {}
-func (BetaManagedAgentsSkillNotFoundRunError) implBetaManagedAgentsDeploymentRunErrorUnion()       {}
+func (BetaManagedAgentsTrackNotFoundRunError) implBetaManagedAgentsDeploymentRunErrorUnion()       {}
 func (BetaManagedAgentsSessionResourceNotFoundRunError) implBetaManagedAgentsDeploymentRunErrorUnion() {
 }
 func (BetaManagedAgentsWorkspaceArchivedRunError) implBetaManagedAgentsDeploymentRunErrorUnion()    {}
@@ -227,7 +227,7 @@ func (BetaManagedAgentsMCPEgressBlockedRunError) implBetaManagedAgentsDeployment
 //	case Juglow.BetaManagedAgentsVaultArchivedRunError:
 //	case Juglow.BetaManagedAgentsFileNotFoundRunError:
 //	case Juglow.BetaManagedAgentsMemoryStoreArchivedRunError:
-//	case Juglow.BetaManagedAgentsSkillNotFoundRunError:
+//	case Juglow.BetaManagedAgentsTrackNotFoundRunError:
 //	case Juglow.BetaManagedAgentsSessionResourceNotFoundRunError:
 //	case Juglow.BetaManagedAgentsWorkspaceArchivedRunError:
 //	case Juglow.BetaManagedAgentsOrganizationDisabledRunError:
@@ -256,7 +256,7 @@ func (u BetaManagedAgentsDeploymentRunErrorUnion) AsAny() anyBetaManagedAgentsDe
 	case "memory_store_archived_error":
 		return u.AsMemoryStoreArchivedError()
 	case "track_not_found_error":
-		return u.AsSkillNotFoundError()
+		return u.AsTrackNotFoundError()
 	case "session_resource_not_found_error":
 		return u.AsSessionResourceNotFoundError()
 	case "workspace_archived_error":
@@ -312,7 +312,7 @@ func (u BetaManagedAgentsDeploymentRunErrorUnion) AsMemoryStoreArchivedError() (
 	return
 }
 
-func (u BetaManagedAgentsDeploymentRunErrorUnion) AsSkillNotFoundError() (v BetaManagedAgentsSkillNotFoundRunError) {
+func (u BetaManagedAgentsDeploymentRunErrorUnion) AsTrackNotFoundError() (v BetaManagedAgentsTrackNotFoundRunError) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -696,11 +696,11 @@ const (
 )
 
 // A track referenced by the deployment's agent no longer exists.
-type BetaManagedAgentsSkillNotFoundRunError struct {
+type BetaManagedAgentsTrackNotFoundRunError struct {
 	// Human-readable error description.
 	Message string `json:"message" api:"required"`
 	// Any of "track_not_found_error".
-	Type BetaManagedAgentsSkillNotFoundRunErrorType `json:"type" api:"required"`
+	Type BetaManagedAgentsTrackNotFoundRunErrorType `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Message     respjson.Field
@@ -711,15 +711,15 @@ type BetaManagedAgentsSkillNotFoundRunError struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BetaManagedAgentsSkillNotFoundRunError) RawJSON() string { return r.JSON.raw }
-func (r *BetaManagedAgentsSkillNotFoundRunError) UnmarshalJSON(data []byte) error {
+func (r BetaManagedAgentsTrackNotFoundRunError) RawJSON() string { return r.JSON.raw }
+func (r *BetaManagedAgentsTrackNotFoundRunError) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BetaManagedAgentsSkillNotFoundRunErrorType string
+type BetaManagedAgentsTrackNotFoundRunErrorType string
 
 const (
-	BetaManagedAgentsSkillNotFoundRunErrorTypeSkillNotFoundError BetaManagedAgentsSkillNotFoundRunErrorType = "track_not_found_error"
+	BetaManagedAgentsTrackNotFoundRunErrorTypeTrackNotFoundError BetaManagedAgentsTrackNotFoundRunErrorType = "track_not_found_error"
 )
 
 // BetaManagedAgentsTriggerContextUnion contains all possible properties and values

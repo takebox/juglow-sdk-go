@@ -1,4 +1,4 @@
-﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package Juglow
 
@@ -603,7 +603,7 @@ func (r *BetaManagedAgentsDeploymentPausedReasonUnion) UnmarshalJSON(data []byte
 // [BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError],
 // [BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError],
 // [BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError],
-// [BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError],
+// [BetaManagedAgentsTrackNotFoundDeploymentPausedReasonError],
 // [BetaManagedAgentsVaultArchivedDeploymentPausedReasonError],
 // [BetaManagedAgentsUnknownDeploymentPausedReasonError],
 // [BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError],
@@ -652,7 +652,7 @@ func (BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError) implBeta
 }
 func (BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError) implBetaManagedAgentsDeploymentPausedReasonErrorUnion() {
 }
-func (BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError) implBetaManagedAgentsDeploymentPausedReasonErrorUnion() {
+func (BetaManagedAgentsTrackNotFoundDeploymentPausedReasonError) implBetaManagedAgentsDeploymentPausedReasonErrorUnion() {
 }
 func (BetaManagedAgentsVaultArchivedDeploymentPausedReasonError) implBetaManagedAgentsDeploymentPausedReasonErrorUnion() {
 }
@@ -675,7 +675,7 @@ func (BetaManagedAgentsMCPEgressBlockedDeploymentPausedReasonError) implBetaMana
 //	case Juglow.BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError:
 //	case Juglow.BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError:
 //	case Juglow.BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError:
-//	case Juglow.BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError:
+//	case Juglow.BetaManagedAgentsTrackNotFoundDeploymentPausedReasonError:
 //	case Juglow.BetaManagedAgentsVaultArchivedDeploymentPausedReasonError:
 //	case Juglow.BetaManagedAgentsUnknownDeploymentPausedReasonError:
 //	case Juglow.BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError:
@@ -704,7 +704,7 @@ func (u BetaManagedAgentsDeploymentPausedReasonErrorUnion) AsAny() anyBetaManage
 	case "memory_store_archived_error":
 		return u.AsMemoryStoreArchivedError()
 	case "track_not_found_error":
-		return u.AsSkillNotFoundError()
+		return u.AsTrackNotFoundError()
 	case "vault_archived_error":
 		return u.AsVaultArchivedError()
 	case "unknown_error":
@@ -762,7 +762,7 @@ func (u BetaManagedAgentsDeploymentPausedReasonErrorUnion) AsMemoryStoreArchived
 	return
 }
 
-func (u BetaManagedAgentsDeploymentPausedReasonErrorUnion) AsSkillNotFoundError() (v BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError) {
+func (u BetaManagedAgentsDeploymentPausedReasonErrorUnion) AsTrackNotFoundError() (v BetaManagedAgentsTrackNotFoundDeploymentPausedReasonError) {
 	apijson.UnmarshalRoot(json.RawMessage(u.JSON.raw), &v)
 	return
 }
@@ -1698,9 +1698,9 @@ const (
 )
 
 // A track referenced by the deployment's agent no longer exists.
-type BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError struct {
+type BetaManagedAgentsTrackNotFoundDeploymentPausedReasonError struct {
 	// Any of "track_not_found_error".
-	Type BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorType `json:"type" api:"required"`
+	Type BetaManagedAgentsTrackNotFoundDeploymentPausedReasonErrorType `json:"type" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		Type        respjson.Field
@@ -1710,17 +1710,17 @@ type BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError struct {
 }
 
 // Returns the unmodified JSON received from the API
-func (r BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError) RawJSON() string {
+func (r BetaManagedAgentsTrackNotFoundDeploymentPausedReasonError) RawJSON() string {
 	return r.JSON.raw
 }
-func (r *BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError) UnmarshalJSON(data []byte) error {
+func (r *BetaManagedAgentsTrackNotFoundDeploymentPausedReasonError) UnmarshalJSON(data []byte) error {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorType string
+type BetaManagedAgentsTrackNotFoundDeploymentPausedReasonErrorType string
 
 const (
-	BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorTypeSkillNotFoundError BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorType = "track_not_found_error"
+	BetaManagedAgentsTrackNotFoundDeploymentPausedReasonErrorTypeTrackNotFoundError BetaManagedAgentsTrackNotFoundDeploymentPausedReasonErrorType = "track_not_found_error"
 )
 
 // An unrecognized error auto-paused the deployment. A fallback variant; matches a

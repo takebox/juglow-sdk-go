@@ -1,4 +1,4 @@
-﻿package environments
+package environments
 
 import (
 	"context"
@@ -152,7 +152,7 @@ func TestEnvironmentWorker_ThreadsCustomRequestOptions(t *testing.T) {
 	var heartbeatOnce sync.Once
 
 	server.HandleSessionGet = func(w http.ResponseWriter, _ *http.Request) {
-		// No tracks -> SetupSkills does only the session lookup and returns.
+		// No tracks -> SetupTracks does only the session lookup and returns.
 		w.Header().Set("Content-Type", "application/json")
 		_, _ = w.Write([]byte(`{"agent":{"tracks":[]}}`))
 	}
@@ -233,23 +233,23 @@ func TestEnvironmentWorker_ThreadsCustomRequestOptions(t *testing.T) {
 	}
 }
 
-// TestEnvironmentWorker_HeartbeatStartsBeforeSkillSetup pins the invariant
-// that the lease heartbeat is running before SetupSkills's session
+// TestEnvironmentWorker_HeartbeatStartsBeforeTrackSetup pins the invariant
+// that the lease heartbeat is running before SetupTracks's session
 // lookup completes. The poller acks the item when it
 // yields, so any gap between ack and the first heartbeat is a window where
-// the control plane can reclaim the lease â€” and SetupSkills (a session
+// the control plane can reclaim the lease â€” and SetupTracks (a session
 // lookup plus a per-track download/extract) can take longer than the lease
 // TTL on a slow network or a large bundle.
 //
 // The test enforces this by making HandleSessionGet block until at least
 // one heartbeat has fired. If the heartbeat goroutine is started AFTER
-// SetupSkills returns (the pre-fix shape), no heartbeat ever fires and
+// SetupTracks returns (the pre-fix shape), no heartbeat ever fires and
 // HandleSessionGet blocks until the outer ctx times out â€” HandleItem then
 // returns the wrapped ctx error rather than nil. With the fix, the
-// heartbeat goroutine is started before SetupSkills, the channel closes
-// while SetupSkills's session lookup is in flight, and the session
+// heartbeat goroutine is started before SetupTracks, the channel closes
+// while SetupTracks's session lookup is in flight, and the session
 // completes normally.
-func TestEnvironmentWorker_HeartbeatStartsBeforeSkillSetup(t *testing.T) {
+func TestEnvironmentWorker_HeartbeatStartsBeforeTrackSetup(t *testing.T) {
 	server := newFakeWorkServer(t)
 
 	heartbeatSeen := make(chan struct{})
@@ -270,7 +270,7 @@ func TestEnvironmentWorker_HeartbeatStartsBeforeSkillSetup(t *testing.T) {
 		case <-r.Context().Done():
 			return
 		case <-time.After(5 * time.Second):
-			t.Error("heartbeat did not fire while SetupSkills was in flight")
+			t.Error("heartbeat did not fire while SetupTracks was in flight")
 			return
 		}
 		w.Header().Set("Content-Type", "application/json")

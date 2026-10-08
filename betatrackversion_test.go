@@ -1,4 +1,4 @@
-﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package Juglow_test
 
@@ -17,7 +17,7 @@ import (
 	"github.com/takebox/juglow-sdk-go/option"
 )
 
-func TestBetaSkillVersionNewWithOptionalParams(t *testing.T) {
+func TestBetaTrackVersionNewWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -32,7 +32,7 @@ func TestBetaSkillVersionNewWithOptionalParams(t *testing.T) {
 	_, err := client.Beta.Tracks.Versions.New(
 		context.TODO(),
 		"track_id",
-		Juglow.BetaSkillVersionNewParams{
+		Juglow.BetaTrackVersionNewParams{
 			Files: []io.Reader{io.Reader(bytes.NewBuffer([]byte("Example data")))},
 			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
@@ -46,7 +46,7 @@ func TestBetaSkillVersionNewWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestBetaSkillVersionGetWithOptionalParams(t *testing.T) {
+func TestBetaTrackVersionGetWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -61,8 +61,8 @@ func TestBetaSkillVersionGetWithOptionalParams(t *testing.T) {
 	_, err := client.Beta.Tracks.Versions.Get(
 		context.TODO(),
 		"version",
-		Juglow.BetaSkillVersionGetParams{
-			SkillID: "track_id",
+		Juglow.BetaTrackVersionGetParams{
+			TrackID: "track_id",
 			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
@@ -75,7 +75,7 @@ func TestBetaSkillVersionGetWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestBetaSkillVersionListWithOptionalParams(t *testing.T) {
+func TestBetaTrackVersionListWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -90,7 +90,7 @@ func TestBetaSkillVersionListWithOptionalParams(t *testing.T) {
 	_, err := client.Beta.Tracks.Versions.List(
 		context.TODO(),
 		"track_id",
-		Juglow.BetaSkillVersionListParams{
+		Juglow.BetaTrackVersionListParams{
 			Limit: Juglow.Int(0),
 			Page:  Juglow.String("page"),
 			Betas: []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
@@ -105,7 +105,7 @@ func TestBetaSkillVersionListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestBetaSkillVersionDeleteWithOptionalParams(t *testing.T) {
+func TestBetaTrackVersionDeleteWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -120,8 +120,8 @@ func TestBetaSkillVersionDeleteWithOptionalParams(t *testing.T) {
 	_, err := client.Beta.Tracks.Versions.Delete(
 		context.TODO(),
 		"version",
-		Juglow.BetaSkillVersionDeleteParams{
-			SkillID: "track_id",
+		Juglow.BetaTrackVersionDeleteParams{
+			TrackID: "track_id",
 			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)
@@ -134,7 +134,7 @@ func TestBetaSkillVersionDeleteWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestBetaSkillVersionDownloadWithOptionalParams(t *testing.T) {
+func TestBetaTrackVersionDownloadWithOptionalParams(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(200)
 		w.Write([]byte("abc"))
@@ -148,8 +148,8 @@ func TestBetaSkillVersionDownloadWithOptionalParams(t *testing.T) {
 	resp, err := client.Beta.Tracks.Versions.Download(
 		context.TODO(),
 		"version",
-		Juglow.BetaSkillVersionDownloadParams{
-			SkillID: "track_id",
+		Juglow.BetaTrackVersionDownloadParams{
+			TrackID: "track_id",
 			Betas:   []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
 		},
 	)

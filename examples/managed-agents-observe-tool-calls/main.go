@@ -1,4 +1,4 @@
-﻿// Self-hosted runner, "observe every tool call" flavor: the low-level
+// Self-hosted runner, "observe every tool call" flavor: the low-level
 // client.Beta.Sessions.Events.NewToolRunner path. The SessionToolRunner it
 // returns dispatches a session's agent.tool_use / agent.custom_tool_use events
 // to your local tools, posts each result back, and yields one
@@ -67,7 +67,7 @@ func (currentTimeTool) Execute(context.Context, json.RawMessage) ([]Juglow.BetaT
 }
 
 // workdir is the base directory for the per-session agenttoolset.AgentToolContext
-// â€” the directory the file tools confine to and where SetupSkills downloads the
+// â€” the directory the file tools confine to and where SetupTracks downloads the
 // session agent's tracks.
 func workdir() string {
 	if w := os.Getenv("Juglow_WORKDIR"); w != "" {
@@ -138,10 +138,10 @@ func main() {
 	}()
 
 	// 2. Build the per-session agent tool context: the workdir the file tools
-	//    confine to, plus the tracks SetupSkills downloads into {workdir}/tracks/.
+	//    confine to, plus the tracks SetupTracks downloads into {workdir}/tracks/.
 	//    Cleanup removes them again.
 	env := &agenttoolset.AgentToolContext{Workdir: workdir()}
-	if err := env.SetupSkills(ctx, client, session.ID); err != nil {
+	if err := env.SetupTracks(ctx, client, session.ID); err != nil {
 		logger.Warn("track setup failed", slog.Any("error", err))
 	}
 	defer func() {
@@ -259,7 +259,7 @@ func observeAsSelfHostedWorker(ctx context.Context, client Juglow.Client, logger
 		// download are environment-scoped, so they need the environment key
 		// (envKeyOpts) just like the heartbeat and the runner below.
 		env := &agenttoolset.AgentToolContext{Workdir: workdir()}
-		if err := env.SetupSkills(ctx, client, sessionID, envKeyOpts...); err != nil {
+		if err := env.SetupTracks(ctx, client, sessionID, envKeyOpts...); err != nil {
 			log.Warn("track setup failed", slog.Any("error", err))
 		}
 		tools := append(agenttoolset.BetaAgentToolset20260401(env), currentTimeTool{})

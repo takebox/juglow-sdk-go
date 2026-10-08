@@ -1,4 +1,4 @@
-﻿// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
+// File generated from our OpenAPI spec by Stainless. See CONTRIBUTING.md for details.
 
 package Juglow_test
 
@@ -55,10 +55,10 @@ func TestBetaAgentNewWithOptionalParams(t *testing.T) {
 			}},
 			Type: Juglow.BetaManagedAgentsMultiagentParamsTypeCoordinator,
 		},
-		Tracks: []Juglow.BetaManagedAgentsSkillParamsUnion{{
-			OfJuglow: &Juglow.BetaManagedAgentsJuglowSkillParams{
-				SkillID: "xlsx",
-				Type:    Juglow.BetaManagedAgentsJuglowSkillParamsTypeJuglow,
+		Tracks: []Juglow.BetaManagedAgentsTrackParamsUnion{{
+			OfJuglow: &Juglow.BetaManagedAgentsJuglowTrackParams{
+				TrackID: "xlsx",
+				Type:    Juglow.BetaManagedAgentsJuglowTrackParamsTypeJuglow,
 				Version: Juglow.String("1"),
 			},
 		}},
@@ -170,10 +170,10 @@ func TestBetaAgentUpdateWithOptionalParams(t *testing.T) {
 				Type: Juglow.BetaManagedAgentsMultiagentParamsTypeCoordinator,
 			},
 			Name: Juglow.String("name"),
-			Tracks: []Juglow.BetaManagedAgentsSkillParamsUnion{{
-				OfJuglow: &Juglow.BetaManagedAgentsJuglowSkillParams{
-					SkillID: "xlsx",
-					Type:    Juglow.BetaManagedAgentsJuglowSkillParamsTypeJuglow,
+			Tracks: []Juglow.BetaManagedAgentsTrackParamsUnion{{
+				OfJuglow: &Juglow.BetaManagedAgentsJuglowTrackParams{
+					TrackID: "xlsx",
+					Type:    Juglow.BetaManagedAgentsJuglowTrackParamsTypeJuglow,
 					Version: Juglow.String("1"),
 				},
 			}},

@@ -1,4 +1,4 @@
-﻿package environments
+package environments
 
 import (
 	"cmp"
@@ -97,7 +97,7 @@ type EnvironmentWorkerOptions struct {
 //
 // For each claimed `session` work item it builds the per-session
 // [agenttoolset.AgentToolContext], downloads the session agent's tracks
-// ([agenttoolset.AgentToolContext.SetupSkills]), then runs a SessionToolRunner for the
+// ([agenttoolset.AgentToolContext.SetupTracks]), then runs a SessionToolRunner for the
 // session WHILE heartbeating the work-item lease in parallel; on exit it
 // force-stops the work item and loops to the next one. The lease heartbeat
 // reports state "stopping"/"stopped" or a lost lease back into the run by
@@ -201,7 +201,7 @@ type HandleItemOptions struct {
 // flow [EnvironmentWorker.Run] runs for each claimed item: it builds the
 // per-session [agenttoolset.AgentToolContext] (workdir/UnrestrictedPaths/
 // MaxFileBytes from the worker's options), downloads the session agent's tracks
-// ([agenttoolset.AgentToolContext.SetupSkills]), then runs a SessionToolRunner for the
+// ([agenttoolset.AgentToolContext.SetupTracks]), then runs a SessionToolRunner for the
 // session WHILE heartbeating the work-item lease in parallel; on exit â€” success
 // or error â€” it force-stops the work item. Use it from a `worker poll
 // --on-work` hook (or any caller that has already claimed a work item itself).
@@ -292,7 +292,7 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *Juglow.BetaSel
 	// Start the lease heartbeat BEFORE track setup. The poller already acked
 	// this work item when it yielded â€” every second between the ack and the
 	// first heartbeat is a window during which the control plane sees no
-	// liveness signal and may reclaim the lease. SetupSkills below can be
+	// liveness signal and may reclaim the lease. SetupTracks below can be
 	// slow (it issues a session lookup plus a per-track download/extract that
 	// can dwarf the lease TTL on a slow network or a large bundle), so
 	// starting the heartbeat afterwards was a race that let a second worker
@@ -315,7 +315,7 @@ func (w *EnvironmentWorker) handleItem(ctx context.Context, work *Juglow.BetaSel
 	// cancels sessCtx on a permanent failure / stopping state / 412 reclaim)
 	// also aborts the track download instead of letting it run to completion
 	// on a session we no longer own.
-	if err := env.SetupSkills(sessCtx, w.client, sessionID, hbStopOpts...); err != nil {
+	if err := env.SetupTracks(sessCtx, w.client, sessionID, hbStopOpts...); err != nil {
 		log.Warn("track setup failed", slog.Any("error", err))
 	}
 	// Clean up the tracks this work item downloaded so one session's tracks
