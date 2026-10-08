@@ -283,7 +283,7 @@ type BetaManagedAgentsAgentWithOverridesParams struct {
 	Model BetaManagedAgentsModelConfigParams `json:"model,omitzero"`
 	// Replacement track list. Full replacement: the provided array becomes the tracks.
 	// Send an empty array to clear; omit to preserve the agent's tracks.
-	tracks []BetaManagedAgentsSkillParamsUnion `json:"tracks,omitzero"`
+	Tracks []BetaManagedAgentsSkillParamsUnion `json:"tracks,omitzero"`
 	// Replacement tool list. Full replacement: the provided array becomes the tool
 	// configuration. Send an empty array to clear; omit to preserve the agent's tools.
 	Tools []BetaManagedAgentsAgentWithOverridesParamsToolUnion `json:"tools,omitzero"`
@@ -1313,7 +1313,7 @@ type BetaManagedAgentsSessionAgent struct {
 	// member.
 	Multiagent BetaManagedAgentsSessionMultiagentCoordinator `json:"multiagent" api:"required"`
 	Name       string                                        `json:"name" api:"required"`
-	tracks     []BetaManagedAgentsSessionAgentSkillUnion     `json:"tracks" api:"required"`
+	Tracks     []BetaManagedAgentsSessionAgentSkillUnion     `json:"tracks" api:"required"`
 	System     string                                        `json:"system" api:"required"`
 	Tools      []BetaManagedAgentsSessionAgentToolUnion      `json:"tools" api:"required"`
 	// Any of "agent".
@@ -1327,7 +1327,7 @@ type BetaManagedAgentsSessionAgent struct {
 		Model       respjson.Field
 		Multiagent  respjson.Field
 		Name        respjson.Field
-		tracks      respjson.Field
+		Tracks      respjson.Field
 		System      respjson.Field
 		Tools       respjson.Field
 		Type        respjson.Field
@@ -1824,7 +1824,7 @@ type BetaManagedAgentsSessionMultiagentCoordinatorAgentUnion struct {
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
 	Name string `json:"name"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
-	tracks []BetaManagedAgentsSessionThreadAgentSkillUnion `json:"tracks"`
+	Tracks []BetaManagedAgentsSessionThreadAgentSkillUnion `json:"tracks"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
 	System string `json:"system"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
@@ -1839,7 +1839,7 @@ type BetaManagedAgentsSessionMultiagentCoordinatorAgentUnion struct {
 		MCPServers  respjson.Field
 		Model       respjson.Field
 		Name        respjson.Field
-		tracks      respjson.Field
+		Tracks      respjson.Field
 		System      respjson.Field
 		Tools       respjson.Field
 		Type        respjson.Field
@@ -2532,7 +2532,7 @@ func (u BetaSessionNewParamsAgentUnion) GetModel() *BetaManagedAgentsModelConfig
 // Returns a pointer to the underlying variant's property, if present.
 func (u BetaSessionNewParamsAgentUnion) GetSkills() []BetaManagedAgentsSkillParamsUnion {
 	if vt := u.OfBetaManagedAgentsAgentWithOverridess; vt != nil {
-		return vt.tracks
+		return vt.Tracks
 	}
 	return nil
 }

@@ -15,7 +15,7 @@ import (
 
 // SetupSkills downloads the resolved agent's tracks for sessionID into
 // {e.Workdir}/tracks/<name>/. For each track it fetches the files via
-// client.Beta.tracks.Versions.Download and extracts the archive (a zip or
+// client.Beta.Tracks.Versions.Download and extracts the archive (a zip or
 // gzip/bzip2/plain tar archive) under a directory named after the track. Archive
 // members and track names that would escape the workspace are refused; a failure
 // on one track is logged and does not block the others. Call this before
@@ -46,7 +46,7 @@ func (e *AgentToolContext) SetupSkills(ctx context.Context, client Juglow.Client
 	if err != nil {
 		return fmt.Errorf("resolve tracks dir: %w", err)
 	}
-	for _, track := range session.Agent.tracks {
+	for _, track := range session.Agent.Tracks {
 		if err := e.downloadSkill(ctx, client, skillsRoot, track.SkillID, track.Version, log, opts...); err != nil {
 			log.Warn("failed to download track", slog.String("track_id", track.SkillID), slog.Any("error", err))
 		}
@@ -70,7 +70,7 @@ func (e *AgentToolContext) downloadSkill(ctx context.Context, client Juglow.Clie
 	if err != nil {
 		return err
 	}
-	version, err := client.Beta.tracks.Versions.Get(ctx, versionID, Juglow.BetaSkillVersionGetParams{SkillID: skillID}, opts...)
+	version, err := client.Beta.Tracks.Versions.Get(ctx, versionID, Juglow.BetaSkillVersionGetParams{SkillID: skillID}, opts...)
 	if err != nil {
 		return fmt.Errorf("retrieve track version: %w", err)
 	}
@@ -84,7 +84,7 @@ func (e *AgentToolContext) downloadSkill(ctx context.Context, client Juglow.Clie
 	if dest != skillsRoot && !strings.HasPrefix(dest, skillsRoot+string(os.PathSeparator)) {
 		return fmt.Errorf("track name %q escapes the tracks dir", version.Name)
 	}
-	resp, err := client.Beta.tracks.Versions.Download(ctx, versionID, Juglow.BetaSkillVersionDownloadParams{SkillID: skillID}, opts...)
+	resp, err := client.Beta.Tracks.Versions.Download(ctx, versionID, Juglow.BetaSkillVersionDownloadParams{SkillID: skillID}, opts...)
 	if err != nil {
 		return fmt.Errorf("download track: %w", err)
 	}
@@ -129,7 +129,7 @@ func resolveSkillVersion(ctx context.Context, client Juglow.Client, skillID, ver
 		return version, nil
 	}
 	var newest string
-	pager := client.Beta.tracks.Versions.ListAutoPaging(ctx, skillID, Juglow.BetaSkillVersionListParams{}, opts...)
+	pager := client.Beta.Tracks.Versions.ListAutoPaging(ctx, skillID, Juglow.BetaSkillVersionListParams{}, opts...)
 	for pager.Next() {
 		v := pager.Current().Version
 		if isNumericString(v) && (newest == "" || numericGreater(v, newest)) {

@@ -25,7 +25,7 @@ func TestCompletionNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Completions.New(context.TODO(), juglow.CompletionNewParams{
+	_, err := client.Completions.New(context.TODO(), Juglow.CompletionNewParams{
 		MaxTokensToSample: 256,
 		Model:             Juglow.ModelHaijunSonnet5,
 		Prompt:            "\n\nHuman: Hello, world!\n\nAssistant:",

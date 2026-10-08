@@ -173,7 +173,7 @@ type BetaManagedAgentsAgent struct {
 	// Resolved coordinator topology with a concrete agent roster.
 	Multiagent BetaManagedAgentsMultiagent        `json:"multiagent" api:"required"`
 	Name       string                             `json:"name" api:"required"`
-	tracks     []BetaManagedAgentsAgentSkillUnion `json:"tracks" api:"required"`
+	Tracks     []BetaManagedAgentsAgentSkillUnion `json:"tracks" api:"required"`
 	System     string                             `json:"system" api:"required"`
 	Tools      []BetaManagedAgentsAgentToolUnion  `json:"tools" api:"required"`
 	// Any of "agent".
@@ -194,7 +194,7 @@ type BetaManagedAgentsAgent struct {
 		Model       respjson.Field
 		Multiagent  respjson.Field
 		Name        respjson.Field
-		tracks      respjson.Field
+		Tracks      respjson.Field
 		System      respjson.Field
 		Tools       respjson.Field
 		Type        respjson.Field
@@ -2286,7 +2286,7 @@ type BetaManagedAgentsSessionThreadAgent struct {
 	// Model identifier and configuration.
 	Model  BetaManagedAgentsModelConfig                    `json:"model" api:"required"`
 	Name   string                                          `json:"name" api:"required"`
-	tracks []BetaManagedAgentsSessionThreadAgentSkillUnion `json:"tracks" api:"required"`
+	Tracks []BetaManagedAgentsSessionThreadAgentSkillUnion `json:"tracks" api:"required"`
 	System string                                          `json:"system" api:"required"`
 	Tools  []BetaManagedAgentsSessionThreadAgentToolUnion  `json:"tools" api:"required"`
 	// Any of "agent".
@@ -2299,7 +2299,7 @@ type BetaManagedAgentsSessionThreadAgent struct {
 		MCPServers  respjson.Field
 		Model       respjson.Field
 		Name        respjson.Field
-		tracks      respjson.Field
+		Tracks      respjson.Field
 		System      respjson.Field
 		Tools       respjson.Field
 		Type        respjson.Field
@@ -2677,7 +2677,7 @@ type BetaAgentNewParams struct {
 	// spawning session threads, each running an agent drawn from the `agents` roster.
 	Multiagent BetaManagedAgentsMultiagentParams `json:"multiagent,omitzero"`
 	// tracks available to the agent.
-	tracks []BetaManagedAgentsSkillParamsUnion `json:"tracks,omitzero"`
+	Tracks []BetaManagedAgentsSkillParamsUnion `json:"tracks,omitzero"`
 	// Tool configurations available to the agent. Maximum of 128 tools across all
 	// toolsets allowed.
 	Tools []BetaAgentNewParamsToolUnion `json:"tools,omitzero"`
@@ -2916,7 +2916,7 @@ type BetaAgentUpdateParams struct {
 	// each) with values up to 512 chars.
 	Metadata map[string]string `json:"metadata,omitzero"`
 	// tracks. Full replacement. Omit to preserve; send empty array or null to clear.
-	tracks []BetaManagedAgentsSkillParamsUnion `json:"tracks,omitzero"`
+	Tracks []BetaManagedAgentsSkillParamsUnion `json:"tracks,omitzero"`
 	// Tool configurations available to the agent. Full replacement. Omit to preserve;
 	// send empty array or null to clear. Maximum of 128 tools across all toolsets
 	// allowed.

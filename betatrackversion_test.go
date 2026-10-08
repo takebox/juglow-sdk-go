@@ -29,7 +29,7 @@ func TestBetaSkillVersionNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.tracks.Versions.New(
+	_, err := client.Beta.Tracks.Versions.New(
 		context.TODO(),
 		"track_id",
 		Juglow.BetaSkillVersionNewParams{
@@ -58,7 +58,7 @@ func TestBetaSkillVersionGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.tracks.Versions.Get(
+	_, err := client.Beta.Tracks.Versions.Get(
 		context.TODO(),
 		"version",
 		Juglow.BetaSkillVersionGetParams{
@@ -87,7 +87,7 @@ func TestBetaSkillVersionListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.tracks.Versions.List(
+	_, err := client.Beta.Tracks.Versions.List(
 		context.TODO(),
 		"track_id",
 		Juglow.BetaSkillVersionListParams{
@@ -117,7 +117,7 @@ func TestBetaSkillVersionDeleteWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.tracks.Versions.Delete(
+	_, err := client.Beta.Tracks.Versions.Delete(
 		context.TODO(),
 		"version",
 		Juglow.BetaSkillVersionDeleteParams{
@@ -145,7 +145,7 @@ func TestBetaSkillVersionDownloadWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	resp, err := client.Beta.tracks.Versions.Download(
+	resp, err := client.Beta.Tracks.Versions.Download(
 		context.TODO(),
 		"version",
 		Juglow.BetaSkillVersionDownloadParams{

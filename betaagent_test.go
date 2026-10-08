@@ -55,7 +55,7 @@ func TestBetaAgentNewWithOptionalParams(t *testing.T) {
 			}},
 			Type: Juglow.BetaManagedAgentsMultiagentParamsTypeCoordinator,
 		},
-		tracks: []Juglow.BetaManagedAgentsSkillParamsUnion{{
+		Tracks: []Juglow.BetaManagedAgentsSkillParamsUnion{{
 			OfJuglow: &Juglow.BetaManagedAgentsJuglowSkillParams{
 				SkillID: "xlsx",
 				Type:    Juglow.BetaManagedAgentsJuglowSkillParamsTypeJuglow,
@@ -170,7 +170,7 @@ func TestBetaAgentUpdateWithOptionalParams(t *testing.T) {
 				Type: Juglow.BetaManagedAgentsMultiagentParamsTypeCoordinator,
 			},
 			Name: Juglow.String("name"),
-			tracks: []Juglow.BetaManagedAgentsSkillParamsUnion{{
+			Tracks: []Juglow.BetaManagedAgentsSkillParamsUnion{{
 				OfJuglow: &Juglow.BetaManagedAgentsJuglowSkillParams{
 					SkillID: "xlsx",
 					Type:    Juglow.BetaManagedAgentsJuglowSkillParamsTypeJuglow,

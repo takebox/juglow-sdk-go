@@ -182,7 +182,7 @@ type BetaManagedAgentsSessionThreadAgentUnion struct {
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
 	Name string `json:"name"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
-	tracks []BetaManagedAgentsSessionThreadAgentSkillUnion `json:"tracks"`
+	Tracks []BetaManagedAgentsSessionThreadAgentSkillUnion `json:"tracks"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
 	System string `json:"system"`
 	// This field is from variant [BetaManagedAgentsSessionThreadAgent].
@@ -197,7 +197,7 @@ type BetaManagedAgentsSessionThreadAgentUnion struct {
 		MCPServers  respjson.Field
 		Model       respjson.Field
 		Name        respjson.Field
-		tracks      respjson.Field
+		Tracks      respjson.Field
 		System      respjson.Field
 		Tools       respjson.Field
 		Type        respjson.Field

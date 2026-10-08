@@ -2390,12 +2390,12 @@ type BetaContainer struct {
 	// The time at which the container will expire.
 	ExpiresAt time.Time `json:"expires_at" api:"required" format:"date-time"`
 	// tracks loaded in the container
-	tracks []BetaSkill `json:"tracks" api:"required"`
+Tracks []BetaSkill      `json:"tracks" api:"required"`
 	// JSON contains metadata for fields, check presence with [respjson.Field.Valid].
 	JSON struct {
 		ID          respjson.Field
 		ExpiresAt   respjson.Field
-		tracks      respjson.Field
+		Tracks      respjson.Field
 		ExtraFields map[string]respjson.Field
 		raw         string
 	} `json:"-"`
@@ -2412,7 +2412,7 @@ type BetaContainerParams struct {
 	// Container id
 	ID param.Opt[string] `json:"id,omitzero"`
 	// List of tracks to load in the container
-	tracks []BetaSkillParams `json:"tracks,omitzero"`
+	Tracks []BetaSkillParams `json:"tracks,omitzero"`
 	paramObj
 }
 

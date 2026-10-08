@@ -27,7 +27,7 @@ func TestBetaSkillNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.tracks.New(context.TODO(), Juglow.BetaSkillNewParams{
+	_, err := client.Beta.Tracks.New(context.TODO(), Juglow.BetaSkillNewParams{
 		Files:        []io.Reader{io.Reader(bytes.NewBuffer([]byte("Example data")))},
 		DisplayTitle: Juglow.String("display_title"),
 		Betas:        []Juglow.JuglowBeta{Juglow.JuglowBetaMessageBatches2024_09_24},
@@ -53,7 +53,7 @@ func TestBetaSkillGetWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.tracks.Get(
+	_, err := client.Beta.Tracks.Get(
 		context.TODO(),
 		"track_id",
 		Juglow.BetaSkillGetParams{
@@ -81,7 +81,7 @@ func TestBetaSkillListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.tracks.List(context.TODO(), Juglow.BetaSkillListParams{
+	_, err := client.Beta.Tracks.List(context.TODO(), Juglow.BetaSkillListParams{
 		Limit:  Juglow.Int(0),
 		Page:   Juglow.String("page"),
 		Source: Juglow.String("source"),
@@ -108,7 +108,7 @@ func TestBetaSkillDeleteWithOptionalParams(t *testing.T) {
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("my-Juglow-api-key"),
 	)
-	_, err := client.Beta.tracks.Delete(
+	_, err := client.Beta.Tracks.Delete(
 		context.TODO(),
 		"track_id",
 		Juglow.BetaSkillDeleteParams{

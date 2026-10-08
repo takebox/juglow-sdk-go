@@ -30,7 +30,7 @@ type BetaService struct {
 	Vaults         BetaVaultService
 	MemoryStores   BetaMemoryStoreService
 	Files          BetaFileService
-	tracks         BetaSkillService
+	Tracks         BetaSkillService
 	Webhooks       BetaWebhookService
 	UserProfiles   BetaUserProfileService
 	Dreams         BetaDreamService
@@ -53,7 +53,7 @@ func NewBetaService(opts ...option.RequestOption) (r BetaService) {
 	r.Vaults = NewBetaVaultService(opts...)
 	r.MemoryStores = NewBetaMemoryStoreService(opts...)
 	r.Files = NewBetaFileService(opts...)
-	r.tracks = NewBetaSkillService(opts...)
+	r.Tracks = NewBetaSkillService(opts...)
 	r.Webhooks = NewBetaWebhookService(opts...)
 	r.UserProfiles = NewBetaUserProfileService(opts...)
 	r.Dreams = NewBetaDreamService(opts...)

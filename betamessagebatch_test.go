@@ -58,7 +58,7 @@ func TestBetaMessageBatchNewWithOptionalParams(t *testing.T) {
 				Container: Juglow.BetaMessageBatchNewParamsRequestParamsContainerUnion{
 					OfContainers: &Juglow.BetaContainerParams{
 						ID: Juglow.String("id"),
-						tracks: []Juglow.BetaSkillParams{{
+						Tracks: []Juglow.BetaSkillParams{{
 							SkillID: "pdf",
 							Type:    Juglow.BetaSkillParamsTypeJuglow,
 							Version: Juglow.String("latest"),
